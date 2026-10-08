@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIDD — AI 신약개발 교재</title>
+  <meta name="description" content="약사를 위한 AI 신약개발 모바일 교재. Track A 이론 30강 + Track B 실무 케이스 분석." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* Hub-only styles */
+    .hub__banner {
+      background: linear-gradient(135deg, #2a1a7a, #5b3fd4 55%, #0d8a7a);
+      border-radius: 20px; padding: 36px 32px; margin-bottom: 40px;
+      color: #fff; display: flex; flex-direction: column; gap: 12px;
+      box-shadow: 0 4px 32px rgba(91,63,212,.25);
+    }
+    .hub__banner .kicker {
+      font-family: "OmyuPretty", sans-serif;
+      font-size: 14px; opacity: .88; letter-spacing: .04em;
+    }
+    .hub__banner h1 { color: #fff; margin: 0; font-size: clamp(24px,4vw,36px); }
+    .hub__banner p { margin: 0; opacity: .9; font-size: 15px; max-width: 540px; }
+    .hub__banner .track-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+    .hub__banner .tc {
+      font-size: 13px; font-weight: 700; padding: 6px 14px;
+      border-radius: 999px; background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.35); color: #fff;
+    }
+    .hub__section-title {
+      font-size: 20px; font-weight: 700; margin: 32px 0 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    @media (max-width: 600px) {
+      .hub__banner { padding: 24px 20px; border-radius: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="hub">
+    <!-- Hero banner -->
+    <div class="hub__banner">
+      <div class="kicker">Pharmacist · AI Drug Discovery</div>
+      <h1>AI 신약개발 교재</h1>
+      <p>약사가 AI 신약개발 연구자로 성장하기 위한 도메인 지식 + 실무 케이스 학습 과정입니다.</p>
+      <div class="track-chips">
+        <span class="tc">Track A · Theory 30강</span>
+        <span class="tc">Track B · Practice 12편</span>
+      </div>
+    </div>
+
+    <!-- Track selector -->
+    <div class="hub__section-title">
+      <span>📚</span> 트랙 선택
+    </div>
+    <div id="trackGrid" class="track-grid"></div>
+
+    <!-- Lesson grid -->
+    <div id="gridHead" class="grid-head"></div>
+    <div id="lessonGrid" class="lesson-grid"></div>
+  </main>
+
+  <script src="assets/data/lessons.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

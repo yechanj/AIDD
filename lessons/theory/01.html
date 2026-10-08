@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L01 · 약물–단백질 결합의 기본 — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <!-- MOBILE TOP BAR -->
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L01 · 약물–단백질 결합의 기본</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L01</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>약물–단백질 결합의 기본</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#q0"><span class="num">0</span> Opening Case</a></li>
+          <li><a href="#s1"><span class="num">1</span> Binding = 평형</a></li>
+          <li><a href="#s2"><span class="num">2</span> Kd와 ΔG</a></li>
+          <li><a href="#s3"><span class="num">3</span> Binding의 네 가지 구성요소</a></li>
+          <li><a href="#s4"><span class="num">4</span> Desolvation</a></li>
+          <li><a href="#s5"><span class="num">5</span> Protein은 ensemble이다</a></li>
+          <li><a href="#s6"><span class="num">6</span> Shape & Chemical complementarity</a></li>
+          <li><a href="#s7"><span class="num">7</span> Pocket의 세 층</a></li>
+          <li><a href="#s8"><span class="num">8</span> Ligand conformational penalty</a></li>
+          <li><a href="#s9"><span class="num">9</span> Water는 배경이 아니다</a></li>
+          <li><a href="#s10"><span class="num">10</span> Imatinib × ABL</a></li>
+          <li><a href="#s11"><span class="num">11</span> Affinity ≠ Potency ≠ Cell</a></li>
+          <li><a href="#s12"><span class="num">12</span> AI & Docking 연결</a></li>
+          <li><a href="#s13"><span class="num">13</span> Failure Case</a></li>
+          <li><a href="#s14"><span class="num">14</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="wrap">
+
+        <!-- HERO -->
+        <header class="lesson-hero lesson-hero--a">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 01</div>
+          <h1>약물–단백질 결합의 기본</h1>
+          <p>Drug–Protein Binding Basics · Molecule은 왜 어떤 단백질에는 강하게 결합하고, 다른 단백질에는 결합하지 않는가?</p>
+        </header>
+
+        <!-- ======================================================
+             SECTION 0 · Opening Case
+             ====================================================== -->
+        <section id="q0" class="section">
+          <h2><span class="sec-no">00</span> Opening Case — 같은 pocket에 들어가는데 왜 binding이 다를까?</h2>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>시나리오</div>
+            <p>AI 기반 virtual screening에서 두 molecule이 높은 점수를 받았습니다.</p>
+          </div>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Compound A</h5>
+              <ul class="clean">
+                <li>Hydrogen bond <b>4개</b></li>
+                <li>Hydrophobic residue와 다수 접촉</li>
+                <li>Docking score <b>−11.0</b></li>
+              </ul>
+              <div style="margin-top:12px;font-size:14px;font-weight:700;color:var(--danger);">
+                실험 Kd = 900 nM
+              </div>
+            </div>
+            <div class="panel panel--b">
+              <h5>Compound B</h5>
+              <ul class="clean">
+                <li>Hydrogen bond <b>2개</b></li>
+                <li>Docking score <b>−8.5</b></li>
+              </ul>
+              <div style="margin-top:12px;font-size:14px;font-weight:700;color:var(--ok);">
+                실험 Kd = 20 nM
+              </div>
+            </div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>흔한 오해</div>
+            <p><b>Hydrogen bond가 많다 → interaction이 많다 → binding이 강하다.</b><br>
+            하지만 실제 A의 affinity가 훨씬 낮습니다. 왜일까요?</p>
+          </div>
+
+          <div class="oneline">
+            Binding은 구조가 "맞는지"의 문제가 아니라, 결합 전과 결합 후 시스템의 자유에너지가 얼마나 달라지는가의 문제다.
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 1 · Binding = 평형
+             ====================================================== -->
+        <section id="s1" class="section">
+          <h2><span class="sec-no">01</span> Drug binding은 평형이다</h2>
+
+          <p>가장 단순하게 ligand binding을 다음처럼 표현할 수 있습니다.</p>
+
+          <div class="eq">P + L ⇌ PL</div>
+          <p class="lead" style="text-align:center;">P = protein, L = ligand, PL = complex</p>
+
+          <p>이 평형에서 중요한 값이 <b>Kd</b>(dissociation constant)입니다.</p>
+
+          <div class="eq">K<sub>d</sub> = [P][L] / [PL]</div>
+
+          <p>Kd가 작을수록 평형이 PL 방향에 치우쳐 있습니다. 즉 <b>Kd ↓ → affinity ↑</b></p>
+
+          <!-- Visual 2: Kd Slider -->
+          <div class="viz" data-kd-slider>
+            <div class="viz__title">Kd Interactive Equilibrium</div>
+            <div class="kd__wrap">
+              <div class="kd__eq">P + L ⇌ PL</div>
+              <div class="kd__slider-row">
+                <label>Kd 조절 (1 pM ~ 1 mM)</label>
+                <input class="kd__range" type="range" min="0" max="6" step="0.05" value="2" />
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-faint);">
+                  <span>1 pM (강함)</span><span>1 nM</span><span>1 µM</span><span>1 mM (약함)</span>
+                </div>
+              </div>
+              <div class="kd__display">
+                <div class="kd__bar-group">
+                  <div class="kd__bar-label" style="color:var(--brand);">Bound fraction</div>
+                  <div class="kd__bar-track">
+                    <div class="kd__bar-fill kd__bar-fill--bound" style="width:50%;">50%</div>
+                  </div>
+                  <div class="kd__bar-label" style="color:var(--ink-faint);margin-top:8px;">Free fraction</div>
+                  <div class="kd__bar-track">
+                    <div class="kd__bar-fill kd__bar-fill--free" style="width:50%;">50%</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="kd__value">Kd = 100 nM</div>
+                  <div class="kd__dg">ΔG ≈ −9.5 kcal/mol</div>
+                  <div class="kd__info" style="margin-top:8px;font-size:12px;">*[Protein] = 100 nM 기준</div>
+                </div>
+              </div>
+            </div>
+            <div class="viz__caption">Slider를 움직여 Kd 변화에 따른 bound/free fraction을 확인하세요.</div>
+            <div class="viz__msg">Kd는 ligand와 protein 사이의 equilibrium preference를 나타냅니다.</div>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>중요한 습관</div>
+            <p>Kd는 "binding strength"를 표현하지만 molecule의 전체 drug quality를 의미하지 않습니다. 1 nM binder라도 세포에 들어가지 못하거나, 혈중에서 빨리 제거될 수 있습니다. 이 문제들은 9–15강에서 다룹니다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 2 · Kd와 ΔG
+             ====================================================== -->
+        <section id="s2" class="section">
+          <h2><span class="sec-no">02</span> Affinity와 자유에너지</h2>
+
+          <p>Binding affinity는 thermodynamics 관점에서 자유에너지 변화와 연결됩니다.</p>
+
+          <div class="eq">ΔG<sub>bind</sub> = RT ln K<sub>d</sub></div>
+
+          <p><b>강한 binding일수록 ΔG<sub>bind</sub>가 더 favorable(음의 값)합니다.</b></p>
+
+          <div class="eq">ΔG = ΔH − TΔS</div>
+
+          <ul class="clean">
+            <li><b>ΔH</b> — interaction 형성, electrostatics, hydrogen bonding, van der Waals</li>
+            <li><b>ΔS</b> — molecular freedom, solvent organization, conformational restriction</li>
+          </ul>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>흔한 실수</div>
+            <p>실제 medicinal chemistry에서 "hydrogen bond 하나 = ΔH 몇 kcal/mol"처럼 단순 계산해서는 안 됩니다. Ligand가 새로운 H-bond를 만들기 위해 기존의 water H-bond를 끊어야 할 수도 있기 때문입니다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 3 · Binding의 네 가지 구성요소
+             ====================================================== -->
+        <section id="s3" class="section">
+          <h2><span class="sec-no">03</span> Binding의 네 가지 구성요소</h2>
+
+          <p>Ligand가 단백질에 결합할 때 다음 네 가지가 <b>동시에</b> 일어납니다.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:18px 0;">
+            <div class="card card--concept" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>① Interaction 형성</div>
+              <p>H-bond, hydrophobic contact, van der Waals 등 새로운 favorable interaction 생성.</p>
+            </div>
+            <div class="card card--chem" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>② Desolvation</div>
+              <p>Ligand와 protein의 hydration shell이 제거되어야 함. <b>비용</b>이 든다.</p>
+            </div>
+            <div class="card card--ai" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>③ Conformational restriction</div>
+              <p>자유롭게 회전하던 ligand의 conformational freedom이 감소. Entropy 비용.</p>
+            </div>
+            <div class="card card--bio" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>④ Protein/water 재배열</div>
+              <p>단백질 구조와 pocket water network가 재배열됨.</p>
+            </div>
+          </div>
+
+          <!-- Visual 1: Balance -->
+          <div class="viz" data-balance>
+            <div class="viz__title">Binding = Free-energy Balance</div>
+            <div class="balance__wrap">
+              <div class="balance__pans">
+                <div class="balance__pan balance__pan--gain">
+                  <div class="balance__pan__title">✓ Favorable (Gain)</div>
+                  <div class="balance__pan__items">
+                    <div class="balance__item">Protein–ligand H-bond</div>
+                    <div class="balance__item">Hydrophobic contact</div>
+                    <div class="balance__item">Van der Waals</div>
+                    <div class="balance__item">Favorable water release</div>
+                  </div>
+                </div>
+                <div class="balance__pan balance__pan--cost">
+                  <div class="balance__pan__title">✗ Unfavorable (Cost)</div>
+                  <div class="balance__pan__items">
+                    <div class="balance__item">Ligand desolvation</div>
+                    <div class="balance__item">Protein desolvation</div>
+                    <div class="balance__item">Conformational entropy</div>
+                    <div class="balance__item">Protein rearrangement</div>
+                  </div>
+                  <div class="balance__water">
+                    <span class="balance__drop"></span>
+                    <span class="balance__drop"></span>
+                    <span class="balance__drop"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="balance__beam-wrap">
+                <div style="width:100%;height:6px;position:relative;margin:8px 0;">
+                  <div class="balance__beam" id="balanceBeam"></div>
+                </div>
+                <div class="balance__pivot"></div>
+              </div>
+              <div class="balance__state-btns">
+                <button class="balance__btn active" data-state="unbound">Unbound</button>
+                <button class="balance__btn" data-state="partial">결합 진행</button>
+                <button class="balance__btn" data-state="bound">결합 완료</button>
+              </div>
+              <div class="balance__result">Unbound — 자유에너지 변화 없음.</div>
+            </div>
+            <div class="viz__caption">각 상태 버튼을 눌러 결합 과정에서 에너지 균형이 어떻게 변하는지 확인하세요.</div>
+            <div class="viz__msg">Binding은 interaction 개수의 합이 아니라 모든 energetic gain과 penalty의 합입니다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 4 · Desolvation
+             ====================================================== -->
+        <section id="s4" class="section">
+          <h2><span class="sec-no">04</span> Desolvation — "새 H-bond = 무조건 이득"이 아닌 이유</h2>
+
+          <p>Ligand가 물속에 있을 때, polar atom 주변에는 water molecule이 배치됩니다. Ligand가 protein pocket으로 들어가면 먼저 이 water들을 제거해야 합니다.</p>
+
+          <blockquote>
+            <b>Net binding benefit</b> ≈ protein–ligand interaction gain<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; − ligand desolvation cost<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; − protein desolvation cost<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; − conformational penalty<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; ± solvent rearrangement
+          </blockquote>
+
+          <!-- Visual 3: H-bond Desolvation Steps -->
+          <div class="viz" data-hbond-steps>
+            <div class="viz__title">H-bond 하나의 진짜 비용</div>
+            <div class="stepthrough">
+              <div class="stepthrough__steps">
+
+                <div class="stepthrough__step active" data-step="1">
+                  <h4>Step 1 — Ligand in solution</h4>
+                  <div class="mol-diagram">
+                    <div class="mol-water">H₂O</div>
+                    <div class="mol-hbond" style="width:16px;"></div>
+                    <div class="mol-atom mol-atom--o">OH</div>
+                    <div class="mol-hbond" style="width:16px;"></div>
+                    <div class="mol-water">H₂O</div>
+                  </div>
+                  <p>Ligand의 OH group이 물과 H-bond를 2~3개 형성하고 있습니다. 안정한 상태입니다.</p>
+                  <div class="energy-row">
+                    <div class="energy-bar">
+                      <span class="energy-bar__label">Solvation energy</span>
+                      <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--gain" style="width:75%"></div></div>
+                      <span class="energy-bar__val gain">−5 rel</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stepthrough__step" data-step="2">
+                  <h4>Step 2 — Desolvation</h4>
+                  <div class="mol-diagram">
+                    <div class="mol-atom mol-atom--o">OH</div>
+                    <div style="font-size:22px;color:var(--ink-faint);">→</div>
+                    <span style="font-size:12px;color:var(--danger);font-weight:700;">Water 제거<br>비용 발생</span>
+                  </div>
+                  <p>Pocket에 들어가기 위해 water를 제거해야 합니다. 이것은 에너지 <b>비용</b>입니다.</p>
+                  <div class="energy-row">
+                    <div class="energy-bar">
+                      <span class="energy-bar__label">Desolvation cost</span>
+                      <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--cost" style="width:65%"></div></div>
+                      <span class="energy-bar__val cost">+4 rel</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stepthrough__step" data-step="3">
+                  <h4>Step 3 — New H-bond with Protein</h4>
+                  <div class="mol-diagram">
+                    <div class="mol-atom mol-atom--asp">Asp</div>
+                    <div class="mol-hbond"></div>
+                    <div class="mol-atom mol-atom--o">OH</div>
+                  </div>
+                  <p>Protein의 Asp residue와 새로운 H-bond 형성. Interaction gain입니다.</p>
+                  <div class="energy-row">
+                    <div class="energy-bar">
+                      <span class="energy-bar__label">Interaction gain</span>
+                      <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--gain" style="width:55%"></div></div>
+                      <span class="energy-bar__val gain">−3.5 rel</span>
+                    </div>
+                    <div class="energy-bar">
+                      <span class="energy-bar__label">Desolvation cost</span>
+                      <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--cost" style="width:65%"></div></div>
+                      <span class="energy-bar__val cost">+4 rel</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stepthrough__step" data-step="4">
+                  <h4>Step 4 — Net Balance</h4>
+                  <div class="mol-diagram" style="flex-direction:column;gap:8px;">
+                    <div style="font-size:14px;font-weight:700;">Gain: −3.5 &nbsp;|&nbsp; Cost: +4.0</div>
+                    <div style="font-size:20px;font-weight:700;color:var(--danger);">Net: +0.5 (Unfavorable!)</div>
+                  </div>
+                  <p>Interaction gain보다 desolvation cost가 더 컸습니다. OH를 추가했는데 affinity가 <b>나빠졌습니다</b>.</p>
+                  <div class="energy-row">
+                    <div class="energy-bar">
+                      <span class="energy-bar__label">Net effect</span>
+                      <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--cost" style="width:20%"></div></div>
+                      <span class="energy-bar__val cost">+0.5</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="stepthrough__nav">
+                <button class="stepthrough__btn stepthrough__prev" disabled>← 이전</button>
+                <span class="stepthrough__counter">1 / 4</span>
+                <button class="stepthrough__btn stepthrough__next">다음 →</button>
+              </div>
+            </div>
+            <div class="viz__msg">새로운 hydrogen bond 전체가 새로운 free-energy gain인 것은 아닙니다.</div>
+          </div>
+
+          <h3>OH group 하나를 추가하면 반드시 물어야 할 질문들</h3>
+          <ul class="clean">
+            <li>OH가 물속에서 이미 얼마나 안정하게 solvated되어 있었는가?</li>
+            <li>Asp와 형성되는 H-bond geometry가 좋은가?</li>
+            <li>OH가 해당 방향으로 향하기 위해 불리한 conformation이 필요한가?</li>
+            <li>OH를 도입하면서 permeability나 logD가 변하지 않았는가?</li>
+            <li>기존 pocket water를 displacement하는 것이 유리한가?</li>
+          </ul>
+        </section>
+
+        <!-- ======================================================
+             SECTION 5 · Protein은 ensemble이다
+             ====================================================== -->
+        <section id="s5" class="section">
+          <h2><span class="sec-no">05</span> Protein은 단단한 자물쇠가 아니다</h2>
+
+          <p><b>Lock and key</b> 비유는 실제 protein에서 매우 제한적입니다. Protein은 움직이며, side chain, loop, domain orientation, binding pocket 모양 자체가 변할 수 있습니다.</p>
+
+          <p>실제 상황은 <b>ensemble of conformations</b>로 생각하는 것이 적절합니다. Ligand X가 conformation B에 잘 결합한다면, 결합 여부는 molecule과 pocket이 맞는가뿐만 아니라 <b>protein이 B state를 얼마나 자주 방문하는가</b>에도 영향을 받습니다.</p>
+
+          <!-- Visual 4: Conformational Ensemble -->
+          <div class="viz" data-conf-ensemble>
+            <div class="viz__title">Conformational Ensemble — 어떤 상태에 맞는가?</div>
+            <div class="ensemble__wrap">
+              <p style="font-size:14px;color:var(--ink-soft);">세 conformation 중 하나를 선택해 ligand를 넣어보세요.</p>
+              <div class="ensemble__cards">
+
+                <div class="ensemble__card" data-conf="A">
+                  <svg class="ensemble__card__svg" viewBox="0 0 100 80">
+                    <!-- Conformation A: closed pocket with clash -->
+                    <ellipse cx="50" cy="40" rx="38" ry="28" fill="#edf0f7" stroke="#c2cede" stroke-width="2"/>
+                    <rect x="34" y="28" width="32" height="24" rx="4" fill="#c2cede" opacity=".6"/>
+                    <text x="50" y="44" text-anchor="middle" font-size="9" fill="#6e7f99">Pocket</text>
+                    <text x="50" y="56" text-anchor="middle" font-size="8" fill="#dc2626" font-weight="bold">CLASH</text>
+                  </svg>
+                  <div class="ensemble__label">Conformation A</div>
+                  <div class="ensemble__pct">Population ~60%</div>
+                </div>
+
+                <div class="ensemble__card" data-conf="B">
+                  <svg class="ensemble__card__svg" viewBox="0 0 100 80">
+                    <!-- Conformation B: open pocket with good fit -->
+                    <ellipse cx="50" cy="40" rx="38" ry="28" fill="#edf0f7" stroke="#c2cede" stroke-width="2"/>
+                    <ellipse cx="50" cy="40" rx="18" ry="14" fill="#d6f5f0" stroke="#0d8a7a" stroke-width="1.5"/>
+                    <text x="50" y="44" text-anchor="middle" font-size="9" fill="#0a6960" font-weight="bold">FIT</text>
+                  </svg>
+                  <div class="ensemble__label">Conformation B</div>
+                  <div class="ensemble__pct">Population ~10%</div>
+                </div>
+
+                <div class="ensemble__card" data-conf="C">
+                  <svg class="ensemble__card__svg" viewBox="0 0 100 80">
+                    <!-- Conformation C: too open, missing interaction -->
+                    <ellipse cx="50" cy="40" rx="38" ry="28" fill="#edf0f7" stroke="#c2cede" stroke-width="2"/>
+                    <ellipse cx="50" cy="40" rx="28" ry="22" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3"/>
+                    <text x="50" y="44" text-anchor="middle" font-size="8" fill="#78350f">Too open</text>
+                  </svg>
+                  <div class="ensemble__label">Conformation C</div>
+                  <div class="ensemble__pct">Population ~30%</div>
+                </div>
+
+              </div>
+              <div class="ensemble__result">Conformation을 선택하면 결과가 나타납니다.</div>
+            </div>
+            <div class="viz__caption">Binding은 molecule과 하나의 protein structure 사이의 문제가 아니라 conformational ensemble 문제입니다.</div>
+          </div>
+
+          <h3>Conformational selection vs Induced fit</h3>
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Conformational selection</h5>
+              <p>Protein이 원래 여러 상태를 sampling. Ligand가 그중 하나를 선택해 안정화.</p>
+              <div class="eq" style="font-size:13px;padding:8px;">A ⇌ B ⇌ C → Ligand가 B를 선택</div>
+            </div>
+            <div class="panel panel--b">
+              <h5>Induced fit</h5>
+              <p>Ligand가 접근한 후 interaction에 의해 protein structure가 변함.</p>
+              <div class="eq" style="font-size:13px;padding:8px;">Protein + Ligand → 구조 변화</div>
+            </div>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>핵심 사고방식</div>
+            <p>우리가 docking에 넣은 protein structure 하나가 실제 protein의 전체 상태를 대표하지 않을 수 있습니다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 6 · Shape & Chemical complementarity
+             ====================================================== -->
+        <section id="s6" class="section">
+          <h2><span class="sec-no">06</span> Shape Complementarity vs Chemical Complementarity</h2>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Shape complementarity</h5>
+              <p>Ligand가 pocket 안에 공간적으로 맞아야 합니다. 좋은 shape complementarity는 van der Waals contact를 효율적으로 형성합니다.</p>
+              <ul class="clean">
+                <li>너무 크면 → steric clash</li>
+                <li>너무 작으면 → pocket 미활용</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Chemical complementarity</h5>
+              <p>Pocket의 donor/acceptor/charge/hydrophobic region에 ligand의 functional group이 대응해야 합니다.</p>
+              <ul class="clean">
+                <li>Charged group → 강한 electrostatic</li>
+                <li>하지만 desolvation penalty도 큼</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="oneline">
+            "pocket에 들어간다" ≠ "강하게 결합한다"
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 7 · Pocket의 세 층
+             ====================================================== -->
+        <section id="s7" class="section">
+          <h2><span class="sec-no">07</span> Pocket을 볼 때 세 가지 층으로 보자</h2>
+
+          <!-- Visual 5: Three-Layer Pocket -->
+          <div class="viz" data-pocket-layers>
+            <div class="viz__title">Three-Layer Pocket Analysis</div>
+            <div class="pocket-layers__btns">
+              <button class="pocket-layers__btn active" data-layer="geometry">Layer 1 — Geometry</button>
+              <button class="pocket-layers__btn" data-layer="chemistry">Layer 2 — Chemistry</button>
+              <button class="pocket-layers__btn" data-layer="energetics">Layer 3 — Energetics</button>
+            </div>
+            <div class="pocket-layers__svg-wrap">
+              <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                <!-- Protein outline -->
+                <ellipse cx="100" cy="90" rx="85" ry="65" fill="#edf0f7" stroke="#c2cede" stroke-width="2"/>
+                <!-- Pocket -->
+                <path d="M60,60 Q100,30 140,60 L140,110 Q100,130 60,110 Z" fill="#f4f6fb" stroke="#dce3ef" stroke-width="1.5"/>
+                <text x="100" y="95" text-anchor="middle" font-size="10" fill="#6e7f99">Pocket</text>
+
+                <!-- Layer: Geometry (shape outline visible by default) -->
+                <g data-layer="geometry">
+                  <path d="M60,60 Q100,30 140,60 L140,110 Q100,130 60,110 Z" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray="5,3"/>
+                  <text x="100" y="155" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Volume: ~420 Å³  |  Shape score</text>
+                </g>
+
+                <!-- Layer: Chemistry (donors, acceptors, hydrophobic) -->
+                <g data-layer="chemistry" style="display:none;">
+                  <circle cx="80" cy="65" r="8" fill="#3b82f6" opacity=".7"/>
+                  <text x="80" y="68" text-anchor="middle" font-size="7" fill="#fff">D</text>
+                  <circle cx="120" cy="65" r="8" fill="#ef4444" opacity=".7"/>
+                  <text x="120" y="68" text-anchor="middle" font-size="7" fill="#fff">A</text>
+                  <circle cx="100" cy="100" r="10" fill="#6b7280" opacity=".5"/>
+                  <text x="100" y="103" text-anchor="middle" font-size="7" fill="#fff">Hph</text>
+                  <text x="100" y="155" text-anchor="middle" font-size="9" fill="#0d8a7a" font-weight="bold">D=donor  A=acceptor  Hph=hydrophobic</text>
+                </g>
+
+                <!-- Layer: Energetics (energy gradient overlay) -->
+                <g data-layer="energetics" style="display:none;">
+                  <path d="M60,60 Q100,30 140,60 L140,110 Q100,130 60,110 Z" fill="url(#energyGrad)" opacity=".6"/>
+                  <defs>
+                    <radialGradient id="energyGrad" cx="50%" cy="50%">
+                      <stop offset="0%" stop-color="#0d8a7a"/>
+                      <stop offset="60%" stop-color="#d97706"/>
+                      <stop offset="100%" stop-color="#dc2626"/>
+                    </radialGradient>
+                  </defs>
+                  <text x="100" y="155" text-anchor="middle" font-size="9" fill="#dc2626" font-weight="bold">Green=favorable · Red=desolvation cost</text>
+                </g>
+              </svg>
+            </div>
+            <div class="pocket-layers__legend">
+              <b>Layer 1 — Geometry</b><br>Pocket의 모양과 부피. Ligand가 공간적으로 들어가는가? Steric clash 여부를 확인합니다.
+            </div>
+            <div class="viz__msg">초보자는 Layer 1, 2만 보는 경향이 있습니다. AI Drug Discovery 모델이 자주 실패하는 부분도 <b>Layer 3</b>입니다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 8 · Ligand conformational penalty
+             ====================================================== -->
+        <section id="s8" class="section">
+          <h2><span class="sec-no">08</span> Ligand의 conformational penalty</h2>
+
+          <p>용액 속 ligand는 하나의 고정된 모양으로 존재하지 않습니다. Rotatable bond가 있다면 여러 conformation을 sampling합니다. 만약 특정 conformation 하나만 binding-compatible하다면, 결합 과정에서 자유도가 크게 감소합니다. 이것은 <b>entropy 비용</b>입니다.</p>
+
+          <div class="card card--chem">
+            <div class="card__label"><span class="dot"></span>Conformational restriction 전략</div>
+            <p>Flexible chain을 ring으로 고정하여 bioactive conformation에 가까운 형태를 선호하도록 만들 수 있습니다. → Binding 시 conformational penalty 감소.</p>
+            <p>하지만 rigidity를 무조건 증가시키는 것이 항상 좋지는 않습니다. → <b>4강</b>에서 본격적으로 배웁니다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 9 · Water
+             ====================================================== -->
+        <section id="s9" class="section">
+          <h2><span class="sec-no">09</span> Water는 빈 공간을 채우는 배경이 아니다</h2>
+
+          <p>Pocket water는 때로 ligand와 거의 동등할 정도로 중요합니다.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:18px 0;">
+            <div class="card card--bio" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Case 1</div>
+              <p>Ligand가 water를 밀어내면서 binding이 유리해집니다. (hydrophobic pocket의 불안정한 water)</p>
+            </div>
+            <div class="card card--concept" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Case 2</div>
+              <p>Water가 protein과 ligand를 <b>bridge</b>합니다. 제거하면 오히려 불리합니다.</p>
+            </div>
+            <div class="card card--mistake" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Case 3</div>
+              <p>Energetically favorable water를 밀어내면 affinity가 오히려 감소합니다.</p>
+            </div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>흔한 실수</div>
+            <p>"빈 공간이 보이니까 hydrophobic group을 넣자"는 전략이 항상 성공하지는 않습니다. 그 공간에 energetically favorable water가 존재할 수 있습니다. → <b>19강</b>에서 WaterMap과 함께 깊게 다룹니다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 10 · Imatinib × ABL
+             ====================================================== -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> 실제 사례 — Imatinib과 ABL kinase</h2>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>Real Case</div>
+            <p>Imatinib은 BCR–ABL tyrosine kinase를 억제하는 약물입니다. 여기서 우리가 관심을 가질 부분은 임상효과가 아니라 <b>Imatinib이 ABL kinase의 어떤 상태를 인식하는가</b>입니다.</p>
+          </div>
+
+          <!-- Visual 6: DFG Slider -->
+          <div class="viz" data-dfg-slider>
+            <div class="viz__title">ABL Kinase · DFG Conformation Slider</div>
+            <div class="dfg__wrap">
+              <div class="dfg__state-label">DFG-in (Active-like state)</div>
+              <div class="dfg__slider-row">
+                <input class="dfg__range" type="range" min="0" max="100" value="0" />
+                <div class="dfg__labels">
+                  <span>DFG-in (Active)</span>
+                  <span>DFG-out (Inactive)</span>
+                </div>
+              </div>
+
+              <div class="dfg__panels">
+                <div class="dfg__panel">
+                  <div class="dfg__panel__title">ABL Kinase 구조</div>
+                  <div class="dfg__svg-wrap">
+                    <svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+                      <!-- Protein body -->
+                      <rect x="10" y="20" width="100" height="120" rx="12" fill="#edf0f7" stroke="#c2cede" stroke-width="1.5"/>
+                      <!-- ATP binding site -->
+                      <rect x="30" y="35" width="60" height="35" rx="8" fill="#ede9ff" stroke="#5b3fd4" stroke-width="1.5"/>
+                      <text x="60" y="57" text-anchor="middle" font-size="9" fill="#3d28a8" font-weight="bold">ATP site</text>
+                      <!-- Activation loop -->
+                      <path d="M35,80 Q60,95 85,80" fill="none" stroke="#0d8a7a" stroke-width="2"/>
+                      <text x="60" y="108" text-anchor="middle" font-size="8" fill="#0a6960">Activation loop</text>
+                      <!-- DFG motif (rotates with slider) -->
+                      <g data-dfg-motif transform="rotate(0, 60, 88)">
+                        <rect x="45" y="82" width="30" height="12" rx="4" fill="#dc2626" opacity=".8"/>
+                        <text x="60" y="91" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">DFG</text>
+                      </g>
+                      <text x="60" y="150" text-anchor="middle" font-size="8" fill="#6e7f99">P-loop</text>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="dfg__panel">
+                  <div class="dfg__panel__title">Imatinib fit</div>
+                  <div class="dfg__svg-wrap">
+                    <svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+                      <!-- Pocket (changes with DFG state) -->
+                      <rect x="10" y="20" width="100" height="120" rx="12" fill="#edf0f7" stroke="#c2cede" stroke-width="1.5"/>
+                      <!-- Imatinib (opacity controlled by JS) -->
+                      <g data-imatinib-fit style="opacity:0.1;transition:opacity .5s;">
+                        <rect x="30" y="40" width="60" height="50" rx="8" fill="#ede9ff" stroke="#5b3fd4" stroke-width="1.5"/>
+                        <text x="60" y="60" text-anchor="middle" font-size="8" fill="#3d28a8">Imatinib</text>
+                        <text x="60" y="75" text-anchor="middle" font-size="7" fill="#5b3fd4">binding</text>
+                        <text x="60" y="85" text-anchor="middle" font-size="7" fill="#5b3fd4">pocket</text>
+                        <line x1="30" y1="100" x2="90" y2="100" stroke="#5b3fd4" stroke-width="1" stroke-dasharray="3"/>
+                        <text x="60" y="112" text-anchor="middle" font-size="7" fill="#3d28a8">H-bond network</text>
+                      </g>
+                      <text x="60" y="145" text-anchor="middle" font-size="8" fill="#6e7f99" id="imatinibHint">DFG-out으로 이동하세요</text>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dfg__info">ABL이 active conformation에 가깝습니다. Imatinib은 이 형태에 잘 결합하지 않습니다.</div>
+            </div>
+            <div class="viz__caption">Slider를 DFG-out으로 이동시키면 imatinib binding pocket이 드러납니다.</div>
+            <div class="viz__msg">Ligand는 단순히 pocket을 인식하는 것이 아니라 <b>protein conformational state를 인식합니다</b>.</div>
+          </div>
+
+          <h3>여기서 selectivity에 대한 중요한 통찰</h3>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>핵심 통찰</div>
+            <p><b>Selectivity는 항상 residue identity만의 문제가 아닙니다.</b></p>
+            <ul class="clean">
+              <li>Conformational equilibrium</li>
+              <li>Protein flexibility</li>
+              <li>Induced structural rearrangement</li>
+              <li>Water network</li>
+            </ul>
+            <p><b>Sequence → Structure → Dynamics → Binding</b>으로 내려가야 합니다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 11 · Affinity ≠ Potency ≠ Cell
+             ====================================================== -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Affinity ≠ Potency ≠ Cellular Activity</h2>
+
+          <!-- Visual 7: Tier Ladder -->
+          <div class="viz" data-tier-ladder>
+            <div class="viz__title">Activity Ladder — 왜 단계마다 값이 달라지는가</div>
+            <div class="tier-progress">
+              <div class="tier-progress__dot"></div>
+              <div class="tier-progress__dot"></div>
+              <div class="tier-progress__dot"></div>
+            </div>
+            <div class="tier-ladder">
+
+              <div class="tier-ladder__rung">
+                <div class="tier-ladder__head">
+                  <div class="tier-ladder__head-left">
+                    <span class="tier-ladder__num">1</span>
+                    <div>
+                      <div class="tier-ladder__head-title">Binding Affinity</div>
+                      <div class="tier-ladder__head-sub">Kd · ΔG</div>
+                    </div>
+                  </div>
+                  <span class="tier-ladder__chevron">▾</span>
+                </div>
+                <div class="tier-ladder__body">
+                  <div class="tier-ladder__body-inner">
+                    <p>Ligand가 purified protein과 얼마나 안정한 complex를 형성하는가? <b>Kd</b>로 표현합니다.</p>
+                    <p>측정법: ITC, SPR, fluorescence polarization 등</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tier-ladder__connect">↓ Substrate conc, assay mechanism</div>
+
+              <div class="tier-ladder__rung">
+                <div class="tier-ladder__head">
+                  <div class="tier-ladder__head-left">
+                    <span class="tier-ladder__num">2</span>
+                    <div>
+                      <div class="tier-ladder__head-title">Biochemical Potency</div>
+                      <div class="tier-ladder__head-sub">IC50 · Ki</div>
+                    </div>
+                  </div>
+                  <span class="tier-ladder__chevron">▾</span>
+                </div>
+                <div class="tier-ladder__body">
+                  <div class="tier-ladder__body-inner">
+                    <p>Purified target의 biochemical function을 얼마나 억제하는가? <b>IC50</b>로 표현합니다.</p>
+                    <p><b>IC50 ≠ Kd</b>: assay 조건, substrate concentration, mechanism에 따라 달라집니다.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tier-ladder__connect">↓ Permeability, efflux, metabolism, intracellular conc</div>
+
+              <div class="tier-ladder__rung">
+                <div class="tier-ladder__head">
+                  <div class="tier-ladder__head-left">
+                    <span class="tier-ladder__num">3</span>
+                    <div>
+                      <div class="tier-ladder__head-title">Cellular Activity</div>
+                      <div class="tier-ladder__head-sub">Cell IC50 · EC50</div>
+                    </div>
+                  </div>
+                  <span class="tier-ladder__chevron">▾</span>
+                </div>
+                <div class="tier-ladder__body">
+                  <div class="tier-ladder__body-inner">
+                    <p>세포 안에서 원하는 biological phenotype을 얼마나 잘 만드는가?</p>
+                    <p>추가 변수: permeability, efflux, intracellular target abundance, protein binding, metabolism</p>
+                    <p class="card card--mistake" style="margin-top:10px;padding:10px 14px;">
+                      <b>Excellent affinity ≠ Excellent cellular activity.</b>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="viz__msg">서로 다른 assay level의 수치를 직접 같은 것으로 취급하지 마세요.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 12 · AI & Docking 연결
+             ====================================================== -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> AI Drug Discovery 연결 — Docking은 무엇을 예측하는가</h2>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Docking이 보는 것</h5>
+              <ul class="clean">
+                <li>Approximate geometry</li>
+                <li>Steric complementarity</li>
+                <li>Interaction patterns (H-bond, hydrophobic)</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Docking score</h5>
+              <div class="eq" style="font-size:13px;padding:8px;">score ≈ ΔG<sub>bind</sub>의 근사치</div>
+              <p style="font-size:13px;">근사적이고 불완전합니다.</p>
+            </div>
+          </div>
+
+          <!-- Visual 8: Docking Sees/Misses -->
+          <div class="viz" data-docking-reveal>
+            <div class="viz__title">Docking이 놓칠 수 있는 정보 — 카드를 뒤집어보세요</div>
+            <div class="docking-reveal__grid">
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">🔄</div>
+                    <div class="flip-label">Protein<br>Flexibility</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">입력 structure와 다른 conformation이 필요할 수 있습니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">💧</div>
+                    <div class="flip-label">Water<br>Network</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">Water displacement / bridge를 틀리게 처리할 수 있습니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">⚡</div>
+                    <div class="flip-label">Protonation<br>State</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">Ligand / residue의 ionization state가 잘못 설정될 수 있습니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">🌀</div>
+                    <div class="flip-label">Entropy</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">Ligand conformational entropy를 크게 단순화합니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">🌊</div>
+                    <div class="flip-label">Desolvation</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">실제 solvation energetics를 충분히 반영하지 못합니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">⏱️</div>
+                    <div class="flip-label">Binding<br>Kinetics</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">Affinity가 같아도 kon/koff는 다를 수 있습니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">🧬</div>
+                    <div class="flip-label">Cell<br>Biology</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">세포 안에서 target에 도달하는지는 전혀 다른 문제입니다.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reveal-flip">
+                <div class="reveal-flip__inner">
+                  <div class="reveal-flip__front">
+                    <div class="flip-ico">🏗️</div>
+                    <div class="flip-label">Induced<br>Fit</div>
+                  </div>
+                  <div class="reveal-flip__back">
+                    <div class="flip-label">⚠️ Miss</div>
+                    <div class="flip-body">Rigid docking은 induced fit을 무시합니다.</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="docking-reveal__hint">카드를 탭해서 뒤집어보세요</div>
+            <div class="docking-reveal__count">0 / 8 확인됨</div>
+            <div class="viz__msg">Docking score는 experimental binding affinity의 다른 이름이 아닙니다.</div>
+          </div>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>올바른 docking score 해석</div>
+            <p><b>틀린 해석:</b> "A의 score −11, B의 score −9이므로 A가 더 potent하다."</p>
+            <p><b>올바른 해석:</b> "현재 사용한 protein structure와 scoring function 조건에서 A에 대해 더 favorable한 pose가 제안되었다."</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 13 · Failure Case
+             ====================================================== -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Failure Case — "H-bond 하나 더 추가했는데 potency가 떨어졌다"</h2>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>케이스</div>
+            <p>Compound A (IC50 80 nM)에 OH group을 추가한 Compound B를 만들었습니다.<br>
+            Docking에서는 새로운 H-bond가 형성됩니다.<br>
+            예상: IC50 &lt; 80 nM &nbsp;/&nbsp; 실험: IC50 = <b>600 nM</b></p>
+          </div>
+
+          <!-- Visual 9: Failure Sim -->
+          <div class="viz" data-failure-sim>
+            <div class="viz__title">Failure Case Simulator — 각 요인을 조절해보세요</div>
+            <div class="failure-sim__verdict">슬라이더를 조절하면 판정이 나타납니다</div>
+            <div class="failure-sim__meters">
+
+              <div data-meter="gain">
+                <div class="meter meter--gain">
+                  <span class="meter__label" style="color:var(--energy-gain);">Interaction gain</span>
+                  <div class="meter__track">
+                    <div class="meter__fill" style="width:0%;"></div>
+                  </div>
+                  <span class="meter__val">0%</span>
+                </div>
+                <input class="meter__range" type="range" min="0" max="100" value="0" />
+              </div>
+
+              <div data-meter="cost">
+                <div class="meter meter--cost">
+                  <span class="meter__label" style="color:var(--energy-cost);">Desolvation cost</span>
+                  <div class="meter__track">
+                    <div class="meter__fill" style="width:0%;"></div>
+                  </div>
+                  <span class="meter__val">0%</span>
+                </div>
+                <input class="meter__range" type="range" min="0" max="100" value="0" />
+              </div>
+
+              <div data-meter="strain">
+                <div class="meter meter--strain">
+                  <span class="meter__label" style="color:var(--warn);">Conformational strain</span>
+                  <div class="meter__track">
+                    <div class="meter__fill" style="width:0%;"></div>
+                  </div>
+                  <span class="meter__val">0%</span>
+                </div>
+                <input class="meter__range" type="range" min="0" max="100" value="0" />
+              </div>
+
+            </div>
+            <button class="failure-sim__reset">초기화</button>
+            <div class="viz__caption">Interaction gain 30, Desolvation cost 60, Strain 40을 입력해보세요 — 실패 패턴이 보입니다.</div>
+            <div class="viz__msg">Structure modification의 효과를 한 변수만으로 해석하지 마세요.</div>
+          </div>
+
+          <h3>가능한 원인들</h3>
+          <div class="fstep">
+            <div class="exp">원인 1 — Desolvation penalty</div>
+            <div class="body">OH가 물속에서 안정하게 solvated되어 있었는데 protein interaction으로 얻는 이득이 충분하지 않았습니다.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">원인 2 — Wrong geometry</div>
+            <div class="body">Docking 그림에서는 H-bond처럼 보였지만 실제 optimal geometry가 아니었습니다.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">원인 3 — Conformational strain</div>
+            <div class="body">OH가 해당 위치를 향하려면 불리한 dihedral angle을 취해야 했습니다.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">원인 4 — Protein rearrangement</div>
+            <div class="body">OH 때문에 residue가 움직이면서 다른 favorable interaction이 깨졌습니다.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">원인 5 — Assay 단계 (중요!)</div>
+            <div class="body">실험값이 cellular IC50였다면 permeability 감소 때문일 수 있습니다. Molecule–protein interaction 문제와 cell exposure 문제를 항상 분리해야 합니다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 14 · Scientist's Thinking
+             ====================================================== -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Scientist's Thinking</h2>
+
+          <!-- Visual 10: Scientist Flow -->
+          <div class="viz" data-scientist-flow>
+            <div class="viz__title">관찰 → 가설 → 실험 → 해석 → 다음 compound</div>
+            <div class="accord-flow__actions">
+              <button class="accord-flow__toggle-all">모두 펼치기</button>
+            </div>
+            <div class="accord-flow">
+
+              <div class="accord-flow__step">
+                <div class="accord-flow__head">
+                  <span class="accord-flow__num">1</span>
+                  <span class="accord-flow__head-title">Observation</span>
+                  <span class="accord-flow__chevron">▾</span>
+                </div>
+                <div class="accord-flow__body">
+                  <div class="accord-flow__body-inner">
+                    <p>Docking score: B &gt; A &nbsp;/&nbsp; 실험 biochemical potency: A &gt; B</p>
+                    <p>→ Docking score와 실험값이 일치하지 않습니다.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accord-flow__step">
+                <div class="accord-flow__head">
+                  <span class="accord-flow__num">2</span>
+                  <span class="accord-flow__head-title">Hypothesis — 가능한 원인들</span>
+                  <span class="accord-flow__chevron">▾</span>
+                </div>
+                <div class="accord-flow__body">
+                  <div class="accord-flow__body-inner">
+                    <ul class="clean">
+                      <li>H1: Docking pose 자체가 틀림</li>
+                      <li>H2: Protein conformation이 부적절</li>
+                      <li>H3: Protonation state가 잘못됨</li>
+                      <li>H4: Water network를 잘못 처리</li>
+                      <li>H5: B의 favorable interaction보다 desolvation penalty가 더 큼</li>
+                      <li>H6: B가 binding conformation을 취하기 위해 큰 conformational cost</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accord-flow__step">
+                <div class="accord-flow__head">
+                  <span class="accord-flow__num">3</span>
+                  <span class="accord-flow__head-title">Data needed</span>
+                  <span class="accord-flow__chevron">▾</span>
+                </div>
+                <div class="accord-flow__body">
+                  <div class="accord-flow__body-inner">
+                    <p>우선 확인할 데이터:</p>
+                    <ul class="clean">
+                      <li>Crystal structure / cryo-EM 존재 여부</li>
+                      <li>Binding affinity (Kd, ITC, SPR)</li>
+                      <li>Biochemical IC50 vs cellular IC50 차이</li>
+                      <li>Analogue SAR (B에서 OH 제거 시 potency?)</li>
+                    </ul>
+                    <p>더 깊이 가려면: MD simulation, free-energy calculation, NMR</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accord-flow__step">
+                <div class="accord-flow__head">
+                  <span class="accord-flow__num">4</span>
+                  <span class="accord-flow__head-title">Interpretation</span>
+                  <span class="accord-flow__chevron">▾</span>
+                </div>
+                <div class="accord-flow__body">
+                  <div class="accord-flow__body-inner">
+                    <p>B의 OH를 제거하자 potency가 다시 좋아졌다면:</p>
+                    <p class="card card--concept" style="padding:10px 14px;margin:8px 0;">"OH가 나쁘다"로 끝내지 말고, <b>"OH가 이 환경에서 왜 unfavorable했는가?"</b>를 물어야 합니다.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accord-flow__step">
+                <div class="accord-flow__head">
+                  <span class="accord-flow__num">5</span>
+                  <span class="accord-flow__head-title">Next compound 설계</span>
+                  <span class="accord-flow__chevron">▾</span>
+                </div>
+                <div class="accord-flow__body">
+                  <div class="accord-flow__body-inner">
+                    <p>OH 대신 NH₂, F, CH₃, OMe 등으로 바꾸는 series를 만듭니다.</p>
+                    <p>각 modification은 단순 potency optimization이 아니라 <b>sterics + electronics + solvation + conformation을 구분하기 위한 실험</b>입니다.</p>
+                    <div class="oneline" style="font-size:14px;">Medicinal chemistry의 SAR = molecular hypothesis를 실험하는 과정</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accord-flow__step">
+                <div class="accord-flow__head">
+                  <span class="accord-flow__num">6</span>
+                  <span class="accord-flow__head-title">AI 모델에도 같은 질문을</span>
+                  <span class="accord-flow__chevron">▾</span>
+                </div>
+                <div class="accord-flow__body">
+                  <div class="accord-flow__body-inner">
+                    <p>AI가 "이 molecule은 active일 확률 0.94"라고 했을 때 가장 먼저 물어야 할 것:</p>
+                    <ul class="clean">
+                      <li><b>active의 정의가 무엇인가?</b> (Binding? Biochemical? Cell?)</li>
+                      <li>모델이 어떤 biological layer의 데이터로 학습됐는가?</li>
+                      <li>Prediction performance ≠ Mechanistic understanding</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="viz__msg">Drug discovery = 관찰 → 가설 → 실험 → 업데이트의 반복입니다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SUMMARY CARD
+             ====================================================== -->
+        <div class="summary-card" id="summary">
+          <h3>1강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Binding은 interaction 개수의 문제가 아니라 자유에너지 문제다.</b>
+              <span>결합 전후 시스템의 ΔG 차이가 binding을 결정합니다.</span>
+            </li>
+            <li>
+              <b>새로운 H-bond는 항상 이득이 아니다.</b>
+              <span>Desolvation penalty, conformational strain, geometry mismatch가 함께 존재합니다.</span>
+            </li>
+            <li>
+              <b>Protein은 고정된 구조가 아니라 conformational ensemble이다.</b>
+              <span>Ligand는 특정 state를 선택적으로 안정화할 수 있으며, 이것이 selectivity의 근거가 됩니다.</span>
+            </li>
+            <li>
+              <b>Affinity ≠ biochemical potency ≠ cellular activity.</b>
+              <span>실험값이 생물학적 chain의 어느 층을 측정했는지 항상 확인해야 합니다.</span>
+            </li>
+            <li>
+              <b>Docking score는 binding affinity의 실험값이 아니다.</b>
+              <span>Protein flexibility, solvent, entropy, protonation 등을 불완전하게 근사합니다.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- ======================================================
+             SELF CHECK
+             ====================================================== -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Compound A (H-bond 4개, docking score −11) vs Compound B (H-bond 2개, score −8.5). 실험 결과 B의 Kd가 45배 더 강했다. 이 결과에서 가장 먼저 내려야 할 결론은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              A의 H-bond 수와 docking score만으로 실제 affinity를 설명할 수 없다는 것입니다.
+              <div class="exp">가능한 원인: docking pose가 틀림, desolvation penalty가 큼, protein conformation 문제, protonation state 오류 등. 핵심은 "왜 scoring function이 ΔG의 어떤 요소를 잘못 근사했을까?"를 질문하는 것입니다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Compound A의 phenyl group에 OH를 추가했더니 biochemical potency가 10배 감소했다. Docking에서는 새 OH가 Asp와 H-bond를 형성한다. 가능한 설명 3가지를 제시하라.</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              ① OH desolvation penalty가 interaction gain보다 컸다.<br>
+              ② H-bond 형성을 위해 불리한 ligand conformation이 필요했다.<br>
+              ③ Asp 또는 주변 residue의 구조 재배열로 기존 favorable interaction이 손실됐다.
+              <div class="exp">추가 가능: protonation state 변화, pocket water displacement 비용.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>두 kinase가 binding pocket의 주요 residue를 거의 동일하게 가지고 있는데 inhibitor affinity가 크게 다르다. 어떤 가능성을 생각해야 하는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              단순 sequence identity 외에도 conformational population, protein flexibility, inactive state 접근 가능성, water network, local dynamics가 다를 수 있습니다.
+              <div class="exp">Imatinib–ABL 사례처럼 ligand가 특정 conformational state를 선호할 경우 kinase별 해당 state 접근성이 selectivity에 기여할 수 있습니다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Purified enzyme IC50 = 3 nM, cellular IC50 = 8 µM. "target binding이 실제로 약하다"고 결론내려도 되는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">Biochemical potency와 cellular potency 사이에는 permeability, efflux, intracellular protein binding, metabolism, ATP/substrate concentration, target abundance 등이 개입합니다. cellular exposure와 target engagement를 먼저 확인해야 합니다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>GNN이 kinase inhibitor series의 activity를 정확하게 예측했다. 이 모델이 protein–ligand binding mechanism을 학습했다고 볼 수 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              단정할 수 없다.
+              <div class="exp">모델은 scaffold와 substituent pattern의 SAR correlation을 학습했거나 lipophilicity 같은 surrogate feature를 학습했을 수 있습니다. Prediction performance와 mechanistic understanding은 분리해서 평가해야 합니다. → 21–25강에서 본격적으로 다룹니다.</div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing closing--a">
+          <h3>다음 강의 예고</h3>
+          <div class="big">2강 · 비공유결합 — Hydrogen bond, ionic, π interaction, hydrophobic effect</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">1강에서 "binding은 free-energy balance"라는 큰 프레임을 만들었다면, 2강에서는 그 balance를 구성하는 실제 interaction을 원자 수준에서 해부합니다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="../../index.html" aria-disabled="false">
+            <span class="bn-ico">◀</span> 목록
+          </a>
+          <button data-open-toc>
+            <span class="bn-ico">☰</span> 목차
+          </button>
+          <a href="02.html" aria-disabled="true">
+            <span class="bn-ico">▶</span> 2강
+          </a>
+        </nav>
+
+      </div><!-- .wrap -->
+    </div><!-- .content -->
+  </div><!-- .app -->
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>
