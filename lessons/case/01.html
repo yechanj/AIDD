@@ -872,7 +872,7 @@
 
   var REGION_DATA = {
     core: {
-      smarts: 'c1cnc2ccccc12',
+      smarts: 'c1ncnc2ccccc21',
       title: 'A. Quinazoline Core',
       desc: '<b>Quinazoline core</b>는 benzene과 pyrimidine이 융합된 bicyclic scaffold다. 단순한 고리 장식이 아니라 EGFR ATP-binding site의 hinge 영역과 상호작용할 수 있는 핵심 골격이다. 고리의 질소를 다른 원소로 치환하면 결합 가능성 및 전자적 성질이 변할 수 있다. 단, 그 변화가 potency를 얼마나 바꿀지는 실험과 구조 분석이 필요하다.',
       colorHex: '#5b3fd4'
@@ -898,26 +898,65 @@
   };
 
   /* ─────────────────────────────────────────
-     RDKit.js Loader
+     RDKit.js Loader — 다중 CDN 소스 폴백
+     @2023.9.6 은 npm에 없음 → @2023.9.5 사용
+     동적 로드 시 WASM 경로를 locateFile로 명시
   ───────────────────────────────────────── */
   var rdkitModule = null;
   var rdkitLoadPromise = null;
 
-  function loadRDKit() {
-    if (rdkitLoadPromise) return rdkitLoadPromise;
-    rdkitLoadPromise = new Promise(function (resolve, reject) {
-      if (window.RDKit) { resolve(window.RDKit); return; }
-      var s = document.createElement('script');
-      s.src = 'https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js';
-      s.onload = function () {
-        window.initRDKitModule().then(function (rdk) {
+  /* npm 패키지 실제 경로: /dist/ (소스 트리의 /Code/MinimalLib/dist/ 와 다름) */
+  var RDK_SOURCES = [
+    'https://cdn.jsdelivr.net/npm/@rdkit/rdkit@2026.9.1/dist/',
+    'https://unpkg.com/@rdkit/rdkit@2026.9.1/dist/',
+    'https://cdn.jsdelivr.net/npm/@rdkit/rdkit/dist/'
+  ];
+  var RDK_CDN = RDK_SOURCES[0];
+
+  function tryLoadRDKit(idx) {
+    if (idx >= RDK_SOURCES.length) {
+      return Promise.reject(new Error('[RDKit] 모든 CDN 소스 실패'));
+    }
+    RDK_CDN = RDK_SOURCES[idx];
+
+    return new Promise(function (resolve, reject) {
+      function initFromGlobal() {
+        window.initRDKitModule({
+          locateFile: function (file) { return RDK_CDN + file; }
+        }).then(function (rdk) {
           rdkitModule = rdk;
           resolve(rdk);
-        }).catch(reject);
+        }).catch(function (e) {
+          console.warn('[RDKit] initRDKitModule failed (' + RDK_CDN + '):', e);
+          /* WASM 로드 실패 → 다음 소스 시도 */
+          window.initRDKitModule = undefined;
+          tryLoadRDKit(idx + 1).then(resolve).catch(reject);
+        });
+      }
+
+      if (window.initRDKitModule) { initFromGlobal(); return; }
+
+      var s = document.createElement('script');
+      s.src = RDK_CDN + 'RDKit_minimal.js';
+      s.crossOrigin = 'anonymous';
+      s.onload = function () {
+        if (!window.initRDKitModule) {
+          tryLoadRDKit(idx + 1).then(resolve).catch(reject);
+          return;
+        }
+        initFromGlobal();
       };
-      s.onerror = reject;
+      s.onerror = function () {
+        console.warn('[RDKit] 스크립트 404: ' + s.src);
+        tryLoadRDKit(idx + 1).then(resolve).catch(reject);
+      };
       document.head.appendChild(s);
     });
+  }
+
+  function loadRDKit() {
+    if (rdkitLoadPromise) return rdkitLoadPromise;
+    rdkitLoadPromise = tryLoadRDKit(0);
     return rdkitLoadPromise;
   }
 
@@ -1022,7 +1061,17 @@
     var descEl = document.getElementById('mol-region-desc');
     if (!wrap) return;
 
+    /* 로딩 상태 표시 업데이트 */
+    function setLoadingMsg(msg) {
+      var el = document.getElementById('mol-loading');
+      if (el) el.querySelector('span').textContent = msg;
+    }
+
+    setLoadingMsg('RDKit.js 로드 중… (jsDelivr CDN)');
+
     loadRDKit().then(function (rdk) {
+      setLoadingMsg('구조 렌더링 중…');
+
       /* Generate base SVG */
       var baseSvg = makeSvg(rdk, SMILES_GEFITINIB, 380, 260, [], [], null);
       if (!baseSvg) { showFallback(''); return; }
@@ -1038,11 +1087,26 @@
           var svg = makeSvg(rdk, SMILES_GEFITINIB, 380, 260, match.atoms, match.bonds || [], col);
           molSvgCache[key] = svg || getFallbackSvg(key);
         } else {
-          molSvgCache[key] = getFallbackSvg(key);
+          /* SMARTS 매치 실패 — 기본 SVG에 주석만 */
+          molSvgCache[key] = baseSvg;
         }
       });
-    }).catch(function () {
+    }).catch(function (err) {
+      console.warn('[RDKit] 로드 실패:', err && err.message);
       showFallback('');
+      /* 실패 원인과 재시도 버튼 표시 */
+      var loading = document.getElementById('mol-loading');
+      if (loading) {
+        loading.innerHTML = [
+          '<div style="color:var(--danger);font-size:13px;font-weight:700;">⚠ RDKit.js 로드 실패</div>',
+          '<div style="font-size:12px;color:var(--ink-faint);margin-top:4px;">',
+          '네트워크 연결을 확인하거나 <a href="https://www.python.org/downloads/" style="color:var(--tb);">로컬 서버</a>를 통해 접근하세요.<br>',
+          'file:// 프로토콜에서도 대부분 작동하나 일부 브라우저는 WASM fetch를 차단합니다.',
+          '</div>',
+          '<button style="margin-top:8px;padding:6px 14px;background:var(--tb);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:12px;" ',
+          'onclick="window._rdkitRetry()">재시도</button>'
+        ].join('');
+      }
     });
 
     /* Button click */
@@ -1533,6 +1597,17 @@
     initDiscSim();
     initMolCard();
   });
+
+  /* 재시도 버튼 onclick에서 접근할 수 있도록 전역 노출 */
+  window._rdkitRetry = function () {
+    rdkitLoadPromise = null;
+    rdkitModule = null;
+    var loading = document.getElementById('mol-loading');
+    if (loading) {
+      loading.innerHTML = '<div class="spin"></div><span>RDKit.js 재시도 중…</span>';
+    }
+    initMolAnatomy();
+  };
 
 })();
 </script>
