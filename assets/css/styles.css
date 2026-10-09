@@ -1204,3 +1204,269 @@ table.data th {
   font-weight: 700; background: var(--surface-2); white-space: nowrap;
 }
 table.data tr:hover td { background: var(--surface-2); }
+
+/* =========================================================
+   L02 — Interaction Count Comparison  (data-interact-count)
+   ========================================================= */
+.ic-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.ic-panel {
+  border: 2px solid var(--line); border-radius: 14px; padding: 16px;
+  cursor: pointer; background: var(--surface-2); transition: border-color .2s, background .2s;
+  text-align: center;
+}
+.ic-panel:hover { border-color: var(--brand); }
+.ic-panel.chosen { border-color: var(--brand); background: var(--brand-soft); }
+.ic-panel.winner { border-color: var(--ok); background: var(--ok-soft); }
+.ic-panel.loser  { border-color: var(--danger); background: var(--danger-soft); opacity: .8; }
+.ic-panel__title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.ic-dots { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; margin: 8px 0; }
+.ic-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--brand); flex: 0 0 auto; }
+.ic-predict-btn {
+  font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+  padding: 10px 24px; border-radius: 999px; border: none;
+  background: var(--brand); color: #fff; transition: background .15s;
+  display: block; margin: 0 auto 14px;
+}
+.ic-predict-btn:hover { background: var(--brand-dark); }
+.ic-predict-btn:disabled { opacity: .5; cursor: default; }
+.ic-reveal { display: none; }
+.ic-reveal.show { display: block; animation: fadein .35s ease; }
+.ic-winner-label { font-size: 12px; font-weight: 700; margin-top: 6px; }
+.ic-winner-label--ok { color: var(--ok); }
+.ic-winner-label--bad { color: var(--danger); }
+
+/* =========================================================
+   L02 — H-bond Geometry Explorer  (data-hbond-geometry)
+   ========================================================= */
+.hbond-geo__sliders { display: grid; gap: 10px; margin-bottom: 14px; }
+.hbond-geo__slider-row { display: grid; grid-template-columns: 100px 1fr 50px; gap: 8px; align-items: center; }
+.hbond-geo__slider-row label { font-size: 13px; font-weight: 700; }
+.hbond-geo__range { width: 100%; accent-color: var(--brand); }
+.hbond-geo__val { font-size: 13px; font-weight: 700; text-align: right; font-family: var(--font-mono); }
+.hbond-geo__svg-wrap svg { width: 100%; max-height: 160px; }
+.hbond-geo__status {
+  text-align: center; font-weight: 700; font-size: 15px;
+  padding: 10px 14px; border-radius: 10px; margin-top: 12px; transition: background .3s;
+}
+.hbond-geo__status--poor { background: var(--danger-soft); color: #7f1d1d; }
+.hbond-geo__status--ok   { background: var(--warn-soft);   color: #78350f; }
+.hbond-geo__status--good { background: var(--ok-soft);     color: #065f46; }
+
+/* =========================================================
+   L02 — H-bond Desolv Toggle  (data-hbond-desolv)
+   ========================================================= */
+.hbdesolv__btns { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.hbdesolv__btn {
+  font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+  padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: var(--surface); transition: all .15s;
+}
+.hbdesolv__btn:hover { border-color: var(--brand); }
+.hbdesolv__btn.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+.hbdesolv__bars { display: flex; flex-direction: column; gap: 10px; }
+.hbdesolv__result {
+  margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; text-align: center;
+  background: var(--surface-2); border: 1px solid var(--line); transition: all .3s;
+}
+.hbdesolv__result.favorable { background: var(--ok-soft); border-color: var(--ok); color: #065f46; }
+.hbdesolv__result.unfavorable { background: var(--danger-soft); border-color: var(--danger); color: #7f1d1d; }
+
+/* =========================================================
+   L02 — Protonation / Salt Bridge Preview  (data-protonation)
+   ========================================================= */
+.protonation__mol {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  padding: 20px; background: var(--surface-2); border-radius: 12px; margin: 12px 0;
+}
+.protonation__atom {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #fff;
+  flex: 0 0 auto; transition: background .4s;
+}
+.protonation__atom--amine { background: #7c3aed; }
+.protonation__atom--neutral { background: #555; }
+.protonation__atom--asp { background: #e74c3c; }
+.protonation__bridge {
+  height: 4px; width: 44px; border-radius: 2px;
+  background: linear-gradient(90deg, #7c3aed, #e74c3c);
+  transition: opacity .4s;
+}
+.protonation__bridge.hidden { opacity: 0; }
+.protonation__ph-row {
+  display: grid; grid-template-columns: 50px 1fr 50px; gap: 8px; align-items: center;
+}
+.protonation__ph-row label { font-size: 13px; font-weight: 700; }
+.protonation__ph-val { font-family: var(--font-cute); font-size: 16px; font-weight: 700; color: var(--brand-dark); text-align: center; }
+.protonation__range { width: 100%; accent-color: var(--brand); }
+.prot-label {
+  text-align: center; font-size: 14px; font-weight: 700; padding: 10px 14px;
+  border-radius: 10px; margin-top: 10px; transition: all .3s;
+}
+.prot-label--yes { background: var(--ok-soft); color: #065f46; }
+.prot-label--no  { background: var(--surface-2); color: var(--ink-faint); border: 1px solid var(--line); }
+
+/* =========================================================
+   L02 — π Interaction Gallery  (data-pi-gallery)
+   ========================================================= */
+.pi-gallery__cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.pi-card {
+  border: 2px solid var(--line); border-radius: 14px; padding: 14px 10px;
+  background: var(--surface-2); text-align: center; cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.pi-card:hover { border-color: var(--brand); }
+.pi-card.selected { border-color: var(--brand); background: var(--brand-soft); }
+.pi-card__svg { width: 100%; height: 80px; margin-bottom: 8px; }
+.pi-card__label { font-size: 12.5px; font-weight: 700; }
+.pi-gallery__desc {
+  margin-top: 12px; padding: 12px 14px; border-radius: 10px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  font-size: 13.5px; line-height: 1.65; min-height: 52px;
+}
+@media (max-width: 480px) { .pi-gallery__cards { grid-template-columns: 1fr; } }
+
+/* =========================================================
+   L02 — Hydrophobic Demo  (data-hydrophobic-demo)
+   ========================================================= */
+.hydro-demo__panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.hydro-demo__panel {
+  border: 1.5px solid var(--line); border-radius: 12px; padding: 14px;
+  background: var(--surface-2); min-height: 130px;
+}
+.hydro-demo__panel__title { font-size: 12px; font-weight: 700; color: var(--ink-soft); margin-bottom: 10px; }
+.water-grid { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
+.water-dot {
+  width: 16px; height: 16px; border-radius: 50%; background: #60a5fa;
+  opacity: .85; transition: opacity .5s ease, transform .5s ease; flex: 0 0 auto;
+}
+.water-dot.displaced { opacity: 0; transform: translateY(-8px); }
+.ligand-pocket {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--brand-soft); border: 2px solid var(--brand);
+  display: grid; place-items: center; font-size: 11px; font-weight: 700;
+  color: var(--brand-dark); margin: 0 auto 8px;
+}
+.hydro-toggle-btn {
+  font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+  padding: 9px 20px; border-radius: 999px; border: 1.5px solid var(--brand);
+  background: var(--brand-soft); color: var(--brand-dark); transition: all .15s;
+  display: block; margin: 0 auto 10px;
+}
+.hydro-toggle-btn:hover { background: var(--brand); color: #fff; }
+.hydro-msg {
+  text-align: center; font-size: 13px; color: var(--ink-soft); line-height: 1.5;
+}
+
+/* =========================================================
+   L02 — Lipophilicity Trap  (data-lipo-trap)
+   ========================================================= */
+.lipo-trap__series { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.lipo-btn {
+  font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+  padding: 8px 16px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: var(--surface); transition: all .15s;
+}
+.lipo-btn:hover { border-color: var(--brand); }
+.lipo-btn.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+.lipo-trap__chart { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lipo-chart__label { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.lipo-chart__label--pot { color: var(--ok); }
+.lipo-chart__label--sol { color: var(--danger); }
+.lipo-chart__track {
+  height: 24px; background: var(--surface-2); border-radius: 6px;
+  border: 1px solid var(--line); overflow: hidden;
+}
+.lipo-chart__fill {
+  height: 100%; border-radius: 6px; transition: width .5s ease;
+  display: flex; align-items: center; padding-left: 8px;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.lipo-chart__fill--potency   { background: var(--ok); }
+.lipo-chart__fill--solubility { background: var(--danger); }
+.lipo-note {
+  margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  font-size: 13.5px; line-height: 1.6;
+}
+
+/* =========================================================
+   L02 — Gefitinib Functional Map  (data-gefitinib-map)
+   ========================================================= */
+.gef-map__svg-wrap svg { width: 100%; max-height: 220px; }
+.gef-region { cursor: pointer; transition: opacity .2s; }
+.gef-region:hover { filter: brightness(.92); }
+.gef-region.active { filter: none; }
+.gef-region.active rect, .gef-region.active path, .gef-region.active ellipse {
+  stroke-width: 2.5 !important;
+}
+.gef-map__desc {
+  margin-top: 12px; padding: 12px 14px; border-radius: 10px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  font-size: 13.5px; line-height: 1.65; min-height: 54px; transition: background .2s;
+}
+
+/* =========================================================
+   L02 — Modification Lab  (data-mod-lab)
+   ========================================================= */
+.mod-lab__chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.mod-lab__chip {
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700; cursor: pointer;
+  padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--line);
+  background: var(--surface); transition: all .15s;
+}
+.mod-lab__chip:hover { border-color: var(--brand); }
+.mod-lab__chip.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+.mod-lab__grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 8px;
+  margin-bottom: 14px;
+}
+.mod-lab__prop {
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  background: var(--surface-2); text-align: center;
+}
+.mod-lab__prop-name { font-size: 11.5px; color: var(--ink-faint); margin-bottom: 4px; }
+.mod-lab__prop-arrow { font-size: 22px; font-weight: 700; transition: color .3s; }
+.mod-lab__prop-arrow--up      { color: var(--ok); }
+.mod-lab__prop-arrow--down    { color: var(--danger); }
+.mod-lab__prop-arrow--neutral { color: var(--ink-faint); }
+.mod-lab__prop-arrow--warn    { color: var(--warn); }
+.mod-lab__insight {
+  padding: 12px 14px; border-radius: 10px; background: var(--brand-soft);
+  border: 1px solid var(--brand); font-size: 13.5px; line-height: 1.65;
+  color: var(--brand-dark); min-height: 50px;
+}
+
+/* =========================================================
+   L02 — AI Interaction Audit  (data-ai-audit)
+   ========================================================= */
+.ai-audit__items { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.ai-audit__item {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer;
+  transition: all .2s; user-select: none;
+}
+.ai-audit__item:hover:not(.verified):not(.flagged) {
+  border-color: var(--brand); background: var(--brand-soft);
+}
+.ai-audit__item.verified { border-color: var(--ok); background: var(--ok-soft); pointer-events: none; }
+.ai-audit__item.flagged  { border-color: var(--danger); background: var(--danger-soft); pointer-events: none; }
+.ai-audit__ico { font-size: 20px; flex: 0 0 auto; }
+.ai-audit__label { flex: 1; font-size: 14px; font-weight: 700; }
+.ai-audit__sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+.ai-audit__badge {
+  font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+  background: var(--surface-2); color: var(--ink-faint); white-space: nowrap;
+}
+.ai-audit__badge--valid { background: var(--ok-soft);     color: var(--ok); }
+.ai-audit__badge--wrong { background: var(--danger-soft); color: var(--danger); }
+.ai-audit__score {
+  font-family: var(--font-cute); font-size: 14px; color: var(--brand-dark);
+  text-align: center; margin-top: 6px;
+}
+.ai-audit__result {
+  text-align: center; padding: 12px 14px; border-radius: 10px;
+  font-weight: 700; font-size: 14px; margin-top: 10px;
+  background: var(--surface-2); border: 1px solid var(--line); min-height: 40px;
+}
+.ai-audit__result--success { background: var(--ok-soft); border-color: var(--ok); color: #065f46; }

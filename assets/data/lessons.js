@@ -26,7 +26,7 @@ window.AIDD_TRACKS = [
         title: "비공유결합 — Hydrogen bond, ionic, π, hydrophobic",
         desc: "Binding free-energy를 구성하는 4가지 비공유결합의 원자 수준 기하학, 강도, 그리고 각 interaction의 숨겨진 비용.",
         tags: ["H-bond", "Electrostatics", "π interaction", "Hydrophobic effect"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 3,

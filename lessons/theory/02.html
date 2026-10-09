@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L02 · 비공유결합 — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L02 · 비공유결합</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L02</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>비공유결합의 원리</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#q0"><span class="num">0</span> Opening Case</a></li>
+          <li><a href="#s1"><span class="num">1</span> 공통 평가 프레임</a></li>
+          <li><a href="#s2"><span class="num">2</span> Hydrogen Bond</a></li>
+          <li><a href="#s3"><span class="num">3</span> H-bond Energetics</a></li>
+          <li><a href="#s4"><span class="num">4</span> Ionic Interaction</a></li>
+          <li><a href="#s5"><span class="num">5</span> π-interactions</a></li>
+          <li><a href="#s6"><span class="num">6</span> Hydrophobic Interaction</a></li>
+          <li><a href="#s7"><span class="num">7</span> Interaction Network</a></li>
+          <li><a href="#s8"><span class="num">8</span> Gefitinib × EGFR</a></li>
+          <li><a href="#s9"><span class="num">9</span> Modification Lab</a></li>
+          <li><a href="#s10"><span class="num">10</span> AI & Docking 연결</a></li>
+          <li><a href="#s11"><span class="num">11</span> Failure Case</a></li>
+          <li><a href="#s12"><span class="num">12</span> Scientist's Thinking</a></li>
+          <li><a href="#s13"><span class="num">13</span> Interaction Checklist</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 02</div>
+          <h1>비공유결합</h1>
+          <p>H-bond, Ionic, π-interaction, Hydrophobic · "Interaction이 있다"가 아니라, "그 interaction이 실제로 유리한가?"를 판단하는 법</p>
+        </header>
+
+        <!-- ======================================================
+             SECTION 0 · Opening Case
+             ====================================================== -->
+        <section id="q0" class="section">
+          <h2><span class="sec-no">00</span> Opening Case — H-bond를 하나 더 만들었는데 potency가 나빠졌다</h2>
+
+          <p>Lead compound A가 있다. Crystal structure를 보니 phenyl ring 근처에 protein carbonyl oxygen이 있었다. Medicinal chemist는 생각했다.</p>
+
+          <blockquote>
+            "이 위치에 NH₂를 붙이면 protein carbonyl과 새로운 H-bond를 만들 수 있겠다."
+          </blockquote>
+
+          <div class="viz" data-interact-count>
+            <div class="viz__title">Interaction Count vs. Binding Affinity</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">어느 쪽이 더 강하게 결합할 것 같은가? 예측 후 결과를 확인하세요.</p>
+            <div class="ic-panels">
+              <div class="ic-panel" data-compound="A">
+                <div class="ic-panel__title">Compound A</div>
+                <div class="ic-dots">
+                  <div class="ic-dot"></div>
+                </div>
+                <div style="font-size:12px;color:var(--ink-faint);">H-bond × 1</div>
+              </div>
+              <div class="ic-panel" data-compound="B">
+                <div class="ic-panel__title">Compound B (NH₂ 추가)</div>
+                <div class="ic-dots">
+                  <div class="ic-dot"></div>
+                  <div class="ic-dot"></div>
+                </div>
+                <div style="font-size:12px;color:var(--ink-faint);">H-bond × 2 / docking score 개선</div>
+              </div>
+            </div>
+            <button class="ic-predict-btn">결과 확인 →</button>
+            <div class="ic-reveal">
+              <div class="twopanel">
+                <div class="panel panel--a" style="text-align:center;">
+                  <div style="font-size:13px;color:var(--ink-soft);">Compound A (H-bond ×1)</div>
+                  <div style="font-size:22px;font-weight:700;color:var(--ok);margin:8px 0;">IC50 = 40 nM</div>
+                  <div class="ic-winner-label ic-winner-label--ok">← 실험 우위</div>
+                </div>
+                <div class="panel panel--b" style="text-align:center;">
+                  <div style="font-size:13px;color:var(--ink-soft);">Compound B (H-bond ×2)</div>
+                  <div style="font-size:22px;font-weight:700;color:var(--danger);margin:8px 0;">IC50 = 350 nM</div>
+                  <div class="ic-winner-label ic-winner-label--bad">9배 나빠짐</div>
+                </div>
+              </div>
+              <div class="card card--mistake" style="margin-top:12px;">
+                <div class="card__label"><span class="dot"></span>원인 분석</div>
+                <ul class="clean">
+                  <li>NH₂ desolvation penalty가 interaction gain보다 컸다</li>
+                  <li>NH₂가 불리한 ligand conformation을 유발했다</li>
+                  <li>기존 hydrophobic packing이 NH₂ 도입 후 나빠졌다</li>
+                </ul>
+              </div>
+            </div>
+            <div class="viz__msg">Binding은 interaction 개수를 최대화하는 문제가 아니다.</div>
+          </div>
+
+          <p>이번 강의에서는 이 질문을 네 가지 주요 noncovalent interaction을 통해 구체화한다.</p>
+        </section>
+
+        <!-- ======================================================
+             SECTION 1 · 공통 프레임
+             ====================================================== -->
+        <section id="s1" class="section">
+          <h2><span class="sec-no">01</span> Noncovalent interaction을 볼 때 쓰는 공통 프레임</h2>
+
+          <p>앞으로 어떤 interaction을 보더라도 다음 네 가지를 먼저 생각하자.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:18px 0;">
+            <div class="card card--concept" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>① Who?</div>
+              <p>어떤 atom / functional group끼리 상호작용하는가? Carbonyl O, amide NH, protonated amine…</p>
+            </div>
+            <div class="card card--chem" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>② Geometry?</div>
+              <p>적절한 위치와 방향에 있는가? 특히 H-bond와 π interaction은 방향성이 중요하다.</p>
+            </div>
+            <div class="card card--ai" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>③ Solvation?</div>
+              <p>결합 전 hydration shell 제거 비용은? New interaction gain과 desolvation cost를 함께 본다.</p>
+            </div>
+            <div class="card card--bio" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>④ Strain?</div>
+              <p>그 interaction을 만들기 위해 불리한 conformation이 필요한가?</p>
+            </div>
+          </div>
+
+          <div class="oneline">
+            좋은 medicinal chemistry는 interaction을 추가하는 기술이 아니라, favorable interaction을 최소한의 비용으로 얻는 기술이다.
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 2 · Hydrogen Bond
+             ====================================================== -->
+        <section id="s2" class="section">
+          <h2><span class="sec-no">02</span> Hydrogen Bond — 방향성이 있다</h2>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>HBD (Hydrogen Bond Donor)</h5>
+              <ul class="clean">
+                <li>OH (alcohol, carboxylic acid)</li>
+                <li>NH (amide, amine)</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>HBA (Hydrogen Bond Acceptor)</h5>
+              <ul class="clean">
+                <li>Carbonyl O</li>
+                <li>Ether O</li>
+                <li>일부 nitrogen (lone pair 기여)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>흔한 오해</div>
+            <p>Amide nitrogen은 HBA처럼 보이지만 lone pair가 carbonyl과 resonance에 관여하기 때문에 일반적으로 HBA로 작동하지 않는다. 모든 N과 O를 동등하게 보면 안 된다.</p>
+          </div>
+
+          <!-- Visual 2: H-bond Geometry Explorer -->
+          <div class="viz" data-hbond-geometry>
+            <div class="viz__title">H-bond Geometry Explorer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">거리와 각도 slider를 조절해 H-bond quality를 확인하세요.</p>
+            <div class="hbond-geo__sliders">
+              <div class="hbond-geo__slider-row">
+                <label>D–H···A 거리</label>
+                <input class="hbg-dist hbond-geo__range" type="range" min="2.2" max="4.0" step="0.1" value="2.9" />
+                <span class="hbond-geo__val hbg-dist-val">2.9 Å</span>
+              </div>
+              <div class="hbond-geo__slider-row">
+                <label>D–H···A 각도</label>
+                <input class="hbg-angle hbond-geo__range" type="range" min="90" max="180" step="5" value="160" />
+                <span class="hbond-geo__val hbg-angle-val">160°</span>
+              </div>
+            </div>
+            <div class="hbond-geo__svg-wrap">
+              <svg viewBox="0 0 260 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Donor atom -->
+                <circle cx="30" cy="50" r="16" fill="#3b82f6"/>
+                <text x="30" y="54" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">N-H</text>
+                <!-- Dashed H-bond line -->
+                <line data-hbond-line x1="50" y1="50" x2="190" y2="50" stroke="#5b3fd4" stroke-width="2.5" stroke-dasharray="6,4" opacity="1"/>
+                <!-- Acceptor atom -->
+                <circle cx="210" cy="50" r="16" fill="#e74c3c"/>
+                <text x="210" y="54" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">C=O</text>
+                <!-- Angle arc hint -->
+                <text x="130" y="42" text-anchor="middle" font-size="9" fill="#6e7f99">D–H···A</text>
+              </svg>
+            </div>
+            <div class="hbond-geo__status hbond-geo__status--good">Optimal — 좋은 H-bond geometry</div>
+            <div class="viz__caption">거리 2.7–3.2 Å + 각도 ≥ 150° = optimal. 그 외는 quality 저하.</div>
+            <div class="viz__msg">가까운 것만으로 충분하지 않다. 방향성이 함께 맞아야 한다.</div>
+          </div>
+
+          <h3>Buried H-bond vs Solvent-exposed H-bond</h3>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Buried H-bond</h5>
+              <p>Hydrophobic pocket 깊숙이 있는 polar atom과의 interaction. Desolvation이 이미 일어난 환경 → 매우 중요한 anchoring이 될 수 있다.</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>Unsatisfied polar group</h5>
+              <p>Pocket에 들어갔는데 H-bond partner가 없는 경우. 물과의 favorable interaction을 잃었는데 보상받지 못함 → affinity 손실.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 3 · H-bond Energetics
+             ====================================================== -->
+        <section id="s3" class="section">
+          <h2><span class="sec-no">03</span> H-bond Energetics — 새 H-bond는 공짜가 아니다</h2>
+
+          <p>Ligand carbonyl O를 생각해보자. 물속에서는 이미 water와 H-bond를 형성한다. Pocket에 들어가면 그 water를 잃는다.</p>
+
+          <div class="eq">Net = protein–ligand H-bond gain &minus; ligand desolvation &minus; protein desolvation ± rearrangement</div>
+
+          <!-- Visual 3: H-bond Desolvation Toggle -->
+          <div class="viz" data-hbond-desolv>
+            <div class="viz__title">Strong vs Weak H-bond — Net Energetic Outcome</div>
+            <div class="hbdesolv__btns">
+              <button class="hbdesolv__btn active" data-mode="strong">Strong H-bond</button>
+              <button class="hbdesolv__btn" data-mode="weak">Weak H-bond</button>
+            </div>
+            <div class="hbdesolv__bars">
+              <div class="energy-bar">
+                <span class="energy-bar__label" style="color:var(--energy-gain);">H-bond gain</span>
+                <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--gain hbdesolv-gain" style="width:85%;"></div></div>
+                <span class="energy-bar__val gain hbdesolv-gain-val">+85</span>
+              </div>
+              <div class="energy-bar">
+                <span class="energy-bar__label" style="color:var(--energy-cost);">Desolvation cost</span>
+                <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--cost hbdesolv-cost" style="width:55%;"></div></div>
+                <span class="energy-bar__val cost">−55</span>
+              </div>
+              <div class="energy-bar">
+                <span class="energy-bar__label" style="color:var(--energy-net);">Net</span>
+                <div class="energy-bar__track"><div class="energy-bar__fill energy-bar__fill--net hbdesolv-net" style="width:30%;"></div></div>
+                <span class="energy-bar__val net hbdesolv-net-val">+30</span>
+              </div>
+            </div>
+            <div class="hbdesolv__result favorable">Net favorable — strong H-bond이 desolvation penalty를 초과합니다. ΔG &lt; 0.</div>
+            <div class="viz__caption">같은 desolvation cost여도 H-bond strength에 따라 net outcome이 반전됩니다.</div>
+            <div class="viz__msg">새 H-bond는 기존 물과의 interaction을 대체하는 것이다.</div>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>결론</div>
+            <p>H-bond는 많을수록 좋은가? <b>아니다.</b> H-bond를 추가할수록 polarity↑ → permeability↓ → MW↑. 필요한 H-bond를 <b>효율적으로</b> 만드는 것이 핵심이다. → 7강 Ligand Efficiency로 이어짐.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 4 · Ionic Interaction
+             ====================================================== -->
+        <section id="s4" class="section">
+          <h2><span class="sec-no">04</span> Ionic Interaction / Salt Bridge</h2>
+
+          <p>Protonated amine ↔ Asp/Glu carboxylate 같은 opposite charge attraction. 거리에 따라 강하게 작용하는 장거리 electrostatics다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>흔한 오해</div>
+            <p><b>Charged group = 강한 interaction = 좋은 binding.</b><br>양전하 또는 음전하를 가진 group은 물속에서 매우 강하게 solvated된다. 따라서 강한 ion pair가 가능해도 <b>강한 desolvation cost</b>가 동시에 따라온다.</p>
+          </div>
+
+          <!-- Visual 4: Protonation Preview -->
+          <div class="viz" data-protonation>
+            <div class="viz__title">pH에 따른 Amine Protonation State</div>
+            <div class="protonation__mol">
+              <div>
+                <div class="protonation__atom protonation__atom--amine" data-amine>NH⁺</div>
+                <div style="font-size:11px;text-align:center;color:var(--ink-faint);margin-top:4px;">Amine</div>
+              </div>
+              <div class="protonation__bridge" data-saltbridge></div>
+              <div>
+                <div class="protonation__atom protonation__atom--asp">COO⁻</div>
+                <div style="font-size:11px;text-align:center;color:var(--ink-faint);margin-top:4px;">Asp</div>
+              </div>
+            </div>
+            <div class="protonation__ph-row">
+              <label>pH</label>
+              <input class="protonation__range" type="range" min="4" max="10" step="0.2" value="7.4" />
+              <div class="protonation__ph-val">pH 7.4</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-faint);margin-top:4px;">
+              <span>pH 4 (산성)</span><span>pH 10 (염기성)</span>
+            </div>
+            <div class="prot-label prot-label--yes">Amine protonated → salt bridge 형성 가능 (pH &lt; pKa)</div>
+            <div class="viz__caption">Amine pKa ≈ 8.5 (ligand 종류에 따라 크게 다름). → 3강에서 Henderson–Hasselbalch 계산.</div>
+            <div class="viz__msg">Ionic interaction은 molecular drawing이 아니라 실제 protonation state에 의존한다.</div>
+          </div>
+
+          <h3>Salt bridge를 볼 때 물어야 할 것</h3>
+          <ul class="clean">
+            <li>두 group이 assay pH에서 실제로 ionized되어 있는가?</li>
+            <li>Interaction geometry가 적절한가?</li>
+            <li>Completely buried인가, solvent exposed인가?</li>
+            <li>Desolvation cost는 얼마나 클까?</li>
+            <li>Charge 도입으로 permeability가 나빠지지 않는가?</li>
+          </ul>
+        </section>
+
+        <!-- ======================================================
+             SECTION 5 · π-interactions
+             ====================================================== -->
+        <section id="s5" class="section">
+          <h2><span class="sec-no">05</span> π-interactions — Aromatic ring은 단순한 hydrophobic slab이 아니다</h2>
+
+          <p>Phenyl, pyridyl, indole 같은 aromatic system은 π electron system 자체가 특정 molecular recognition을 만들 수 있다.</p>
+
+          <!-- Visual 5: π Gallery -->
+          <div class="viz" data-pi-gallery>
+            <div class="viz__title">π Interaction Gallery</div>
+            <div class="pi-gallery__cards">
+
+              <div class="pi-card" data-pi="pp">
+                <svg class="pi-card__svg" viewBox="0 0 80 80">
+                  <!-- Two parallel rings (offset) -->
+                  <rect x="10" y="15" width="28" height="22" rx="5" fill="none" stroke="#5b3fd4" stroke-width="2"/>
+                  <text x="24" y="30" text-anchor="middle" font-size="9" fill="#5b3fd4">Phe</text>
+                  <rect x="14" y="43" width="28" height="22" rx="5" fill="none" stroke="#0d8a7a" stroke-width="2"/>
+                  <text x="28" y="58" text-anchor="middle" font-size="9" fill="#0d8a7a">Lig</text>
+                  <text x="55" y="42" text-anchor="middle" font-size="7" fill="#6e7f99">parallel</text>
+                  <text x="55" y="52" text-anchor="middle" font-size="7" fill="#6e7f99">displaced</text>
+                </svg>
+                <div class="pi-card__label">π–π Stacking</div>
+              </div>
+
+              <div class="pi-card" data-pi="ef">
+                <svg class="pi-card__svg" viewBox="0 0 80 80">
+                  <!-- T-shaped / edge-to-face -->
+                  <rect x="5" y="33" width="32" height="20" rx="5" fill="none" stroke="#5b3fd4" stroke-width="2"/>
+                  <text x="21" y="46" text-anchor="middle" font-size="9" fill="#5b3fd4">Phe</text>
+                  <rect x="43" y="10" width="20" height="60" rx="5" fill="none" stroke="#0d8a7a" stroke-width="2"/>
+                  <text x="53" y="43" text-anchor="middle" font-size="9" fill="#0d8a7a">Lig</text>
+                  <!-- Arrow -->
+                  <line x1="37" y1="43" x2="43" y2="43" stroke="#6e7f99" stroke-width="1.5"/>
+                </svg>
+                <div class="pi-card__label">Edge-to-face</div>
+              </div>
+
+              <div class="pi-card" data-pi="cp">
+                <svg class="pi-card__svg" viewBox="0 0 80 80">
+                  <!-- Cation above aromatic ring -->
+                  <rect x="15" y="43" width="32" height="22" rx="5" fill="none" stroke="#5b3fd4" stroke-width="2"/>
+                  <text x="31" y="57" text-anchor="middle" font-size="9" fill="#5b3fd4">Trp/Phe</text>
+                  <!-- + charge -->
+                  <circle cx="31" cy="26" r="10" fill="#7c3aed" opacity=".85"/>
+                  <text x="31" y="30" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">+</text>
+                  <!-- Dotted line -->
+                  <line x1="31" y1="36" x2="31" y2="43" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3"/>
+                </svg>
+                <div class="pi-card__label">Cation–π</div>
+              </div>
+
+            </div>
+            <div class="pi-gallery__desc">카드를 탭하면 각 interaction의 상세 설명이 나타납니다.</div>
+            <div class="viz__caption">각 카드를 탭해 geometry와 protein residue partner를 확인하세요.</div>
+            <div class="viz__msg">Ligand interaction analysis에서 charge↔charge만 찾으면 충분하지 않다. charge↔π도 생각해야 한다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 6 · Hydrophobic
+             ====================================================== -->
+        <section id="s6" class="section">
+          <h2><span class="sec-no">06</span> Hydrophobic Interaction — Water가 핵심이다</h2>
+
+          <p>초보적인 설명: "Hydrophobic group끼리 서로 끌어당긴다." 하지만 실제 핵심은 <b>water</b>다. Nonpolar surface 주변 water가 제한된 arrangement를 취하게 되고, ligand가 hydrophobic pocket에 결합하면서 일부 water가 bulk로 이동한다.</p>
+
+          <!-- Visual 6: Hydrophobic Demo -->
+          <div class="viz" data-hydrophobic-demo>
+            <div class="viz__title">Hydrophobic Binding — Water 관점</div>
+            <div class="hydro-demo__panels">
+              <div class="hydro-demo__panel">
+                <div class="hydro-demo__panel__title">Ligand (수용액)</div>
+                <div class="water-grid">
+                  <div class="water-dot"></div><div class="water-dot"></div>
+                  <div class="water-dot"></div><div class="water-dot"></div>
+                  <div class="water-dot"></div><div class="water-dot"></div>
+                  <div class="ligand-pocket" style="margin:6px auto;">Lig</div>
+                  <div class="water-dot"></div><div class="water-dot"></div>
+                  <div class="water-dot"></div><div class="water-dot"></div>
+                  <div class="water-dot"></div><div class="water-dot"></div>
+                </div>
+                <div style="font-size:11px;text-align:center;color:var(--ink-faint);margin-top:6px;">Water가 nonpolar surface 주변을 둘러쌈</div>
+              </div>
+              <div class="hydro-demo__panel">
+                <div class="hydro-demo__panel__title">Pocket (결합 전)</div>
+                <div class="water-grid">
+                  <div class="water-dot" data-pocket></div>
+                  <div class="water-dot" data-pocket></div>
+                  <div class="water-dot" data-pocket></div>
+                  <div class="water-dot" data-pocket></div>
+                  <div class="water-dot" data-pocket></div>
+                  <div class="water-dot" data-pocket></div>
+                </div>
+                <div style="font-size:11px;text-align:center;color:var(--ink-faint);margin-top:6px;">Pocket water 존재</div>
+              </div>
+            </div>
+            <button class="hydro-toggle-btn">Pocket에 결합 →</button>
+            <div class="hydro-msg">Pocket에 water molecule이 자리잡고 있음. Nonpolar surface 노출 상태.</div>
+            <div class="viz__msg">Hydrophobic binding을 이해하려면 ligand–protein만 보지 말고 water를 함께 봐야 한다.</div>
+          </div>
+
+          <!-- Visual 7: Lipo Trap -->
+          <div class="viz" data-lipo-trap>
+            <div class="viz__title">Lipophilicity Trap — "더 hydrophobic하면 더 좋다"의 함정</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Compound를 선택해 potency와 solubility의 trade-off를 확인하세요.</p>
+            <div class="lipo-trap__series">
+              <button class="lipo-btn active" data-cpd="A">A (Lead)</button>
+              <button class="lipo-btn" data-cpd="A-Me">A–CH₃</button>
+              <button class="lipo-btn" data-cpd="A-Et">A–Et</button>
+              <button class="lipo-btn" data-cpd="A-Ph">A–Ph</button>
+            </div>
+            <div class="lipo-trap__chart">
+              <div>
+                <div class="lipo-chart__label lipo-chart__label--pot">Potency (relative ↑)</div>
+                <div class="lipo-chart__track">
+                  <div class="lipo-chart__fill lipo-chart__fill--potency" style="width:22%;">22%</div>
+                </div>
+              </div>
+              <div>
+                <div class="lipo-chart__label lipo-chart__label--sol">Solubility (relative ↑)</div>
+                <div class="lipo-chart__track">
+                  <div class="lipo-chart__fill lipo-chart__fill--solubility" style="width:78%;">78%</div>
+                </div>
+              </div>
+            </div>
+            <div class="lipo-note">Lead compound. Potency 보통, solubility 좋음.</div>
+            <div class="viz__msg">Potency improvement와 compound quality improvement는 동일하지 않다. → 7강 Lipophilic Efficiency.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 7 · Interaction Network
+             ====================================================== -->
+        <section id="s7" class="section">
+          <h2><span class="sec-no">07</span> Interaction Network — 하나가 바뀌면 전체가 바뀐다</h2>
+
+          <p>실제 protein–ligand complex에서는 여러 interaction이 동시에 존재한다.</p>
+
+          <div style="background:var(--surface-2);border-radius:14px;padding:20px;margin:18px 0;">
+            <div class="vflow">
+              <div class="vflow__box q">Ligand amine → Asp salt bridge</div>
+              <div class="vflow__arrow">+</div>
+              <div class="vflow__box q">Ligand phenyl → Phe aromatic contact</div>
+              <div class="vflow__arrow">+</div>
+              <div class="vflow__box q">Ligand carbonyl → backbone NH H-bond</div>
+              <div class="vflow__arrow">+</div>
+              <div class="vflow__box q">Ligand methyl → hydrophobic cavity</div>
+              <div class="vflow__arrow">+</div>
+              <div class="vflow__box">Water-mediated bridging</div>
+            </div>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>핵심</div>
+            <p>NH₂를 추가하면서 ligand orientation이 10° 회전한다면? 새 H-bond 하나는 생겼지만 기존 hydrophobic packing이 나빠지고 aromatic ring 위치가 달라질 수 있다. <b>Individual interaction이 아니라 network 관점</b>이 필요하다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 8 · Gefitinib
+             ====================================================== -->
+        <section id="s8" class="section">
+          <h2><span class="sec-no">08</span> Real Drug Example — Gefitinib × EGFR</h2>
+
+          <!-- Visual 8: Gefitinib Functional Map -->
+          <div class="viz" data-gefitinib-map>
+            <div class="viz__title">Gefitinib — 각 영역의 역할</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">색깔 영역을 탭해 각 부분의 역할을 확인하세요.</p>
+            <div class="gef-map__svg-wrap">
+              <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background protein outline hint -->
+                <rect x="0" y="0" width="300" height="160" rx="16" fill="#f4f6fb"/>
+
+                <!-- Core: Quinazoline -->
+                <g class="gef-region" data-region="core">
+                  <rect x="100" y="45" width="80" height="70" rx="12" fill="#ede9ff" stroke="#5b3fd4" stroke-width="2"/>
+                  <text x="140" y="76" text-anchor="middle" font-size="11" fill="#3d28a8" font-weight="bold">Quinazoline</text>
+                  <text x="140" y="90" text-anchor="middle" font-size="9" fill="#5b3fd4">core</text>
+                  <!-- N atoms representing hinge bonds -->
+                  <circle cx="119" cy="65" r="5" fill="#5b3fd4"/>
+                  <circle cx="119" cy="95" r="5" fill="#5b3fd4"/>
+                  <text x="112" y="60" text-anchor="end" font-size="7" fill="#3d28a8">N</text>
+                  <text x="112" y="90" text-anchor="end" font-size="7" fill="#3d28a8">N</text>
+                </g>
+
+                <!-- Aryl: Aniline hydrophobic -->
+                <g class="gef-region" data-region="aryl">
+                  <ellipse cx="55" cy="80" rx="42" ry="28" fill="#d6f5f0" stroke="#0d8a7a" stroke-width="2"/>
+                  <text x="55" y="76" text-anchor="middle" font-size="10" fill="#0a6960" font-weight="bold">Aniline</text>
+                  <text x="55" y="90" text-anchor="middle" font-size="9" fill="#0d8a7a">Hydrophobic</text>
+                  <line x1="97" y1="80" x2="100" y2="80" stroke="#0d8a7a" stroke-width="1.5"/>
+                </g>
+
+                <!-- Side chain: Solvent-facing -->
+                <g class="gef-region" data-region="side">
+                  <ellipse cx="235" cy="80" rx="52" ry="30" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                  <text x="235" y="76" text-anchor="middle" font-size="10" fill="#78350f" font-weight="bold">Substituent</text>
+                  <text x="235" y="90" text-anchor="middle" font-size="9" fill="#d97706">Solvent-facing</text>
+                  <line x1="180" y1="80" x2="183" y2="80" stroke="#d97706" stroke-width="1.5"/>
+                </g>
+
+                <!-- Labels -->
+                <text x="140" y="148" text-anchor="middle" font-size="9" fill="#6e7f99">↑ Tap each region</text>
+              </svg>
+            </div>
+            <div class="gef-map__desc">위 영역을 탭하면 각 부분의 역할 설명이 여기에 나타납니다.</div>
+            <div class="viz__msg">Molecule 전체가 같은 방식으로 binding에 기여하지 않는다. Anchor / pocket-occupation / property region을 구분해서 봐야 한다.</div>
+          </div>
+
+          <h3>Binding anchor라는 개념</h3>
+          <p>Medicinal chemistry에서 molecule 전체 interaction을 동등하게 보지 말자. 일부 interaction은 ligand orientation을 결정하는 핵심 anchor가 될 수 있다. 나머지 substituent들은 anchor가 정한 pose에서 주변 공간을 최적화한다.</p>
+
+          <div class="oneline">
+            "어떤 interaction이 molecule의 pose를 정의하는가?" — 이것을 먼저 찾아라.
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 9 · Modification Lab
+             ====================================================== -->
+        <section id="s9" class="section">
+          <h2><span class="sec-no">09</span> Medicinal Chemistry Modification Lab</h2>
+
+          <p>동일 scaffold의 phenyl ring에 substituent를 하나씩 추가한다고 가정한다.</p>
+
+          <!-- Visual 9: Modification Lab -->
+          <div class="viz" data-mod-lab>
+            <div class="viz__title">Substituent Property Impact Simulator</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Substituent를 선택해 각 property 변화를 확인하세요.</p>
+            <div class="mod-lab__chips">
+              <button class="mod-lab__chip active" data-mod="OH">–OH</button>
+              <button class="mod-lab__chip" data-mod="NH2">–NH₂</button>
+              <button class="mod-lab__chip" data-mod="F">–F</button>
+              <button class="mod-lab__chip" data-mod="CH3">–CH₃</button>
+              <button class="mod-lab__chip" data-mod="Ph">–Ph</button>
+            </div>
+            <div class="mod-lab__grid">
+              <div class="mod-lab__prop" data-prop="hbond">
+                <div class="mod-lab__prop-name">H-bond</div>
+                <div class="mod-lab__prop-arrow mod-lab__prop-arrow--up">↑</div>
+              </div>
+              <div class="mod-lab__prop" data-prop="hydro">
+                <div class="mod-lab__prop-name">Hydrophobic</div>
+                <div class="mod-lab__prop-arrow mod-lab__prop-arrow--down">↓</div>
+              </div>
+              <div class="mod-lab__prop" data-prop="polarity">
+                <div class="mod-lab__prop-name">Polarity</div>
+                <div class="mod-lab__prop-arrow mod-lab__prop-arrow--up">↑</div>
+              </div>
+              <div class="mod-lab__prop" data-prop="lipo">
+                <div class="mod-lab__prop-name">Lipophilicity</div>
+                <div class="mod-lab__prop-arrow mod-lab__prop-arrow--down">↓</div>
+              </div>
+              <div class="mod-lab__prop" data-prop="perm">
+                <div class="mod-lab__prop-name">Permeability</div>
+                <div class="mod-lab__prop-arrow mod-lab__prop-arrow--down">↓</div>
+              </div>
+              <div class="mod-lab__prop" data-prop="steric">
+                <div class="mod-lab__prop-name">Steric</div>
+                <div class="mod-lab__prop-arrow mod-lab__prop-arrow--neutral">–</div>
+              </div>
+            </div>
+            <div class="mod-lab__insight">OH group을 추가한 위치에 H-bond partner가 존재하는가? Desolvation penalty가 interaction gain보다 크지 않은가? Permeability 감소 예상.</div>
+            <div class="viz__caption">↑ = 증가 / ↓ = 감소 / – = 영향 제한. 실제 magnitude는 context에 따라 다름.</div>
+            <div class="viz__msg">Substituent 하나는 interaction 하나만 바꾸지 않는다. 각 analogue는 hypothesis test다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 10 · AI Connection
+             ====================================================== -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> AI Drug Discovery 연결 — Docking과 False Interaction</h2>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Docking이 근사하는 것</h5>
+              <ul class="clean">
+                <li>H-bond (geometry 조건부)</li>
+                <li>Electrostatics (distance-based)</li>
+                <li>Van der Waals</li>
+                <li>Hydrophobic contact</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Docking이 잘 놓치는 것</h5>
+              <ul class="clean">
+                <li>Protonation state 오류</li>
+                <li>π interaction geometry 세부사항</li>
+                <li>Water-mediated interaction</li>
+                <li>Tautomer 차이</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Visual 10: AI Audit -->
+          <div class="viz" data-ai-audit>
+            <div class="viz__title">AI Interaction Audit — 틀린 annotation을 찾아라</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">AI docking이 자동 생성한 interaction list입니다. 각 항목을 탭해 검증하세요. 2개의 오류가 숨어있습니다.</p>
+            <div class="ai-audit__items">
+
+              <div class="ai-audit__item" data-wrong="false">
+                <span class="ai-audit__ico">🔵</span>
+                <div>
+                  <div class="ai-audit__label">Lys-NH₃⁺ → carbonyl O (H-bond)</div>
+                  <div class="ai-audit__sub">거리 2.9 Å, 각도 162° — geometry 양호</div>
+                </div>
+                <span class="ai-audit__badge">확인</span>
+              </div>
+
+              <div class="ai-audit__item" data-wrong="true">
+                <span class="ai-audit__ico">🟣</span>
+                <div>
+                  <div class="ai-audit__label">Asp-COO⁻ → tertiary amine (salt bridge)</div>
+                  <div class="ai-audit__sub">거리 3.2 Å — 그런데 assay pH 7.4에서 amine pKa = 6.2</div>
+                </div>
+                <span class="ai-audit__badge">확인</span>
+              </div>
+
+              <div class="ai-audit__item" data-wrong="false">
+                <span class="ai-audit__ico">🟠</span>
+                <div>
+                  <div class="ai-audit__label">Phe-ring → ligand phenyl (π–π)</div>
+                  <div class="ai-audit__sub">Parallel displaced, offset 1.8 Å — 전형적인 geometry</div>
+                </div>
+                <span class="ai-audit__badge">확인</span>
+              </div>
+
+              <div class="ai-audit__item" data-wrong="true">
+                <span class="ai-audit__ico">🟢</span>
+                <div>
+                  <div class="ai-audit__label">Gln-N → ester O (H-bond)</div>
+                  <div class="ai-audit__sub">거리 3.1 Å, 각도 105° — D–H···A 각도 확인 필요</div>
+                </div>
+                <span class="ai-audit__badge">확인</span>
+              </div>
+
+              <div class="ai-audit__item" data-wrong="false">
+                <span class="ai-audit__ico">🟤</span>
+                <div>
+                  <div class="ai-audit__label">Leu-Val pocket → ligand methyl (hydrophobic)</div>
+                  <div class="ai-audit__sub">B-factor 낮음, cavity well-defined</div>
+                </div>
+                <span class="ai-audit__badge">확인</span>
+              </div>
+
+              <div class="ai-audit__item" data-wrong="false">
+                <span class="ai-audit__ico">🔵</span>
+                <div>
+                  <div class="ai-audit__label">Trp-ring → protonated piperidine (cation–π)</div>
+                  <div class="ai-audit__sub">거리 3.8 Å, N 위쪽 — geometry 합당</div>
+                </div>
+                <span class="ai-audit__badge">확인</span>
+              </div>
+
+            </div>
+            <div class="ai-audit__score">오류 발견: 0 / 2</div>
+            <div class="ai-audit__result"></div>
+            <div class="viz__msg">AI가 interaction을 labeling했다고 chemistry가 자동으로 맞는 것은 아니다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 11 · Failure Case
+             ====================================================== -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Failure Case — Interaction Counting Ranking</h2>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>케이스</div>
+            <div class="twopanel" style="margin-top:10px;">
+              <div>
+                <b>Compound A (AI ranking 1위)</b>
+                <ul class="clean">
+                  <li>H-bond × 4</li>
+                  <li>Hydrophobic contact × 8</li>
+                  <li>Score = −12</li>
+                  <li style="color:var(--danger);">실험 IC50 = 2.5 µM</li>
+                </ul>
+              </div>
+              <div>
+                <b>Compound B (AI ranking 2위)</b>
+                <ul class="clean">
+                  <li>H-bond × 2</li>
+                  <li>Hydrophobic contact × 6</li>
+                  <li>Score = −9</li>
+                  <li style="color:var(--ok);">실험 IC50 = 20 nM</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="fstep">
+            <div class="exp">가설 1 — A의 H-bond geometry가 불량하다</div>
+            <div class="body">거리는 맞지만 각도가 나쁠 수 있다. Docking 프로그램은 각도 penalty를 충분히 주지 못할 수 있다.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">가설 2 — A의 polarity가 너무 높다</div>
+            <div class="body">H-bond를 많이 만들지만 desolvation penalty도 크다. B는 H-bond가 적지만 질이 좋고 desolvation cost가 낮다.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">가설 3 — A가 strained conformation을 취한다</div>
+            <div class="body">Docking이 ligand strain을 충분히 penalize하지 않았을 가능성.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">가설 4 — B의 critical anchor interaction</div>
+            <div class="body">B의 H-bond 2개 중 하나가 매우 중요한 buried anchor일 수 있다. A는 수가 많지만 어느 것도 결정적인 anchor가 아닐 수 있다.</div>
+          </div>
+          <div class="fstep">
+            <div class="exp">가설 5 — Water network 차이</div>
+            <div class="body">B가 energetically unfavorable water를 displacement하면서 binding이 좋아졌을 수 있다. A는 반대로 favorable water를 밀어냈을 가능성.</div>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>결론</div>
+            <p>Interaction count는 <b>explanatory feature</b>이지 truth가 아니다. "A가 H-bond 4개이니 B보다 강할 것이다"라는 표현은 피하고, "4개의 potential H-bond를 형성한다. 실제 affinity 기여는 geometry, desolvation, network를 함께 평가해야 한다"고 표현하자.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 12 · Scientist's Thinking
+             ====================================================== -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Scientist's Thinking — para-Cl 추가로 potency가 15배 좋아졌다</h2>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>Observation</div>
+            <p>Compound A (IC50 120 nM) → A–para-Cl (IC50 8 nM). 구조 변화: phenyl → para-chlorophenyl.</p>
+          </div>
+
+          <div class="accord-flow__actions">
+            <button class="accord-flow__toggle-all">모두 펼치기</button>
+          </div>
+          <div class="accord-flow" data-scientist-flow>
+            <div class="accord-flow__step">
+              <div class="accord-flow__head">
+                <span class="accord-flow__num">1</span>
+                <span class="accord-flow__head-title">바로 "Cl interaction"이라고 부르지 않는다</span>
+                <span class="accord-flow__chevron">▾</span>
+              </div>
+              <div class="accord-flow__body">
+                <div class="accord-flow__body-inner">
+                  <p>먼저 전체 property 변화를 본다: MW +34, cLogP +0.7, sterics change, electronics change. Cl이 직접 binding을 개선했는지 아니면 conformational preference를 바꿨는지, 단순 hydrophobic fill인지 먼저 구분한다.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accord-flow__step">
+              <div class="accord-flow__head">
+                <span class="accord-flow__num">2</span>
+                <span class="accord-flow__head-title">Structure 확인</span>
+                <span class="accord-flow__chevron">▾</span>
+              </div>
+              <div class="accord-flow__body">
+                <div class="accord-flow__body-inner">
+                  <p>Cl이 hydrophobic cavity를 채우는가? Crystal structure 또는 docking에서 Cl이 pointing할 공간이 있는가? Ligand conformation이 달라졌는가?</p>
+                </div>
+              </div>
+            </div>
+            <div class="accord-flow__step">
+              <div class="accord-flow__head">
+                <span class="accord-flow__num">3</span>
+                <span class="accord-flow__head-title">Analogue SAR 확인</span>
+                <span class="accord-flow__chevron">▾</span>
+              </div>
+              <div class="accord-flow__body">
+                <div class="accord-flow__body-inner">
+                  <p>para-F / para-Cl / para-Br / para-CH₃ / para-CN / para-OH를 비교한다. 만약 전자흡인기 (Cl, F, CN) 만 좋고 전자공여기 (CH₃, OH, OMe) 가 나쁘면 → electronic effect 가능성. 크기와 무관하게 halogens 모두 좋으면 → hydrophobic size effect.</p>
+                </div>
+              </div>
+            </div>
+            <div class="accord-flow__step">
+              <div class="accord-flow__head">
+                <span class="accord-flow__num">4</span>
+                <span class="accord-flow__head-title">Property도 함께 본다</span>
+                <span class="accord-flow__chevron">▾</span>
+              </div>
+              <div class="accord-flow__body">
+                <div class="accord-flow__body-inner">
+                  <p>Potency가 15배 좋아졌지만 solubility가 20배 나빠졌다면? 그 analogue가 반드시 더 좋은 lead가 아니다. Multi-parameter optimization의 시작이다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             SECTION 13 · Interaction Checklist
+             ====================================================== -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Interaction Checklist — Molecule을 볼 때 쓰는 4-quadrant</h2>
+
+          <div class="fstep">
+            <div class="exp">🔵 Hydrogen Bond Checklist</div>
+            <div class="body">
+              <ul class="clean">
+                <li>Donor / acceptor identity가 맞는가?</li>
+                <li>거리는 적절한가? (2.7–3.5 Å)</li>
+                <li>D–H···A 각도가 ≥120°인가?</li>
+                <li>Buried인가, solvent exposed인가?</li>
+                <li>Desolvation penalty가 충분히 보상되는가?</li>
+                <li>추가로 인해 permeability가 나빠지지 않는가?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="fstep">
+            <div class="exp">⚡ Ionic / Salt Bridge Checklist</div>
+            <div class="body">
+              <ul class="clean">
+                <li>Assay pH에서 실제로 charged form인가?</li>
+                <li>Opposite charge group이 실제로 가까운가?</li>
+                <li>Completely buried인가, solvent exposed인가?</li>
+                <li>Desolvation cost 예상치는?</li>
+                <li>Charge 도입이 permeability에 심각한 영향을 주는가?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="fstep">
+            <div class="exp">🔮 π Interaction Checklist</div>
+            <div class="body">
+              <ul class="clean">
+                <li>Protein aromatic residue (Phe/Tyr/Trp/His)가 partner인가?</li>
+                <li>Parallel displaced인가, edge-to-face인가?</li>
+                <li>Ring 근처에 positive center가 있어 cation–π 가능성이 있는가?</li>
+                <li>단순 hydrophobic contact로 잘못 분류하고 있지는 않은가?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="fstep">
+            <div class="exp">💧 Hydrophobic Checklist</div>
+            <div class="body">
+              <ul class="clean">
+                <li>Nonpolar group이 hydrophobic cavity를 실제로 채우는가?</li>
+                <li>그 공간에 현재 어떤 water가 있는가?</li>
+                <li>Water displacement가 energetically 유리한가?</li>
+                <li>전체 LogP/LogD가 acceptable range를 유지하는가?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card card--concept" style="margin-top:24px;">
+            <div class="card__label"><span class="dot"></span>최종 원칙</div>
+            <p><b>Interaction type보다 context가 중요하다.</b><br>
+            Strong salt bridge가 큰 desolvation penalty로 상쇄될 수 있다. 반대로 작은 methyl group 하나가 critical water를 displacement하면서 potency를 크게 개선할 수 있다.</p>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>2강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>H-bond는 거리뿐 아니라 방향성과 desolvation을 함께 평가해야 한다.</b>
+              <span>D–H···A angle ≥ 150°, distance 2.7–3.2 Å. 새 H-bond = 기존 water H-bond 대체.</span>
+            </li>
+            <li>
+              <b>Ionic interaction은 강력하지만 charged group은 물속에서도 매우 안정하다.</b>
+              <span>Desolvation cost가 크고, 실제 protonation state는 pH에 따라 달라진다.</span>
+            </li>
+            <li>
+              <b>Aromatic ring은 단순 hydrophobic group이 아니다.</b>
+              <span>π–π, edge-to-face, cation–π interaction을 만들 수 있다. Geometry에 따라 contribution이 다르다.</span>
+            </li>
+            <li>
+              <b>Hydrophobic binding의 핵심은 water다.</b>
+              <span>"탄소끼리 붙는 힘"이 아니라 solvent organization 변화. Pocket water의 성질이 중요하다.</span>
+            </li>
+            <li>
+              <b>Interaction count가 아니라 network와 energetic context를 읽어야 한다.</b>
+              <span>H-bond 하나를 바꾸면 ligand orientation이 바뀌고 전체 interaction이 달라질 수 있다.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>H-bond 3개를 형성하는 Compound A가 H-bond 1개인 B보다 affinity가 낮다. 가능한 설명 네 가지를 제시하라.</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              ① A의 H-bond geometry (각도/거리) 불량.<br>
+              ② A의 polar group desolvation penalty가 크다.<br>
+              ③ A가 H-bond 형성을 위해 strained conformation을 취한다.<br>
+              ④ B의 H-bond 하나가 ligand orientation을 결정하는 critical buried anchor다.
+              <div class="exp">추가: water displacement 차이, protein conformation 차이도 가능.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Ligand tertiary amine과 protein Asp가 3.2 Å 거리에 있다. 이를 바로 salt bridge라고 결론내려도 되는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">Amine의 pKa와 assay pH를 확인해야 한다. Tertiary amine pKa가 7.4 이하라면 상당 비율이 neutral form으로 존재하므로 salt bridge가 아닐 수 있다. → 3강에서 Henderson–Hasselbalch 계산으로 연결.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>para-CH₃ 추가로 biochemical potency가 20배 개선됐다. "CH₃가 protein과 강한 hydrophobic interaction을 형성했다"고 결론내려도 되는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              가능한 설명 중 하나이지만 충분하지 않다.
+              <div class="exp">확인 필요: cavity filling 여부, water displacement, ligand conformation 변화, lipophilicity 단순 증가, assay type 차이. Analogue scan (ortho/meta/para, 크기 변화, 전자 효과 변화)으로 분리해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Docking에서 ligand의 protonated piperidine이 Trp side chain 위에 위치한다. 주변에 acidic residue가 없다. 어떤 interaction을 고려해야 하는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Cation–π interaction.
+              <div class="exp">Positive charge가 Trp의 indole π system과 favorable interaction을 형성할 수 있다. Salt bridge가 없어도 aromatic residue가 중요한 interaction partner가 될 수 있음을 보여주는 예시.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>A → B (OH 추가): Biochemical IC50 100→30 nM 개선. Cellular IC50 300 nM → 4 µM 악화. 무엇을 의심하는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Target interaction은 개선됐지만 cellular exposure가 악화된 것을 의심한다.
+              <div class="exp">OH 도입으로 permeability 감소, efflux 증가, intracellular distribution 변화 가능. "Better binding ≠ better cellular compound." → 3강 logD, 10강 permeability에서 이어짐.</div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">3강 · pKa, Ionization, logP, logD</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">2강에서 ionic interaction이 protonation state에 의존한다는 것을 배웠다. 3강에서는 Henderson–Hasselbalch부터 시작해 molecule의 charge state와 물성을 실제로 계산하고 해석하는 법을 배운다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="01.html">◀ 1강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="../../index.html" aria-disabled="true">▶ 3강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

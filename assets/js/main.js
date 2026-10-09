@@ -546,6 +546,315 @@
   }
 
   /* =========================================================
+     L02 · V1 — Interaction Count Comparison  (data-interact-count)
+     ========================================================= */
+  function initInteractCount() {
+    var root = document.querySelector("[data-interact-count]");
+    if (!root) return;
+    var panels  = root.querySelectorAll(".ic-panel");
+    var btn     = root.querySelector(".ic-predict-btn");
+    var reveal  = root.querySelector(".ic-reveal");
+    if (!btn || !reveal) return;
+    panels.forEach(function (p) {
+      p.addEventListener("click", function () {
+        panels.forEach(function (x) { x.classList.remove("chosen"); });
+        p.classList.add("chosen");
+      });
+    });
+    btn.addEventListener("click", function () {
+      panels.forEach(function (p) {
+        var c = p.getAttribute("data-compound");
+        p.classList.toggle("winner", c === "B");
+        p.classList.toggle("loser",  c === "A");
+      });
+      reveal.classList.add("show");
+      btn.disabled = true;
+    });
+  }
+
+  /* =========================================================
+     L02 · V2 — H-bond Geometry Explorer  (data-hbond-geometry)
+     ========================================================= */
+  function initHbondGeo() {
+    var root = document.querySelector("[data-hbond-geometry]");
+    if (!root) return;
+    var distRange  = root.querySelector(".hbg-dist");
+    var angRange   = root.querySelector(".hbg-angle");
+    var distVal    = root.querySelector(".hbg-dist-val");
+    var angVal     = root.querySelector(".hbg-angle-val");
+    var statusEl   = root.querySelector(".hbond-geo__status");
+    var hbLine     = root.querySelector("[data-hbond-line]");
+    if (!distRange || !angRange) return;
+    function render() {
+      var dist = parseFloat(distRange.value);
+      var ang  = parseInt(angRange.value, 10);
+      if (distVal) distVal.textContent = dist.toFixed(1) + " Å";
+      if (angVal)  angVal.textContent  = ang + "°";
+      var distOk   = dist >= 2.7 && dist <= 3.2;
+      var distMarg = dist > 3.2  && dist <= 3.5;
+      var angOk    = ang >= 150;
+      var angMarg  = ang >= 120 && ang < 150;
+      var quality;
+      if (distOk && angOk)                               quality = "good";
+      else if ((distOk || distMarg) && (angOk || angMarg)) quality = "ok";
+      else                                               quality = "poor";
+      var texts = {
+        good: "Optimal — 좋은 H-bond geometry (거리 + 방향성 모두 양호)",
+        ok:   "Acceptable — geometry 개선 여지 있음",
+        poor: "Poor — H-bond로 계산하기 어려운 geometry"
+      };
+      if (statusEl) {
+        statusEl.textContent  = texts[quality];
+        statusEl.className    = "hbond-geo__status hbond-geo__status--" + quality;
+      }
+      if (hbLine) {
+        var op = quality === "poor" ? 0.18 : quality === "ok" ? 0.55 : 1.0;
+        hbLine.style.opacity = op;
+      }
+    }
+    distRange.addEventListener("input", render);
+    angRange.addEventListener("input", render);
+    render();
+  }
+
+  /* =========================================================
+     L02 · V3 — H-bond Desolvation Toggle  (data-hbond-desolv)
+     ========================================================= */
+  function initHbondDesolv() {
+    var root = document.querySelector("[data-hbond-desolv]");
+    if (!root) return;
+    var btns     = root.querySelectorAll(".hbdesolv__btn");
+    var gainFill = root.querySelector(".hbdesolv-gain");
+    var costFill = root.querySelector(".hbdesolv-cost");
+    var netFill  = root.querySelector(".hbdesolv-net");
+    var gainVal  = root.querySelector(".hbdesolv-gain-val");
+    var netVal   = root.querySelector(".hbdesolv-net-val");
+    var resultEl = root.querySelector(".hbdesolv__result");
+    var MODES = {
+      strong: { gain: 85, cost: 55, net: 30,  label: "Net favorable — strong H-bond이 desolvation penalty를 초과합니다. ΔG < 0.", cls: "favorable" },
+      weak:   { gain: 30, cost: 55, net: -25, label: "Net unfavorable — weak H-bond은 desolvation cost를 보상하지 못합니다. OH 추가가 오히려 손해.", cls: "unfavorable" }
+    };
+    function show(key) {
+      var d = MODES[key];
+      btns.forEach(function (b) { b.classList.toggle("active", b.getAttribute("data-mode") === key); });
+      if (gainFill) gainFill.style.width = d.gain + "%";
+      if (costFill) costFill.style.width = "55%";
+      var absNet = Math.abs(d.net);
+      if (netFill)  netFill.style.width  = absNet + "%";
+      if (gainVal)  gainVal.textContent  = "+" + d.gain;
+      if (netVal)   netVal.textContent   = (d.net >= 0 ? "+" : "") + d.net;
+      if (resultEl) { resultEl.textContent = d.label; resultEl.className = "hbdesolv__result " + d.cls; }
+    }
+    btns.forEach(function (btn) {
+      btn.addEventListener("click", function () { show(btn.getAttribute("data-mode")); });
+    });
+    show("strong");
+  }
+
+  /* =========================================================
+     L02 · V4 — Protonation Preview  (data-protonation)
+     ========================================================= */
+  function initProtonation() {
+    var root = document.querySelector("[data-protonation]");
+    if (!root) return;
+    var pHRange    = root.querySelector(".protonation__range");
+    var pHValEl    = root.querySelector(".protonation__ph-val");
+    var amineEl    = root.querySelector("[data-amine]");
+    var bridgeEl   = root.querySelector("[data-saltbridge]");
+    var labelEl    = root.querySelector(".prot-label");
+    if (!pHRange) return;
+    function render() {
+      var pH = parseFloat(pHRange.value);
+      if (pHValEl) pHValEl.textContent = "pH " + pH.toFixed(1);
+      var protonated = pH < 8.5;
+      if (amineEl) {
+        amineEl.textContent = protonated ? "NH⁺" : "N";
+        amineEl.className = "protonation__atom " + (protonated ? "protonation__atom--amine" : "protonation__atom--neutral");
+      }
+      if (bridgeEl) bridgeEl.classList.toggle("hidden", !protonated);
+      if (labelEl) {
+        labelEl.textContent = protonated
+          ? "Amine protonated → salt bridge 형성 가능 (pH < pKa)"
+          : "Amine neutral → charge 없음, salt bridge 없음 (pH > pKa)";
+        labelEl.className = "prot-label " + (protonated ? "prot-label--yes" : "prot-label--no");
+      }
+    }
+    pHRange.addEventListener("input", render);
+    render();
+  }
+
+  /* =========================================================
+     L02 · V5 — π Interaction Gallery  (data-pi-gallery)
+     ========================================================= */
+  function initPiGallery() {
+    var root = document.querySelector("[data-pi-gallery]");
+    if (!root) return;
+    var cards  = root.querySelectorAll(".pi-card");
+    var descEl = root.querySelector(".pi-gallery__desc");
+    var DESCS = {
+      "pp": "<b>π–π Stacking (Parallel displaced)</b><br>두 aromatic ring이 평행하게 배치. 전자 밀도 차이가 있는 ring pair (electron-rich vs. electron-poor) 에서 특히 favorable. 완전한 eclipsed orientation보다 offset된 geometry가 일반적.",
+      "ef": "<b>Edge-to-face / T-shaped</b><br>하나의 ring이 다른 ring에 수직으로 향함. Aromatic C–H가 π electron cloud를 향하는 C–H···π interaction. Protein 내 Phe residue clusters에서 자주 관찰됨.",
+      "cp": "<b>Cation–π</b><br>Positive charge (protonated amine 등)이 aromatic π electron cloud와 상호작용. Trp, Phe, Tyr 같은 aromatic residue가 partner. Ligand amine 설계 시 salt bridge 외에 cation–π 가능성도 체크."
+    };
+    cards.forEach(function (card) {
+      card.addEventListener("click", function () {
+        cards.forEach(function (c) { c.classList.remove("selected"); });
+        card.classList.add("selected");
+        var key = card.getAttribute("data-pi");
+        if (descEl) descEl.innerHTML = DESCS[key] || "";
+      });
+    });
+  }
+
+  /* =========================================================
+     L02 · V6 — Hydrophobic Demo  (data-hydrophobic-demo)
+     ========================================================= */
+  function initHydrophobicDemo() {
+    var root = document.querySelector("[data-hydrophobic-demo]");
+    if (!root) return;
+    var btn      = root.querySelector(".hydro-toggle-btn");
+    var msgEl    = root.querySelector(".hydro-msg");
+    var pocketW  = root.querySelectorAll(".water-dot[data-pocket]");
+    var bound    = false;
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      bound = !bound;
+      pocketW.forEach(function (w) { w.classList.toggle("displaced", bound); });
+      btn.textContent = bound ? "← Unbound 상태로" : "Pocket에 결합 →";
+      if (msgEl) msgEl.textContent = bound
+        ? "Pocket water가 bulk solvent로 이동 → 시스템 ΔS 증가 (favorable). Nonpolar surface burial."
+        : "Pocket에 water molecule이 자리잡고 있음. Nonpolar surface 노출 상태.";
+    });
+  }
+
+  /* =========================================================
+     L02 · V7 — Lipophilicity Trap  (data-lipo-trap)
+     ========================================================= */
+  function initLipoTrap() {
+    var root = document.querySelector("[data-lipo-trap]");
+    if (!root) return;
+    var btns    = root.querySelectorAll(".lipo-btn");
+    var potFill = root.querySelector(".lipo-chart__fill--potency");
+    var solFill = root.querySelector(".lipo-chart__fill--solubility");
+    var noteEl  = root.querySelector(".lipo-note");
+    var DATA = {
+      "A":    { pot: 22, sol: 78, note: "Lead compound. Potency 보통, solubility 좋음." },
+      "A-Me": { pot: 48, sol: 62, note: "CH₃ 추가 → potency 개선, solubility 소폭 감소. Trade-off 시작." },
+      "A-Et": { pot: 68, sol: 38, note: "Ethyl → potency ↑↑, solubility ↓. 추가할수록 balance 깨짐." },
+      "A-Ph": { pot: 88, sol: 12, note: "Phenyl → potency 우수하지만 solubility 심각하게 감소. Compound quality 악화. 개발 불가 가능성." }
+    };
+    btns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        btns.forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        var d = DATA[btn.getAttribute("data-cpd")];
+        if (!d) return;
+        if (potFill) potFill.style.width = d.pot + "%";
+        if (solFill) solFill.style.width = d.sol + "%";
+        if (noteEl) noteEl.textContent = d.note;
+      });
+    });
+    if (btns.length) btns[0].click();
+  }
+
+  /* =========================================================
+     L02 · V8 — Gefitinib Functional Map  (data-gefitinib-map)
+     ========================================================= */
+  function initGefitinibMap() {
+    var root = document.querySelector("[data-gefitinib-map]");
+    if (!root) return;
+    var regions = root.querySelectorAll(".gef-region");
+    var descEl  = root.querySelector(".gef-map__desc");
+    var DESCS = {
+      core: "<b>Quinazoline core — Hinge-binding anchor</b><br>Ring nitrogen이 EGFR hinge backbone과 H-bond를 형성. Ligand pose를 정의하는 핵심. Scaffold를 바꿀 때 hinge interaction이 유지되는지 가장 먼저 확인.",
+      aryl: "<b>Aniline aromatic region — Hydrophobic pocket</b><br>Methoxyphenyl group이 EGFR hydrophobic pocket을 점유. Aromatic size와 substituent pattern이 hydrophobic contact에 영향. 이 방향의 steric clash를 주의.",
+      side: "<b>Solvent-facing substituent — Property region</b><br>Polar group이 solvent-exposed area에 위치. Binding에 직접 기여가 적지만 solubility, permeability, metabolic liability를 조절하는 핵심 영역."
+    };
+    regions.forEach(function (r) {
+      r.addEventListener("click", function () {
+        regions.forEach(function (x) { x.classList.remove("active"); });
+        r.classList.add("active");
+        var key = r.getAttribute("data-region");
+        if (descEl) descEl.innerHTML = DESCS[key] || "";
+      });
+    });
+  }
+
+  /* =========================================================
+     L02 · V9 — Modification Lab  (data-mod-lab)
+     ========================================================= */
+  function initModLab() {
+    var root = document.querySelector("[data-mod-lab]");
+    if (!root) return;
+    var chips    = root.querySelectorAll(".mod-lab__chip");
+    var propEls  = root.querySelectorAll("[data-prop]");
+    var insightEl = root.querySelector(".mod-lab__insight");
+    var MODS = {
+      "OH":  { hbond:"up", hydro:"down", polarity:"up", lipo:"down", perm:"down", steric:"neutral",
+               insight:"OH group을 추가한 위치에 H-bond partner가 존재하는가? Desolvation penalty가 interaction gain보다 크지 않은가? Permeability 감소 예상." },
+      "NH2": { hbond:"up", hydro:"down", polarity:"up", lipo:"down", perm:"down", steric:"neutral",
+               insight:"NH₂의 pKa와 pocket environment를 확인. Charged form과 neutral form이 서로 다른 interaction을 만든다. → 3강 pKa 학습 필요." },
+      "F":   { hbond:"neutral", hydro:"neutral", polarity:"neutral", lipo:"neutral", perm:"up", steric:"neutral",
+               insight:"F는 weak HBA이지만 주효과는 metabolic blocking과 electronic/conformational 조절. 'H-bond acceptor 추가'로만 보면 실패한다." },
+      "CH3": { hbond:"neutral", hydro:"up", polarity:"neutral", lipo:"up", perm:"neutral", steric:"up",
+               insight:"CH₃ → cavity filling + lipophilicity 동시 변화. Potency 개선 원인이 hydrophobic contact인지 conformational 변화인지 analogue series로 분리해야 함." },
+      "Ph":  { hbond:"neutral", hydro:"up", polarity:"neutral", lipo:"up", perm:"down", steric:"up",
+               insight:"Phenyl → MW + LogP 대폭 증가. Off-target binding, metabolic liability 동시 증가. Potency gain이 compound quality loss를 정당화하는가?" }
+    };
+    var ARROWS = { up:"↑", down:"↓", neutral:"–" };
+    var CLS = { up:"mod-lab__prop-arrow--up", down:"mod-lab__prop-arrow--down", neutral:"mod-lab__prop-arrow--neutral" };
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        chips.forEach(function (c) { c.classList.remove("active"); });
+        chip.classList.add("active");
+        var d = MODS[chip.getAttribute("data-mod")];
+        if (!d) return;
+        propEls.forEach(function (el) {
+          var p = el.getAttribute("data-prop");
+          var v = d[p] || "neutral";
+          var arr = el.querySelector(".mod-lab__prop-arrow");
+          if (arr) { arr.textContent = ARROWS[v]; arr.className = "mod-lab__prop-arrow " + CLS[v]; }
+        });
+        if (insightEl) insightEl.textContent = d.insight;
+      });
+    });
+    if (chips.length) chips[0].click();
+  }
+
+  /* =========================================================
+     L02 · V10 — AI Interaction Audit  (data-ai-audit)
+     ========================================================= */
+  function initAiAudit() {
+    var root = document.querySelector("[data-ai-audit]");
+    if (!root) return;
+    var items   = root.querySelectorAll(".ai-audit__item");
+    var scoreEl = root.querySelector(".ai-audit__score");
+    var resultEl = root.querySelector(".ai-audit__result");
+    var wrongItems = Array.prototype.filter.call(items, function (i) { return i.getAttribute("data-wrong") === "true"; });
+    var found = 0;
+    items.forEach(function (item) {
+      item.addEventListener("click", function () {
+        if (item.classList.contains("verified") || item.classList.contains("flagged")) return;
+        var wrong = item.getAttribute("data-wrong") === "true";
+        var badge = item.querySelector(".ai-audit__badge");
+        if (wrong) {
+          item.classList.add("flagged");
+          if (badge) { badge.textContent = "⚠ 문제 발견"; badge.className = "ai-audit__badge ai-audit__badge--wrong"; }
+          found++;
+        } else {
+          item.classList.add("verified");
+          if (badge) { badge.textContent = "✓ 확인됨"; badge.className = "ai-audit__badge ai-audit__badge--valid"; }
+        }
+        if (scoreEl) scoreEl.textContent = "오류 발견: " + found + " / " + wrongItems.length;
+        if (found >= wrongItems.length && resultEl) {
+          resultEl.textContent = "✓ 모든 오류 발견! AI가 interaction을 labeling해도 반드시 검증이 필요합니다.";
+          resultEl.className = "ai-audit__result ai-audit__result--success";
+        }
+      });
+    });
+  }
+
+  /* =========================================================
      허브 렌더러  (index.html에서만 사용)
      ========================================================= */
   function initHub() {
@@ -630,6 +939,17 @@
     initDockingReveal();
     initFailureSim();
     initScientistFlow();
+
+    initInteractCount();
+    initHbondGeo();
+    initHbondDesolv();
+    initProtonation();
+    initPiGallery();
+    initHydrophobicDemo();
+    initLipoTrap();
+    initGefitinibMap();
+    initModLab();
+    initAiAudit();
 
     initHub();
   });
