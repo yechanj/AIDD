@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L05 · Functional Group별 성질 — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L05 · Functional Group별 성질</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L05</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Functional Groups</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> 7가지 질문</a></li>
+          <li><a href="#s03"><span class="num">03</span> Alcohol / Phenol</a></li>
+          <li><a href="#s04"><span class="num">04</span> Ether</a></li>
+          <li><a href="#s05"><span class="num">05</span> Amine</a></li>
+          <li><a href="#s06"><span class="num">06</span> Amide</a></li>
+          <li><a href="#s07"><span class="num">07</span> Carboxylic Acid</a></li>
+          <li><a href="#s08"><span class="num">08</span> Ester</a></li>
+          <li><a href="#s09"><span class="num">09</span> Carbonyl Family &amp; Urea</a></li>
+          <li><a href="#s10"><span class="num">10</span> Aromatic Heterocycles</a></li>
+          <li><a href="#s11"><span class="num">11</span> Nitrile &amp; Halogen</a></li>
+          <li><a href="#s12"><span class="num">12</span> Alkyl &amp; Phenyl</a></li>
+          <li><a href="#s13"><span class="num">13</span> Interconversion</a></li>
+          <li><a href="#s14"><span class="num">14</span> Real Drug — Lidocaine</a></li>
+          <li><a href="#s15"><span class="num">15</span> AI Connection</a></li>
+          <li><a href="#s16"><span class="num">16</span> Failure Case</a></li>
+          <li><a href="#s17"><span class="num">17</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 05</div>
+          <h1>Functional Group별 성질</h1>
+          <p>Medicinal chemist는 functional group을 보고 무엇을 읽어내는가?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — OH 하나를 OMe로 바꿨을 뿐인데</h2>
+
+          <p>Lead A는 phenol group을 갖는다. Biochemical IC50 = 15 nM, good aqueous solubility, moderate permeability, microsomal stability poor. Medicinal chemistry team이 phenolic OH를 methyl ether로 바꾼다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Lead A (phenol, –OH)</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>IC50 = 15 nM</li>
+                <li>solubility 양호</li>
+                <li>permeability 중간</li>
+                <li>microsomal stability 나쁨</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Lead B (anisole, –OMe)</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>IC50 = 80 nM</li>
+                <li>solubility 감소</li>
+                <li>permeability 증가</li>
+                <li>metabolic profile 변화</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>왜 functional group 하나만 바꿨는데 이렇게 많은 것이 동시에 변했을까? phenol → anisole 변화는 단순히 H 하나가 CH₃로 바뀐 것이 아니다. <b>HBD 제거, polarity 감소, lipophilicity 증가, metabolic pathway 변화, binding geometry 변화</b>가 동시에 일어난다.</p>
+
+          <blockquote>
+            Functional group은 단순한 구조 부품이 아니라 interaction, ionization, conformation, ADME를 동시에 결정하는 정보 단위다.
+          </blockquote>
+
+          <!-- V1: Functional Group Inspector -->
+          <div class="viz" data-fg-inspector>
+            <div class="viz__title">Functional Group Inspector</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Group을 선택해 7가지 property를 동시에 확인하세요.</p>
+            <div class="fg-inspector">
+              <div class="fgi-group-row">
+                <button class="fgi-group-btn" data-grp="OH">–OH</button>
+                <button class="fgi-group-btn" data-grp="OMe">–OMe</button>
+                <button class="fgi-group-btn" data-grp="NH2">–NH₂</button>
+                <button class="fgi-group-btn" data-grp="NHAc">–NHAc</button>
+                <button class="fgi-group-btn" data-grp="COOH">–COOH</button>
+                <button class="fgi-group-btn" data-grp="COOEt">–COOEt</button>
+                <button class="fgi-group-btn" data-grp="CN">–CN</button>
+              </div>
+              <div class="fgi-cards">
+                <div class="fgi-card"><div class="fgi-card-label">HBD</div><div class="fgi-card-val">—</div></div>
+                <div class="fgi-card"><div class="fgi-card-label">HBA</div><div class="fgi-card-val">—</div></div>
+                <div class="fgi-card"><div class="fgi-card-label">Ionization</div><div class="fgi-card-val">—</div></div>
+                <div class="fgi-card"><div class="fgi-card-label">Polarity</div><div class="fgi-card-val">—</div></div>
+                <div class="fgi-card"><div class="fgi-card-label">Lipophilicity</div><div class="fgi-card-val">—</div></div>
+                <div class="fgi-card"><div class="fgi-card-label">Metabolism</div><div class="fgi-card-val">—</div></div>
+                <div class="fgi-card" style="grid-column:1/-1;"><div class="fgi-card-label">Binding Role</div><div class="fgi-card-val">—</div></div>
+              </div>
+            </div>
+            <div class="viz__msg">Functional group 하나에는 여러 drug-design 정보가 묶여 있다.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> Functional Group을 읽는 7가지 질문</h2>
+
+          <p>어떤 group이든 다음 일곱 가지를 본다.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>① HBD?</div><p>Hydrogen bond donor인가?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>② HBA?</div><p>Hydrogen bond acceptor인가?</p></div>
+            <div class="card card--chem"    style="margin:0;"><div class="card__label"><span class="dot"></span>③ Ionizable?</div><p>생리적 pH에서 charge를 가질 수 있는가?</p></div>
+            <div class="card card--chem"    style="margin:0;"><div class="card__label"><span class="dot"></span>④ Polarity?</div><p>물과 얼마나 interaction할까?</p></div>
+            <div class="card card--bio"     style="margin:0;"><div class="card__label"><span class="dot"></span>⑤ Lipophilicity?</div><p>전체 logP/logD에 어떤 영향?</p></div>
+            <div class="card card--ai"      style="margin:0;"><div class="card__label"><span class="dot"></span>⑥ Metabolism?</div><p>어떤 enzyme에 의해 변형되기 쉬운가?</p></div>
+          </div>
+
+          <div class="card card--bio" style="grid-column:1/-1;">
+            <div class="card__label"><span class="dot"></span>⑦ Binding Role?</div>
+            <p>Protein에서 어떤 interaction을 만들 수 있는가? (salt bridge, H-bond, hydrophobic, π, covalent)</p>
+          </div>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Alcohol / Phenol</h2>
+
+          <p>Alcohol(R–OH)은 일반적으로 HBD + HBA이며 생리적 pH에서 대개 neutral이다. OH 하나는 donor, acceptor, polarity를 동시에 제공한다. 하지만 OH가 있다는 것 자체가 binding bonus를 의미하지 않는다. Pocket에서 좋은 H-bond partner가 없으면 desolvation penalty가 발생한다.</p>
+
+          <p><b>Phenol(Ar–OH)</b>은 OH가 aromatic ring에 직접 연결되어 phenoxide form이 resonance로 안정화된다. 따라서 aliphatic alcohol보다 더 acidic할 수 있다. 또 glucuronidation, sulfation 같은 phase II metabolism의 좋은 substrate가 될 수 있다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>OH 추가 = solubility ↑만은 아니다</div>
+            <p>OH 추가는 polarity + HBD 증가로 passive permeability 감소, oxidation/conjugation에 의한 clearance 증가를 동시에 만들 수 있다.</p>
+          </div>
+
+          <!-- V2: Alcohol vs Ether -->
+          <div class="viz" data-alc-ether>
+            <div class="viz__title">Alcohol vs Ether Toggle</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">OH ↔ OMe 전환으로 동시에 바뀌는 property를 확인하세요.</p>
+            <div class="alc-ether-toggle">
+              <div class="aet-toggle-row">
+                <button class="aet-toggle-btn" data-mol="oh">–OH (Alcohol)</button>
+                <button class="aet-toggle-btn" data-mol="ome">–OMe (Ether)</button>
+              </div>
+              <div class="aet-rows">
+                <div class="aet-row"><span class="aet-row-label">HBD</span><span class="aet-row-val">—</span></div>
+                <div class="aet-row"><span class="aet-row-label">HBA</span><span class="aet-row-val">—</span></div>
+                <div class="aet-row"><span class="aet-row-label">Polarity</span><span class="aet-row-val">—</span></div>
+                <div class="aet-row"><span class="aet-row-label">Lipophilicity</span><span class="aet-row-val">—</span></div>
+                <div class="aet-row"><span class="aet-row-label">Metabolism</span><span class="aet-row-val">—</span></div>
+              </div>
+            </div>
+            <div class="viz__msg">OH → OMe는 작은 structural change이지만 multi-property change다.</div>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> Ether</h2>
+
+          <p>Ether oxygen(R–O–R)은 일반적으로 <b>HBA이지만 HBD는 아니다.</b> O에 donor hydrogen이 없기 때문이다. 이 차이 하나로 alcohol과 binding pattern이 달라진다.</p>
+
+          <p>특히 alkyl ether는 CYP-mediated O-dealkylation을 받을 수 있다. 예를 들어 Ar–O–CH₃ → Ar–OH + oxidized carbon fragment. 따라서 methoxy group은 단순 hydrophobic substituent가 아니라 <b>metabolic soft spot</b>이 될 수 있다.</p>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>OH 성질</h5>
+              <p>HBD + HBA<br>polarity ↑<br>glucuronidation / oxidation</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>OMe 성질</h5>
+              <p>HBA only<br>lipophilicity 증가<br>O-dealkylation 가능</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> Amine — Medicinal chemistry에서 가장 중요한 functional group 중 하나</h2>
+
+          <p>많은 aliphatic amine은 basic하다. 따라서 생리적 pH에서 protonated될 수 있다. Protonated되면 R–NH₃⁺처럼 positive charge를 가지며 salt bridge, aqueous solvation, solubility, permeability가 모두 달라진다.</p>
+
+          <p>Amine은 protein Asp/Glu와 salt bridge 또는 aromatic residue와 cation–π interaction을 형성할 수 있어 강력한 binding anchor가 된다. 하지만 동시에 charge가 permeability, distribution, PPB, transporter recognition에 영향을 주고, CYP-mediated N-dealkylation/N-oxidation 등이 가능하다.</p>
+
+          <!-- V3: Amine Protonation Cards -->
+          <div class="viz" data-amine-cards>
+            <div class="viz__title">Amine Protonation Cards</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">세 amine type에서 Neutral / Protonated 상태를 전환하세요.</p>
+            <div class="amine-cards">
+              <div class="amc-card" data-amine="primary">
+                <div class="amc-card-head">
+                  <span class="amc-card-title">Primary Amine (–NH₂)</span>
+                  <div class="amc-state-toggle">
+                    <button class="amc-state-btn" data-state="neutral">Neutral</button>
+                    <button class="amc-state-btn" data-state="protonated">BH⁺</button>
+                  </div>
+                </div>
+                <div class="amc-card-body">
+                  <div class="amc-prop"><div class="amc-prop-label">HBD</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">HBA</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">Charge</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">Interaction</div><div class="amc-prop-val">—</div></div>
+                </div>
+              </div>
+              <div class="amc-card" data-amine="secondary">
+                <div class="amc-card-head">
+                  <span class="amc-card-title">Secondary Amine (–NHR)</span>
+                  <div class="amc-state-toggle">
+                    <button class="amc-state-btn" data-state="neutral">Neutral</button>
+                    <button class="amc-state-btn" data-state="protonated">BH⁺</button>
+                  </div>
+                </div>
+                <div class="amc-card-body">
+                  <div class="amc-prop"><div class="amc-prop-label">HBD</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">HBA</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">Charge</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">Interaction</div><div class="amc-prop-val">—</div></div>
+                </div>
+              </div>
+              <div class="amc-card" data-amine="tertiary">
+                <div class="amc-card-head">
+                  <span class="amc-card-title">Tertiary Amine (–NR₂)</span>
+                  <div class="amc-state-toggle">
+                    <button class="amc-state-btn" data-state="neutral">Neutral</button>
+                    <button class="amc-state-btn" data-state="protonated">BH⁺</button>
+                  </div>
+                </div>
+                <div class="amc-card-body">
+                  <div class="amc-prop"><div class="amc-prop-label">HBD</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">HBA</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">Charge</div><div class="amc-prop-val">—</div></div>
+                  <div class="amc-prop"><div class="amc-prop-label">Interaction</div><div class="amc-prop-val">—</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="viz__msg">Amine의 interaction pattern은 protonation state에 따라 달라진다.</div>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Amide — 겉보기와 다른 chemistry</h2>
+
+          <p>Amide(R–C(=O)–NR₂)는 carbonyl + amine을 합친 것 같지만 실제 성질은 단순 합이 아니다. 핵심은 <b>resonance</b>다. Nitrogen lone pair가 carbonyl과 conjugation되어 C–N bond에 partial double-bond character가 생긴다.</p>
+
+          <p>따라서: amide nitrogen은 일반적인 amine보다 훨씬 덜 basic하고, amide N은 일반적으로 <b>HBA가 아니다</b>. 이것은 아주 자주 틀리는 부분이다.</p>
+
+          <!-- V4: Amide Resonance -->
+          <div class="viz" data-amide-resonance>
+            <div class="viz__title">Amine vs Amide Resonance</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Amide와 Amine의 N 특성을 비교하세요.</p>
+            <div class="amide-resonance">
+              <div class="ar-toggle-row">
+                <button class="ar-toggle-btn" data-mode="amide">Amide N</button>
+                <button class="ar-toggle-btn" data-mode="amine">Amine N</button>
+              </div>
+              <div class="ar-diagram">
+                <div class="ar-struct">
+                  <div class="ar-struct-title">Amide</div>
+                  <div class="ar-struct-formula">O=C–N ⇌ O⁻–C=N⁺</div>
+                  <div class="ar-struct-arrow">Resonance</div>
+                  <div class="ar-struct-note">N lone pair delocalized</div>
+                </div>
+                <div class="ar-struct">
+                  <div class="ar-struct-title">Amine</div>
+                  <div class="ar-struct-formula">R₃N :</div>
+                  <div class="ar-struct-arrow">No conjugation</div>
+                  <div class="ar-struct-note">N lone pair localized</div>
+                </div>
+              </div>
+              <div class="ar-consequences">
+                <div class="ar-cons-row"><span class="ar-cons-label">N basicity</span><span class="ar-cons-val">—</span></div>
+                <div class="ar-cons-row"><span class="ar-cons-label">N as HBA?</span><span class="ar-cons-val">—</span></div>
+                <div class="ar-cons-row"><span class="ar-cons-label">C–N rotation</span><span class="ar-cons-val">—</span></div>
+                <div class="ar-cons-row"><span class="ar-cons-label">Planarity</span><span class="ar-cons-val">—</span></div>
+              </div>
+            </div>
+            <div class="viz__msg">Amide의 모든 특징은 resonance에서 연결해 이해할 수 있다.</div>
+          </div>
+
+          <div class="card card--mistake" style="margin-top:16px;">
+            <div class="card__label"><span class="dot"></span>자주 틀리는 것</div>
+            <p>Tertiary amide(R–CONR₂)에는 C=O HBA만 있다. Amide N 자체가 HBA나 HBD가 되지 않는다. "N이 있으면 HBA"라는 단순 규칙을 적용하면 안 된다.</p>
+          </div>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> Carboxylic Acid</h2>
+
+          <p>Carboxylic acid(R–COOH)는 대표적인 acidic group이다. Physiological pH에서는 대부분 R–COO⁻ 형태가 지배적이다. 따라서 negative charge를 제공하며 protein Lys/Arg와 강한 electrostatic interaction을 만들 수 있다.</p>
+
+          <p>하지만 physiological pH에서 negative charge가 크면 passive permeability가 제한될 수 있다. 또 phase II에서 acyl glucuronidation 등의 metabolism도 고려해야 한다.</p>
+
+          <!-- V5: Acid ↔ Ester Switch -->
+          <div class="viz" data-acid-ester>
+            <div class="viz__title">Acid ↔ Ester Property Switch</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">pH slider를 조절해 각 pH에서의 Acid 상태를 확인하고, Ester와 비교하세요.</p>
+            <div class="acid-ester-switch">
+              <div class="aes-toggle-row">
+                <button class="aes-toggle-btn" data-mol="acid">Carboxylic Acid</button>
+                <button class="aes-toggle-btn" data-mol="ester">Ester</button>
+              </div>
+              <div class="aes-ph-row">
+                <label>pH: <span class="aes-ph-val">7.4</span></label>
+                <input class="aes-ph-slider" type="range" min="2" max="10" step="0.5" value="7.4" />
+              </div>
+              <div class="aes-props">
+                <div class="aes-prop-row"><span class="aes-prop-label">Charge</span><span class="aes-prop-val">—</span></div>
+                <div class="aes-prop-row"><span class="aes-prop-label">HBD</span><span class="aes-prop-val">—</span></div>
+                <div class="aes-prop-row"><span class="aes-prop-label">HBA</span><span class="aes-prop-val">—</span></div>
+                <div class="aes-prop-row"><span class="aes-prop-label">Permeability</span><span class="aes-prop-val">—</span></div>
+                <div class="aes-prop-row"><span class="aes-prop-label">Hydrolysis</span><span class="aes-prop-val">—</span></div>
+              </div>
+            </div>
+            <div class="viz__msg">Functional-group conversion은 ionization을 바꾸면서 pharmacokinetics까지 바꾼다.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> Ester / Prodrug 관점</h2>
+
+          <p>Ester(R–C(=O)–OR)는 일반적으로 neutral이다. Carbonyl oxygen이 HBA이며 HBD는 없다. Carboxylic acid의 negative charge를 제거하므로 esterification은 lipophilicity 증가, permeability 증가 가능이라는 큰 변화를 만든다. 그래서 prodrug 전략에서도 자주 사용된다.</p>
+
+          <p>하지만 esterase에 의해 ester → acid + alcohol로 hydrolysis될 수 있다. 따라서 ester가 실제 active species인지, 세포 내에서 hydrolysis되어 acid를 방출하는지 확인해야 한다.</p>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> Carbonyl Family — Urea / Carbamate / Sulfonamide</h2>
+
+          <p><b>Ketone:</b> HBA, HBD 아님, neutral. Carbonyl oxygen이 protein donor와 H-bond 형성 가능.</p>
+
+          <p><b>Urea(R–NH–C(=O)–NH–R):</b> Multiple H-bonding motif. Carbonyl oxygen HBA + NH HBD 가능. 강한 directional H-bond network을 제공하지만 polarity 증가로 permeability 문제 가능. Desolvation penalty 증가.</p>
+
+          <p><b>Carbamate(R–O–C(=O)–NR₂):</b> Carbonyl HBA + alkoxy oxygen HBA + NH가 있으면 HBD. Amine보다 훨씬 낮은 basicity. Drug design에서 polarity 조절, metabolic stability 조절, linker로 활용 가능.</p>
+
+          <p><b>Sulfonamide(R–SO₂–NR₂):</b> 두 sulfonyl oxygen이 strong HBA. NH가 있으면 HBD. 어떤 sulfonamide는 N–H가 상당히 acidic할 수 있다. 높은 polarity 때문에 permeability 문제 가능.</p>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Aromatic Heterocycles — "Ring N"은 하나가 아니다</h2>
+
+          <p>Pyridine과 pyrrole 두 구조 모두 aromatic N이 있지만 chemistry는 완전히 다르다.</p>
+
+          <p><b>Pyridine:</b> N lone pair는 aromatic sextet에 직접 참여하지 않는다 → HBA 가능, protonation 가능, weak base. Phenyl → pyridyl 치환: polarity ↑, HBA 추가, logP 감소 가능.</p>
+
+          <p><b>Pyrrole:</b> N lone pair는 aromaticity에 참여한다 → 일반적으로 HBA 아님. N–H → HBD 가능.</p>
+
+          <p><b>Imidazole:</b> pyridine-like N (HBA) + pyrrole-like N–H (HBD) 공존. Protonation, donor/acceptor pattern, tautomerism이 복잡.</p>
+
+          <p><b>Indole:</b> N–H → HBD. HBA 아님. 큰 aromatic surface → hydrophobic + π interaction 가능.</p>
+
+          <!-- V6: Heterocycle Nitrogen Quiz -->
+          <div class="viz" data-hetero-quiz>
+            <div class="viz__title">Heterocycle Nitrogen Quiz</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Heterocycle을 선택하고 N 특성에 대한 질문에 답하세요.</p>
+            <div class="hetero-quiz">
+              <div class="hq-structs">
+                <div class="hq-struct-btn" data-ring="pyridine"><span style="font-size:16px;">⬡N</span><div class="hq-struct-name">Pyridine</div></div>
+                <div class="hq-struct-btn" data-ring="pyrrole"><span style="font-size:16px;">⬡NH</span><div class="hq-struct-name">Pyrrole</div></div>
+                <div class="hq-struct-btn" data-ring="imidazole"><span style="font-size:14px;">im</span><div class="hq-struct-name">Imidazole</div></div>
+                <div class="hq-struct-btn" data-ring="indole"><span style="font-size:14px;">ind</span><div class="hq-struct-name">Indole</div></div>
+                <div class="hq-struct-btn" data-ring="pyrazole"><span style="font-size:14px;">pz</span><div class="hq-struct-name">Pyrazole</div></div>
+              </div>
+              <div class="hq-question-area">
+                <div class="hq-question">Heterocycle을 먼저 선택하세요</div>
+                <div class="hq-answer-btns">
+                  <button class="hq-answer-btn" data-ans="yes">예</button>
+                  <button class="hq-answer-btn" data-ans="no">아니오</button>
+                </div>
+                <div class="hq-result"></div>
+              </div>
+              <div class="hq-score">0/0</div>
+            </div>
+            <div class="viz__msg">N이라고 모두 같은 N이 아니다.</div>
+          </div>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Nitrile / Halogen</h2>
+
+          <p><b>Nitrile(–C≡N):</b> 작고 linear하다. Nitrogen은 HBA 역할 가능. Electron-withdrawing group. 크기가 작으므로 tight pocket에 유리. Neighboring group의 pKa를 바꿀 수도 있다.</p>
+
+          <h4>Halogen — "hydrophobic atom"으로만 보면 부족하다</h4>
+
+          <p><b>Fluorine:</b> 매우 작고 electronegative. C–F bond가 매우 강하다. Electronic tuning, pKa 변화, metabolic blocking, conformation 변화에 사용된다. <b>중요: organic fluorine을 일반적인 strong H-bond acceptor로 생각하면 안 된다.</b></p>
+
+          <p><b>Cl / Br:</b> Hydrophobic pocket occupation, steric volume 증가, polarizability 증가. 특정 geometry에서는 halogen bond도 가능하다.</p>
+
+          <!-- V7: Halogen Toolbox -->
+          <div class="viz" data-halogen-box>
+            <div class="viz__title">Halogen Toolbox</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">F / Cl / Br 탭을 선택해 property profile을 비교하세요.</p>
+            <div class="halogen-box">
+              <div class="hb-tabs">
+                <button class="hb-tab-btn" data-hal="F">F</button>
+                <button class="hb-tab-btn" data-hal="Cl">Cl</button>
+                <button class="hb-tab-btn" data-hal="Br">Br</button>
+              </div>
+              <div class="hb-meters">
+                <div class="hb-meter-row"><span class="hb-meter-label">Size (van der Waals)</span><div class="hb-meter-track"><div class="hb-meter-fill" style="width:15%"></div></div></div>
+                <div class="hb-meter-row"><span class="hb-meter-label">Polarizability</span><div class="hb-meter-track"><div class="hb-meter-fill" style="width:80%"></div></div></div>
+                <div class="hb-meter-row"><span class="hb-meter-label">Electronic effect</span><div class="hb-meter-track"><div class="hb-meter-fill" style="width:90%"></div></div></div>
+                <div class="hb-meter-row"><span class="hb-meter-label">Hydrophobic contrib.</span><div class="hb-meter-track"><div class="hb-meter-fill" style="width:30%"></div></div></div>
+                <div class="hb-meter-row"><span class="hb-meter-label">Metabolic blocking</span><div class="hb-meter-track"><div class="hb-meter-fill" style="width:70%"></div></div></div>
+              </div>
+              <div class="hb-note" style="margin-top:12px;">F 탭을 선택하면 중요한 주의사항이 표시됩니다.</div>
+            </div>
+            <div class="viz__msg">Halogen choice도 steric + electronic + metabolic design이다.</div>
+          </div>
+
+          <div class="card card--mistake" style="margin-top:16px;">
+            <div class="card__label"><span class="dot"></span>Metabolic Blocking의 함정</div>
+            <p>F를 넣으면 metabolism이 항상 좋아지는 것은 아니다. 해당 위치의 metabolism을 막으면 분자 내 다른 위치로 metabolism이 이동할 수 있다(metabolic switching).</p>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Alkyl / Aromatic Ring</h2>
+
+          <p><b>Methyl(CH₃):</b> 가장 단순해 보이지만 hydrophobic contact, cavity filling, conformational preference, metabolism, logP를 동시에 바꿀 수 있다. 4강에서 배운 methyl-induced conformational bias를 기억하자.</p>
+
+          <p><b>Phenyl:</b> Hydrophobic surface, π interaction, rigid geometry를 제공한다. 동시에 lipophilicity 증가, solubility 감소, aromatic oxidation, off-target binding 문제가 생길 수 있다.</p>
+
+          <p><b>Phenyl → Pyridyl:</b> Medicinal chemistry에서 흔한 heteroatom scan. CH 하나를 N으로 바꾸면 HBA 추가, polarity 증가, logP 감소 가능, electronics 변화, metabolic profile 변화가 일어난다. 작은 변화로 multi-property optimization이 가능하다.</p>
+
+          <!-- V8: Metabolic Map -->
+          <div class="viz" data-metab-map>
+            <div class="viz__title">Functional Group Metabolic Map</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 group을 탭해 주요 metabolic pathway를 확인하세요.</p>
+            <div class="metab-map">
+              <div class="mm-groups">
+                <button class="mm-group-btn" data-mg="methoxy">OMe</button>
+                <button class="mm-group-btn" data-mg="amine">Amine</button>
+                <button class="mm-group-btn" data-mg="alcohol">Alcohol</button>
+                <button class="mm-group-btn" data-mg="ester">Ester</button>
+                <button class="mm-group-btn" data-mg="benzyl">Benzylic CH</button>
+              </div>
+              <div class="mm-result">Group을 선택하면 대사 경로가 표시됩니다.</div>
+            </div>
+            <div class="viz__msg">Structure를 보면 potential metabolic soft spot을 동시에 읽는다.</div>
+          </div>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Functional Group Interconversion</h2>
+
+          <p>같은 scaffold에서 group을 바꾸면 어떤 property가 변하는지 정리하자.</p>
+
+          <div style="display:grid;gap:10px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>OH → OMe</div>
+              <p>HBD 제거, polarity 감소, lipophilicity 증가. Binding에서 HBD가 필요한지 확인하는 고전적 analogue pair.</p>
+            </div>
+            <div class="card card--chem" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>NH₂ → NHAc (Amine → Amide)</div>
+              <p>Basicity 크게 감소, positive charge 소실, planarity 증가. 매우 큰 chemistry change이다. "acetyl 하나 붙였다"고 생각하면 안 된다.</p>
+            </div>
+            <div class="card card--bio" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>COOH → COOEt (Acid → Ester)</div>
+              <p>Negative charge 제거, lipophilicity 증가, permeability 증가 가능, esterase hydrolysis 가능. Prodrug 전략의 기초.</p>
+            </div>
+            <div class="card card--ai" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Phenyl → Pyridyl</div>
+              <p>HBA 추가, polarity 증가, basicity 가능, electronic distribution 변화, metabolism 변화. Ring N 하나 추가도 multi-property modification.</p>
+            </div>
+          </div>
+
+          <!-- V10: Functional Group Swap Lab -->
+          <div class="viz" data-fg-swap>
+            <div class="viz__title">Functional Group Swap Lab</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Group을 선택해 property profile을 비교하세요.</p>
+            <div class="fg-swap">
+              <div class="fgs-groups">
+                <button class="fgs-group-btn" data-grp="OH">–OH</button>
+                <button class="fgs-group-btn" data-grp="OMe">–OMe</button>
+                <button class="fgs-group-btn" data-grp="NH2">–NH₂</button>
+                <button class="fgs-group-btn" data-grp="NHAc">–NHAc</button>
+                <button class="fgs-group-btn" data-grp="COOH">–COOH</button>
+                <button class="fgs-group-btn" data-grp="COOEt">–COOEt</button>
+                <button class="fgs-group-btn" data-grp="CN">–CN</button>
+              </div>
+              <div class="fgs-meters">
+                <div class="fgs-meter-row"><span class="fgs-meter-label">HBD capacity</span><div class="fgs-meter-track"><div class="fgs-meter-fill fgs-meter-fill--hbd" style="width:80%"></div></div></div>
+                <div class="fgs-meter-row"><span class="fgs-meter-label">HBA capacity</span><div class="fgs-meter-track"><div class="fgs-meter-fill fgs-meter-fill--hba" style="width:75%"></div></div></div>
+                <div class="fgs-meter-row"><span class="fgs-meter-label">Ionization risk</span><div class="fgs-meter-track"><div class="fgs-meter-fill fgs-meter-fill--ion" style="width:30%"></div></div></div>
+                <div class="fgs-meter-row"><span class="fgs-meter-label">Lipophilicity contrib.</span><div class="fgs-meter-track"><div class="fgs-meter-fill fgs-meter-fill--lipo" style="width:25%"></div></div></div>
+                <div class="fgs-meter-row"><span class="fgs-meter-label">Permeability tendency</span><div class="fgs-meter-track"><div class="fgs-meter-fill fgs-meter-fill--perm" style="width:40%"></div></div></div>
+                <div class="fgs-meter-row"><span class="fgs-meter-label">Metabolic liability</span><div class="fgs-meter-track"><div class="fgs-meter-fill fgs-meter-fill--metab" style="width:60%"></div></div></div>
+              </div>
+              <div class="fgs-note">Group을 선택하면 특징이 표시됩니다.</div>
+            </div>
+            <div class="viz__msg">Functional-group swap은 property engineering이다.</div>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Real Drug Example — Lidocaine</h2>
+
+          <p>Lidocaine 구조를 단순화하면 세 부분으로 볼 수 있다: 방향족 ring (lipophilic), amide linker (neutral polar), tertiary amine (basic ionizable center). 이 세 group의 역할이 서로 완전히 다르다.</p>
+
+          <p>특히 같은 molecule 안에 nitrogen이 두 개 있지만, 하나는 amide N(resonance로 인해 거의 basic하지 않음)이고 다른 하나는 tertiary amine N(protonated될 수 있음)이다. <b>N 개수 = 2</b>라는 descriptor만으로는 chemical behavior를 충분히 설명할 수 없다.</p>
+
+          <!-- V9: Lidocaine Functional Map -->
+          <div class="viz" data-lido-map>
+            <div class="viz__title">Lidocaine Functional Map</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 region을 탭해 HBD/HBA, charge, role을 확인하세요.</p>
+            <div class="lido-map">
+              <div class="lm-regions">
+                <button class="lm-region-btn" data-region="ring">
+                  <span class="lm-region-icon">⬡</span>
+                  <span class="lm-region-title">Aromatic Ring</span>
+                  <span class="lm-region-tag lm-region-tag--hydro">Hydrophobic</span>
+                </button>
+                <button class="lm-region-btn" data-region="amide">
+                  <span class="lm-region-icon">—C(=O)N—</span>
+                  <span class="lm-region-title">Amide Linker</span>
+                  <span class="lm-region-tag lm-region-tag--polar">Neutral Polar</span>
+                </button>
+                <button class="lm-region-btn" data-region="amine">
+                  <span class="lm-region-icon">N</span>
+                  <span class="lm-region-title">Tertiary Amine</span>
+                  <span class="lm-region-tag lm-region-tag--ionic">Ionizable</span>
+                </button>
+              </div>
+              <div class="lm-detail"></div>
+            </div>
+            <div class="viz__msg">같은 molecule 내부에서도 functional group마다 역할이 완전히 다르다.</div>
+          </div>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> AI Drug Discovery Connection</h2>
+
+          <p>단순 molecular descriptor에서는 N count, O count, HBD count, HBA count 같은 feature를 사용할 수 있다. 더 복잡한 model은 local bonding environment를 통해 기능을 학습할 수 있다. 하지만 결국 중요한 것은:</p>
+
+          <blockquote>
+            Atom의 의미는 주변 chemical context에 따라 달라진다.
+          </blockquote>
+
+          <!-- V11: AI Context Failure -->
+          <div class="viz" data-ai-context>
+            <div class="viz__title">AI Context Failure</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">단순 atom count로는 두 N의 차이가 보이지 않는다.</p>
+            <div class="ai-context-fail">
+              <div class="acf-panels">
+                <div class="acf-panel acf-panel--a">
+                  <div class="acf-panel-title">Molecule A: Aliphatic Amine</div>
+                  <div class="acf-atom">–NH₂</div>
+                  <div class="acf-desc">N count = 1. AI simple descriptor 보기: "N"</div>
+                </div>
+                <div class="acf-panel acf-panel--b">
+                  <div class="acf-panel-title">Molecule B: Amide N</div>
+                  <div class="acf-atom">–C(=O)N–</div>
+                  <div class="acf-desc">N count = 1. AI simple descriptor 보기: "N"</div>
+                </div>
+              </div>
+              <button class="acf-context-btn">Chemical Context 확인하기</button>
+              <div class="acf-context-reveal">
+                <div class="acf-context-detail acf-context-detail--a">Amine N: pKa ~10 → BH⁺ major at pH 7.4 → basic / HBA / salt bridge 가능</div>
+                <div class="acf-context-detail acf-context-detail--b">Amide N: resonance → pKa ~0 → neutral at all physiological pH → NOT HBA / NOT basic</div>
+              </div>
+              <div class="acf-msg acf-msg--alert">단순 atom count로는 이 차이를 볼 수 없다</div>
+            </div>
+            <div class="viz__msg">Atom count는 chemistry가 아니다. Local environment가 atom의 역할을 결정한다.</div>
+          </div>
+
+          <div class="card card--ai" style="margin-top:16px;">
+            <div class="card__label"><span class="dot"></span>Metabolic Liability Prediction의 한계</div>
+            <p>"Metabolic soft spot detected"는 hypothesis이지 확정적인 metabolic pathway가 아니다. Metabolism은 enzyme context, exposure, competing pathways에 의존한다. Structural alert를 무조건 제거하면 좋은 compound도 버릴 수 있다.</p>
+          </div>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> Failure Case — "OH를 추가하면 solubility가 좋아질 것이다"</h2>
+
+          <p>Compound A는 moderately lipophilic하다. Team이 solubility를 높이려고 OH를 추가해 Compound B를 만든다. 결과: solubility는 조금 증가했지만 biochemical potency ↓ 15배, permeability ↓ 20배, microsomal clearance ↑. 전체 compound quality 악화.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>세 가지 실패 원인</div>
+            <ul class="clean">
+              <li><b>Binding problem:</b> OH를 추가했지만 protein pocket에 적절한 H-bond partner가 없었다. Desolvation cost &gt; interaction gain. Potency 감소.</li>
+              <li><b>Permeability problem:</b> HBD와 polarity 증가로 passive diffusion 감소.</li>
+              <li><b>Clearance problem:</b> 새로운 OH가 phase II conjugation 또는 추가 metabolism의 substrate가 되었다.</li>
+            </ul>
+          </div>
+
+          <blockquote>
+            "Polar group 추가 → solubility 개선" 하나만 보고 설계하면 안 된다. 7가지 질문을 모두 해야 한다.
+          </blockquote>
+        </section>
+
+        <!-- S17 -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> Scientist's Thinking — Amine → Amide 변환</h2>
+
+          <p>Observation: A → B에서 amine을 amide로 변경. Potency 감소. Permeability 증가. 어떻게 분석할까?</p>
+
+          <div style="display:grid;gap:8px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 1 — Electronics</div><p>Amine: basic. Amide: resonance stabilized, weakly basic. N lone pair delocalization으로 basicity 급감.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 2 — Ionization</div><p>Positive fraction 크게 감소. pH 7.4에서 neutral population 증가.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 3 — Binding</div><p>기존 salt bridge가 있었다면 소실 가능. Potency 감소 설명 가능. Amide carbonyl이 새로운 HBA로 작동할 수도 있다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 4 — Conformation</div><p>Amide planarity가 ligand geometry를 바꿨는가? 4강 conformational restriction과 연결.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 5 — Property</div><p>Charge 감소가 permeability를 개선했다. 이것이 permeability 증가 설명.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 6 — Metabolism</div><p>N-dealkylation vulnerability가 줄었는가? 새로운 amide hydrolysis issue는 없는가?</p></div>
+          </div>
+
+          <!-- V12: FG Checklist -->
+          <div class="viz" data-fg-checklist>
+            <div class="viz__title">Medicinal Chemist's FG Checklist</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Group을 선택하면 핵심 질문이 표시됩니다.</p>
+            <div class="fg-checklist">
+              <div class="fgc-select-row">
+                <label>Functional Group 선택</label>
+                <select class="fgc-select">
+                  <option value="amide">Amide</option>
+                  <option value="amine">Amine</option>
+                  <option value="phenol">Phenol</option>
+                  <option value="ether">Ether</option>
+                </select>
+              </div>
+              <div class="fgc-items"></div>
+            </div>
+            <div class="viz__msg">새로운 molecule을 보면 이름보다 기능을 읽어라.</div>
+          </div>
+
+          <h4 style="margin-top:24px;">Structure → Function Chain</h4>
+
+          <div class="card card--bio">
+            <div class="card__label"><span class="dot"></span>완전한 분석 체인</div>
+            <p><b>Functional group</b> → Electronic property → HBD/HBA + pKa → Solvation/lipophilicity → Binding interaction → Permeability/solubility → Metabolism → Cell exposure → Activity</p>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>5강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Functional group은 HBD/HBA만 결정하는 것이 아니라 pKa, conformation, metabolism, permeability까지 동시에 바꾼다.</b>
+              <span>OH 하나를 OMe로 바꾸면 HBD 제거, polarity 감소, lipophilicity 증가, metabolic pathway 변화가 동시에 일어난다.</span>
+            </li>
+            <li>
+              <b>같은 atom이라도 chemical context가 다르면 성질이 완전히 달라진다. Amine N과 amide N은 대표적인 예다.</b>
+              <span>Amide N은 resonance 때문에 일반적으로 HBA가 아니며 거의 basic하지 않다.</span>
+            </li>
+            <li>
+              <b>Polar group을 추가한다고 항상 좋은 것이 아니다. Desolvation, permeability, metabolism의 대가를 확인해야 한다.</b>
+              <span>OH 추가 = solubility 증가이지만 potency, permeability, clearance가 동시에 악화될 수 있다.</span>
+            </li>
+            <li>
+              <b>Functional-group interconversion은 molecule의 한 부분만 바꾸는 것이 아니라 여러 physicochemical property를 동시에 perturb하는 experiment다.</b>
+              <span>Amine → Amide는 basicity, HBA, planarity, conformation을 동시에 바꾼다.</span>
+            </li>
+            <li>
+              <b>AI가 substructure와 activity correlation을 학습할 수는 있지만, functional group의 실제 chemical behavior는 local context와 assay environment에 의존한다.</b>
+              <span>"N count = 1"인 두 molecule이 완전히 다른 chemistry를 가질 수 있다.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Compound A의 tertiary amine을 tertiary amide로 바꿨다. 예상되는 변화 세 가지 이상은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              대표적으로:
+              <div class="exp">① Basicity 크게 감소 (pKa ~10 → ~0). ② Physiological pH에서 positive charge 소실. ③ Salt bridge interaction 소실 가능. ④ Amide carbonyl HBA 생성 (C=O). ⑤ Planarity 증가, conformational restriction. ⑥ N-dealkylation 취약성 감소. 이 중 셋 이상을 쓸 수 있으면 good.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Phenolic OH를 OMe로 바꿨더니 permeability가 좋아졌지만 potency가 낮아졌다. 가능한 설명은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              OH가 target과 중요한 H-bond donor interaction을 하고 있었을 수 있다.
+              <div class="exp">OMe에서는 HBD 기능이 사라진다. 동시에 polarity 감소와 lipophilicity 증가로 permeability는 개선될 수 있다. 즉 binding과 exposure가 서로 반대 방향으로 움직였다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Pyridine N과 pyrrole N의 차이는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Pyridine N: lone pair가 aromatic sextet에 참여하지 않음 → HBA 가능, protonation 가능.
+              <div class="exp">Pyrrole N: lone pair가 aromaticity에 참여 → 일반적으로 HBA 아님. N–H가 있으면 HBD로 작동 가능. 이 구별을 명확히 해야 heterocycle chemistry를 제대로 읽을 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Carboxylic acid를 ester로 바꿨더니 cellular activity가 좋아졌다. 가능한 설명은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Carboxylic acid의 negative charge가 제거되면서 passive permeability가 증가했을 가능성이 있다.
+              <div class="exp">다만 ester가 실제 active species인지, 세포 내에서 hydrolysis되어 acid를 방출하는지 확인해야 한다. Prodrug-like behavior 가능성도 생각한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>AI model이 "amine-containing compound는 activity가 높다"고 학습했는데 새 scaffold에 amine을 붙였더니 inactive였다. 왜?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Amine의 실제 behavior는 scaffold context에 따라 달라질 수 있다.
+              <div class="exp">예: pKa 변화, protonation fraction 변화, salt bridge geometry 부재, permeability 악화, conformational change 등이 가능하다. "amine"이라는 substructure 자체가 mechanism은 아니다. AI는 substructure-activity pattern을 학습한 것이지 underlying chemistry mechanism을 이해한 것이 아닐 수 있다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">6강 · Bioisostere</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">오늘 배운 functional group들을 실제로 서로 바꾼다. COOH → tetrazole, phenyl → pyridyl, amide → heterocycle, H → F처럼 "원래 interaction은 유지하면서 무엇을 개선하려고 functional group을 교체하는가?"를 다룬다. 핵심 질문: 같은 biological role을 유지하면서 potency, pKa, permeability, metabolism을 더 좋은 방향으로 바꿀 수 있는가?</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="04.html">◀ 4강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="06.html">▶ 6강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

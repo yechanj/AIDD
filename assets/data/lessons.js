@@ -34,7 +34,7 @@ window.AIDD_TRACKS = [
         title: "pKa, ionization, logP / logD",
         desc: "pH에 따라 molecule이 바뀐다. Ionization이 binding, permeability, distribution에 미치는 영향.",
         tags: ["pKa", "Ionization", "logP", "logD", "pH effect"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 4,
@@ -42,7 +42,7 @@ window.AIDD_TRACKS = [
         title: "Stereochemistry와 conformation",
         desc: "Chirality, conformational restriction, ring system이 binding에 미치는 영향. Bioactive conformation의 개념.",
         tags: ["Chirality", "Conformation", "Atropisomer", "Ring"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 5,
@@ -50,7 +50,7 @@ window.AIDD_TRACKS = [
         title: "Functional group — 결합과 성질의 연결",
         desc: "흔한 functional group이 pKa, logP, H-bond capacity, metabolic liability에 미치는 영향.",
         tags: ["Functional group", "SAR", "Bioisostere"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 6,

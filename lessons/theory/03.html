@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L03 · pKa / Ionization / logP / logD — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L03 · pKa · Ionization · logP / logD</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L03</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>pKa / logP / logD</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> pKa의 의미</a></li>
+          <li><a href="#s03"><span class="num">03</span> Henderson–Hasselbalch 직관</a></li>
+          <li><a href="#s04"><span class="num">04</span> Weak Acid</a></li>
+          <li><a href="#s05"><span class="num">05</span> Weak Base</a></li>
+          <li><a href="#s06"><span class="num">06</span> Ionization이 바꾸는 것들</a></li>
+          <li><a href="#s07"><span class="num">07</span> logP</a></li>
+          <li><a href="#s08"><span class="num">08</span> logD</a></li>
+          <li><a href="#s09"><span class="num">09</span> logP vs logD</a></li>
+          <li><a href="#s10"><span class="num">10</span> Molecular View / pKa Tuning</a></li>
+          <li><a href="#s11"><span class="num">11</span> Real Drug — Ibuprofen</a></li>
+          <li><a href="#s12"><span class="num">12</span> Basic Drug Example</a></li>
+          <li><a href="#s13"><span class="num">13</span> pKa와 Binding</a></li>
+          <li><a href="#s14"><span class="num">14</span> Ion Trapping</a></li>
+          <li><a href="#s15"><span class="num">15</span> AI 연결</a></li>
+          <li><a href="#s16"><span class="num">16</span> Failure Case</a></li>
+          <li><a href="#s17"><span class="num">17</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 03</div>
+          <h1>pKa, Ionization, logP / logD</h1>
+          <p>같은 molecule인데 pH가 바뀌면 왜 binding, solubility, permeability가 모두 달라지는가?</p>
+        </header>
+
+        <!-- ======================================================
+             S01 · Opening Case
+             ====================================================== -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — Biochemical potency는 5 nM인데 cell potency는 5 µM다</h2>
+
+          <p>어떤 kinase inhibitor A가 있다고 하자. Purified enzyme assay에서 <b>IC50 = 5 nM</b>. 매우 강력하다. 그런데 cellular assay에서는 <b>IC50 = 5 µM</b>. 무려 1,000배 차이가 난다. Target binding이 틀렸던 것일까?</p>
+
+          <p>Medicinal chemistry team은 analogue B를 만든다. A의 side chain에 있던 <b>basic amine을 제거</b>했다.</p>
+
+          <div class="twopanel" style="margin:18px 0;">
+            <div class="panel panel--a">
+              <h5>Biochemical Assay</h5>
+              <div style="margin:8px 0;"><span style="font-size:13px;color:var(--ink-soft);">A</span> <b style="color:var(--ok);">IC50 = 5 nM</b></div>
+              <div><span style="font-size:13px;color:var(--ink-soft);">B</span> <b style="color:var(--warn);">IC50 = 30 nM</b></div>
+              <div style="font-size:12px;color:var(--ink-faint);margin-top:8px;">A가 target affinity 우위</div>
+            </div>
+            <div class="panel panel--b">
+              <h5>Cellular Assay</h5>
+              <div style="margin:8px 0;"><span style="font-size:13px;color:var(--ink-soft);">A</span> <b style="color:var(--danger);">IC50 = 5 µM</b></div>
+              <div><span style="font-size:13px;color:var(--ink-soft);">B</span> <b style="color:var(--ok);">IC50 = 150 nM</b></div>
+              <div style="font-size:12px;color:var(--ink-faint);margin-top:8px;">B가 cell 활성 우위</div>
+            </div>
+          </div>
+
+          <p>왜 이런 일이 가능할까? Basic amine은 target에서 salt bridge 또는 H-bond를 만들 수 있다. 즉 binding에는 유리할 수 있다. 하지만 physiological pH에서 protonated되어 positive charge를 띤다면 membrane crossing에는 부담이 될 수 있다.</p>
+
+          <blockquote>
+            하나의 functional group은 binding interaction과 physicochemical property를 동시에 바꾼다.
+          </blockquote>
+
+          <p>이제 molecular drawing을 다시 보자. 우리는 종이에 R–NH₂처럼 amine을 그린다. 하지만 실제 aqueous solution에서는 molecule이 하나의 protonation state로만 존재하는 것이 아니다. 두 형태가 평형을 이룬다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>핵심 질문</div>
+            <p>이 구조가 biological pH에서 실제로 어떤 <b>charge state</b>로 존재하는가?</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S02 · pKa의 의미
+             ====================================================== -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> pKa란 무엇인가?</h2>
+
+          <p>Acid dissociation을 가장 단순하게 쓰면:</p>
+
+          <div class="card card--chem" style="text-align:center;font-size:16px;">
+            HA ⇌ H⁺ + A⁻
+          </div>
+
+          <p>그리고 pKa = −log Ka 이다. 하지만 drug discovery에서는 정의 자체보다 다음이 중요하다.</p>
+
+          <div class="oneline">
+            pKa는 특정 pH에서 molecule이 어떤 protonation state로 존재하는지 판단하는 기준점이다.
+          </div>
+
+          <!-- V1: Protonation Slider -->
+          <div class="viz" data-prot-slider data-pka="8.5">
+            <div class="viz__title">pH–pKa Protonation Slider</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">pH slider를 움직여 basic amine (pKa 8.5)의 protonation 분포를 확인하세요.</p>
+            <div class="prot-slider">
+              <div class="prot-ph-row">
+                <label>pH</label>
+                <input class="prot-ph-slider" type="range" min="2" max="12" step="0.5" value="7.4" />
+                <span class="prot-ph-val">7.4</span>
+              </div>
+              <div class="prot-pka-badge">고정 pKa = 8.5 (basic amine 예시)</div>
+              <div class="prot-bars">
+                <div class="prot-bar-row">
+                  <label>BH⁺</label>
+                  <div class="prot-bar-track"><div class="prot-bar-fill prot-bar-fill--bh" style="width:90%"></div></div>
+                  <span class="prot-bar-pct prot-bar-pct--bh">90%</span>
+                </div>
+                <div class="prot-bar-row">
+                  <label>B</label>
+                  <div class="prot-bar-track"><div class="prot-bar-fill prot-bar-fill--b" style="width:10%"></div></div>
+                  <span class="prot-bar-pct prot-bar-pct--b">10%</span>
+                </div>
+              </div>
+              <div class="prot-decision prot-decision--protonated">BH⁺ 우세 — 대부분 protonated</div>
+            </div>
+            <div class="viz__msg">구조는 같아 보여도 pH에 따라 실제 molecular population이 달라진다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S03 · Henderson–Hasselbalch 직관
+             ====================================================== -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Henderson–Hasselbalch를 drug discovery 언어로 해석하기</h2>
+
+          <p>가장 중요한 기준: <b>pH = pKa</b>일 때 protonated form과 deprotonated form의 비율이 약 <b>1:1</b>이다. 이것만 기억하고 10배 규칙을 이용하면 대부분의 상황을 빠르게 추론할 수 있다.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;text-align:center;">
+              <div style="font-size:20px;font-weight:900;color:var(--brand);">1:1</div>
+              <div style="font-size:12px;color:var(--ink-soft);">pH = pKa</div>
+            </div>
+            <div class="card card--concept" style="margin:0;text-align:center;">
+              <div style="font-size:20px;font-weight:900;color:var(--brand);">10:1</div>
+              <div style="font-size:12px;color:var(--ink-soft);">|pH − pKa| = 1</div>
+            </div>
+            <div class="card card--concept" style="margin:0;text-align:center;">
+              <div style="font-size:20px;font-weight:900;color:var(--brand);">100:1</div>
+              <div style="font-size:12px;color:var(--ink-soft);">|pH − pKa| = 2</div>
+            </div>
+          </div>
+
+          <p>따라서 exact calculation을 하지 않아도 molecule이 거의 어느 상태인지 빠르게 판단할 수 있다.</p>
+
+          <!-- V3: 10× Rule Trainer -->
+          <div class="viz" data-ten-rule>
+            <div class="viz__title">10× Rule Trainer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">카드를 보고 molecule이 어느 pH에서 거의 50:50이 될지 맞혀보세요.</p>
+            <div class="ten-rule">
+              <div class="ten-rule__header">
+                <div class="ten-rule__pka">pKa = 7.0</div>
+                <div class="ten-rule__mode-tag ten-rule__mode-tag--base">Weak Base</div>
+              </div>
+              <div class="ten-rule__choices">
+                <button class="ten-rule__choice-btn" data-ph="5.0">pH 5</button>
+                <button class="ten-rule__choice-btn" data-ph="6.0">pH 6</button>
+                <button class="ten-rule__choice-btn" data-ph="7.0">pH 7</button>
+                <button class="ten-rule__choice-btn" data-ph="9.0">pH 9</button>
+              </div>
+              <div class="ten-rule__result">
+                <div class="ten-rule__ratio">—</div>
+                <div class="ten-rule__ratio-label">pH를 선택하면 비율이 나옵니다</div>
+              </div>
+              <div class="ten-rule__nav">
+                <button class="ten-rule__prev">◀ 이전</button>
+                <span class="ten-rule__score">0/5</span>
+                <button class="ten-rule__next">다음 ▶</button>
+              </div>
+            </div>
+            <div class="viz__msg">공식 암기보다 빠른 직관이 더 중요하다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S04 · Weak Acid
+             ====================================================== -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> Weak Acid — carboxylic acid</h2>
+
+          <p>대표적인 acidic functional group은 <b>carboxylic acid</b>다.</p>
+
+          <div class="card card--chem" style="text-align:center;font-size:15px;line-height:2;">
+            R–COOH ⇌ R–COO⁻ + H⁺
+          </div>
+
+          <p>환경의 pH가 증가하면 proton을 잃은 형태가 증가한다.</p>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Low pH</h5>
+              <p>R–COOH <b>neutral form</b> 증가</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>High pH</h5>
+              <p>R–COO⁻ <b>ionized form</b> 증가</p>
+            </div>
+          </div>
+
+          <p><b>예: pKa = 4.5인 acid</b></p>
+          <ul class="clean">
+            <li><b>pH 3.5</b> — pH가 pKa보다 1 낮다 → neutral : ionized ≈ 10 : 1</li>
+            <li><b>pH 4.5</b> — pH = pKa → 약 1:1</li>
+            <li><b>pH 5.5</b> — pH가 pKa보다 1 높다 → neutral : ionized ≈ 1 : 10</li>
+            <li><b>pH 7.4</b> — pKa와 거의 3 차이 → 대부분 deprotonated (negative charge)</li>
+          </ul>
+        </section>
+
+        <!-- ======================================================
+             S05 · Weak Base
+             ====================================================== -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> Weak Base — basic amine</h2>
+
+          <div class="card card--chem" style="text-align:center;font-size:15px;line-height:2;">
+            R–NH₃⁺ ⇌ R–NH₂ + H⁺
+          </div>
+
+          <p>여기서 protonated form은 positive charge를 가진다.</p>
+
+          <div class="twopanel">
+            <div class="panel panel--a">
+              <h5>Low pH</h5>
+              <p>H⁺가 많음 → <b>protonated form</b> (BH⁺) 증가</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>High pH</h5>
+              <p><b>neutral base</b> (B) 증가</p>
+            </div>
+          </div>
+
+          <p><b>예: pKa = 9.0인 basic amine, 생리적 pH 7.4</b></p>
+          <p>pKa가 pH보다 1.6 높다. 따라서 대부분 protonated form이다. 구조식에서는 neutral amine처럼 그렸더라도 biological environment에서는 상당 부분 positive charge로 존재할 수 있다.</p>
+
+          <!-- V2: Acid/Base Mirror -->
+          <div class="viz" data-acid-base-mirror>
+            <div class="viz__title">Acid vs Base Mirror</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">pH 상승에 따른 두 타입의 반대되는 반응을 비교하세요.</p>
+            <div class="acid-base-mirror">
+              <div class="abm-toggles">
+                <button class="abm-toggle-btn" data-type="acid">Weak Acid</button>
+                <button class="abm-toggle-btn active" data-type="base">Weak Base</button>
+              </div>
+              <div class="abm-rows"></div>
+              <div class="abm-rule"></div>
+            </div>
+            <div class="viz__msg">pH 상승 시 acid는 더 negative, base는 더 neutral해진다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S06 · Ionization이 바꾸는 것들
+             ====================================================== -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Ionization이 바꾸는 네 가지</h2>
+
+          <p>Ionized molecule은 왜 물을 좋아할까? Water는 polar molecule이다. Ion 주변에 water dipole이 정렬되며 강하게 solvate한다. 따라서 charged functional group은 일반적으로 aqueous environment에서 안정화된다.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0;">
+            <div class="card card--concept" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>① Aqueous Solubility</div>
+              <p>Ionization이 solubility를 증가시키는 중요한 이유 중 하나. 수화(hydration)이 ionic species를 안정화.</p>
+            </div>
+            <div class="card card--chem" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>② Membrane Permeability</div>
+              <p>Neutral fraction이 membrane interior로 들어가기 더 쉽다. Charge는 membrane 진입에 불리.</p>
+            </div>
+            <div class="card card--ai" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>③ Protein Binding</div>
+              <p>Ionized ligand ↔ charged residue → ionic interaction 가능. 또는 desolvation cost 변화.</p>
+            </div>
+            <div class="card card--bio" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>④ Distribution</div>
+              <p>pH gradient에 따라 세포 내 다양한 compartment에서 다른 비율로 존재할 수 있다.</p>
+            </div>
+          </div>
+
+          <!-- V4: Membrane Crossing -->
+          <div class="viz" data-membrane-crossing>
+            <div class="viz__title">Ionization vs Membrane Crossing</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Neutral B와 charged BH⁺의 membrane 투과 차이 (개념 모델).</p>
+            <div class="membrane-viz">
+              <div class="mv-scene">
+                <div class="mv-phase mv-phase--water">
+                  <span class="mv-phase-label">Extracellular</span>
+                  <div class="mv-mol mv-mol--b">B</div>
+                  <span class="mv-arrow mv-arrow--ok">→</span>
+                  <div class="mv-mol mv-mol--bh">BH⁺</div>
+                </div>
+                <div class="mv-bilayer"><span class="mv-bilayer-tag">Lipid Bilayer</span></div>
+                <div class="mv-phase mv-phase--cytosol">
+                  <span class="mv-phase-label">Cytosol</span>
+                  <div class="mv-mol mv-mol--b">B</div>
+                  <span class="mv-arrow mv-arrow--block" style="font-size:14px;opacity:.4;">✗ BH⁺</span>
+                </div>
+              </div>
+              <div class="mv-footer">개념적 passive-diffusion 모델 — 실제 permeability는 size, polarity, transporter 등에도 영향받음</div>
+            </div>
+          </div>
+
+          <p>이것이 자주 만들어지는 trade-off다:</p>
+
+          <!-- V5: Solubility/Permeability Balance -->
+          <div class="viz" data-sol-perm-balance data-pka="8.5">
+            <div class="viz__title">Solubility vs Permeability Balance</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">pH slider로 basic amine (pKa 8.5)의 protonation 상태에 따른 균형 이동을 확인하세요.</p>
+            <div class="sol-perm-balance">
+              <div class="spb-ph-row">
+                <label>pH</label>
+                <input class="spb-ph-slider" type="range" min="4" max="12" step="0.5" value="7.4" />
+                <span class="spb-ph-val">7.4</span>
+              </div>
+              <div class="spb-axis-wrap">
+                <div class="spb-axis"></div>
+                <div class="spb-marker" style="left:90%"></div>
+                <div class="spb-axis-labels">
+                  <span>More ionized</span>
+                  <span>More neutral</span>
+                </div>
+              </div>
+              <div class="spb-cards">
+                <div class="spb-card spb-card--ionized">
+                  <h6>Ionized (BH⁺)</h6>
+                  <ul>
+                    <li>aqueous solubility ↑</li>
+                    <li>passive permeability ↓</li>
+                    <li>ionic binding ↑ 가능</li>
+                  </ul>
+                </div>
+                <div class="spb-card spb-card--neutral">
+                  <h6>Neutral (B)</h6>
+                  <ul>
+                    <li>membrane partition ↑</li>
+                    <li>aqueous solubility ↓</li>
+                    <li>ionic interaction ↓</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="viz__msg">Medicinal chemistry는 두 극단 중 하나를 선택하는 것이 아니라 균형점을 찾는다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S07 · logP
+             ====================================================== -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> logP — lipophilicity의 정량화</h2>
+
+          <p>logP는 일반적으로 neutral compound가 두 phase 사이에서 어떻게 분배되는지를 나타낸다. 대표적으로 <b>octanol vs water</b> 사이의 partition coefficient다.</p>
+
+          <div class="card card--chem" style="text-align:center;font-size:15px;line-height:2.2;">
+            P = [compound]<sub>octanol</sub> / [compound]<sub>water</sub><br>
+            logP = log₁₀ P
+          </div>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>logP가 높다</h5>
+              <p>→ 상대적으로 lipophilic → octanol phase 선호</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>logP가 낮다</h5>
+              <p>→ 상대적으로 hydrophilic → water phase 선호</p>
+            </div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>중요한 한계</div>
+            <p><b>logP는 neutral species를 기준으로 하는 개념이다.</b> Ionizable drug에서는 이것만으로 실제 physiological behavior를 설명하기 어렵다. 그래서 logD가 필요하다.</p>
+          </div>
+
+          <div class="card card--concept" style="margin-top:16px;">
+            <div class="card__label"><span class="dot"></span>logP와 drug quality</div>
+            <p>logP를 지나치게 높이면 aqueous solubility 감소, nonspecific binding 증가, metabolic liability 변화, plasma protein binding 증가 등이 생길 수 있다. <b>logP ↑ = drug quality ↑는 아니다.</b></p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S08 · logD
+             ====================================================== -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> logD — 실제 physiological 조건에서의 분배</h2>
+
+          <p>Drug molecule은 biological pH에서 ionized될 수 있다. 그래서 특정 pH에서 실제로 존재하는 <b>모든 species를 포함</b>해 organic/aqueous phase 분포를 보는 값이 distribution coefficient D이다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>logP</h5>
+              <p>neutral species의 intrinsic lipophilicity에 가까운 값. pH 독립적.</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>logD</h5>
+              <p>특정 pH에서 ionized + neutral population을 모두 포함한 실제 distribution behavior. <b>반드시 pH를 함께 명시</b>: logD₇.₄</p>
+            </div>
+          </div>
+
+          <p>따라서 logD에는 반드시 pH가 붙는다. Ionizable molecule에 대해 "logD가 2다"라고만 하면 정보가 불완전하다.</p>
+
+          <!-- V7: logD-pH Curve -->
+          <div class="viz" data-logd-curve>
+            <div class="viz__title">logD–pH 개념 Curve</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 curve를 탭하면 protonation 상태가 표시됩니다.</p>
+            <div class="logd-curve-wrap">
+              <svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <line x1="40" y1="10" x2="40" y2="140" stroke="#dce3ef" stroke-width="1.5"/>
+                <line x1="40" y1="140" x2="290" y2="140" stroke="#dce3ef" stroke-width="1.5"/>
+                <!-- Y label -->
+                <text x="12" y="80" font-size="9" fill="#6e7f99" transform="rotate(-90,12,80)">logD</text>
+                <!-- X label -->
+                <text x="155" y="155" font-size="9" fill="#6e7f99" text-anchor="middle">pH →</text>
+                <!-- X ticks -->
+                <text x="55" y="150" font-size="8" fill="#6e7f99" text-anchor="middle">2</text>
+                <text x="103" y="150" font-size="8" fill="#6e7f99" text-anchor="middle">4</text>
+                <text x="151" y="150" font-size="8" fill="#6e7f99" text-anchor="middle">6</text>
+                <text x="199" y="150" font-size="8" fill="#6e7f99" text-anchor="middle">8</text>
+                <text x="247" y="150" font-size="8" fill="#6e7f99" text-anchor="middle">10</text>
+                <!-- Y ticks -->
+                <text x="35" y="143" font-size="8" fill="#6e7f99" text-anchor="end">0</text>
+                <text x="35" y="105" font-size="8" fill="#6e7f99" text-anchor="end">1</text>
+                <text x="35" y="65"  font-size="8" fill="#6e7f99" text-anchor="end">2</text>
+                <text x="35" y="25"  font-size="8" fill="#6e7f99" text-anchor="end">3</text>
+                <!-- Neutral compound: flat line logD ~2 -->
+                <path d="M 55,65 L 290,65" stroke="#6e7f99" stroke-width="2" stroke-dasharray="5,3" fill="none"/>
+                <!-- Weak acid: flat at 2 for low pH, drops at pKa 4.5 -->
+                <path d="M 55,65 Q 103,65 130,90 Q 155,120 200,138 L 290,140" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+                <!-- Weak base: flat at 2 for high pH, drops at pKa 9 -->
+                <path d="M 55,140 Q 90,138 140,120 Q 185,95 215,70 L 290,65" stroke="#2563eb" stroke-width="2.5" fill="none"/>
+                <!-- Labels -->
+                <text x="295" y="63" font-size="9" fill="#6e7f99">Neutral</text>
+                <text x="250" y="130" font-size="9" fill="#dc2626">Weak Acid</text>
+                <text x="55" y="135" font-size="9" fill="#2563eb">Weak Base</text>
+              </svg>
+              <div class="logd-legend">
+                <div class="logd-legend-item"><div class="logd-legend-swatch" style="background:#6e7f99;"></div>Neutral compound</div>
+                <div class="logd-legend-item"><div class="logd-legend-swatch" style="background:#dc2626;"></div>Weak acid (pKa ~4.5)</div>
+                <div class="logd-legend-item"><div class="logd-legend-swatch" style="background:#2563eb;"></div>Weak base (pKa ~9)</div>
+              </div>
+            </div>
+            <div class="viz__msg">logD는 molecule 하나의 고정된 숫자가 아니다 — pH와 함께 봐야 한다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S09 · logP vs logD
+             ====================================================== -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> logP vs logD 비교</h2>
+
+          <p>Neutral molecule이라면 logP ≈ logD가 된다. 왜냐하면 pH를 바꿔도 molecule의 charge state가 크게 변하지 않기 때문이다. 하지만 ionizable compound에서는 pH에 따라 logD가 크게 변한다.</p>
+
+          <p>이것이 왜 중요한가? Assay가 pH 6.5에서 수행되느냐, pH 7.4에서 수행되느냐에 따라 동일 molecule의 charge, membrane partition, solubility, protein interaction이 달라질 수 있다. 따라서 pH는 단순 assay buffer 정보가 아니다. <b>Molecular state를 결정하는 experimental variable</b>이다.</p>
+
+          <!-- V6: logP/logD Partition -->
+          <div class="viz" data-logpd-partition data-pka="9.0" data-logp="2.0">
+            <div class="viz__title">logP vs logD — Interactive Partition</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Mode를 바꾸고 pH slider를 조절해 octanol/water 분배 변화를 확인하세요.</p>
+            <div class="logpd-partition">
+              <div class="lpp-modes">
+                <button class="lpp-mode-btn active" data-mode="logp">logP Mode</button>
+                <button class="lpp-mode-btn" data-mode="logd">logD Mode (pH 조절)</button>
+              </div>
+              <div class="lpp-octanol"><span class="lpp-oct-label">Octanol</span></div>
+              <div class="lpp-interface"></div>
+              <div class="lpp-water"><span class="lpp-wat-label">Water</span></div>
+              <div class="lpp-ph-row" style="display:none;">
+                <label>pH</label>
+                <input class="lpp-ph-slider" type="range" min="5" max="12" step="0.5" value="7.4" />
+                <span class="lpp-ph-num">7.4</span>
+              </div>
+              <div class="lpp-logd-display">logP = 2.0 (neutral species only)</div>
+            </div>
+            <div class="viz__msg">logP는 neutral species의 intrinsic lipophilicity, logD는 특정 pH에서 실제 population 분배.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S10 · Molecular View / pKa Tuning
+             ====================================================== -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Molecular View — 동일한 scaffold, pKa만 다르면?</h2>
+
+          <p>Compound에 amine 하나를 넣었다고 하자. Target pocket에 Asp가 있다. Protonated amine ↔ Asp COO⁻ salt bridge 가능. 하지만 동시에 water solvation 증가, charge 증가, membrane permeability 감소 가능, distribution 변화가 생긴다.</p>
+
+          <p>즉 동일한 structural modification이 <b>binding ↑</b> 하면서 <b>cell exposure ↓</b>를 동시에 만들 수 있다.</p>
+
+          <p>Medicinal chemist는 amine을 단순히 제거하는 대신 <b>amine basicity를 낮추는</b> 전략을 쓸 수 있다. Electron-withdrawing environment를 만들거나, amine의 chemical context를 변경한다.</p>
+
+          <p>결과: pKa ↓ → physiological pH에서 neutral fraction ↑ → permeability ↑ 가능. 하지만 동시에 salt bridge interaction ↓ → target affinity ↓ 가능. 다시 trade-off다.</p>
+
+          <!-- V10: pKa Tuning Lab -->
+          <div class="viz" data-pka-tuning>
+            <div class="viz__title">pKa Tuning Lab</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">pKa가 다른 세 analogue를 선택해 property profile을 비교하세요.</p>
+            <div class="pka-tuning">
+              <div class="pkt-btns">
+                <button class="pkt-btn" data-analogue="high">High pKa (~10.5)</button>
+                <button class="pkt-btn active" data-analogue="medium">Medium pKa (~8.5)</button>
+                <button class="pkt-btn" data-analogue="low">Low pKa (~6.5)</button>
+              </div>
+              <div class="pkt-meters">
+                <div class="pkt-row">
+                  <span class="pkt-row-label">Target ionic binding</span>
+                  <div class="pkt-track"><div class="pkt-fill pkt-fill--binding" style="width:60%"></div></div>
+                </div>
+                <div class="pkt-row">
+                  <span class="pkt-row-label">Neutral fraction (pH 7.4)</span>
+                  <div class="pkt-track"><div class="pkt-fill pkt-fill--neutral" style="width:50%"></div></div>
+                </div>
+                <div class="pkt-row">
+                  <span class="pkt-row-label">Permeability 가능성</span>
+                  <div class="pkt-track"><div class="pkt-fill pkt-fill--perm" style="width:55%"></div></div>
+                </div>
+                <div class="pkt-row">
+                  <span class="pkt-row-label">Aqueous solubility</span>
+                  <div class="pkt-track"><div class="pkt-fill pkt-fill--solub" style="width:70%"></div></div>
+                </div>
+              </div>
+              <div class="pkt-note">교육용 예시 — 실제 값은 측정 필요</div>
+            </div>
+            <div class="viz__msg">최적화 목표는 pKa를 최대/최소화하는 것이 아니라 적절한 window를 찾는 것이다.</div>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S11 · Ibuprofen
+             ====================================================== -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Real Drug Example — Ibuprofen</h2>
+
+          <p>Ibuprofen에는 carboxylic acid가 있다. 따라서 약산이다. pKa는 약 4.5. 생리적 pH에서는 COO⁻ 형태가 대부분이다. 그렇다면 이런 질문이 생긴다.</p>
+
+          <blockquote>
+            "Ionized되어 있으면 membrane을 못 건너는데, ibuprofen은 어떻게 잘 흡수되는가?"
+          </blockquote>
+
+          <p>이 질문은 중요한 함정을 보여준다. 고전적인 pH-partition reasoning에서는 위처럼 낮은 pH → weak acid neutral fraction ↑ → membrane crossing ↑라고 생각할 수 있다. 그래서 "acidic drug는 위에서 흡수된다"는 단순 암기가 생기기 쉽다.</p>
+
+          <p>하지만 실제 gastrointestinal absorption은 ionization만으로 결정되지 않는다. 소장은 매우 큰 surface area, 긴 transit, 높은 perfusion 등의 장점을 가지고 있다.</p>
+
+          <!-- V8: Ibuprofen Story -->
+          <div class="viz" data-ib-story>
+            <div class="viz__title">Ibuprofen Ionization Story</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 생리적 구획에서의 ionization 상태를 확인하세요. (pKa ≈ 4.5)</p>
+            <div class="ib-story">
+              <div class="ib-tabs">
+                <button class="ib-tab-btn active">Gastric</button>
+                <button class="ib-tab-btn">Intestinal</button>
+                <button class="ib-tab-btn">Plasma</button>
+              </div>
+              <div class="ib-content"></div>
+            </div>
+            <div class="viz__msg">pKa는 absorption에 중요하지만 absorption site를 단독으로 결정하지 않는다.</div>
+          </div>
+
+          <p>Drug discovery에서 Ibuprofen을 보고 "pKa가 약 5이니 pH 7.4에서 대부분 ionized"에서 끝내면 부족하다. 다음 질문을 해야 한다: solubility는? neutral fraction은? membrane surface area는? dissolution rate는? formulation은? transport mechanism은? 즉 실제 pharmacology는 한 변수의 결과가 아니다.</p>
+        </section>
+
+        <!-- ======================================================
+             S12 · Basic Drug Example
+             ====================================================== -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Basic Drug Example — Propranolol 유형</h2>
+
+          <p>Propranolol과 같은 basic amine-containing drug를 생각해보자. 이런 molecule은 physiological pH에서 상당한 fraction이 protonated될 수 있다. 그러면서도 aromatic ring 등 lipophilic portion이 크기 때문에 membrane partitioning 능력을 유지할 수 있다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>중요한 사실</div>
+            <p>Ionized fraction이 높다고 해서 permeability가 반드시 0이 되는 것은 아니다. Population 중 일부 neutral species가 membrane을 통과할 수 있고, molecule 전체의 lipophilicity와 conformation도 함께 중요하다.</p>
+          </div>
+
+          <p>더 좋은 표현:</p>
+
+          <blockquote>
+            Ionization은 passive permeability에 중요한 불리한 요인이 될 수 있지만, 실제 permeability는 전체 molecular property와 동적 equilibrium에 의해 결정된다.
+          </blockquote>
+        </section>
+
+        <!-- ======================================================
+             S13 · pKa와 Binding
+             ====================================================== -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> pKa와 Binding</h2>
+
+          <p>Protein pocket에 Asp가 있고 ligand에 amine이 있다. 우리는 그림에서 salt bridge를 예상한다. 하지만 실제 interaction을 평가하려면 <b>ligand amine의 pKa</b>, <b>assay pH</b>, <b>Asp의 local protonation state</b>가 필요하다.</p>
+
+          <p>둘 중 하나라도 예상한 charge state가 아니면 salt bridge가 존재하지 않을 수 있다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>흔한 실수</div>
+            <p>Asp의 side-chain pKa를 교과서 숫자 하나로 외우는 것은 출발점일 뿐이다. Protein environment에서는 nearby charge, solvent exposure, hydrogen bond, buried environment에 의해 residue pKa가 이동할 수 있다.</p>
+          </div>
+
+          <p>또한 용액에서 ligand가 선호하는 protonation state와 protein pocket 안에서 안정한 protonation state가 다를 수 있다. 왜냐하면 binding environment가 새로운 electrostatic stabilization을 제공하기 때문이다. 즉 <b>solution chemistry와 binding-site chemistry가 항상 동일하지 않다.</b></p>
+        </section>
+
+        <!-- ======================================================
+             S14 · Ion Trapping
+             ====================================================== -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Ion Trapping</h2>
+
+          <p>Weak base가 있다고 하자. 중성 상태일 때 membrane을 통과한다. 그리고 더 acidic한 compartment에 들어간다. 예를 들어 lysosome처럼 pH가 낮은 환경이다. 그 안에서 B → BH⁺로 protonated된다. Charged form은 membrane을 다시 통과하기 어렵다. 결과적으로 molecule이 해당 compartment에 축적될 수 있다. 이 현상을 흔히 <b>ion trapping</b>이라고 한다.</p>
+
+          <!-- V9: Ion Trapping -->
+          <div class="viz" data-ion-trap data-pka="8.5">
+            <div class="viz__title">Lysosomal Ion Trapping</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Lysosome pH slider를 낮출수록 BH⁺ 축적이 증가합니다.</p>
+            <div class="ion-trap">
+              <div class="it-scene">
+                <div class="it-membrane"></div>
+                <div class="it-extracell">Extracellular</div>
+                <div class="it-cytosol">
+                  <span>Cytosol</span>
+                  <span class="it-ph-note">pH ~7.2</span>
+                </div>
+                <div class="it-lysosome">
+                  <span class="it-lyso-label">Lysosome</span>
+                  <span class="it-lyso-ph">pH 5.0</span>
+                </div>
+                <div class="it-mols-area"></div>
+              </div>
+              <div class="it-controls">
+                <label>Lysosomal pH</label>
+                <input class="it-lyso-slider" type="range" min="4.5" max="7.2" step="0.1" value="5.0" />
+                <span class="it-lyso-ph-ctrl">pH 5.0</span>
+              </div>
+              <div class="it-info">Lysosome (pH 5.0): BH⁺ 축적 활발 — ion trapping 발생</div>
+            </div>
+            <div class="viz__msg">Drug가 세포 내부로 들어갔다고 해서 모든 compartment에 동일한 농도로 있는 것이 아니다.</div>
+          </div>
+
+          <p>왜 ion trapping이 중요할까? Drug가 세포에 들어갔다고 해서 원하는 target이 있는 compartment에 동일한 농도로 존재하는 것은 아니다. pKa와 pH gradient에 따라 cytosol, lysosome, mitochondria 등 분포가 달라질 수 있다. 따라서 total cellular concentration과 target-site concentration은 다를 수 있다.</p>
+        </section>
+
+        <!-- ======================================================
+             S15 · AI Drug Discovery Connection
+             ====================================================== -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> AI Drug Discovery Connection</h2>
+
+          <h4>AI에게 molecule 하나만 주면 pH를 알까?</h4>
+
+          <p>예를 들어 GNN에 molecular graph를 입력한다. Model input은 atoms, bonds, connectivity다. 그런데 assay pH 정보는 주지 않는다. 그러면 model은 "이 molecule이 어떤 pH에서 어떤 protonation state였는가?"를 명시적으로 알 수 없다.</p>
+
+          <p>같은 structure도 assay condition에 따라 다르게 행동한다. Molecule X가 있을 때 Assay A (pH 6.0)와 Assay B (pH 8.0)에서 측정된 activity가 다를 수 있다. 그런데 dataset에 SMILES + activity만 있다면? AI 입장에서는 서로 모순되는 label처럼 보일 수 있다.</p>
+
+          <!-- V11: AI Protonation Failure -->
+          <div class="viz" data-ai-prot-fail>
+            <div class="viz__title">AI Protonation Failure</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">pH 메타데이터 제공 여부에 따라 AI가 어떻게 다르게 "보는지" 확인하세요.</p>
+            <div class="ai-prot-fail">
+              <div class="apf-tabs">
+                <button class="apf-tab-btn active" data-meta="off">메타데이터 없음</button>
+                <button class="apf-tab-btn" data-meta="on">메타데이터 있음</button>
+              </div>
+              <div class="apf-body">
+                <div class="apf-panels">
+                  <div class="apf-panel apf-panel--ai"></div>
+                  <div class="apf-panel apf-panel--real"></div>
+                </div>
+                <div class="apf-msg apf-msg--conflict">AI는 같은 molecule에서 1000배 차이를 노이즈로 볼 수 있다</div>
+              </div>
+            </div>
+            <div class="viz__msg">Molecular structure만으로 모든 assay context를 표현할 수 없다.</div>
+          </div>
+
+          <h4 style="margin-top:24px;">Protonation preprocessing</h4>
+
+          <p>Docking 전에 molecule을 준비할 때 protonation, tautomer, stereochemistry를 생성하거나 선택한다. 여기에서 틀리면 interaction map 전체가 달라진다. 실제로 protonated amine을 neutral로 넣으면 salt bridge가 사라진다. 반대로 실제 neutral N을 protonated시키면 존재하지 않는 electrostatic interaction이 만들어질 수 있다.</p>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>Canonical SMILES의 함정</div>
+            <p>Database에 molecule 하나가 하나의 canonical SMILES로 저장돼 있다고 하자. 우리는 이를 molecule의 "진짜 구조"처럼 받아들이기 쉽다. 하지만 실제 환경에서는 protonation state, tautomer, conformation이 여러 개 존재할 수 있다. 따라서 AI pipeline은 representation 단계부터 chemical state 문제를 고려해야 한다.</p>
+          </div>
+
+          <p>pKa prediction도 AI 문제다. Experimental pKa를 모든 compound에서 측정하기 어렵기 때문에 computational prediction을 자주 사용한다. 하지만 polyprotic molecule, tautomerism, intramolecular H-bond, unusual heterocycle 등은 어려울 수 있다. logP/logD prediction도 마찬가지다. "computed logP = 3.2" 같은 값은 experimental observation과 구분해서 다뤄야 한다.</p>
+        </section>
+
+        <!-- ======================================================
+             S16 · Failure Case
+             ====================================================== -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> Failure Case — ML prediction은 좋았는데 세포 활성이 사라졌다</h2>
+
+          <p>Training set에서는 특정 basic amine-containing scaffold가 대부분 active였다. Model은 이 feature를 강한 positive signal로 학습했다. 새로운 scaffold에 같은 amine을 붙였다. Prediction: high activity. Biochemical assay: 실제로 strong binder. Cell assay: inactive.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>What did the model miss?</div>
+            <ul class="clean">
+              <li>새 scaffold에서는 amine의 pKa가 달라졌다</li>
+              <li>전체 logD가 감소했다</li>
+              <li>Permeability가 나빠졌다</li>
+              <li>Efflux 영향이 커졌다</li>
+              <li>Intracellular distribution이 바뀌었다</li>
+            </ul>
+          </div>
+
+          <p>AI는 "amine feature"를 보았지만, <b>chemical context가 바뀌면서 amine의 실제 property도 바뀌었다.</b></p>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>AI Lesson</div>
+            <p>Functional group identity와 functional group behavior는 동일하지 않다. "amine 있음"이라는 binary feature보다 pKa, protonation fraction, local electronic environment, solvent exposure가 실제 chemistry에 더 가깝다. AI model이 structural pattern을 잘 학습했다고 해서 underlying physicochemical mechanism을 이해했다고 볼 수 없다.</p>
+          </div>
+        </section>
+
+        <!-- ======================================================
+             S17 · Scientist's Thinking
+             ====================================================== -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> Scientist's Thinking</h2>
+
+          <p>Cell potency가 갑자기 나빠졌을 때의 사고 흐름. Observation: Compound A (biochemical IC50 = 20 nM, cell IC50 = 3 µM) vs Compound B (biochemical IC50 = 50 nM, cell IC50 = 100 nM). A가 더 basic.</p>
+
+          <!-- V13: Scientist Decision Flow -->
+          <div class="viz" data-sci-decision>
+            <div class="viz__title">Scientist Decision Flow</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">첫 번째 hypothesis를 선택하면 조사 경로가 나타납니다.</p>
+            <div class="sci-decision">
+              <div class="scd-obs">
+                <div class="scd-obs-title">Observation</div>
+                <div class="scd-obs-body">A: biochemical IC50 = 20 nM / cell IC50 = 3 µM<br>B: biochemical IC50 = 50 nM / cell IC50 = 100 nM<br>차이: A가 더 basic amine 포함</div>
+              </div>
+              <div class="scd-prompt">가장 가능성 높은 원인은?</div>
+              <div class="scd-choices">
+                <button class="scd-choice-btn" data-branch="permeability">① Permeability 문제 (ionization)</button>
+                <button class="scd-choice-btn" data-branch="target">② Target biology 차이</button>
+                <button class="scd-choice-btn" data-branch="efflux">③ Efflux transporter</button>
+                <button class="scd-choice-btn" data-branch="solubility">④ Solubility / aggregation</button>
+              </div>
+
+              <div class="scd-branch" data-branch="permeability">
+                <div class="scd-branch-title">경로 A: Permeability / Ionization 조사</div>
+                <div class="scd-step-list">
+                  <div class="scd-step"><div class="scd-step-no">1</div>pKa 확인 — A vs B 비교</div>
+                  <div class="scd-step" style="animation-delay:.12s"><div class="scd-step-no">2</div>logD₇.₄ 측정 — 실제 lipophilicity 비교</div>
+                  <div class="scd-step" style="animation-delay:.24s"><div class="scd-step-no">3</div>PAMPA / Caco-2 permeability assay</div>
+                  <div class="scd-step" style="animation-delay:.36s"><div class="scd-step-no">4</div>A: high pKa + low logD + low perm 확인</div>
+                  <div class="scd-step" style="animation-delay:.48s"><div class="scd-step-no">5</div>pKa tuning analogue 설계 (basicity 조절)</div>
+                </div>
+              </div>
+              <div class="scd-branch" data-branch="target">
+                <div class="scd-branch-title">경로 B: Target Biology 조사</div>
+                <div class="scd-step-list">
+                  <div class="scd-step"><div class="scd-step-no">1</div>Target 발현 수준 확인 (Western blot)</div>
+                  <div class="scd-step" style="animation-delay:.12s"><div class="scd-step-no">2</div>Cell-based target engagement 측정 (thermal shift)</div>
+                  <div class="scd-step" style="animation-delay:.24s"><div class="scd-step-no">3</div>다른 cell line에서 재현성 확인</div>
+                  <div class="scd-step" style="animation-delay:.36s"><div class="scd-step-no">4</div>Target mutation 여부 확인</div>
+                </div>
+              </div>
+              <div class="scd-branch" data-branch="efflux">
+                <div class="scd-branch-title">경로 C: Efflux 조사</div>
+                <div class="scd-step-list">
+                  <div class="scd-step"><div class="scd-step-no">1</div>Bidirectional Caco-2 assay (efflux ratio)</div>
+                  <div class="scd-step" style="animation-delay:.12s"><div class="scd-step-no">2</div>P-gp inhibitor 존재 시 activity 회복 여부</div>
+                  <div class="scd-step" style="animation-delay:.24s"><div class="scd-step-no">3</div>Transporter knockout cell line 테스트</div>
+                </div>
+              </div>
+              <div class="scd-branch" data-branch="solubility">
+                <div class="scd-branch-title">경로 D: Solubility / Aggregation 조사</div>
+                <div class="scd-step-list">
+                  <div class="scd-step"><div class="scd-step-no">1</div>Kinetic / thermodynamic solubility 측정</div>
+                  <div class="scd-step" style="animation-delay:.12s"><div class="scd-step-no">2</div>DLS (dynamic light scattering)로 aggregation 확인</div>
+                  <div class="scd-step" style="animation-delay:.24s"><div class="scd-step-no">3</div>Detergent 존재 시 activity 변화 확인</div>
+                </div>
+              </div>
+              <button class="scd-reset-btn">초기화</button>
+            </div>
+            <div class="viz__msg">Cell activity discrepancy를 보면 target affinity부터 다시 의심하는 것이 아니라 exposure chain을 단계별로 분리해서 조사한다.</div>
+          </div>
+
+          <p>이제 molecule을 보면 자동으로 해야 하는 질문:</p>
+
+          <div style="display:grid;gap:10px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>① Ionizable group?</div><p>Acid? Base? Multiple ionizable centers?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>② pKa 추정</div><p>Physiological pH와 비교. pH 7.4에서 주된 species는?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>③ Charge state → Binding?</div><p>Salt bridge? H-bond? Desolvation cost?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>④ Charge state → Property?</div><p>Solubility? Permeability? Distribution?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>⑤ logP vs logD?</div><p>어떤 pH에서 측정된 값인가?</p></div>
+          </div>
+
+          <!-- V12: Property Cascade -->
+          <div class="viz" data-prop-cascade>
+            <div class="viz__title">Property Cascade</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 node를 탭하면 오늘 배운 개념과 연결됩니다.</p>
+            <div class="prop-cascade">
+              <div class="pcasc-flow">
+                <div class="pcasc-node"><span class="pcasc-icon">⚗️</span><span class="pcasc-title">Functional Group</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">Amine, carboxylic acid, imidazole 등 ionizable group의 존재 여부와 종류를 파악한다.</div></div>
+                <div class="pcasc-connector"></div>
+                <div class="pcasc-node"><span class="pcasc-icon">📊</span><span class="pcasc-title">pKa</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">특정 pH에서 어느 protonation state가 우세한지 결정하는 기준점. pH = pKa → 50:50. 차이 1 → 10배.</div></div>
+                <div class="pcasc-connector"></div>
+                <div class="pcasc-node"><span class="pcasc-icon">⚡</span><span class="pcasc-title">Ionization State</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">pH 7.4에서 neutral, positive, negative, zwitterion 중 무엇이 우세한가? 이것이 모든 아래 성질을 바꾼다.</div></div>
+                <div class="pcasc-connector"></div>
+                <div class="pcasc-node"><span class="pcasc-icon">💧</span><span class="pcasc-title">logD / Solubility</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">Ionized species는 aqueous phase 선호 → logD 감소. Neutral은 organic phase 선호 → logD 증가.</div></div>
+                <div class="pcasc-connector"></div>
+                <div class="pcasc-node"><span class="pcasc-icon">🚪</span><span class="pcasc-title">Permeability</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">Neutral fraction이 passive diffusion에 유리. Charged form은 membrane interior 진입에 비용이 됨.</div></div>
+                <div class="pcasc-connector"></div>
+                <div class="pcasc-node"><span class="pcasc-icon">🔬</span><span class="pcasc-title">Intracellular Exposure</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">Ion trapping에 의해 lysosome 등 특정 compartment에 축적 가능. Total cell conc ≠ target-site conc.</div></div>
+                <div class="pcasc-connector"></div>
+                <div class="pcasc-node"><span class="pcasc-icon">🎯</span><span class="pcasc-title">Target Engagement</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">실제 target에서의 binding은 solution pKa가 아닌 pocket microenvironment에서의 protonation state를 따른다.</div></div>
+                <div class="pcasc-connector"></div>
+                <div class="pcasc-node"><span class="pcasc-icon">📈</span><span class="pcasc-title">Cellular Potency</span><span class="pcasc-caret">▼</span></div>
+                <div class="pcasc-detail"><div class="pcasc-detail-inner">Biochemical assay ≠ cell assay. 1,000배 차이의 원인은 종종 이 cascade 어딘가에 있다.</div></div>
+              </div>
+            </div>
+            <div class="viz__msg">Structure modification이 cell activity까지 전달되는 경로를 항상 추적하라.</div>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>3강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>pKa는 특정 pH에서 molecule이 어떤 charge state로 존재하는지 결정하는 핵심 property다.</b>
+              <span>pH = pKa → 1:1. 차이 1 → 10배. 차이 2 → 100배. 암기가 아니라 직관.</span>
+            </li>
+            <li>
+              <b>Ionization은 solubility를 증가시킬 수 있지만 passive permeability에는 불리할 수 있다.</b>
+              <span>같은 amine이 binding ↑를 만들면서 cell exposure ↓를 동시에 만들 수 있다.</span>
+            </li>
+            <li>
+              <b>logP는 neutral species의 lipophilicity, logD는 특정 pH에서 실제 ionization state를 포함한다.</b>
+              <span>"logD" 뒤에는 반드시 pH가 붙어야 한다. logD₇.₄처럼.</span>
+            </li>
+            <li>
+              <b>Binding에 유리한 charge가 exposure에는 불리할 수 있다. pKa는 affinity와 ADME 사이의 중요한 optimization knob이다.</b>
+              <span>pKa를 최대/최소화하는 것이 목표가 아니라 적절한 window를 찾는 것이 목표다.</span>
+            </li>
+            <li>
+              <b>AI가 structure를 보았다고 해서 assay pH와 실제 protonation state까지 자동으로 이해하는 것은 아니다.</b>
+              <span>같은 molecule의 activity discrepancy는 chemical-state difference일 수 있다.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Weak base의 pKa가 9.4다. Assay pH는 7.4다. 대부분 neutral일까 protonated일까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              대부분 protonated 상태다.
+              <div class="exp">pH가 pKa보다 약 2 낮기 때문에 protonated : neutral 비율은 대략 100 : 1 정도라고 직관적으로 생각할 수 있다. 따라서 positive charge를 가진 population이 지배적이다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Compound A에 basic amine을 추가했더니 biochemical potency는 10배 향상되었지만 cellular potency는 30배 악화됐다. 가장 먼저 생각할 property는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              pKa / ionization과 이에 따른 permeability 변화를 확인하고 싶다.
+              <div class="exp">Amine addition으로 target에서 ionic interaction이 좋아졌지만 physiological pH에서 protonated fraction이 증가하면서 membrane permeability가 감소했을 수 있다. logD₇.₄도 함께 확인하는 것이 좋다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Weak acid의 pKa가 4.5다. pH 7.5에서는 주로 어떤 형태인가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Deprotonated anionic form (R–COO⁻)이다.
+              <div class="exp">pH가 pKa보다 3 높기 때문에 ionized : neutral 비율이 대략 1000 : 1 수준이라고 생각할 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Compound X: logP = 3.5, logD₇.₄ = 0.8. 왜 차이가 크게 날 수 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              X가 pH 7.4에서 상당히 ionized되는 molecule일 가능성이 있다.
+              <div class="exp">logP는 neutral species의 partition을 반영하지만 logD₇.₄는 pH 7.4에서 존재하는 ionized species까지 포함하기 때문에 aqueous phase 선호가 증가할 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>GNN model이 같은 molecule에 대해 서로 다른 assay activity 값을 학습하고 있다. Dataset을 보니 assay pH가 서로 달랐다. 왜 중요할까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Ionizable molecule이라면 assay pH 차이가 protonation state를 변화시킬 수 있다.
+              <div class="exp">그 결과 binding interaction, solubility, aggregation, membrane behavior가 달라질 수 있다. 즉 activity discrepancy가 단순 measurement noise가 아니라 chemical-state difference일 수 있다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">4강 · 입체화학과 Conformational Restriction</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">두 molecule의 원자 구성은 거의 같은데 왜 한 stereoisomer만 강력할까? 그리고 flexible molecule을 rigid하게 만들었더니 왜 potency와 selectivity가 동시에 좋아질 수 있을까? 4강에서는 3차원 구조와 molecular motion을 binding free energy, selectivity, ADME와 연결한다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="02.html">◀ 2강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="04.html">▶ 4강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

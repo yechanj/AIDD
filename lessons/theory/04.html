@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L04 · Stereochemistry &amp; Conformational Restriction — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L04 · Stereochemistry &amp; Conformational Restriction</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L04</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Stereochemistry</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> Stereochemistry 기본 언어</a></li>
+          <li><a href="#s03"><span class="num">03</span> Protein은 chiral environment</a></li>
+          <li><a href="#s04"><span class="num">04</span> Bioactive Conformation</a></li>
+          <li><a href="#s05"><span class="num">05</span> Conformational Penalty</a></li>
+          <li><a href="#s06"><span class="num">06</span> Conformational Restriction 전략</a></li>
+          <li><a href="#s07"><span class="num">07</span> Preorganization의 함정</a></li>
+          <li><a href="#s08"><span class="num">08</span> Real Drug — Lorlatinib</a></li>
+          <li><a href="#s09"><span class="num">09</span> Conformation ↔ ADME</a></li>
+          <li><a href="#s10"><span class="num">10</span> Modification Exercise</a></li>
+          <li><a href="#s11"><span class="num">11</span> AI Drug Discovery Connection</a></li>
+          <li><a href="#s12"><span class="num">12</span> Failure Case</a></li>
+          <li><a href="#s13"><span class="num">13</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 04</div>
+          <h1>입체화학과 Conformational Restriction</h1>
+          <p>같은 원자, 같은 결합인데 왜 3차원 배치 하나로 약효가 달라지는가?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — 같은 원자인데 한쪽만 active하다</h2>
+
+          <p>Compound A와 Compound B가 있다. 두 molecule은 molecular formula 동일, functional group 동일, molecular weight 동일, logP도 거의 동일하다. 차이는 <b>stereocenter 하나뿐</b>이다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Compound A (R)</h5>
+              <b style="color:var(--ok);font-size:18px;">Kd = 8 nM</b>
+            </div>
+            <div class="panel panel--b">
+              <h5>Compound B (S)</h5>
+              <b style="color:var(--danger);font-size:18px;">Kd = 2 µM</b>
+              <div style="font-size:12px;color:var(--ink-faint);margin-top:4px;">약 250배 차이</div>
+            </div>
+          </div>
+
+          <p>처음 보면 이상하게 느껴질 수 있다. 원자도 같고 functional group도 같은데 왜 protein은 두 molecule을 이렇게 강하게 구별할까?</p>
+
+          <blockquote>
+            Protein 자체가 chiral한 3차원 구조이기 때문이다.
+          </blockquote>
+
+          <p>Ligand를 단순한 2D chemical formula로 보면 두 molecule은 비슷하다. 하지만 protein pocket 안에서는 functional group들의 방향이 달라진다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>오늘의 핵심 질문들</div>
+            <ul class="clean">
+              <li>Protein이 왜 둘을 구분할까?</li>
+              <li>Chirality는 단순 합성 문제인가?</li>
+              <li>Flexible molecule은 왜 binding에서 불리할 수 있는가?</li>
+              <li>Ring이나 macrocycle로 고정하면 왜 potency와 selectivity가 좋아질 수 있는가?</li>
+            </ul>
+          </div>
+
+          <blockquote>
+            Protein은 3차원 구조다. 따라서 ligand의 stereochemistry와 conformation은 interaction의 위치뿐 아니라 binding에 필요한 energetic cost까지 결정한다.
+          </blockquote>
+
+          <!-- V1: Mirror Binding -->
+          <div class="viz" data-mirror-binding>
+            <div class="viz__title">Mirror Molecules, Different Binding</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">R/S를 전환해 protein pocket에서 어떤 차이가 생기는지 확인하세요.</p>
+            <div class="mirror-binding">
+              <div class="mb-toggle-row">
+                <button class="mb-toggle-btn" data-stereo="r">R-isomer (Active)</button>
+                <button class="mb-toggle-btn" data-stereo="s">S-isomer (Inactive)</button>
+              </div>
+              <div class="mb-scene">
+                <div class="mb-pocket">
+                  <div class="mb-pocket-title">Protein Pocket</div>
+                  <div class="mb-hotspot">
+                    <div class="mb-hs mb-hs--hbond">H-bond region</div>
+                    <div class="mb-hs mb-hs--hydro">Hydrophobic cavity</div>
+                    <div class="mb-hs mb-hs--solvent">Solvent-facing</div>
+                  </div>
+                </div>
+                <div class="mb-arrow">⟷</div>
+                <div class="mb-ligand">
+                  <div class="mb-lig-grp mb-lig-grp--a">A → H-bond</div>
+                  <div class="mb-lig-grp mb-lig-grp--b">B → hydrophobic</div>
+                  <div class="mb-lig-grp mb-lig-grp--c">C → solvent</div>
+                </div>
+              </div>
+              <div class="mb-verdict mb-verdict--match">3개 interaction 모두 성립 → High Affinity</div>
+            </div>
+            <div class="viz__msg">Mirror image는 chiral protein pocket에서 mirror-equivalent가 아니다.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> Stereochemistry의 기본 언어</h2>
+
+          <p>우리는 molecule을 종이에 평면으로 그린다. 하지만 실제 molecule은 3차원 공간에 존재한다. Tetrahedral carbon에 네 개의 서로 다른 substituent가 붙으면 두 가지 거울상 구조가 가능하다.</p>
+
+          <p>이 둘은 서로 겹쳐지지 않는다. 왼손과 오른손을 생각하면 된다. 구성은 같지만 공간에서 완전히 겹칠 수 없다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>R이라고 좋은 것도, S라고 좋은 것도 아니다</div>
+            <p>R/S는 단지 stereochemical configuration을 표현하는 명명법이다. 각 target과 molecule마다 다르다.</p>
+          </div>
+
+          <!-- V2: Stereo Map -->
+          <div class="viz" data-stereo-map>
+            <div class="viz__title">Stereochemistry Quick Map</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 항목을 탭해 drug discovery 맥락의 핵심을 확인하세요.</p>
+            <div class="stereo-map">
+              <div class="sm-card">
+                <div class="sm-card-head">
+                  <span class="sm-icon">🪞</span>
+                  <span class="sm-title">Enantiomer</span>
+                  <span class="sm-caret">▼</span>
+                </div>
+                <div class="sm-card-body">
+                  <div class="sm-card-inner">
+                    서로 mirror image 관계이지만 완전히 겹치지 않는 한 쌍. 비생물학적 achiral environment에서는 많은 물성이 비슷할 수 있지만, protein pocket에서는 완전히 다른 molecule처럼 행동할 수 있다.
+                    <div class="sm-molecule">
+                      <div class="sm-struct sm-struct--r">R-form</div>
+                      <div class="sm-mirror">⇌</div>
+                      <div class="sm-struct sm-struct--s">S-form</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sm-card">
+                <div class="sm-card-head">
+                  <span class="sm-icon">🔀</span>
+                  <span class="sm-title">Diastereomer</span>
+                  <span class="sm-caret">▼</span>
+                </div>
+                <div class="sm-card-body">
+                  <div class="sm-card-inner">
+                    Mirror image 관계가 아닌 stereoisomer. 여러 stereocenter가 있을 때 나타날 수 있다. Diastereomer끼리는 solubility, melting point, conformational preference 같은 물성도 상당히 달라질 수 있다.
+                  </div>
+                </div>
+              </div>
+              <div class="sm-card">
+                <div class="sm-card-head">
+                  <span class="sm-icon">🔗</span>
+                  <span class="sm-title">E/Z Geometry</span>
+                  <span class="sm-caret">▼</span>
+                </div>
+                <div class="sm-card-body">
+                  <div class="sm-card-inner">
+                    Double bond 주변의 3D configuration. E/Z 차이 하나가 binding pose 전체를 바꿀 수 있다.
+                    <div class="sm-molecule">
+                      <div class="sm-struct sm-struct--e">E-form</div>
+                      <div class="sm-mirror">vs</div>
+                      <div class="sm-struct sm-struct--z">Z-form</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sm-card">
+                <div class="sm-card-head">
+                  <span class="sm-icon">🔄</span>
+                  <span class="sm-title">Atropisomerism</span>
+                  <span class="sm-caret">▼</span>
+                </div>
+                <div class="sm-card-body">
+                  <div class="sm-card-inner">
+                    Stereocenter가 없어 보이지만 single bond rotation이 steric hindrance로 느려져 distinct 3D form이 존재할 수 있다. 겉보기에 achiral한 biaryl molecule에서 발생할 수 있다. Lorlatinib에서도 연구된 개념.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="viz__msg">Stereochemistry는 stereocenter 하나보다 넓은 개념이다.</div>
+          </div>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Protein은 왜 enantiomer를 구별할까?</h2>
+
+          <p>Protein binding pocket을 생각해보자. Ligand의 stereocenter 주변에 세 functional group이 있다고 하자. 활성 enantiomer에서는 각 group이 H-bond region, hydrophobic cavity, solvent-facing region을 향한다. 반대 enantiomer에서는 세 group의 방향이 뒤집힌다. 그러면 H-bond가 사라지고, hydrophobic group이 polar region으로 가고, bulky substituent가 steric clash를 만들 수 있다.</p>
+
+          <blockquote>
+            원자는 같지만 interaction topology가 달라진다.
+          </blockquote>
+
+          <!-- V3: Three-Point Recognition -->
+          <div class="viz" data-three-point>
+            <div class="viz__title">Three-Point Recognition</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Active / Mirror 를 전환해 세 지점이 어떻게 다르게 맞는지 확인하세요.</p>
+            <div class="three-point">
+              <div class="tp-toggle-row">
+                <button class="tp-toggle-btn" data-stereo="active">Active Isomer</button>
+                <button class="tp-toggle-btn" data-stereo="mirror">Mirror Isomer</button>
+              </div>
+              <div class="tp-scene">
+                <div class="tp-pocket">
+                  <div class="tp-pocket-title">Pocket Hotspots</div>
+                  <div class="tp-points">
+                    <div class="tp-point tp-point--hbond">A · H-bond</div>
+                    <div class="tp-point tp-point--hydro">B · Hydrophobic</div>
+                    <div class="tp-point tp-point--polar">C · Polar</div>
+                  </div>
+                </div>
+                <div class="tp-arrow-col">⟷</div>
+                <div class="tp-ligand-side">
+                  <div class="tp-lig-grp tp-lig-grp--match">Group A <span class="tp-check">✓</span></div>
+                  <div class="tp-lig-grp tp-lig-grp--match">Group B <span class="tp-check">✓</span></div>
+                  <div class="tp-lig-grp tp-lig-grp--match">Group C <span class="tp-check">✓</span></div>
+                </div>
+              </div>
+              <div class="tp-verdict tp-verdict--ok">세 지점 모두 인식 → Stereoselective Binding</div>
+            </div>
+            <div class="viz__msg">Stereoselectivity는 여러 3D interaction을 동시에 만족해야 하기 때문에 발생한다.</div>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> Bioactive Conformation</h2>
+
+          <p>이번에는 stereocenter가 없는 ligand를 생각해보자. Rotatable bond가 여러 개 있으면 하나의 고정된 구조가 아니라 여러 conformation을 취한다. Protein에 결합할 때는 그중 특정 구조가 선호될 수 있다. 이를 흔히 <b>bioactive conformation</b>이라고 부른다.</p>
+
+          <p>Chemical drawing software에서 하나의 structure를 그리면 그 모습 자체가 molecule처럼 느껴진다. 하지만 실제로는 single bond rotation, ring puckering, side-chain rotation 등이 계속 일어난다. 따라서 ligand를 더 정확히 표현하면:</p>
+
+          <blockquote>
+            하나의 structure가 아니라 conformational ensemble이다.
+          </blockquote>
+
+          <p>이 점은 1강에서 protein 역시 conformational ensemble이라고 배운 것과 정확히 대응한다. 실제 binding은 <b>protein ensemble × ligand ensemble</b> 사이의 recognition 문제다.</p>
+
+          <!-- V4: Conformational Ensemble Carousel -->
+          <div class="viz" data-conf-carousel>
+            <div class="viz__title">Conformational Ensemble Carousel</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">다섯 conformer 중 bioactive conformer를 먼저 선택한 뒤 Protein 버튼으로 확인하세요.</p>
+            <div class="conf-carousel">
+              <div class="cc-conformers"></div>
+              <button class="cc-protein-btn">🔬 Protein에 결합시켜 bioactive conformer 확인</button>
+              <div class="cc-result cc-result--neutral">conformer를 선택한 뒤 위 버튼을 누르세요.</div>
+            </div>
+            <div class="viz__msg">Ligand는 하나의 모양이 아니다.</div>
+          </div>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> Rotatable Bond와 Conformational Penalty</h2>
+
+          <p>Binding 과정에서 ligand의 freedom이 감소한다. Solution에서는 많은 conformation을 취할 수 있었는데 complex에서는 거의 한정된 conformational state만 허용된다. 이는 entropy 측면에서 비용이 될 수 있다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Rotatable bond count를 절대법칙으로 쓰지 말자</div>
+            <p>10 rotatable bonds = 나쁜 drug 같은 규칙은 성립하지 않는다. 중요한 것은 실제 accessible conformational space다. Intramolecular hydrogen bond나 steric interaction 때문에 rotatable bond가 있어도 특정 conformer만 선호할 수 있다.</p>
+          </div>
+
+          <!-- V5: Entropy Funnel -->
+          <div class="viz" data-entropy-funnel>
+            <div class="viz__title">Entropy Funnel</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Flexible vs Rigid 선택으로 solution conformer population 차이를 확인하세요.</p>
+            <div class="entropy-funnel">
+              <div class="ef-toggle-row">
+                <button class="ef-toggle-btn" data-mol="flexible">Flexible Ligand</button>
+                <button class="ef-toggle-btn" data-mol="rigid">Preorganized Ligand</button>
+              </div>
+              <div class="ef-scene">
+                <div class="ef-conformers"></div>
+                <div class="ef-arrow">↓ Binding ↓</div>
+                <div class="ef-bound">One bound conformation</div>
+                <div class="ef-label">Binding 시 대부분 freedom 상실 → entropy penalty 큼</div>
+              </div>
+            </div>
+            <div class="viz__msg">Preorganization은 binding 시 잃어야 하는 freedom을 줄일 수 있다.</div>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Conformational Restriction 전략</h2>
+
+          <p>여기서 conformational restriction이라는 전략이 나온다. Medicinal chemist는 생각한다.</p>
+
+          <blockquote>
+            어차피 bound state에서 이 자세를 취한다면, solution에서도 이 자세를 더 선호하게 만들면 어떨까?
+          </blockquote>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Ring formation</div>
+              <p>두 끝을 연결해 rotatable bond 감소. U-shape preorganization 가능.</p>
+            </div>
+            <div class="card card--chem" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Double bond</div>
+              <p>Rotation 제한 + E/Z stereochemistry 생성. 작은 변화로 큰 geometry 차이.</p>
+            </div>
+            <div class="card card--ai" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Methyl introduction</div>
+              <p>Steric repulsion으로 specific torsion angle 선호. Ring 없이도 conformational bias 가능.</p>
+            </div>
+            <div class="card card--bio" style="margin:0;">
+              <div class="card__label"><span class="dot"></span>Macrocyclization</div>
+              <p>큰 ring으로 3D topology 고정. Binding, permeability, ADME를 동시에 바꿀 수 있다.</p>
+            </div>
+          </div>
+
+          <!-- V6: Flexible vs Preorganized -->
+          <div class="viz" data-flex-preorg>
+            <div class="viz__title">Flexible vs Preorganized Ligand</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">두 molecule의 conformer population과 binding-compatible fraction을 비교하세요.</p>
+            <div class="flex-preorg">
+              <div class="fp-col fp-col--flexible">
+                <div class="fp-col-title">Flexible A (많은 conformers)</div>
+                <div class="fp-conformers"></div>
+                <div class="fp-compatible fp-compatible--low">Binding-compatible: 1 / 18</div>
+              </div>
+              <div class="fp-col fp-col--rigid">
+                <div class="fp-col-title">Preorganized B (적은 conformers)</div>
+                <div class="fp-conformers"></div>
+                <div class="fp-compatible fp-compatible--high">Binding-compatible: 1 / 5</div>
+              </div>
+            </div>
+            <div class="viz__msg">더 강한 interaction을 추가하지 않고도 affinity가 개선될 수 있다.</div>
+          </div>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> Preorganization의 함정 — Rigidification은 항상 좋은가?</h2>
+
+          <p>아니다. 여기서 매우 중요한 함정이 나온다. 만약 molecule을 잘못된 conformation으로 rigidify하면 protein이 원하는 bioactive conformation을 취할 수 없다. 결과: potency 급감.</p>
+
+          <p>Conformational restriction은 <b>rigidity 자체</b>가 목적이 아니다. 목표는:</p>
+
+          <blockquote>
+            올바른 geometry를 preorganize하는 것
+          </blockquote>
+
+          <p>또한 유연한 ligand는 protein conformational variation에 적응하고 multiple interaction pattern sampling, induced fit 대응이 가능하다. 지나친 rigidity는 binding adaptability를 잃게 할 수도 있다.</p>
+
+          <!-- V7: Wrong Rigidification -->
+          <div class="viz" data-wrong-rigid>
+            <div class="viz__title">Wrong Rigidification Failure</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Ring closure 위치를 선택해 correct vs wrong rigidification의 차이를 확인하세요.</p>
+            <div class="wrong-rigid">
+              <div class="wr-card wr-card--warn">
+                <div class="wr-label">Flexible Lead</div>
+                <div class="wr-desc">Bound state에서 U-shape 취함. 그러나 solution에서는 많은 conformer 존재.</div>
+                <span class="wr-badge wr-badge--warn">기준</span>
+              </div>
+              <div class="wr-card" style="border-color:var(--line);">
+                <div class="wr-label" style="color:var(--ink-soft);">Ring Closure 위치 선택</div>
+                <div class="wr-desc">두 위치 중 어느 쪽이 bioactive conformation을 올바르게 preorganize할까요?</div>
+                <div class="wr-ring-choice">
+                  <button class="wr-ring-btn" data-choice="correct">위치 A — U-shape 고정</button>
+                  <button class="wr-ring-btn" data-choice="incorrect">위치 B — Extended shape 고정</button>
+                </div>
+                <div class="wr-ring-result"></div>
+              </div>
+            </div>
+            <div class="viz__msg">Rigidification은 "어떻게 고정했는가"가 핵심이다.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> Real Drug Example — Lorlatinib</h2>
+
+          <p>이제 conformational restriction이 drug design 전체와 어떻게 연결되는지 실제 사례를 보자. Lorlatinib은 ALK와 ROS1을 표적으로 하는 macrocyclic kinase inhibitor다. 개발 목표 중 하나는 ALK resistance mutation에 대한 potency뿐 아니라 <b>CNS penetration</b>까지 고려하는 것이었다.</p>
+
+          <p>Lorlatinib discovery 연구는 structure-based design과 physicochemical-property optimization을 함께 사용해 potent하고 brain-penetrant한 macrocyclic inhibitor를 개발했다고 보고한다.</p>
+
+          <p>Macrocyclization에는 여러 잠재적 효과가 있다. Discovery 연구에서는 특히 다음이 언급된다:</p>
+          <ul class="clean">
+            <li>Rotatable bond 감소</li>
+            <li>Polar surface area를 효과적으로 가릴 가능성</li>
+            <li>Restricted conformation을 통한 binding reinforcement</li>
+          </ul>
+
+          <!-- V8: Lorlatinib Story -->
+          <div class="viz" data-lorlatinib>
+            <div class="viz__title">Lorlatinib Macrocycle Story</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">"Open the ring" toggle로 macrocyclic vs acyclic 개념 비교.</p>
+            <div class="lorlatinib-story">
+              <div class="ls-ring-toggle">
+                <button class="ls-ring-btn" data-ring="macro">Macrocyclic (Lorlatinib)</button>
+                <button class="ls-ring-btn" data-ring="open">Conceptual Open-chain</button>
+              </div>
+              <div class="ls-molecule-display">
+                <div class="ls-ring-visual">
+                  <div class="ls-macro-ring">Macro-<br>cyclic</div>
+                  <div class="ls-rot-badge ls-rot-badge--low">Rotatable bonds ↓</div>
+                </div>
+              </div>
+              <div class="ls-callouts">
+                <div class="ls-callout">
+                  <div class="ls-callout-title">Restricted Conformation</div>
+                  <div class="ls-callout-body">Macrocyclic template → rotational freedom ↓ → bioactive shape 유지</div>
+                </div>
+                <div class="ls-callout">
+                  <div class="ls-callout-title">Polar Presentation</div>
+                  <div class="ls-callout-body">Exposed polarity 조절 가능 → membrane environment에서 shape 변화</div>
+                </div>
+                <div class="ls-callout">
+                  <div class="ls-callout-title">CNS Penetration</div>
+                  <div class="ls-callout-body">Permeability + efflux 고려한 BBB 통과 전략과 연결</div>
+                </div>
+                <div class="ls-callout">
+                  <div class="ls-callout-title">Multi-parameter</div>
+                  <div class="ls-callout-body">Potency + selectivity + permeability + efflux를 동시에 고려</div>
+                </div>
+              </div>
+            </div>
+            <div class="viz__msg">Macrocyclization은 potency만을 위한 변화가 아니라 conformation과 drug property를 함께 조절하는 전략이다.</div>
+          </div>
+
+          <p>중요한 것은: <b>"macrocycle이라서 뇌에 간다"가 아니다.</b> Macrocyclization이 conformation + polarity presentation + permeability + efflux susceptibility를 동시에 바꿀 수 있다는 점이다. 그리고 최근 macrocycle CNS drug design에서도 단순 molecular weight보다 effective polarity, 3D topology, chameleonicity 같은 고차원적 특성이 중요하다고 강조된다.</p>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> Conformation ↔ ADME Bridge</h2>
+
+          <p>Conformational restriction을 배우면 흔히 potency만 생각한다. 하지만 3D shape는 PD와 PK를 동시에 연결한다.</p>
+
+          <p>Stereochemistry는 ADME에도 영향을 준다. CYP enzyme도 chiral protein이다. Transporter도 chiral protein이다. Plasma protein도 chiral protein이다. 따라서 두 enantiomer는 metabolism rate, metabolite profile, transporter recognition, protein binding, clearance가 다를 수 있다.</p>
+
+          <!-- V9: Conformation ↔ ADME -->
+          <div class="viz" data-conf-adme>
+            <div class="viz__title">Conformation ↔ ADME Bridge</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 항목을 탭해 conformation이 어떻게 연결되는지 확인하세요.</p>
+            <div class="conf-adme">
+              <div class="ca-center">
+                <div class="ca-center-title">3D Conformation</div>
+              </div>
+              <div class="ca-branches">
+                <div class="ca-branch">
+                  <div class="ca-branch-head">
+                    <span class="ca-branch-icon">🎯</span>
+                    <span class="ca-branch-title">Binding / Selectivity</span>
+                    <span class="ca-branch-caret">▼</span>
+                  </div>
+                  <div class="ca-branch-body">
+                    <div class="ca-branch-inner">Bioactive geometry가 target-specific하면 selectivity ↑. Rigid molecule은 off-target adaptation 감소 가능.</div>
+                  </div>
+                </div>
+                <div class="ca-branch">
+                  <div class="ca-branch-head">
+                    <span class="ca-branch-icon">🚪</span>
+                    <span class="ca-branch-title">Permeability</span>
+                    <span class="ca-branch-caret">▼</span>
+                  </div>
+                  <div class="ca-branch-body">
+                    <div class="ca-branch-inner">Polar group 노출 정도, molecular shape, chameleonic behavior가 passive permeability에 영향. logP 하나로 표현 불가.</div>
+                  </div>
+                </div>
+                <div class="ca-branch">
+                  <div class="ca-branch-head">
+                    <span class="ca-branch-icon">⚗️</span>
+                    <span class="ca-branch-title">Metabolism</span>
+                    <span class="ca-branch-caret">▼</span>
+                  </div>
+                  <div class="ca-branch-body">
+                    <div class="ca-branch-inner">CYP450도 chiral enzyme. 동일 scaffold라도 enantiomer간 metabolic rate 차이 가능. Rigidification으로 metabolic hotspot 노출도 변화.</div>
+                  </div>
+                </div>
+                <div class="ca-branch">
+                  <div class="ca-branch-head">
+                    <span class="ca-branch-icon">🔬</span>
+                    <span class="ca-branch-title">Distribution / PK</span>
+                    <span class="ca-branch-caret">▼</span>
+                  </div>
+                  <div class="ca-branch-body">
+                    <div class="ca-branch-inner">Transporter recognition, plasma protein binding, Vd 모두 3D shape에 의존. Racemate의 두 enantiomer를 "절반씩"으로 보면 안 된다.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="viz__msg">3D shape는 pharmacodynamics와 pharmacokinetics를 연결한다.</div>
+          </div>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Molecular Modification Exercise</h2>
+
+          <p>Lead A가 있다고 하자. Biochemical IC50 = 80 nM, rotatable bond 많음, crystal structure에서는 U-shape conformation. Medicinal chemistry team은 생각한다.</p>
+
+          <blockquote>
+            "U-shape가 실제 bioactive conformation이라면 이를 미리 고정할 수 없을까?"
+          </blockquote>
+
+          <p>Methyl 하나를 추가했더니 potency가 50배 좋아지는 경우가 있다. 이걸 단순히 "hydrophobic interaction 증가"라고만 해석하면 놓칠 수 있다. 실제로는 <b>conformational bias</b>가 원인일 수도 있다. 이것이 SAR 해석이 어려운 이유다. 구조 modification 하나가 여러 mechanism을 동시에 바꾼다.</p>
+
+          <!-- V10: Methyl Effect Simulator -->
+          <div class="viz" data-methyl-effect>
+            <div class="viz__title">Methyl Effect Simulator</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">H vs CH₃ 전환 후 torsion slider를 움직여 steric effect를 확인하세요.</p>
+            <div class="methyl-effect">
+              <div class="me-toggle-row">
+                <button class="me-toggle-btn" data-sub="h">H (기준)</button>
+                <button class="me-toggle-btn" data-sub="ch3">CH₃ 추가</button>
+              </div>
+              <div class="me-torsion-row">
+                <label>Torsion angle (0° – 360°)</label>
+                <input class="me-torsion-slider" type="range" min="0" max="360" step="10" value="90" />
+                <div class="me-angle-display">Torsion angle: 90°</div>
+              </div>
+              <div class="me-clash-zone me-clash-zone--free">이 torsion 허용</div>
+              <div class="me-bars">
+                <div class="me-bar-row">
+                  <span class="me-bar-label">Conformational bias</span>
+                  <div class="me-bar-track"><div class="me-bar-fill me-bar-fill--conf" style="width:30%"></div></div>
+                </div>
+                <div class="me-bar-row">
+                  <span class="me-bar-label">Hydrophobicity ↑</span>
+                  <div class="me-bar-track"><div class="me-bar-fill me-bar-fill--hydro" style="width:25%"></div></div>
+                </div>
+                <div class="me-bar-row">
+                  <span class="me-bar-label">MW 증가</span>
+                  <div class="me-bar-track"><div class="me-bar-fill me-bar-fill--mw" style="width:20%"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="viz__msg">Methyl은 hydrophobicity뿐 아니라 conformational preference도 바꾼다.</div>
+          </div>
+
+          <p>Rigidification 후 무엇을 측정할까? Potency만 보면 안 된다. 최소한 biochemical potency, selectivity, solubility, permeability, logD, metabolic stability를 함께 본다. Conformational change는 molecule 전체 property를 바꿀 수 있기 때문이다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Rigidification → Selectivity 변화</div>
+            <p>Flexible ligand는 Conformer 1 → Target A, Conformer 2 → Target B, Conformer 3 → Target C에 맞을 수 있다. Target A-compatible conformation으로 rigidify하면 Target B/C binding 감소 가능. 하지만 반대로 새 rigid geometry가 여러 kinases에 공통으로 잘 맞으면 selectivity가 오히려 악화될 수도 있다.</p>
+          </div>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> AI Drug Discovery Connection</h2>
+
+          <h4>2D GNN은 stereochemistry를 볼 수 있는가?</h4>
+
+          <p>Molecular graph에 stereochemical label이 명시적으로 포함된다면 model이 정보를 활용할 수 있다. 하지만 stereochemistry encoding을 제거하거나 잘못 preprocessing하면 R isomer와 S isomer가 사실상 동일한 graph처럼 처리될 수도 있다. 그러면 실제 potency 차이를 model이 설명할 방법이 없다.</p>
+
+          <p>SMILES에서도 마찬가지다. Dataset standardization 과정에서 stereochemistry 제거, undefined stereo, salt stripping, tautomer normalization 등이 발생하면 stereochemical information이 손실될 수 있다.</p>
+
+          <!-- V11: AI Stereo Failure -->
+          <div class="viz" data-ai-stereo>
+            <div class="viz__title">AI Stereochemistry Failure</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Preprocessing toggle로 stereo 정보 손실이 AI prediction에 미치는 영향을 확인하세요.</p>
+            <div class="ai-stereo">
+              <div class="ast-toggle-row">
+                <button class="ast-toggle-btn" data-stereo="keep">Stereochemistry 유지</button>
+                <button class="ast-toggle-btn" data-stereo="remove">Stereochemistry 제거</button>
+              </div>
+              <div class="ast-panels">
+                <div class="ast-panel ast-panel--r">
+                  <div class="ast-panel-label">R-isomer</div>
+                  <div class="ast-graph">SMILES: [C@@H](...)...</div>
+                  <div class="ast-activity ast-activity--high">IC50 = 5 nM</div>
+                  <div class="ast-prediction">AI: ~20 nM</div>
+                </div>
+                <div class="ast-panel ast-panel--s">
+                  <div class="ast-panel-label">S-isomer</div>
+                  <div class="ast-graph">SMILES: [C@H](...)...</div>
+                  <div class="ast-activity ast-activity--low">IC50 = 1.5 µM</div>
+                  <div class="ast-prediction">AI: ~2 µM</div>
+                </div>
+              </div>
+              <div class="ast-msg ast-msg--distinct">AI가 R/S를 구분해 activity 차이 예측 가능</div>
+            </div>
+            <div class="viz__msg">Representation이 정보를 버리면 AI가 그 차이를 학습할 수 없다.</div>
+          </div>
+
+          <h4 style="margin-top:24px;">3D model이면 문제가 해결될까?</h4>
+
+          <p>아니다. 3D model은 새로운 문제를 가진다. 어떤 conformer를 입력할 것인가? Ligand가 solution에서 100개 conformer를 가질 수 있는데 model에 하나만 넣었다면, 그 conformer가 bioactive state가 아닐 수 있다.</p>
+
+          <blockquote>
+            3D information이 있다는 것과 correct 3D state를 사용한다는 것은 다르다.
+          </blockquote>
+
+          <!-- V12: Single Conformer Trap -->
+          <div class="viz" data-single-conf>
+            <div class="viz__title">Single Conformer Trap</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Single vs Ensemble 입력 방식을 비교하세요.</p>
+            <div class="single-conf">
+              <div class="sc-conformers"></div>
+              <div class="sc-result-row">
+                <button class="sc-mode-btn" data-mode="single">Single Conformer 입력</button>
+                <button class="sc-mode-btn" data-mode="ensemble">Ensemble 입력</button>
+              </div>
+              <div class="sc-verdict sc-verdict--bad">로딩 중...</div>
+            </div>
+            <div class="viz__msg">3D model의 핵심 문제는 3D를 쓰느냐가 아니라 어떤 3D state를 쓰느냐다.</div>
+          </div>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>Generative Model과 stereochemistry</div>
+            <p>Generative model이 molecule을 만들 때 2D connectivity만 chemically valid하다고 해서 충분하지 않다. Stereocenter 정의, feasible stereoisomer 수, 3D strain, atropisomerism, synthetic accessibility, bioactive conformer plausibility 등을 확인해야 한다. <b>Valid SMILES ≠ valid drug candidate</b>이다.</p>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Failure Case — AI가 두 enantiomer를 거의 같게 평가했다</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>실제 데이터</h5>
+              <div style="margin:6px 0;"><b>R</b>: IC50 = 5 nM</div>
+              <div><b>S</b>: IC50 = 1.5 µM</div>
+              <div style="font-size:11px;color:var(--ink-faint);margin-top:6px;">실제 300배 차이</div>
+            </div>
+            <div class="panel panel--b">
+              <h5>AI prediction</h5>
+              <div style="margin:6px 0;"><b>R</b>: ~20 nM</div>
+              <div><b>S</b>: ~25 nM</div>
+              <div style="font-size:11px;color:var(--ink-faint);margin-top:6px;">거의 같다고 예측</div>
+            </div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>4가지 Hypothesis</div>
+            <ul class="clean">
+              <li><b>Hypothesis 1 — Stereo information loss:</b> Model preprocessing에서 stereochemistry가 제거됐다. R과 S가 동일 graph가 되었다.</li>
+              <li><b>Hypothesis 2 — Dataset bias:</b> Training set에서 stereoisomer pair가 거의 없었다. Model이 relationship을 학습할 기회가 없었다.</li>
+              <li><b>Hypothesis 3 — 3D information 부족:</b> 실제 potency 차이가 pocket geometry에서 발생하는데 ligand-only 2D model만 사용했다.</li>
+              <li><b>Hypothesis 4 — Label 문제:</b> Database에서 stereochemical assignment가 잘못되었을 수도 있다. Chemistry curation이 model architecture만큼 중요하다.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Scientist's Thinking — Methyl 하나의 40배 potency 차이</h2>
+
+          <p>Observation: Compound A (R=H, IC50 = 400 nM) vs Compound B (R=CH₃, IC50 = 10 nM). 40배 차이. 어떻게 생각할까?</p>
+
+          <!-- V13: Rigid Lab -->
+          <div class="viz" data-rigid-lab>
+            <div class="viz__title">Medicinal Chemist's Rigidification Lab</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Modification을 선택하고 어떤 실험을 먼저 할지 결정하세요.</p>
+            <div class="rigid-lab">
+              <div class="rl-mods">
+                <button class="rl-mod-btn" data-mod="none">기준 (Flexible)</button>
+                <button class="rl-mod-btn" data-mod="methyl">+ Methyl</button>
+                <button class="rl-mod-btn" data-mod="alkene">+ Alkene</button>
+                <button class="rl-mod-btn" data-mod="ring">Ring</button>
+                <button class="rl-mod-btn" data-mod="fused">Fused ring</button>
+                <button class="rl-mod-btn" data-mod="macrocycle">Macrocycle</button>
+              </div>
+              <div class="rl-indicators">
+                <div class="rl-ind-row">
+                  <span class="rl-ind-label">Conformational restriction</span>
+                  <div class="rl-ind-bar"><div class="rl-ind-fill rl-ind-fill--conf" style="width:20%"></div></div>
+                  <span class="rl-ind-val" data-key="conf">Low</span>
+                </div>
+                <div class="rl-ind-row">
+                  <span class="rl-ind-label">Potency 가능성</span>
+                  <div class="rl-ind-bar"><div class="rl-ind-fill rl-ind-fill--potent" style="width:30%"></div></div>
+                  <span class="rl-ind-val" data-key="potent">Low</span>
+                </div>
+                <div class="rl-ind-row">
+                  <span class="rl-ind-label">Solubility</span>
+                  <div class="rl-ind-bar"><div class="rl-ind-fill rl-ind-fill--solub" style="width:80%"></div></div>
+                  <span class="rl-ind-val" data-key="solub">High</span>
+                </div>
+                <div class="rl-ind-row">
+                  <span class="rl-ind-label">Synthetic difficulty</span>
+                  <div class="rl-ind-bar"><div class="rl-ind-fill rl-ind-fill--synth" style="width:10%"></div></div>
+                  <span class="rl-ind-val" data-key="synth">Low</span>
+                </div>
+                <div class="rl-ind-row">
+                  <span class="rl-ind-label">Permeability 가능성</span>
+                  <div class="rl-ind-bar"><div class="rl-ind-fill rl-ind-fill--perm" style="width:50%"></div></div>
+                  <span class="rl-ind-val" data-key="perm">Med</span>
+                </div>
+              </div>
+              <div class="rl-exp-choices">
+                <h5>어떤 실험을 먼저 할까?</h5>
+                <div class="rl-exp-btns">
+                  <button class="rl-exp-btn" data-exp="biochem">Biochemical assay</button>
+                  <button class="rl-exp-btn" data-exp="crystal">Crystal structure</button>
+                  <button class="rl-exp-btn" data-exp="perm">Permeability assay</button>
+                  <button class="rl-exp-btn" data-exp="solub">Solubility</button>
+                  <button class="rl-exp-btn" data-exp="metab">Metabolic stability</button>
+                </div>
+                <div class="rl-exp-explain"></div>
+              </div>
+            </div>
+            <div class="viz__msg">Conformational design은 potency 최적화가 아니라 hypothesis-driven multi-property experiment다.</div>
+          </div>
+
+          <h4 style="margin-top:24px;">새로운 molecule을 보면 이제 다음을 물어보라</h4>
+
+          <div style="display:grid;gap:10px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Stereochemistry</div><p>Stereocenter가 있는가? Configuration이 정의되어 있는가? Active stereoisomer는 어느 쪽인가? ADME에도 영향을 줄 수 있는가?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Conformation</div><p>Rotatable bond가 어디에 있는가? Preferred conformer는 무엇인가? Bound conformation과 solution conformation은 다른가?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Restriction 전략</div><p>Ring으로 고정 가능한가? Methyl로 conformational bias를 줄 수 있는가? Macrocyclization이 의미가 있는가?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Cost</div><p>Potency 외에 어떤 property가 바뀌는가? Solubility? Permeability? Metabolic stability? Selectivity?</p></div>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>4강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Protein은 chiral 3D environment이므로 두 stereoisomer를 완전히 다른 ligand처럼 인식할 수 있다.</b>
+              <span>R/S 명명법은 potency ranking이 아니다. 각 target마다 다르다.</span>
+            </li>
+            <li>
+              <b>Ligand는 하나의 구조가 아니라 conformational ensemble로 존재하며, binding에는 특정 bioactive conformation이 중요하다.</b>
+              <span>Solution에서 드문 conformer가 실제 binding state일 수 있다.</span>
+            </li>
+            <li>
+              <b>Conformational restriction은 bioactive conformation을 preorganize해 binding entropy penalty를 줄일 수 있지만, 잘못 고정하면 potency를 오히려 잃는다.</b>
+              <span>Rigidity 자체가 목표가 아니라 올바른 geometry를 고정하는 것이 목표다.</span>
+            </li>
+            <li>
+              <b>Rigidification은 potency뿐 아니라 selectivity, permeability, metabolism까지 바꿀 수 있다.</b>
+              <span>Conformation은 pharmacodynamics와 pharmacokinetics를 동시에 연결한다.</span>
+            </li>
+            <li>
+              <b>AI가 2D connectivity를 정확히 보더라도 stereochemistry와 correct conformational state를 놓치면 실제 activity 차이를 설명하지 못할 수 있다.</b>
+              <span>Representation이 정보를 버리면 AI가 그 차이를 학습할 수 없다.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>R-enantiomer는 IC50 = 5 nM, S-enantiomer는 IC50 = 2 µM다. 두 molecule의 logP와 molecular weight는 동일하다. 왜 potency가 다를 수 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Protein pocket이 chiral한 3D environment이기 때문이다.
+              <div class="exp">두 enantiomer의 functional group orientation이 달라져 H-bond, hydrophobic contact, steric clash, overall pose가 달라질 수 있다. 물성은 비슷해도 interaction topology가 완전히 다르다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Flexible ligand A를 cyclic analogue B로 만들었더니 potency가 20배 좋아졌다. 가능한 설명은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              B가 bioactive conformation에 더 preorganized되어 binding 시 conformational entropy penalty가 감소했을 수 있다.
+              <div class="exp">하지만 새로운 contact, lipophilicity 변화, water displacement 등 다른 가능성도 있다. Crystal structure와 property 데이터를 함께 확인해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Rigidification 후 potency는 좋아졌지만 off-target activity도 증가했다. 이상한 결과인가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">Rigidification이 target-specific conformation을 만든다고 보장할 수 없다. 새로운 rigid geometry가 target과 off-target 양쪽에 모두 잘 맞았을 수 있다. Conformational restriction과 selectivity의 관계는 empirical하게 확인해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>3D-QSAR model에 각 molecule의 lowest-energy conformer 하나만 넣었다. 어떤 위험이 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Solution lowest-energy conformer가 bioactive conformer와 동일하다는 보장이 없다.
+              <div class="exp">Protein이 solution에서는 드문 conformation을 stabilize할 수 있다. 따라서 relevant conformer가 입력되지 않으면 model이 잘못된 3D relationship을 학습할 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>Generative model이 stereocenter 3개를 가지지만 configuration을 정의하지 않은 molecule을 제안했다. 왜 문제인가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              최대 여러 stereoisomer가 가능하고 각각 다른 target affinity, selectivity, metabolism, toxicity를 가질 수 있다.
+              <div class="exp">따라서 "molecule 하나"가 아니라 실제로 어떤 stereochemical entity를 합성하고 평가할지 정의해야 한다. Valid SMILES ≠ valid drug candidate이다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">5강 · Functional Group별 성질</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">지금까지 개별적으로 등장했던 amine, amide, carboxylic acid, alcohol, phenol, ether, ester, aromatic heterocycle, nitrile, sulfonamide, halogen 등을 medicinal chemist의 시선으로 체계적으로 분류한다. 각 functional group마다 전자적 성질 → HBD/HBA → pKa → polarity → metabolism → binding role → 자주 쓰는 modification을 하나의 프레임으로 연결한다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="03.html">◀ 3강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="05.html">▶ 5강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>
