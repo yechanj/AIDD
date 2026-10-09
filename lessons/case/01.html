@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B01 · Gefitinib 구조 분석 — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+<div class="topbar">
+  <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+  <div class="topbar__title">B01 · Gefitinib 구조 분석</div>
+</div>
+<div class="scrim" aria-hidden="true"></div>
+
+<div class="app">
+  <aside class="sidebar" aria-label="강의 목차">
+    <div class="sidebar__brand">
+      <div class="sidebar__logo" style="background:var(--tb);">B01</div>
+      <div class="sidebar__title">AIDD · Track B
+        <small>케이스 분석</small>
+      </div>
+    </div>
+    <nav>
+      <ul class="toc">
+        <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+        <li><a href="#s02"><span class="num">02</span> Molecular Anatomy</a></li>
+        <li><a href="#s03"><span class="num">03</span> Structure → Property</a></li>
+        <li><a href="#s04"><span class="num">04</span> Structure → Binding</a></li>
+        <li><a href="#s05"><span class="num">05</span> Analog Design</a></li>
+        <li><a href="#s06"><span class="num">06</span> AI Interpretation</a></li>
+        <li><a href="#s07"><span class="num">07</span> Failure Investigation</a></li>
+        <li><a href="#s08"><span class="num">08</span> Scientist's Thinking</a></li>
+        <li><a href="#s09"><span class="num">09</span> Self Check</a></li>
+        <li><a href="#s10"><span class="num">10</span> Analysis Card</a></li>
+        <li><a href="#s11"><span class="num">11</span> Take-home</a></li>
+      </ul>
+    </nav>
+    <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+  </aside>
+
+  <div class="content">
+    <div class="wrap">
+
+      <header class="lesson-hero lesson-hero--b">
+        <div class="kicker">AIDD · Track B — Practice &nbsp;·&nbsp; Case 01 &nbsp;·&nbsp; Month 1 / Week 1</div>
+        <h1>Gefitinib의 구조를 읽고, 분석 사이클과 다음 실험을 설계하기</h1>
+        <p>AI가 EGFR inhibitor 후보를 제안했다. 좋은 결합인가? 분자구조·결합·물성·실험 단계를 연결해 판단하는 법을 배운다.</p>
+      </header>
+
+      <!-- ===== SECTION 01 ===== -->
+      <section id="s01" class="section">
+        <h2><span class="sec-no">01</span> Opening Case — 결합 점수가 좋으면 좋은 약물일까?</h2>
+
+        <p>당신은 EGFR inhibitor를 개발하는 프로젝트의 팀원이다. AI 모델이 제안한 신규 화합물의 docking score가 높게 나왔고, 연구팀에서는 다음 물질을 합성할지 결정하려 한다.</p>
+
+        <blockquote>
+          "EGFR에 강하게 결합할 것으로 예측된다면, 이 물질을 다음 후보로 제안해도 될까요?"
+        </blockquote>
+
+        <p>이 질문에 답하려면 최소한 세 가지를 구분해야 한다. 첫째, 모델이 예측한 수치가 <b>실제로 어떤 측정값을 의미하는지</b>다. 둘째, 그 결합을 가능하게 하는 <b>분자구조와 단백질 환경</b>이다. 셋째, 분자가 용액 안에 존재하고 세포 안에 도달하고 표적에 결합하여 약리효과를 나타내는 <b>실제 실험 단계</b>들이다.</p>
+
+        <p>오늘 분석할 물질은 승인된 EGFR tyrosine kinase inhibitor <b>gefitinib</b>이다. 이미 알려진 약물이므로, 구조를 관찰해 세운 가설을 공개된 단백질 결합 구조와 assay로 일부 검증할 수 있다. 반대로, 데이터가 없는 구조 수정 결과는 가설로만 남겨두어야 한다.</p>
+
+        <div class="viz" style="padding:14px;">
+          <div class="viz__title">Opening Prediction — 어떤 근거가 필요한가?</div>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">AI docking score만 보고 합성을 결정하기 전에 확인해야 할 항목을 체크해보자.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;" id="opening-checklist">
+            <label class="fstep" style="cursor:pointer;display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" style="accent-color:var(--tb);width:16px;height:16px;"> <span>모델의 예측 endpoint가 무엇인지 확인했다 (docking score vs IC50 vs ΔG)</span>
+            </label>
+            <label class="fstep" style="cursor:pointer;display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" style="accent-color:var(--tb);width:16px;height:16px;"> <span>그 화합물이 물에 어느 정도 녹는지 검토했다</span>
+            </label>
+            <label class="fstep" style="cursor:pointer;display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" style="accent-color:var(--tb);width:16px;height:16px;"> <span>결합 구조 또는 docking pose에서 핵심 interaction을 확인했다</span>
+            </label>
+            <label class="fstep" style="cursor:pointer;display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" style="accent-color:var(--tb);width:16px;height:16px;"> <span>새 화합물이 훈련 데이터 분포 안에 있는지 고려했다</span>
+            </label>
+            <label class="fstep" style="cursor:pointer;display:flex;align-items:center;gap:10px;">
+              <input type="checkbox" style="accent-color:var(--tb);width:16px;height:16px;"> <span>biochemical assay → cellular assay로 이어지는 실험 계획이 있다</span>
+            </label>
+          </div>
+          <div class="viz__msg" style="margin-top:12px;">첫 질문을 기억하라. "이 분자가 왜 결합하며, 결합을 좋게 만드는 특징이 다른 성질에는 어떤 대가를 요구하는가?"</div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 02 ===== -->
+      <section id="s02" class="section">
+        <h2><span class="sec-no">02</span> Molecular Anatomy — 분자를 네 부분으로 해부하기</h2>
+
+        <p>Gefitinib의 분자식은 <b>C₂₂H₂₄ClFN₄O₃</b>, 분자량은 <b>446.9 g/mol</b>이다. 정확하게 그린 2D 구조를 관찰하면 하나의 복잡한 분자보다는 몇 가지 기능적 영역으로 나누어 읽을 수 있다.</p>
+
+        <div class="case-note">
+          <b>구조 데이터 출처:</b> PubChem CID 123631 [S1]. 아래 2D 구조는 PubChem canonical SMILES를 RDKit.js로 렌더링합니다. 로드 실패 시 검증된 로컬 대체 구조가 표시됩니다.
+        </div>
+
+        <!-- V1: Molecular Anatomy Explorer -->
+        <div class="mol-anatomy viz" data-mol-anatomy>
+          <div class="viz__title">Molecular Anatomy Explorer</div>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0 0 10px;">기능기 버튼을 탭해 해당 영역을 구조에서 확인하세요.</p>
+
+          <div class="mol-svg-wrap" id="mol-svg-main">
+            <div class="mol-rdkit-loading" id="mol-loading">
+              <div class="spin"></div>
+              <span>RDKit.js 로드 중…</span>
+            </div>
+          </div>
+          <div class="mol-source-tag">PubChem CID 123631 · Canonical SMILES · RDKit.js render</div>
+
+          <div class="mol-region-btns">
+            <button class="mol-region-btn" data-region="core">
+              <span class="mol-region-dot mol-region-dot--core"></span>A. Quinazoline Core
+            </button>
+            <button class="mol-region-btn" data-region="anilino">
+              <span class="mol-region-dot mol-region-dot--anilino"></span>B. 3-Cl-4-F Anilino
+            </button>
+            <button class="mol-region-btn" data-region="tail">
+              <span class="mol-region-dot mol-region-dot--tail"></span>C. Morpholine Tail
+            </button>
+            <button class="mol-region-btn" data-region="methoxy">
+              <span class="mol-region-dot mol-region-dot--methoxy"></span>D. Methoxy Group
+            </button>
+          </div>
+
+          <div class="mol-region-desc" id="mol-region-desc">
+            버튼을 탭하면 각 기능기의 역할이 여기에 나타납니다.
+          </div>
+
+          <div class="viz__msg" style="margin-top:10px;">어떤 부분이 EGFR 결합을 유지하면서 물성을 조정할 후보 영역인가? 한 곳을 고른 다음, 왜 그곳이 합리적인지 말해보자.</div>
+        </div>
+
+        <h3>구조를 읽을 때 기억할 것</h3>
+
+        <div class="twopanel">
+          <div class="panel panel--a">
+            <h5>구조에서 볼 수 있는 것</h5>
+            <ul class="clean">
+              <li>H-bond donor/acceptor 위치</li>
+              <li>이온화 가능한 작용기 (ionizable group)</li>
+              <li>방향족 ring / hydrophobic 영역</li>
+              <li>Rotatable bond 수</li>
+            </ul>
+          </div>
+          <div class="panel panel--b">
+            <h5>구조만으로 알 수 없는 것</h5>
+            <ul class="clean">
+              <li>실제 pKa와 ionization state</li>
+              <li>결합 pose와 protein pocket 적합성</li>
+              <li>세포 투과성과 efflux</li>
+              <li>대사 안정성과 대사체 종류</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card card--mistake">
+          <div class="card__label"><span class="dot"></span>흔한 오해</div>
+          <p>Morpholine N이 있으면 무조건 ionized형이다 → <b>틀림.</b> pKa와 assay pH를 확인해야 한다. Cl이 있으면 무조건 결합이 좋아진다 → <b>틀림.</b> 크기·전자효과·conformation 변화를 함께 봐야 한다.</p>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 03 ===== -->
+      <section id="s03" class="section">
+        <h2><span class="sec-no">03</span> Structure → Property — 구조만으로 무엇을 예측할 수 있는가?</h2>
+
+        <p>구조를 보고 얻는 것은 <b>확정된 물성값이 아니라 검증 가능한 가설</b>인 경우가 많다. 예를 들어 이온화 가능한 질소가 있으면 pH에 따른 이온화 분율이 변할 수 있다는 근거가 생긴다. 하지만 '이온화 가능하므로 용해도가 좋다'는 결론은 성립하지 않는다. 결정 격자, 분자 내 상호작용, 표면 노출도 등도 용해도를 결정하기 때문이다.</p>
+
+        <p>Gefitinib의 PubChem 계산 물성값은 <b>XLogP3-AA 4.1, TPSA 68.7 Å², HBD 1, HBA 8</b>이다. 계산 descriptor는 분자를 빠르게 비교하는 출발점이지만, logP의 생리적 pH에서의 logD는 동일하지 않으며, TPSA만으로 세포 투과성을 확정할 수 없다.</p>
+
+        <table class="prop-table">
+          <thead>
+            <tr>
+              <th>Descriptor</th>
+              <th>값</th>
+              <th>타입</th>
+              <th>출처</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Molecular Formula</td>
+              <td>C₂₂H₂₄ClFN₄O₃</td>
+              <td><span class="data-label data-label--evidence">Measured</span></td>
+              <td>[S1]</td>
+            </tr>
+            <tr>
+              <td>MW (g/mol)</td>
+              <td>446.9</td>
+              <td><span class="data-label data-label--evidence">Measured</span></td>
+              <td>[S1]</td>
+            </tr>
+            <tr>
+              <td>XLogP3-AA</td>
+              <td>4.1</td>
+              <td><span class="data-label data-label--hypothesis">Computed</span></td>
+              <td>[S1] PubChem</td>
+            </tr>
+            <tr>
+              <td>TPSA (Å²)</td>
+              <td>68.7</td>
+              <td><span class="data-label data-label--hypothesis">Computed</span></td>
+              <td>[S1] PubChem</td>
+            </tr>
+            <tr>
+              <td>HBD count</td>
+              <td>1</td>
+              <td><span class="data-label data-label--hypothesis">Computed</span></td>
+              <td>[S1] PubChem</td>
+            </tr>
+            <tr>
+              <td>HBA count</td>
+              <td>8</td>
+              <td><span class="data-label data-label--hypothesis">Computed</span></td>
+              <td>[S1] PubChem</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- V2: Structure → Property → Test flow -->
+        <div class="viz" data-sp-flow>
+          <div class="viz__title">Structure → Property Hypothesis → Required Test</div>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">구조 특징을 탭하면 가설과 필요한 확인 데이터를 볼 수 있습니다.</p>
+
+          <div class="sp-flow" id="sp-flow-items">
+
+            <div class="fstep sp-item" data-sp-id="morpholine">
+              <div class="exp">Morpholine N (이온화 가능한 질소)</div>
+              <div class="body">
+                <div class="sp-detail show">
+                  <b>가설:</b> pH 의존적 이온화가 일어날 수 있다. Ionized form과 neutral form의 비율에 따라 용해도와 permeability가 달라질 수 있다.<br><br>
+                  <b>주의:</b> Morpholine pKa는 8.3 (morpholine 자체)이나 치환 환경에 따라 달라진다. Gefitinib의 morpholine pKa는 7.2 근처로 보고된 경우가 있으나, <span class="data-label data-label--hypothesis">확인 필요</span><br><br>
+                  <b>먼저 확인할 것:</b>
+                  <span class="sp-req-tag">실측 pKa</span>
+                  <span class="sp-req-tag">pH–solubility profile</span>
+                  <span class="sp-req-tag">logD at pH 7.4</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fstep sp-item" data-sp-id="halogen">
+              <div class="exp">방향족 고리의 Cl/F 치환기</div>
+              <div class="body">
+                <div class="sp-detail show">
+                  <b>가설:</b> 소수성 기여와 분자 conformation, 전자적 성질에 영향을 줄 수 있다. Cl 제거 시 결합 공간 선호도와 소수성이 함께 변한다.<br><br>
+                  <b>주의:</b> 할로겐 치환 효과는 크기·전자·conformation 세 가지가 동시에 작용한다. 단일 인과로 설명하기 어렵다.<br><br>
+                  <b>먼저 확인할 것:</b>
+                  <span class="sp-req-tag">logD 변화</span>
+                  <span class="sp-req-tag">kinetic solubility</span>
+                  <span class="sp-req-tag">EGFR potency</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fstep sp-item" data-sp-id="hba">
+              <div class="exp">H-bond donor/acceptor balance</div>
+              <div class="body">
+                <div class="sp-detail show">
+                  <b>가설:</b> HBD 1, HBA 8이라는 asymmetric balance는 용매와의 상호작용 비용이 크고, cellular permeability와 trade-off가 있을 수 있다.<br><br>
+                  <b>주의:</b> Computed HBA count는 lone pair를 가진 모든 N/O를 포함하므로 실제 binding에서 유효한 HBA 수와 다를 수 있다.<br><br>
+                  <b>먼저 확인할 것:</b>
+                  <span class="sp-req-tag">PAMPA 투과성</span>
+                  <span class="sp-req-tag">Caco-2</span>
+                  <span class="sp-req-tag">efflux ratio</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fstep sp-item" data-sp-id="methoxy2">
+              <div class="exp">Methoxy 치환기 (–OCH₃)</div>
+              <div class="body">
+                <div class="sp-detail show">
+                  <b>가설:</b> Ether oxygen이 HBA로 작용할 수 있다. Methoxy → hydroxy로 바꾸면 H-bond donor 능력이 추가되고 대사 stability가 변한다.<br><br>
+                  <b>주의:</b> O-demethylation 대사가 발생할 수 있어 metabolite profile 확인이 중요하다.<br><br>
+                  <b>먼저 확인할 것:</b>
+                  <span class="sp-req-tag">microsomal stability</span>
+                  <span class="sp-req-tag">metabolite ID</span>
+                  <span class="sp-req-tag">EGFR analog potency</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="case-note" style="margin-top:12px;">
+            <b>중요한 구분:</b> 계산 구조 descriptor는 분자의 정체성(identity)이다. 세포 활성을 설명하려면 이온화 상태, 용해도, 투과성, 분포, 대사, 표적 접근성을 함께 고려해야 한다.
+          </div>
+          <div class="viz__msg">구조로 확정할 수 있는 것과 측정해야 하는 것을 분리해서 보는 습관을 기르자.</div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 04 ===== -->
+      <section id="s04" class="section">
+        <h2><span class="sec-no">04</span> Structure → Binding — PDB에서 가설을 검증하기</h2>
+
+        <p>RCSB PDB <b>4WKQ</b>는 Gefitinib과 EGFR kinase domain의 X-ray 복합체 구조이며, 보고된 해상도는 <b>1.85 Å</b>이다. 따라서 단순 docking pose가 아닌, 실험적으로 결정된 결합 구조를 관찰할 수 있다. <span class="data-label data-label--evidence">Experimental</span></p>
+
+        <p>EGFR kinase의 ATP-binding site는 ATP의 경쟁적인 inhibitor가 결합하는 공간이다. Gefitinib의 quinazoline 부분은 hinge 영역에 배치되며, quinazoline의 질소와 <b>Met793의 주사슬 NH</b> 사이에 H-bond가 알려진 중요한 상호작용이다. 구조 뷰어에서 이 관계를 직접 확인한다. <span class="data-label data-label--evidence">4WKQ 기반</span></p>
+
+        <div class="card card--mistake">
+          <div class="card__label"><span class="dot"></span>결정 구조의 한계</div>
+          <p>결정 구조는 특정 결정 조건에서의 정적 모델이다. 단백질의 유연성, 물 네트워크, 세포 내 실제 target occupancy를 직접 설명하지 않는다. H-bond 거리는 좌표에서 계산할 때만 출력하며, donor/acceptor 및 거리 기준을 명시해야 한다.</p>
+        </div>
+
+        <!-- V3: 3D Structure Viewer -->
+        <div class="viz" data-structure-viewer>
+          <div class="viz__title">EGFR–Gefitinib 3D Structure Viewer (PDB: 4WKQ)</div>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0 0 10px;">3Dmol.js를 사용하여 RCSB에서 구조를 불러옵니다. 네트워크가 필요합니다.</p>
+
+          <div class="viewer-3d-wrap" id="viewer3d-wrap">
+            <div class="viewer-3d-placeholder" id="viewer3d-placeholder">
+              <div style="font-size:32px;">🔬</div>
+              <div>PDB 4WKQ — EGFR kinase domain + Gefitinib</div>
+              <div style="font-size:13px;color:var(--ink-faint);">버튼을 클릭하면 3Dmol.js와 PDB 데이터를 불러옵니다 (~2MB)</div>
+              <button class="viewer-3d-launch" id="viewer3d-btn">구조 불러오기 →</button>
+              <div style="font-size:12px;color:var(--ink-faint);">또는 <a href="https://www.rcsb.org/3d-view/4WKQ" target="_blank" rel="noopener" style="color:var(--tb);">RCSB 공식 뷰어에서 보기 ↗</a></div>
+            </div>
+            <div id="viewer3d-canvas-wrap" style="display:none;">
+              <div id="viewer3d-canvas" class="viewer-3d-canvas"></div>
+              <div class="viewer-preset-row" id="viewer-preset-row"></div>
+              <div class="viewer-3d-note">
+                <b>Met793</b> 강조 표시됨 (hinge residue). 주변 4 Å 이내 잔기를 보려면 'Nearby Residues'를 선택하세요.<br>
+                H-bond 거리는 표시 목적의 교육용 수치입니다. 정확한 값은 RCSB 좌표에서 계산하세요.
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <h5 style="margin:0 0 8px;">직접 확인할 것</h5>
+            <ol class="clean" style="font-size:14px;line-height:1.9;">
+              <li>Ligand(gefitinib)를 강조하고 전체 결합 pose를 확인한다</li>
+              <li>Met793을 찾아본다 (hinge region)</li>
+              <li>Ligand 주변 약 4 Å의 잔기를 표시한다</li>
+              <li>Morpholine tail이 향하는 방향을 관찰한다 (용매 노출 측)</li>
+            </ol>
+          </div>
+
+          <div class="viz__msg">결정 구조는 결합 가설을 검증하는 실험적 기준이다. Docking 결과는 여기에 비추어 평가된다.</div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 05 ===== -->
+      <section id="s05" class="section">
+        <h2><span class="sec-no">05</span> Analog Design — 세 가지 구조 수정 제안</h2>
+
+        <div class="case-note">
+          <b>이 섹션의 세 analog는 교육용 가상 설계입니다.</b> 예측된 방향(hypothesis only)이며, 실제 합성 결과나 문헌 SAR로 인용하지 않습니다. 각 변경이 맞는지 판단하는 기준은 '효능이 높아 보인다'가 아니라 <b>가설–위험–검증</b>의 명확한 연결이다.
+        </div>
+
+        <!-- V4: Analog Modification Lab -->
+        <div class="viz" data-analog-lab>
+          <div class="viz__title">Analog Modification Lab</div>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Parent와 세 analog를 비교하세요. 변경된 부분이 강조 표시됩니다.</p>
+
+          <div class="analog-selector" id="analog-selector">
+            <button class="analog-btn active" data-analog="parent">Parent (Gefitinib)</button>
+            <button class="analog-btn" data-analog="A">Analog A — Cl→H</button>
+            <button class="analog-btn" data-analog="B">Analog B — Morpholine→Piperidine</button>
+            <button class="analog-btn" data-analog="C">Analog C — Methoxy→Hydroxy</button>
+          </div>
+
+          <div class="analog-mol-wrap">
+            <div class="analog-svg-box" id="analog-svg-box">
+              <div class="mol-rdkit-loading" id="analog-loading">
+                <div class="spin"></div><span>구조 생성 중…</span>
+              </div>
+            </div>
+            <div class="analog-info" id="analog-info">
+              <h5>Parent — Gefitinib</h5>
+              <div class="analog-info-row">
+                <span class="analog-info-label">변경:</span>
+                <span>기준 분자</span>
+              </div>
+              <div class="analog-info-row">
+                <span class="analog-info-label">가설:</span>
+                <span class="analog-hypothesis">현재 EGFR 결합 및 물성 프로파일의 기준</span>
+              </div>
+              <div class="analog-info-row">
+                <span class="analog-info-label">위험:</span>
+                <span class="analog-risk">—</span>
+              </div>
+              <div class="analog-info-row">
+                <span class="analog-info-label">우선 확인:</span>
+                <span class="analog-assay">EGFR biochemical IC50, logD, kinetic solubility</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="viz__msg" style="margin-top:12px;">목표가 'biochemical potency를 유지하면서 다루기 쉬운 도즈를 만들기'라면 A–C 중 어느 것부터 시작하겠는가? 단 하나를 고른 다음, 필요한 판단 자료 세 가지를 기록하라. 구조만으로는 전략을 확정할 수 없다는 사실까지 포함해야 좋은 답변이다.</div>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>실습 질문</div>
+          <p>목표가 'biochemical potency를 유지하면서 cellular exposure를 높이기'라면 A–C 중 어느 것부터 시작하겠는가? 하나를 고른 다음, 필요한 판단 자료 세 가지를 기록하라.</p>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 06 ===== -->
+      <section id="s06" class="section">
+        <h2><span class="sec-no">06</span> AI Interpretation — 모델이 무엇을 보고 무엇을 놓쳤는가?</h2>
+
+        <p>Gefitinib의 SMILES, Morgan fingerprint, graph representation을 입력받는 모델을 떠올려 보자. 이런 모델은 화학 구조와 훈련 데이터에 존재하는 관계를 학습할 수 있지만, 입력되지 않은 실제 세포 내 노출이나 단백질의 모든 상태를 직접 관찰하지는 못한다.</p>
+
+        <p>또한 3D docking은 ligand의 특정 receptor 구조에 대한 배향을 평가하지만, scoring function이 실제 binding free energy를 정확하게 복제하는 것은 아니다. Entropy, solvation, receptor flexibility, protonation state, crystallographic water 등은 방법에 따라 부분적으로만 모델링된다.</p>
+
+        <div class="oneline" style="border-color:var(--tb);">
+          가장 먼저 할 질문: "이 수치의 endpoint는 무엇인가?"
+        </div>
+
+        <!-- V5: AI Endpoint Selector -->
+        <div class="viz" data-endpoint-selector>
+          <div class="viz__title">AI 예측 Endpoint 이해하기</div>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 카드를 탭해 endpoint의 의미와 한계를 확인하세요. 잘못 연결된 선택지가 있습니다.</p>
+
+          <div class="endpoint-deck" id="endpoint-deck">
+
+            <div class="endpoint-card" data-ep="docking" data-correct-claim="potency">
+              <div class="endpoint-card__header">
+                <div class="endpoint-card__title">Docking Score</div>
+                <div class="endpoint-card__tag">In silico</div>
+              </div>
+              <div class="endpoint-card__body">
+                <p>특정 구조·프로토콜의 scoring function 출력값. 보통 실측 ΔG나 IC50과 상관관계가 있을 수 있지만 동일하지 않다.</p>
+                <p><b>잘 반영하는 것:</b> 결합 pose의 geometric fit, 특정 interaction의 유무</p>
+                <p><b>잘 놓치는 것:</b> Entropy 기여, 용매화 에너지, 단백질 유연성, protonation state, water network</p>
+              </div>
+            </div>
+
+            <div class="endpoint-card" data-ep="biochem">
+              <div class="endpoint-card__header">
+                <div class="endpoint-card__title">Biochemical IC50</div>
+                <div class="endpoint-card__tag">In vitro (enzyme)</div>
+              </div>
+              <div class="endpoint-card__body">
+                <p>특정 효소·기질·ATP 농도·assay 조건에서의 최소 억제 농도. Ki와는 동일하지 않다.</p>
+                <p><b>측정하는 것:</b> Isolated enzyme 억제 능력</p>
+                <p><b>포함하지 않는 것:</b> 세포 내 투과, efflux, intracellular target 접근성</p>
+              </div>
+            </div>
+
+            <div class="endpoint-card" data-ep="cellular">
+              <div class="endpoint-card__header">
+                <div class="endpoint-card__title">Cellular IC50</div>
+                <div class="endpoint-card__tag">In vitro (cell)</div>
+              </div>
+              <div class="endpoint-card__body">
+                <p>특정 세포주·readout·노출 시간과 assay 조건에서의 효과 농도.</p>
+                <p><b>측정하는 것:</b> 세포 수준의 표현형 또는 신호전달 변화</p>
+                <p><b>포함하지 않는 것:</b> in vivo PK, 종 차이, tumor microenvironment</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div style="margin-top:12px;font-size:14px;color:var(--ink-soft);">
+            아래 시나리오를 선택해 endpoint mismatch를 확인하세요.
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;" id="ep-scenario-btns">
+            <button class="lipo-btn" data-scenario="docking-cell">"Docking score가 좋으니 세포 활성이 좋을 것이다"</button>
+            <button class="lipo-btn" data-scenario="biochem-cell">"Biochemical IC50 = 10 nM이니 세포에서도 비슷할 것이다"</button>
+            <button class="lipo-btn" data-scenario="correct">"Docking으로 pose를 확인하고, 생화학 assay로 potency를 검증한다"</button>
+          </div>
+          <div class="endpoint-mismatch-panel" id="ep-mismatch"></div>
+          <div class="viz__msg">수치가 좋다는 것은 '모델의 특정 정의에 따라 좋은 점수를 받았다'는 뜻이지, 모든 개발 단계의 성공 확률이 높다는 뜻이 아니다.</div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 07 ===== -->
+      <section id="s07" class="section">
+        <h2><span class="sec-no">07</span> Failure Investigation — 효소에서 18 nM, 세포에서 8,000 nM</h2>
+
+        <p>다음은 <b>교육용 가상 analog D</b>에 대한 가상 결과다. Gefitinib의 실제 측정값이 아니라, 분석 연습을 위한 교육적 시나리오다.</p>
+
+        <div class="card card--case">
+          <div class="card__label"><span class="dot"></span>교육용 시나리오 데이터 <span class="data-label data-label--hypothesis" style="margin-left:6px;">가상 교육용</span></div>
+          <table class="prop-table" style="margin-top:10px;">
+            <thead><tr><th>지표</th><th>교육용 가상값</th></tr></thead>
+            <tbody>
+              <tr><td>Docking score</td><td>−10.2 (프로그램별 단위 상이, 실측 ΔG 아님)</td></tr>
+              <tr><td>Biochemical IC50</td><td>18 nM</td></tr>
+              <tr><td>Cellular IC50</td><td>8,000 nM</td></tr>
+              <tr><td>Kinetic solubility</td><td>3 µM</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Biochemical IC50이 18 nM인데 cellular IC50이 8,000 nM이다. 이 차이는 약 <b>444배</b>다. 그러나 단지 비율만으로 '투과성이 나쁘다'라고 결론 내릴 수는 없다. 두 assay는 서로 다른 시스템에서 측정된 값이기 때문이다.</p>
+
+        <!-- V6: Discrepancy Decision Simulator -->
+        <div class="viz" data-disc-sim>
+          <div class="viz__title">Discrepancy Decision Simulator</div>
+          <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">단계별로 가설을 세우고 실험을 선택해 불일치 원인을 탐색해보세요.</p>
+
+          <div class="disc-sim" id="disc-sim-wrap">
+
+            <!-- Step 1: Hypothesis selection -->
+            <div class="disc-sim__step active" id="disc-step-1">
+              <div class="disc-sim__step-head">
+                <div class="disc-sim__step-num">1</div>
+                <div class="disc-sim__step-title">가설 선택 — 불일치의 가능한 원인 (복수 선택 가능)</div>
+              </div>
+              <div class="disc-sim__step-body">
+                <div class="disc-option-list">
+                  <button class="disc-option" data-hyp="assay">Assay 자체의 문제 (biochemical assay에 artifact)</button>
+                  <button class="disc-option" data-hyp="solubility">낮은 용해도 → aggregation 또는 불충분한 free 농도</button>
+                  <button class="disc-option" data-hyp="permeability">낮은 세포 투과성 또는 efflux pump 작용</button>
+                  <button class="disc-option" data-hyp="atp">세포 내 ATP 농도가 높아 competitive inhibition 감소</button>
+                  <button class="disc-option" data-hyp="biology">세포가 이 표적에 의존하지 않음 (target-independent cell)</button>
+                </div>
+                <button class="disc-next-btn" id="disc-next-1">다음 단계 →</button>
+              </div>
+            </div>
+
+            <!-- Step 2: Experiment selection -->
+            <div class="disc-sim__step" id="disc-step-2">
+              <div class="disc-sim__step-head">
+                <div class="disc-sim__step-num">2</div>
+                <div class="disc-sim__step-title">다음 실험 선택 — 어떤 실험이 가장 큰 정보를 줄 것인가?</div>
+              </div>
+              <div class="disc-sim__step-body">
+                <div class="disc-option-list">
+                  <button class="disc-option" data-exp="reassay">Biochemical assay 재현성 확인 및 aggregation 테스트 (+ Triton X-100)</button>
+                  <button class="disc-option" data-exp="solcheck">Kinetic / thermodynamic solubility 측정 (이미 3 µM 데이터 있음)</button>
+                  <button class="disc-option" data-exp="pampa">PAMPA 또는 Caco-2 투과성 + efflux ratio 측정</button>
+                  <button class="disc-option" data-exp="engagement">Cellular target engagement assay (NanoBRET, CETSA)</button>
+                </div>
+                <div class="disc-step-result" id="disc-step2-result"></div>
+                <button class="disc-next-btn" id="disc-next-2">다음 단계 →</button>
+              </div>
+            </div>
+
+            <!-- Step 3: Results revealed -->
+            <div class="disc-sim__step" id="disc-step-3">
+              <div class="disc-sim__step-head">
+                <div class="disc-sim__step-num">3</div>
+                <div class="disc-sim__step-title">교육용 가상 결과 — 가설 지지/반박</div>
+              </div>
+              <div class="disc-sim__step-body">
+                <div id="disc-step3-results" style="display:flex;flex-direction:column;gap:8px;"></div>
+                <button class="disc-next-btn show" id="disc-next-3">다음 결정 →</button>
+              </div>
+            </div>
+
+            <!-- Step 4: Decision -->
+            <div class="disc-sim__step" id="disc-step-4">
+              <div class="disc-sim__step-head">
+                <div class="disc-sim__step-num">4</div>
+                <div class="disc-sim__step-title">다음 결정 — 이 시나리오에서 합리적인 다음 단계는?</div>
+              </div>
+              <div class="disc-sim__step-body">
+                <div class="disc-option-list">
+                  <button class="disc-option" data-decision="property">물성 개선 analog 설계 (solubility/permeability 우선)</button>
+                  <button class="disc-option" data-decision="assay">Assay 조건 수정 후 재측정</button>
+                  <button class="disc-option" data-decision="scaffold">다른 scaffold 시도</button>
+                  <button class="disc-option" data-decision="deprioritize">프로젝트 내 우선순위 하향 조정</button>
+                </div>
+                <div class="disc-step-result" id="disc-step4-result"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="viz__msg" style="margin-top:8px;">이 과정을 거쳐야 '다음 analog를 만들지', 'assay를 먼저 고칠지', '프로젝트 가중치 자체를 재검토할지' 결정할 수 있다.</div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 08 ===== -->
+      <section id="s08" class="section">
+        <h2><span class="sec-no">08</span> Scientist's Thinking — 6단계 판단 구조</h2>
+
+        <div class="accord-flow__actions">
+          <button class="accord-flow__toggle-all">모두 펼치기</button>
+        </div>
+
+        <div class="accord-flow" data-scientist-flow>
+
+          <div class="accord-flow__step">
+            <div class="accord-flow__head">
+              <span class="accord-flow__num">1</span>
+              <span class="accord-flow__head-title">Observation — 우수한 biochemical potency와 낮은 cellular activity가 공존한다</span>
+              <span class="accord-flow__chevron">▾</span>
+            </div>
+            <div class="accord-flow__body"><div class="accord-flow__body-inner">
+              <p>관찰은 사실이다. Biochemical IC50 18 nM, cellular IC50 8,000 nM, kinetic solubility 3 µM. 이 수치들은 각기 다른 assay 시스템에서 얻은 것임을 기억한다.</p>
+            </div></div>
+          </div>
+
+          <div class="accord-flow__step">
+            <div class="accord-flow__head">
+              <span class="accord-flow__num">2</span>
+              <span class="accord-flow__head-title">Hypotheses — 경쟁하는 가설들을 열거한다</span>
+              <span class="accord-flow__chevron">▾</span>
+            </div>
+            <div class="accord-flow__body"><div class="accord-flow__body-inner">
+              <p>Assay artifact, 낮은 용해도, 낮은 세포 투과성, efflux pump, intracellular target접근 실패, 세포의 표적 비의존성 등이 가능하다. 하나의 단일한 원인으로 결론 내리기 전에 경쟁 가설 목록을 만든다.</p>
+            </div></div>
+          </div>
+
+          <div class="accord-flow__step">
+            <div class="accord-flow__head">
+              <span class="accord-flow__num">3</span>
+              <span class="accord-flow__head-title">Data needed — 정보 가치가 높은 검사를 우선한다</span>
+              <span class="accord-flow__chevron">▾</span>
+            </div>
+            <div class="accord-flow__body"><div class="accord-flow__body-inner">
+              <p>Assay 조건 확인, kinetic solubility, permeability/efflux, intracellular exposure, target engagement. 한 번에 모든 검사를 실시하기보다 서로 다른 가설을 구별할 수 있는 검사를 설계한다.</p>
+            </div></div>
+          </div>
+
+          <div class="accord-flow__step">
+            <div class="accord-flow__head">
+              <span class="accord-flow__num">4</span>
+              <span class="accord-flow__head-title">Experiment — 정보 가치를 따져 순서를 정한다</span>
+              <span class="accord-flow__chevron">▾</span>
+            </div>
+            <div class="accord-flow__body"><div class="accord-flow__body-inner">
+              <p>Kinetic solubility 3 µM은 이미 알고 있다. Biochemical assay 농도(18 nM)에서 aggregation 가능성은 낮다. 따라서 permeability/efflux 또는 target engagement를 먼저 확인하는 것이 이 시나리오에서 합리적이다.</p>
+            </div></div>
+          </div>
+
+          <div class="accord-flow__step">
+            <div class="accord-flow__head">
+              <span class="accord-flow__num">5</span>
+              <span class="accord-flow__head-title">Interpretation — 실험이 배제하거나 지지한 가설을 구분한다</span>
+              <span class="accord-flow__chevron">▾</span>
+            </div>
+            <div class="accord-flow__body"><div class="accord-flow__body-inner">
+              <p>실험이 대안 설명을 배제하거나 지지하는 가설을 구분하고 대체 설명을 남긴다. "가장 그럴듯한 단일 원인"을 선택하기보다 서로 경쟁하는 가설을 최소 비용의 실험으로 구별한 것이다.</p>
+            </div></div>
+          </div>
+
+          <div class="accord-flow__step">
+            <div class="accord-flow__head">
+              <span class="accord-flow__num">6</span>
+              <span class="accord-flow__head-title">Next decision — 물성 최적화, 다른 scaffold, assay 개선, 재검토 중 근거와 함께 선택한다</span>
+              <span class="accord-flow__chevron">▾</span>
+            </div>
+            <div class="accord-flow__body"><div class="accord-flow__body-inner">
+              <p>좋은 연구 판단은 '가장 그럴 듯한 단일 원인'을 찾는 것이 아니라, <b>서로 경쟁하는 가설을 최소 비용의 실험으로 구별하는 것</b>이다. 그 다음 단계는 데이터에 의해 결정된다.</p>
+            </div></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===== SECTION 09 ===== -->
+      <section id="s09" class="section">
+        <h2><span class="sec-no">09</span> Self Check — 답을 숨겨놓고 공개하기</h2>
+
+        <div class="qcard">
+          <div class="qno">Q1</div>
+          <p>Quinazoline에서 hinge 결합에 기여하는 질소를 치환하면 어떤 결과를 예상하며, 어떻게 검증할 것인가?</p>
+          <button class="reveal-btn">정답 보기</button>
+          <div class="answer">
+            Met793 주사슬 NH와의 H-bond가 약해지거나 사라질 가능성을 예상한다.
+            <div class="exp">다만 ligand pose와 주변 상호작용이 함께 바뀔 수 있으므로 구조 확인과 비교 가능한 biochemical potency 측정을 함께 요청한다. 구조 활성 상관관계(SAR)만으로 항상 예측할 수는 없다.</div>
+          </div>
+        </div>
+
+        <div class="qcard">
+          <div class="qno">Q2</div>
+          <p>Morpholine을 piperidine으로 바꿨더니 biochemical potency가 좋아졌다. 즉시 후보를 교체해도 될까?</p>
+          <button class="reveal-btn">정답 보기</button>
+          <div class="answer">
+            아니다.
+            <div class="exp">pKa, logD, 용해도, 투과성, 세포 활성, 대사 안정성 등의 변화가 전체 프로파일을 변화시킬 수 있다. Potency improvement와 developability improvement는 별개의 주장이다.</div>
+          </div>
+        </div>
+
+        <div class="qcard">
+          <div class="qno">Q3</div>
+          <p>Docking score는 좋았지만 cellular IC50이 100배 나빠졌다. 한 가지 원인만 확정할 수 있는가?</p>
+          <button class="reveal-btn">정답 보기</button>
+          <div class="answer">
+            불가능하다.
+            <div class="exp">먼저 assay 조건과 biochemical potency를 검증하고, 물질이 실제로 용해되어 있는지, 세포 안에 도달하는지, target engagement가 일어나는지 확인해 가설을 구별해야 한다.</div>
+          </div>
+        </div>
+
+        <div class="qcard">
+          <div class="qno">Q4</div>
+          <p>동일한 pIC50을 예측한 두 후보 가운데 하나는 학습자의 기존 scaffold이고 다른 하나는 신규 scaffold다. 무엇을 추가로 검토할까?</p>
+          <button class="reveal-btn">정답 보기</button>
+          <div class="answer">
+            신규 scaffold는 모델의 applicability domain 밖에 있을 가능성이 더 높다.
+            <div class="exp">Scaffold similarity, 훈련 분포, 불확실성 추정, assay provenance, prospective validation 계획을 확인한다. 예측값 크기만으로 결정하지 않는다.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 10 ===== -->
+      <section id="s10" class="section">
+        <h2><span class="sec-no">10</span> Molecule Analysis Card #001 — 직접 작성하는 연구 기록</h2>
+
+        <div class="case-note">
+          입력한 내용은 <b>브라우저 로컬 저장소</b>에 자동 저장됩니다. 페이지를 새로고침해도 복구되며, 'Markdown 복사'로 외부로 가져갈 수 있습니다.
+        </div>
+
+        <div class="mol-analysis-card" id="mol-card">
+          <h3>Molecule Analysis Card — Gefitinib (PubChem CID 123631)</h3>
+
+          <div class="mac-field">
+            <label>1. Key Binding Motif <span>— 어떤 부분이 EGFR 결합의 핵심인가? 어떤 관찰 또는 자료가 이를 뒷받침하는가?</span></label>
+            <textarea class="mac-textarea" id="mac-f1" placeholder="예: Quinazoline 질소가 Met793과 H-bond를 형성한다. 근거: PDB 4WKQ (1.85Å 해상도 결정 구조)…"></textarea>
+            <div class="mac-chips" data-for="mac-f1">
+              <button class="mac-chip" data-type="evidence">Evidence</button>
+              <button class="mac-chip" data-type="hypothesis">Hypothesis</button>
+              <button class="mac-chip" data-type="unknown">Unknown</button>
+            </div>
+          </div>
+
+          <div class="mac-field">
+            <label>2. Property Hypothesis <span>— 어느 작용기가 이온화, 소수성, 용해도, 투과성에 영향을 줄 가능성이 있는가?</span></label>
+            <textarea class="mac-textarea" id="mac-f2" placeholder="예: Morpholine N의 pKa에 따라 pH 7.4에서 일부 ionized form이 존재할 것이다. 확인 필요: pKa 측정, logD at pH 7.4…"></textarea>
+            <div class="mac-chips" data-for="mac-f2">
+              <button class="mac-chip" data-type="evidence">Evidence</button>
+              <button class="mac-chip" data-type="hypothesis">Hypothesis</button>
+              <button class="mac-chip" data-type="unknown">Unknown</button>
+            </div>
+          </div>
+
+          <div class="mac-field">
+            <label>3. Developability Risk <span>— 구조의 알려진 정보만으로 예상할 수 있는 위험은? 아직 모르는 정보는?</span></label>
+            <textarea class="mac-textarea" id="mac-f3" placeholder="예: XLogP3 4.1로 lipophilicity 관련 off-target risk가 있을 수 있다. 아직 모르는 것: 실측 logD, in vivo PK, hERG 활성…"></textarea>
+            <div class="mac-chips" data-for="mac-f3">
+              <button class="mac-chip" data-type="evidence">Evidence</button>
+              <button class="mac-chip" data-type="hypothesis">Hypothesis</button>
+              <button class="mac-chip" data-type="unknown">Unknown</button>
+            </div>
+          </div>
+
+          <div class="mac-field">
+            <label>4. Highest-Value Experiment <span>— 지금 단 하나의 실험만 할 수 있다면 무엇을 선택하고, 어떤 가설을 구별할 것인가?</span></label>
+            <textarea class="mac-textarea" id="mac-f4" placeholder="예: Caco-2 + efflux ratio 측정. biochemical/cellular 불일치가 투과성/efflux에서 기인하는지 아닌지를 구별한다…"></textarea>
+            <div class="mac-chips" data-for="mac-f4">
+              <button class="mac-chip" data-type="evidence">Evidence</button>
+              <button class="mac-chip" data-type="hypothesis">Hypothesis</button>
+              <button class="mac-chip" data-type="unknown">Unknown</button>
+            </div>
+          </div>
+
+          <div class="mac-field">
+            <label>5. Next Analog Design <span>— 어디를 어떻게 바꾸고, 얻을 이익과 감수할 위험을 무엇으로 예상하는가?</span></label>
+            <textarea class="mac-textarea" id="mac-f5" placeholder="예: Morpholine tail 수정 → piperidine으로 교체해 pKa/logD 변화를 확인. 이익: 투과성 개선 가능성. 위험: ionization 변화로 solubility 악화 가능…"></textarea>
+            <div class="mac-chips" data-for="mac-f5">
+              <button class="mac-chip" data-type="evidence">Evidence</button>
+              <button class="mac-chip" data-type="hypothesis">Hypothesis</button>
+              <button class="mac-chip" data-type="unknown">Unknown</button>
+            </div>
+          </div>
+
+          <div class="mac-actions">
+            <button class="mac-btn mac-btn--save" id="mac-save-btn">저장</button>
+            <button class="mac-btn mac-btn--copy" id="mac-copy-btn">Markdown 복사</button>
+            <button class="mac-btn mac-btn--reset" id="mac-reset-btn">초기화</button>
+          </div>
+          <div class="mac-save-msg" id="mac-save-msg">✓ 저장됨</div>
+        </div>
+      </section>
+
+      <!-- ===== SECTION 11 ===== -->
+      <section id="s11" class="section">
+        <h2><span class="sec-no">11</span> Take-home</h2>
+
+        <div class="summary-card">
+          <h3>PRACTICE 01 핵심 메시지</h3>
+          <ol>
+            <li>
+              <b>분자구조를 scaffold · 결합 영역 · 물성 조정 영역으로 나누어 읽는다.</b>
+              <span>작용기 일반 특성만으로 분자 전체 물성이나 potency를 확정하지 않는다.</span>
+            </li>
+            <li>
+              <b>작용기의 일반적 특성만으로 분자 전체 물성이나 binding potency를 확정하지 않는다.</b>
+              <span>구조 기반 가설을 실험적 결합 pose와 assay로 검증한다.</span>
+            </li>
+            <li>
+              <b>구조 기반 가설을 실험적 결합 pose와 assay로 검증한다.</b>
+              <span>Docking score, biochemical IC50, cellular IC50은 서로 다른 endpoint다.</span>
+            </li>
+            <li>
+              <b>Docking score, biochemical IC50, cellular IC50은 서로 다른 endpoint다.</b>
+              <span>수치가 좋다는 것이 모든 단계에서 성공한다는 의미가 아니다.</span>
+            </li>
+            <li>
+              <b>다음 molecule을 설계하기 전, 어떤 실험이 불확실성을 가장 많이 줄일지 판단한다.</b>
+              <span>이 과정을 거쳐야 '합성할지', 'assay를 먼저 고칠지', '전략을 재검토할지' 결정할 수 있다.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="closing">
+          <h3>다음 케이스 예고</h3>
+          <div class="big">PRACTICE 02 · Gefitinib과 Erlotinib의 작용기 차이와 선택적·입체적 효과를 읽는 방법</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">본 케이스에서 작성한 카드의 확인된 구조와 가설을 다음 비교 분석의 출발점으로 사용한다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+      </section>
+
+      <!-- References -->
+      <div class="card card--concept" style="margin-top:0;">
+        <div class="card__label"><span class="dot"></span>참고 자료</div>
+        <ul class="clean" style="font-size:13px;">
+          <li><b>[S1]</b> PubChem, Gefitinib (CID 123631). Chemical structure, formula, computed descriptors, SMILES. https://pubchem.ncbi.nlm.nih.gov/compound/123631</li>
+          <li><b>[S2]</b> RCSB PDB, 4WKQ: 1.85 Å structure of EGFR kinase domain with gefitinib. X-ray; released 2014-11-05. https://www.rcsb.org/structure/4WKQ</li>
+          <li><b>[S3]</b> RCSB PDB Mol* Viewer, 4WKQ. https://www.rcsb.org/3d-view/4WKQ</li>
+        </ul>
+        <p style="font-size:12px;color:var(--ink-faint);margin-top:8px;">[S1]의 descriptor는 PubChem computed properties로 기재. [S2]의 구조는 특정 결정 조건에서의 실험 모델. Analog A–C 변화와 교육용 시나리오 데이터는 본 케이스의 교육용 가상 설계이며 문헌 SAR로 인용하지 않는다.</p>
+      </div>
+
+      <nav class="bottomnav">
+        <a href="../../index.html">◀ 목록</a>
+        <button data-open-toc>☰ 목차</button>
+        <span style="color:var(--ink-faint);font-size:13px;">PRACTICE 02 준비중</span>
+      </nav>
+
+    </div>
+  </div>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+<script>
+/* ===== TRACK B CASE 01 — GEFITINIB ===== */
+(function () {
+  'use strict';
+
+  /* ─────────────────────────────────────────
+     VERIFIED DATA (PubChem CID 123631 [S1])
+  ───────────────────────────────────────── */
+  var SMILES_GEFITINIB = 'COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1';
+  // Source: PubChem CID 123631, Canonical SMILES
+
+  /* Educational analog SMILES (not reported literature SAR) */
+  var ANALOG_DATA = {
+    parent: {
+      smiles: 'COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1',
+      title: 'Parent — Gefitinib',
+      change: '기준 분자 (C₂₂H₂₄ClFN₄O₃, MW 446.9)',
+      hypothesis: '현재 EGFR 결합 및 물성 프로파일의 기준.',
+      risk: '—',
+      assay: 'EGFR biochemical IC50, logD, kinetic solubility',
+      smarts: null
+    },
+    A: {
+      smiles: 'COc1cc2ncnc(Nc3ccc(F)cc3)c2cc1OCCCN1CCOCC1',
+      title: 'Analog A — Cl 제거',
+      change: '3-Cl → H (3-F-phenyl): C₂₂H₂₃FN₄O₃',
+      hypothesis: '소수성 기여 및 분자 크기 감소. 해당 위치의 소수성 접촉이 줄어들 수 있다.',
+      risk: '활성 손실 가능성 (소수성 접촉 감소). 바뀐 conformation이 결합에 불리할 수 있다.',
+      assay: 'EGFR biochemical IC50, logD, kinetic solubility, crystal structure if available',
+      smarts: 'c1ccc(F)cc1'
+    },
+    B: {
+      smiles: 'COc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCCCC1',
+      title: 'Analog B — Piperidine',
+      change: 'Morpholine → Piperidine (O → CH₂): C₂₃H₂₆ClFN₄O₂',
+      hypothesis: '고리 내 산소 제거로 극성, 이온화, 소수성 조합이 변한다.',
+      risk: 'pKa, logD, 용해도, 세포 투과성, 대사가 함께 바뀐다. Morpholine → piperidine은 단순 "산소 1개 제거"가 아니라 ionization landscape 변화다.',
+      assay: 'pKa, logD, 용해도, 투과성, EGFR potency, 대사 안정성',
+      smarts: 'N1CCCCC1'
+    },
+    C: {
+      smiles: 'Oc1cc2ncnc(Nc3ccc(F)c(Cl)c3)c2cc1OCCCN1CCOCC1',
+      title: 'Analog C — Hydroxy',
+      change: 'Methoxy → Hydroxy (OCH₃ → OH): C₂₁H₂₂ClFN₄O₃',
+      hypothesis: 'HBD 추가, 이온화 특성 변화. 대사 demethylation pathway 차단 가능성.',
+      risk: '극성 증가로 투과성 감소 가능. O-glucuronidation 등 대사 경로 변화 가능.',
+      assay: 'EGFR potency, 용해도, 투과성, microsomal stability, metabolite ID',
+      smarts: 'c[OH]'
+    }
+  };
+
+  var REGION_DATA = {
+    core: {
+      smarts: 'c1cnc2ccccc12',
+      title: 'A. Quinazoline Core',
+      desc: '<b>Quinazoline core</b>는 benzene과 pyrimidine이 융합된 bicyclic scaffold다. 단순한 고리 장식이 아니라 EGFR ATP-binding site의 hinge 영역과 상호작용할 수 있는 핵심 골격이다. 고리의 질소를 다른 원소로 치환하면 결합 가능성 및 전자적 성질이 변할 수 있다. 단, 그 변화가 potency를 얼마나 바꿀지는 실험과 구조 분석이 필요하다.',
+      colorHex: '#5b3fd4'
+    },
+    anilino: {
+      smarts: 'Nc1ccc(F)c(Cl)c1',
+      title: 'B. 3-Cl-4-F Anilino (교육용 명칭)',
+      desc: '<b>Anilino 부분</b>은 방향족 결합 공간과의 소수성 상호작용 및 분자 배향에 영향을 준다. Cl과 F는 서로 다른 크기와 전자적 성질을 갖는다. Cl을 H로 바꾸거나 F 위치를 바꾸면 공간적 선호도, 분자 conformation, 전자 분포, 물성이 함께 달라질 수 있다. <b>"할로겐이 있으면 무조건 결합이 좋아진다"는 규칙은 없다.</b>',
+      colorHex: '#0d8a7a'
+    },
+    tail: {
+      smarts: 'OCCCN1CCOCC1',
+      title: 'C. 3-(Morpholin-4-yl)propoxy 테일',
+      desc: '<b>Morpholine 테일</b>은 3개 탄소의 propoxy linker와 morpholine 고리로 구성된다. Morpholine은 고리 내 극성 산소를 가진 6원 고리이며 분자의 이온화 특성과 극성에 영향을 준다. 실제 결합 pose에서 상대적으로 용매 쪽을 향하는 부분이므로, 물성 최적화의 주요 탐색 지점이 될 수 있다. 그러나 이 부분을 변경해도 결합이 항상 유지되는 것은 아니다.',
+      colorHex: '#d97706'
+    },
+    methoxy: {
+      smarts: 'c[OH0][CH3]',
+      title: 'D. Methoxy (–OCH₃)',
+      desc: '<b>Methoxy group</b>은 방향족 고리에 결합한 ether 산소를 가진다. H-bond acceptor 역할을 할 수 있는 ether 결합이지만, –OH처럼 H-bond donor로는 작동하지 않는다. Methoxy → Hydroxy로 바꾸면 공여 능력, 극성, conformation, 대사(O-demethylation) 특성이 함께 변한다. 그 방향과 크기는 측정 전까지 단정할 수 없다.',
+      colorHex: '#ea580c'
+    }
+  };
+
+  /* ─────────────────────────────────────────
+     RDKit.js Loader
+  ───────────────────────────────────────── */
+  var rdkitModule = null;
+  var rdkitLoadPromise = null;
+
+  function loadRDKit() {
+    if (rdkitLoadPromise) return rdkitLoadPromise;
+    rdkitLoadPromise = new Promise(function (resolve, reject) {
+      if (window.RDKit) { resolve(window.RDKit); return; }
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js';
+      s.onload = function () {
+        window.initRDKitModule().then(function (rdk) {
+          rdkitModule = rdk;
+          resolve(rdk);
+        }).catch(reject);
+      };
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+    return rdkitLoadPromise;
+  }
+
+  function makeSvg(rdk, smiles, w, h, highlightAtoms, highlightBonds, color) {
+    var mol = null;
+    try {
+      mol = rdk.get_mol(smiles);
+      if (!mol || !mol.is_valid()) return null;
+      if (highlightAtoms && highlightAtoms.length > 0) {
+        var atomColors = {};
+        var bondColors = {};
+        highlightAtoms.forEach(function (i) { atomColors[i] = color; });
+        if (highlightBonds) highlightBonds.forEach(function (i) { bondColors[i] = color; });
+        var details = JSON.stringify({
+          width: w, height: h,
+          atoms: highlightAtoms,
+          bonds: highlightBonds || [],
+          atomColours: atomColors,
+          bondColours: bondColors
+        });
+        var svg = mol.get_svg_with_highlights(details);
+        mol.delete();
+        return svg;
+      } else {
+        var svg = mol.get_svg(w, h);
+        mol.delete();
+        return svg;
+      }
+    } catch (e) {
+      if (mol) try { mol.delete(); } catch (_) {}
+      return null;
+    }
+  }
+
+  function getSubstructMatch(rdk, mol_smiles, smarts) {
+    var mol = null, qmol = null;
+    try {
+      mol = rdk.get_mol(mol_smiles);
+      qmol = rdk.get_qmol(smarts);
+      if (!mol || !mol.is_valid() || !qmol || !qmol.is_valid()) return null;
+      var matchStr = mol.get_substruct_match(qmol);
+      if (!matchStr || matchStr === '{}') return null;
+      var match = JSON.parse(matchStr);
+      return match;
+    } catch (e) {
+      return null;
+    } finally {
+      if (mol) try { mol.delete(); } catch (_) {}
+      if (qmol) try { qmol.delete(); } catch (_) {}
+    }
+  }
+
+  function hexToRGB01(hex) {
+    var r = parseInt(hex.slice(1, 3), 16) / 255;
+    var g = parseInt(hex.slice(3, 5), 16) / 255;
+    var b = parseInt(hex.slice(5, 7), 16) / 255;
+    return [r, g, b];
+  }
+
+  /* ─────────────────────────────────────────
+     FALLBACK SVG (schematic, not structural)
+  ───────────────────────────────────────── */
+  function getFallbackSvg(regionId) {
+    var colors = { core:'#5b3fd4', anilino:'#0d8a7a', tail:'#d97706', methoxy:'#ea580c' };
+    var c = colors[regionId] || '#888';
+    return [
+      '<svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" style="font-family:sans-serif;">',
+      '<rect width="360" height="200" fill="#f4f6fb" rx="8"/>',
+      /* Quinazoline block */
+      '<rect x="120" y="60" width="120" height="80" rx="10" fill="' + (regionId==='core' ? '#ede9ff' : '#e8edf6') + '" stroke="' + (regionId==='core' ? '#5b3fd4' : '#ccc') + '" stroke-width="' + (regionId==='core' ? '2.5' : '1') + '"/>',
+      '<text x="180" y="97" text-anchor="middle" font-size="11" fill="' + (regionId==='core' ? '#3d28a8' : '#6e7f99') + '" font-weight="bold">Quinazoline</text>',
+      '<text x="180" y="113" text-anchor="middle" font-size="9" fill="#6e7f99">core</text>',
+      /* Anilino block */
+      '<rect x="10" y="70" width="100" height="60" rx="10" fill="' + (regionId==='anilino' ? '#ccfbf1' : '#e8edf6') + '" stroke="' + (regionId==='anilino' ? '#0d8a7a' : '#ccc') + '" stroke-width="' + (regionId==='anilino' ? '2.5' : '1') + '"/>',
+      '<text x="60" y="97" text-anchor="middle" font-size="10" fill="' + (regionId==='anilino' ? '#064e3b' : '#6e7f99') + '" font-weight="bold">3-Cl-4-F</text>',
+      '<text x="60" y="112" text-anchor="middle" font-size="9" fill="#6e7f99">Anilino</text>',
+      '<line x1="110" y1="100" x2="120" y2="100" stroke="#999" stroke-width="1.5"/>',
+      /* Morpholine tail block */
+      '<rect x="250" y="70" width="100" height="60" rx="10" fill="' + (regionId==='tail' ? '#fef3c7' : '#e8edf6') + '" stroke="' + (regionId==='tail' ? '#d97706' : '#ccc') + '" stroke-width="' + (regionId==='tail' ? '2.5' : '1') + '"/>',
+      '<text x="300" y="97" text-anchor="middle" font-size="10" fill="' + (regionId==='tail' ? '#78350f' : '#6e7f99') + '" font-weight="bold">Morpholine</text>',
+      '<text x="300" y="112" text-anchor="middle" font-size="9" fill="#6e7f99">Tail</text>',
+      '<line x1="240" y1="100" x2="250" y2="100" stroke="#999" stroke-width="1.5"/>',
+      /* Methoxy */
+      '<circle cx="180" cy="35" r="20" fill="' + (regionId==='methoxy' ? '#ffedd5' : '#e8edf6') + '" stroke="' + (regionId==='methoxy' ? '#ea580c' : '#ccc') + '" stroke-width="' + (regionId==='methoxy' ? '2.5' : '1') + '"/>',
+      '<text x="180" y="32" text-anchor="middle" font-size="9" fill="' + (regionId==='methoxy' ? '#7c2d12' : '#6e7f99') + '" font-weight="bold">-OCH₃</text>',
+      '<text x="180" y="44" text-anchor="middle" font-size="8" fill="#6e7f99">methoxy</text>',
+      '<line x1="180" y1="55" x2="180" y2="60" stroke="#999" stroke-width="1.5"/>',
+      /* Note */
+      '<text x="180" y="190" text-anchor="middle" font-size="9" fill="#9aa5b4">RDKit 로드 실패 — 간략화된 구조도</text>',
+      '</svg>'
+    ].join('');
+  }
+
+  /* ─────────────────────────────────────────
+     V1: Molecular Anatomy Explorer
+  ───────────────────────────────────────── */
+  var molSvgCache = {};
+  var currentRegion = null;
+
+  function initMolAnatomy() {
+    var wrap = document.getElementById('mol-svg-main');
+    var descEl = document.getElementById('mol-region-desc');
+    if (!wrap) return;
+
+    loadRDKit().then(function (rdk) {
+      /* Generate base SVG */
+      var baseSvg = makeSvg(rdk, SMILES_GEFITINIB, 380, 260, [], [], null);
+      if (!baseSvg) { showFallback(''); return; }
+      molSvgCache[''] = baseSvg;
+      showSvg(baseSvg);
+
+      /* Pre-cache highlighted SVGs */
+      Object.keys(REGION_DATA).forEach(function (key) {
+        var rd = REGION_DATA[key];
+        var match = getSubstructMatch(rdk, SMILES_GEFITINIB, rd.smarts);
+        if (match && match.atoms && match.atoms.length > 0) {
+          var col = hexToRGB01(rd.colorHex);
+          var svg = makeSvg(rdk, SMILES_GEFITINIB, 380, 260, match.atoms, match.bonds || [], col);
+          molSvgCache[key] = svg || getFallbackSvg(key);
+        } else {
+          molSvgCache[key] = getFallbackSvg(key);
+        }
+      });
+    }).catch(function () {
+      showFallback('');
+    });
+
+    /* Button click */
+    document.querySelectorAll('.mol-region-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var region = btn.dataset.region;
+        document.querySelectorAll('.mol-region-btn').forEach(function (b) {
+          b.className = b.className.replace(/ active--\w+/g, '');
+        });
+        btn.classList.add('active--' + region);
+
+        var rd = REGION_DATA[region];
+        if (molSvgCache[region]) {
+          showSvg(molSvgCache[region]);
+        } else {
+          showFallback(region);
+        }
+
+        descEl.innerHTML = rd.desc;
+        descEl.className = 'mol-region-desc mol-region-desc--' + region;
+        currentRegion = region;
+      });
+    });
+
+    function showSvg(svg) {
+      wrap.innerHTML = svg || getFallbackSvg('');
+      /* make SVG responsive */
+      var svgEl = wrap.querySelector('svg');
+      if (svgEl) { svgEl.style.width='100%'; svgEl.style.height='auto'; svgEl.style.maxHeight='300px'; }
+    }
+
+    function showFallback(region) {
+      wrap.innerHTML = getFallbackSvg(region);
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     V4: Analog Lab
+  ───────────────────────────────────────── */
+  function initAnalogLab() {
+    var svgBox = document.getElementById('analog-svg-box');
+    var infoEl = document.getElementById('analog-info');
+    if (!svgBox) return;
+
+    function showAnalog(key) {
+      var d = ANALOG_DATA[key];
+      if (!d) return;
+
+      /* info panel */
+      infoEl.innerHTML = [
+        '<h5>' + d.title + '</h5>',
+        '<div class="analog-info-row"><span class="analog-info-label">변경:</span><span>' + d.change + '</span></div>',
+        '<div class="analog-info-row"><span class="analog-info-label">가설:</span><span class="analog-hypothesis">' + d.hypothesis + '</span></div>',
+        '<div class="analog-info-row"><span class="analog-info-label">위험:</span><span class="analog-risk">' + d.risk + '</span></div>',
+        '<div class="analog-info-row"><span class="analog-info-label">우선 확인:</span><span class="analog-assay">' + d.assay + '</span></div>',
+        key !== 'parent' ? '<div style="margin-top:8px;"><span class="analog-change-tag">교육용 가상 analog</span></div>' : ''
+      ].join('');
+
+      /* SVG */
+      if (rdkitModule) {
+        var highlightAtoms = [], highlightBonds = [], color = [0.85,0.59,0.04];
+        if (d.smarts) {
+          var match = getSubstructMatch(rdkitModule, d.smiles, d.smarts);
+          if (match && match.atoms) { highlightAtoms = match.atoms; highlightBonds = match.bonds || []; }
+        }
+        var svg = makeSvg(rdkitModule, d.smiles, 280, 210, highlightAtoms, highlightBonds, color);
+        svgBox.innerHTML = svg || getFallbackSvg('');
+        var svgEl = svgBox.querySelector('svg');
+        if (svgEl) { svgEl.style.width='100%'; svgEl.style.height='auto'; }
+      } else {
+        svgBox.innerHTML = getFallbackSvg('');
+      }
+    }
+
+    /* Wait for RDKit then show parent */
+    loadRDKit().then(function () { showAnalog('parent'); }).catch(function () { showAnalog('parent'); });
+
+    document.querySelectorAll('.analog-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.analog-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        showAnalog(btn.dataset.analog);
+      });
+    });
+  }
+
+  /* ─────────────────────────────────────────
+     V3: 3D Structure Viewer (3Dmol.js, lazy)
+  ───────────────────────────────────────── */
+  function init3DViewer() {
+    var launchBtn = document.getElementById('viewer3d-btn');
+    if (!launchBtn) return;
+
+    launchBtn.addEventListener('click', function () {
+      launchBtn.disabled = true;
+      launchBtn.textContent = '로드 중…';
+
+      var script = document.createElement('script');
+      script.src = 'https://3dmol.org/build/3Dmol-min.js';
+      script.onload = function () { load4WKQ(); };
+      script.onerror = function () {
+        launchBtn.disabled = false;
+        launchBtn.textContent = '로드 실패 — 다시 시도';
+        showViewerFallback();
+      };
+      document.head.appendChild(script);
+    });
+  }
+
+  function load4WKQ() {
+    var placeholder = document.getElementById('viewer3d-placeholder');
+    var canvasWrap = document.getElementById('viewer3d-canvas-wrap');
+    var canvasEl = document.getElementById('viewer3d-canvas');
+    if (!placeholder || !canvasEl) return;
+
+    placeholder.style.display = 'none';
+    canvasWrap.style.display = 'block';
+
+    var viewer = window.$3Dmol.createViewer(canvasEl, { backgroundColor: '#e8edf6' });
+
+    fetch('https://files.rcsb.org/download/4WKQ.pdb')
+      .then(function (r) {
+        if (!r.ok) throw new Error('PDB fetch failed');
+        return r.text();
+      })
+      .then(function (pdbData) {
+        viewer.addModel(pdbData, 'pdb');
+        setupViewerStyles(viewer, 'ligand');
+        viewer.zoomTo();
+        viewer.render();
+        setupViewerPresets(viewer);
+      })
+      .catch(function () {
+        showViewerFallback();
+        canvasWrap.style.display = 'none';
+        placeholder.style.display = 'flex';
+        placeholder.innerHTML = [
+          '<div style="font-size:28px;">⚠️</div>',
+          '<div>PDB 4WKQ 로드 실패</div>',
+          '<div style="font-size:13px;color:var(--ink-faint);">네트워크를 확인하거나 RCSB 공식 뷰어를 사용하세요.</div>',
+          '<a href="https://www.rcsb.org/3d-view/4WKQ" target="_blank" rel="noopener" class="viewer-3d-launch" style="text-decoration:none;">RCSB 공식 뷰어 ↗</a>'
+        ].join('');
+      });
+  }
+
+  function setupViewerStyles(viewer, mode) {
+    viewer.setStyle({}, {});
+    if (mode === 'ligand') {
+      viewer.setStyle({}, { cartoon: { color: 'lightgray', opacity: 0.5 } });
+      viewer.setStyle({ hetflag: true, not: { resn: 'HOH' } }, { stick: { colorscheme: 'greenCarbon', radius: 0.25 } });
+    } else if (mode === 'hinge') {
+      viewer.setStyle({}, { cartoon: { color: 'lightgray', opacity: 0.4 } });
+      viewer.setStyle({ hetflag: true, not: { resn: 'HOH' } }, { stick: { colorscheme: 'greenCarbon', radius: 0.25 } });
+      viewer.setStyle({ resi: 793 }, { stick: { colorscheme: 'orangeCarbon', radius: 0.3 }, cartoon: { color: '#ff8c00', opacity: 1 } });
+      viewer.addLabel('Met793', { position: { resi: 793, chain: 'A' }, backgroundColor: 'orange', fontColor: 'white', fontSize: 11 });
+    } else if (mode === 'nearby') {
+      viewer.setStyle({}, { cartoon: { color: 'lightgray', opacity: 0.3 } });
+      viewer.setStyle({ hetflag: true, not: { resn: 'HOH' } }, { stick: { colorscheme: 'greenCarbon', radius: 0.3 } });
+      viewer.setStyle({ resi: 793 }, { stick: { colorscheme: 'orangeCarbon', radius: 0.3 } });
+      viewer.setStyle({ byres: true, expand: 4, hetflag: true, not: { resn: 'HOH' } }, { stick: { colorscheme: 'lightblueCarbon', radius: 0.2 }, cartoon: { color: '#60a5fa', opacity: 0.85 } });
+    } else if (mode === 'surface') {
+      viewer.setStyle({}, { cartoon: { color: 'spectrum', opacity: 0.8 } });
+      viewer.setStyle({ hetflag: true, not: { resn: 'HOH' } }, { stick: { colorscheme: 'greenCarbon', radius: 0.3 } });
+    }
+    viewer.render();
+  }
+
+  function setupViewerPresets(viewer) {
+    var row = document.getElementById('viewer-preset-row');
+    if (!row) return;
+    var presets = [
+      { id: 'ligand',  label: 'Ligand Only' },
+      { id: 'hinge',   label: 'Hinge (Met793)' },
+      { id: 'nearby',  label: 'Nearby Residues' },
+      { id: 'surface', label: 'Cartoon' }
+    ];
+    presets.forEach(function (p) {
+      var btn = document.createElement('button');
+      btn.className = 'viewer-preset-btn' + (p.id === 'ligand' ? ' active' : '');
+      btn.textContent = p.label;
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.viewer-preset-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        setupViewerStyles(viewer, p.id);
+        if (p.id === 'hinge') viewer.zoomTo({ resi: 793 });
+        else viewer.zoomTo({ hetflag: true, not: { resn: 'HOH' } });
+      });
+      row.appendChild(btn);
+    });
+  }
+
+  function showViewerFallback() {
+    var pl = document.getElementById('viewer3d-placeholder');
+    if (!pl) return;
+    pl.style.display = 'flex';
+  }
+
+  /* ─────────────────────────────────────────
+     V5: Endpoint Selector
+  ───────────────────────────────────────── */
+  var EP_SCENARIOS = {
+    'docking-cell': {
+      cls: 'endpoint-mismatch-panel show',
+      html: '<b>⚠ Endpoint Mismatch:</b> Docking score는 특정 프로토콜의 scoring function 출력값이다. 이 값이 높다는 것은 "모델의 정의에 따라 좋은 geometric fit을 가진다"는 뜻이지, 세포 활성을 직접 예측하지 않는다. 세포 활성에는 용해도, 투과성, efflux, 세포 내 표적 접근성, 대사가 모두 필요하다.'
+    },
+    'biochem-cell': {
+      cls: 'endpoint-mismatch-panel show',
+      html: '<b>⚠ Endpoint Mismatch:</b> Biochemical IC50은 isolated enzyme 조건에서 측정된다. Cellular IC50과는 용해도, 세포 투과성, efflux, 세포 내 ATP 농도 차이, 표적 의존성 등에 의해 크게 달라질 수 있다. 이 케이스 07에서 444배 차이가 그 예시다.'
+    },
+    'correct': {
+      cls: 'endpoint-mismatch-panel show',
+      html: '✓ <b>올바른 사용:</b> Docking은 결합 pose 확인과 hit prioritization에, biochemical assay는 실제 enzyme inhibition 측정에 사용하는 것이 각 endpoint의 목적에 맞는 활용이다. 수치가 좋아야 다음 단계가 보장되는 것이 아니라, 각 단계가 그 단계의 질문에 답해야 한다.'
+    }
+  };
+
+  function initEndpointSelector() {
+    document.querySelectorAll('.endpoint-card').forEach(function (card) {
+      card.querySelector('.endpoint-card__header').addEventListener('click', function () {
+        card.classList.toggle('open');
+      });
+    });
+    document.querySelectorAll('[data-scenario]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-scenario]').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var sc = EP_SCENARIOS[btn.dataset.scenario];
+        var panel = document.getElementById('ep-mismatch');
+        if (sc && panel) {
+          panel.className = sc.cls;
+          panel.innerHTML = sc.html;
+        }
+      });
+    });
+  }
+
+  /* ─────────────────────────────────────────
+     V6: Discrepancy Simulator
+  ───────────────────────────────────────── */
+  var discState = { hypotheses: [], experiment: null };
+
+  var DISC_EXP_RESULTS = {
+    reassay: { cls: 'disc-step-result show disc-step-result--supports', text: '<b>Assay 재확인 (교육용 가상):</b> Biochemical assay를 Triton X-100 존재 하에 재실시했을 때 IC50 변화가 없었다 → aggregation 아님. 재현성 확인됨 → assay artifact 가설 <b>반박됨</b>.' },
+    solcheck: { cls: 'disc-step-result show disc-step-result--challenges', text: '<b>용해도 확인 (교육용 가상):</b> Kinetic solubility 3 µM은 이미 알려진 값. Biochemical assay 농도(18 nM)에서 aggregation 가능성 낮음. 단, cellular assay 농도(8,000 nM = 8 µM) 이상에서는 실제 용해 확인 필요 → 용해도가 <b>부분적으로 기여</b>할 수 있음.' },
+    pampa: { cls: 'disc-step-result show disc-step-result--supports', text: '<b>PAMPA 투과성 (교육용 가상):</b> PAMPA Papp = 3×10⁻⁶ cm/s (낮음). Caco-2 efflux ratio = 4.8 (efflux 작용 의심) → 낮은 세포 투과성 + efflux 가설 <b>지지됨</b>. 이것이 cellular IC50이 높은 주요 원인일 수 있다.' },
+    engagement: { cls: 'disc-step-result show disc-step-result--supports', text: '<b>Target engagement (교육용 가상):</b> NanoBRET assay에서 세포 내 EGFR에 대한 binding을 확인했으나 IC50 > 5 µM → 세포 내 표적에 충분히 도달하지 못함을 시사 → 낮은 intracellular exposure 가설 <b>지지됨</b>.' }
+  };
+
+  var DISC_DECISION_RESULTS = {
+    property: '<b>물성 개선 우선 (교육용 평가):</b> Permeability/efflux가 주요 원인으로 지목된 경우 합리적. Morpholine tail 또는 logD를 최적화하는 analog를 설계하되, biochemical potency 유지 여부를 함께 확인해야 한다.',
+    assay: '<b>Assay 재조건 (교육용 평가):</b> Biochemical assay는 이미 재현성이 확인되었다. Cellular assay의 세포주, ATP 농도, 노출 시간, readout을 검토하는 것도 정보를 제공한다.',
+    scaffold: '<b>새 Scaffold (교육용 평가):</b> 현재 scaffold의 물성 한계가 근본 원인이라면 합리적이나, 아직 데이터가 충분하지 않을 수 있다. 물성 최적화를 먼저 시도한 후 전략적으로 고려한다.',
+    deprioritize: '<b>우선순위 하향 (교육용 평가):</b> 물성 개선 여지를 먼저 충분히 탐색한 후 판단해야 한다. 현재 단계에서 바로 포기하는 것은 데이터 기반 결정이 아닐 수 있다.'
+  };
+
+  function initDiscSim() {
+    /* Step 1: hypothesis selection */
+    document.querySelectorAll('[data-hyp]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btn.classList.toggle('selected');
+        var hyp = btn.dataset.hyp;
+        var idx = discState.hypotheses.indexOf(hyp);
+        if (idx === -1) discState.hypotheses.push(hyp);
+        else discState.hypotheses.splice(idx, 1);
+        var next = document.getElementById('disc-next-1');
+        if (next) next.classList.toggle('show', discState.hypotheses.length > 0);
+      });
+    });
+
+    document.getElementById('disc-next-1').addEventListener('click', function () {
+      activateStep('disc-step-1', 'disc-step-2');
+    });
+
+    /* Step 2: experiment selection */
+    document.querySelectorAll('[data-exp]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-exp]').forEach(function (b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        discState.experiment = btn.dataset.exp;
+        var result = DISC_EXP_RESULTS[discState.experiment];
+        var resultEl = document.getElementById('disc-step2-result');
+        if (result && resultEl) {
+          resultEl.className = result.cls;
+          resultEl.innerHTML = result.text;
+        }
+        var next = document.getElementById('disc-next-2');
+        if (next) next.classList.add('show');
+      });
+    });
+
+    document.getElementById('disc-next-2').addEventListener('click', function () {
+      activateStep('disc-step-2', 'disc-step-3');
+      populateStep3();
+    });
+
+    document.getElementById('disc-next-3').addEventListener('click', function () {
+      activateStep('disc-step-3', 'disc-step-4');
+    });
+
+    /* Step 4: decision */
+    document.querySelectorAll('[data-decision]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('[data-decision]').forEach(function (b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        var txt = DISC_DECISION_RESULTS[btn.dataset.decision];
+        var el = document.getElementById('disc-step4-result');
+        if (el) { el.className = 'disc-step-result show'; el.innerHTML = txt || ''; }
+        document.getElementById('disc-step-4').classList.add('done');
+      });
+    });
+  }
+
+  function activateStep(doneId, nextId) {
+    var doneEl = document.getElementById(doneId);
+    var nextEl = document.getElementById(nextId);
+    if (doneEl) doneEl.classList.add('done');
+    if (nextEl) nextEl.classList.add('active');
+  }
+
+  function populateStep3() {
+    var el = document.getElementById('disc-step3-results');
+    if (!el) return;
+    el.innerHTML = '';
+    /* Show result for selected experiment */
+    if (discState.experiment && DISC_EXP_RESULTS[discState.experiment]) {
+      var r = DISC_EXP_RESULTS[discState.experiment];
+      var div = document.createElement('div');
+      div.className = r.cls;
+      div.innerHTML = r.text;
+      el.appendChild(div);
+    }
+    /* Also show overview */
+    var overview = document.createElement('div');
+    overview.className = 'disc-step-result show';
+    overview.innerHTML = '<b>전체 가설 상태 요약:</b><br>' + [
+      discState.hypotheses.includes('assay') ? '• Assay artifact: 재현성 확인 결과 <b>반박됨</b>' : '',
+      discState.hypotheses.includes('solubility') ? '• 낮은 용해도: 부분적으로 기여 가능, 농도 범위 확인 필요' : '',
+      discState.hypotheses.includes('permeability') ? '• 낮은 투과성/efflux: PAMPA/Caco-2 결과 <b>지지됨</b>' : '',
+      discState.hypotheses.includes('atp') ? '• 세포 내 ATP 경쟁: target engagement assay로 추가 확인 필요' : '',
+      discState.hypotheses.includes('biology') ? '• 표적 비의존성 세포: target engagement + knockdown 실험 필요' : ''
+    ].filter(Boolean).join('<br>') || '(가설을 선택하지 않았습니다)';
+    el.appendChild(overview);
+    document.getElementById('disc-step-3').classList.add('done');
+  }
+
+  /* ─────────────────────────────────────────
+     Molecule Analysis Card
+  ───────────────────────────────────────── */
+  var MAC_KEY = 'aidd_mac_b01';
+  var MAC_FIELDS = ['mac-f1', 'mac-f2', 'mac-f3', 'mac-f4', 'mac-f5'];
+  var MAC_LABELS = [
+    '1. Key Binding Motif',
+    '2. Property Hypothesis',
+    '3. Developability Risk',
+    '4. Highest-Value Experiment',
+    '5. Next Analog Design'
+  ];
+
+  function loadMacData() {
+    try {
+      var raw = localStorage.getItem(MAC_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+
+  function saveMacData() {
+    var data = {};
+    MAC_FIELDS.forEach(function (id) {
+      var ta = document.getElementById(id);
+      if (ta) data[id + '_text'] = ta.value;
+      var chip = document.querySelector('[data-for="' + id + '"] .mac-chip.selected--evidence, [data-for="' + id + '"] .mac-chip.selected--hypothesis, [data-for="' + id + '"] .mac-chip.selected--unknown');
+      if (chip) data[id + '_type'] = chip.dataset.type;
+    });
+    data._saved = new Date().toISOString();
+    try { localStorage.setItem(MAC_KEY, JSON.stringify(data)); } catch (e) {}
+    var msg = document.getElementById('mac-save-msg');
+    if (msg) {
+      msg.classList.add('show');
+      setTimeout(function () { msg.classList.remove('show'); }, 2000);
+    }
+  }
+
+  function initMolCard() {
+    var data = loadMacData();
+    MAC_FIELDS.forEach(function (id) {
+      var ta = document.getElementById(id);
+      if (ta && data[id + '_text']) ta.value = data[id + '_text'];
+      var savedType = data[id + '_type'];
+      if (savedType) {
+        var chip = document.querySelector('[data-for="' + id + '"] [data-type="' + savedType + '"]');
+        if (chip) chip.classList.add('selected--' + savedType);
+      }
+    });
+
+    /* Chip toggle */
+    document.querySelectorAll('.mac-chips').forEach(function (row) {
+      row.querySelectorAll('.mac-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          row.querySelectorAll('.mac-chip').forEach(function (c) {
+            c.className = 'mac-chip';
+          });
+          chip.classList.add('selected--' + chip.dataset.type);
+        });
+      });
+    });
+
+    /* Save */
+    var saveBtn = document.getElementById('mac-save-btn');
+    if (saveBtn) saveBtn.addEventListener('click', saveMacData);
+
+    /* Auto-save on input */
+    MAC_FIELDS.forEach(function (id) {
+      var ta = document.getElementById(id);
+      if (ta) ta.addEventListener('input', function () {
+        clearTimeout(ta._saveTimer);
+        ta._saveTimer = setTimeout(saveMacData, 1500);
+      });
+    });
+
+    /* Copy Markdown */
+    var copyBtn = document.getElementById('mac-copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var md = buildMarkdown();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(md).then(function () {
+            copyBtn.textContent = '✓ 복사됨';
+            setTimeout(function () { copyBtn.textContent = 'Markdown 복사'; }, 2000);
+          });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = md; document.body.appendChild(ta);
+          ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+          copyBtn.textContent = '✓ 복사됨';
+          setTimeout(function () { copyBtn.textContent = 'Markdown 복사'; }, 2000);
+        }
+      });
+    }
+
+    /* Reset */
+    var resetBtn = document.getElementById('mac-reset-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        if (!confirm('입력 내용을 모두 삭제하시겠습니까?')) return;
+        MAC_FIELDS.forEach(function (id) {
+          var ta = document.getElementById(id);
+          if (ta) ta.value = '';
+          document.querySelectorAll('[data-for="' + id + '"] .mac-chip').forEach(function (c) {
+            c.className = 'mac-chip';
+          });
+        });
+        try { localStorage.removeItem(MAC_KEY); } catch (e) {}
+      });
+    }
+  }
+
+  function buildMarkdown() {
+    var lines = [
+      '# Molecule Analysis Card #001',
+      '**Molecule:** Gefitinib (PubChem CID 123631)',
+      '**Analysis Date:** ' + new Date().toISOString().slice(0, 10),
+      '**Course:** AIDD Track B — Practice 01',
+      '**Sources:** [S1] PubChem CID 123631 | [S2] PDB 4WKQ',
+      ''
+    ];
+    MAC_FIELDS.forEach(function (id, i) {
+      var ta = document.getElementById(id);
+      var chip = document.querySelector('[data-for="' + id + '"] .mac-chip[class*="selected"]');
+      var typeLabel = chip ? chip.dataset.type.toUpperCase() : 'UNKNOWN';
+      lines.push('## ' + MAC_LABELS[i]);
+      lines.push('> [' + typeLabel + ']');
+      lines.push('');
+      lines.push((ta && ta.value) ? ta.value : '(미입력)');
+      lines.push('');
+    });
+    lines.push('---');
+    lines.push('*Generated by AIDD Track B Practice 01*');
+    return lines.join('\n');
+  }
+
+  /* ─────────────────────────────────────────
+     INIT ALL
+  ───────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function () {
+    initMolAnatomy();
+    initAnalogLab();
+    init3DViewer();
+    initEndpointSelector();
+    initDiscSim();
+    initMolCard();
+  });
+
+})();
+</script>
+</body>
+</html>

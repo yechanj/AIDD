@@ -265,10 +265,10 @@ window.AIDD_TRACKS = [
       {
         no: 1,
         href: "lessons/case/01.html",
-        title: "Imatinib — kinase selectivity의 기원",
-        desc: "BCR-ABL inhibitor imatinib이 어떻게 특정 conformational state를 인식해 selectivity를 달성했는가. DFG-out과 AI binding prediction의 도전.",
-        tags: ["Imatinib", "ABL", "DFG-out", "Selectivity"],
-        status: "soon"
+        title: "Gefitinib — 구조를 읽고, 분석 사이클과 다음 실험을 설계하기",
+        desc: "승인된 EGFR inhibitor gefitinib의 분자 해부학, PDB 결합 구조 확인, 가상 analog 설계, AI endpoint 해석, failure case 분석 사이클을 실습합니다.",
+        tags: ["Gefitinib", "EGFR", "Molecular anatomy", "Analog design", "RDKit", "PDB 4WKQ"],
+        status: "ready"
       },
       {
         no: 2,
