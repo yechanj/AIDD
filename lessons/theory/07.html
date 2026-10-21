@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L07 · Ligand / Lipophilic Efficiency — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L07 · Ligand / Lipophilic Efficiency</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L07</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>LE / LipE</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> Potency만 보면 위험</a></li>
+          <li><a href="#s03"><span class="num">03</span> Ligand Efficiency</a></li>
+          <li><a href="#s04"><span class="num">04</span> LE 해석</a></li>
+          <li><a href="#s05"><span class="num">05</span> LE의 함정</a></li>
+          <li><a href="#s06"><span class="num">06</span> Lipophilic Efficiency</a></li>
+          <li><a href="#s07"><span class="num">07</span> pIC50 이해하기</a></li>
+          <li><a href="#s08"><span class="num">08</span> LipE Example</a></li>
+          <li><a href="#s09"><span class="num">09</span> High lipophilicity의 위험</a></li>
+          <li><a href="#s10"><span class="num">10</span> LE + LipE</a></li>
+          <li><a href="#s11"><span class="num">11</span> Fragment → Lead</a></li>
+          <li><a href="#s12"><span class="num">12</span> Fragment-to-lead 사고</a></li>
+          <li><a href="#s13"><span class="num">13</span> Potency Optimization Trap</a></li>
+          <li><a href="#s14"><span class="num">14</span> Multi-parameter Context</a></li>
+          <li><a href="#s15"><span class="num">15</span> AI Connection</a></li>
+          <li><a href="#s16"><span class="num">16</span> Failure Case</a></li>
+          <li><a href="#s17"><span class="num">17</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 07</div>
+          <h1>Ligand Efficiency / Lipophilic Efficiency</h1>
+          <p>Potency가 좋아졌다고 정말 medicinal chemistry가 좋아진 걸까?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — 100 nM → 5 nM, 그런데 phenyl ring 하나를 더 붙였다</h2>
+
+          <p>Medicinal chemistry team이 lead compound를 최적화하고 있다. Compound A에 phenyl ring을 하나 더 붙여 Compound B를 만들었다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Compound A</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>IC50 = 100 nM</li>
+                <li>MW = 320</li>
+                <li>logD7.4 = 2.1</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Compound B</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>IC50 = 5 nM</li>
+                <li>MW = 430</li>
+                <li>logD7.4 = 4.3</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>Potency는 약 20배 좋아졌다. 회의에서 누군가 말한다. "굉장히 좋아졌네요. B로 가죠." 정말 그럴까? B는 더 크고 더 lipophilic하다. 더 큰 molecule은 더 많은 contact를 만들 기회가 있고, 더 lipophilic한 molecule은 hydrophobic pocket에서 favorable contact를 얻기 쉽다. 즉 potency improvement 자체는 놀랍지 않을 수 있다.</p>
+
+          <ul class="clean">
+            <li>potency improvement를 위해 너무 많은 atom을 추가한 것은 아닌가?</li>
+            <li>lipophilicity 증가로 얻은 potency는 진짜 "좋은 binding design"인가?</li>
+            <li>B는 solubility, PPB, clearance, off-target 측면에서 더 나빠질 가능성이 없는가?</li>
+          </ul>
+
+          <div class="oneline">좋은 lead optimization은 potency를 올리는 것이 아니라, 최소한의 molecular cost로 potency를 얻는 것이다.</div>
+
+          <!-- V1 -->
+          <div class="viz" data-le-open>
+            <div class="viz__title">"Better potency?" — Which is the better molecule?</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">위의 A와 B만 보고 판단해 보세요.</p>
+            <div class="le-btnrow">
+              <button class="bi-tab" data-ans="A">A</button>
+              <button class="bi-tab" data-ans="B">B</button>
+              <button class="bi-tab" data-ans="N">Not enough information</button>
+            </div>
+            <div class="le-reveal">
+              <div class="le-fb"></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>Potency</span><b>B가 20× ↑</b></div>
+                <div class="le-three-c"><span>Size</span><b>MW +110</b></div>
+                <div class="le-three-c"><span>Lipophilicity</span><b>logD +2.2</b></div>
+              </div>
+            </div>
+            <div class="viz__msg">Potency alone cannot rank lead quality.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> 왜 potency만 보면 위험한가?</h2>
+
+          <h3>Bigger molecule은 potency를 올리기 쉽다</h3>
+          <p>Ligand에 atom을 더 붙이면 추가 hydrophobic contact, van der Waals contact, H-bond, cavity filling의 기회가 생긴다. 일반적으로 molecule을 크게 만들면 affinity가 높아질 가능성이 커진다. 문제는 MW가 계속 증가하면 drug-like property가 나빠질 수 있다는 것이다. Potency 숫자만 비교하면 large molecule을 과대평가하기 쉽다.</p>
+
+          <h3>Greasier molecule도 potency를 올리기 쉽다</h3>
+          <p>Compound A의 phenyl에 CH₃, Et, phenyl을 차례로 추가했다고 하자. Hydrophobic pocket이 허용하면 potency가 계속 좋아지지만, logP/logD도 계속 증가한다. 우리가 얻은 것이 "better molecular recognition"인지, 아니면 "그냥 더 greasy하게 만들어 pocket에 붙인 것"인지 구분하고 싶다. 여기서 efficiency metric이 등장한다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>"Bigger and greasier" 문제</div>
+            <p>Potency와 drug quality는 분리될 수 있다. 쉬운 optimization(hydrophobic contact를 계속 추가)이 가장 비싼 optimization일 수 있다.</p>
+          </div>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Ligand Efficiency (LE)</h2>
+
+          <p>Ligand Efficiency는 가장 간단히 말해 <b>분자의 크기 대비 얼마나 효율적으로 binding energy를 얻는가</b>를 보려는 지표다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>정의</div>
+            <p style="font-size:1.1em;text-align:center;margin:6px 0;">LE = −ΔG<sub>bind</sub> / N<sub>HA</sub></p>
+            <p style="font-size:13px;color:var(--ink-soft);">N<sub>HA</sub> = heavy atom 수(hydrogen 제외). 실무에서는 상온에서 <b>LE ≈ 1.37 × pKd / N<sub>HA</sub></b> (kcal/mol per heavy atom)로 근사한다.</p>
+          </div>
+
+          <p>1강에서 ΔG = RT ln Kd 관계를 배웠다. Kd가 낮아질수록 binding이 강해지고 ΔG는 더 favorable해진다. LE는 이 binding free-energy의 크기를 heavy atom 수로 나눈 것이다. 직관적으로 "molecule의 각 atom이 평균적으로 binding에 얼마나 기여하는가"를 보려는 것이다. 물론 실제 atom별 contribution을 물리적으로 나눈 것은 아니다. <b>비교용 metric</b>이다.</p>
+
+          <h3>간단한 직관</h3>
+          <p>Compound A: heavy atom 15개, Kd = 1 µM. Compound B: heavy atom 30개, Kd = 1 µM. Affinity는 같지만 A는 절반의 atom으로 같은 affinity를 얻었다. A에는 아직 grow시킬 공간이 더 많다.</p>
+
+          <!-- V3 -->
+          <div class="viz" data-le-atoms>
+            <div class="viz__title">Ligand Efficiency — Binding per Atom</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">두 ligand의 Kd는 모두 1 µM입니다.</p>
+            <div class="le-atoms">
+              <div class="le-atoms-row" data-ha="15"><div class="le-atoms-name">A · 15 HA</div><div class="le-atoms-blocks"></div><div class="le-atoms-le"></div></div>
+              <div class="le-atoms-row" data-ha="30"><div class="le-atoms-name">B · 30 HA</div><div class="le-atoms-blocks"></div><div class="le-atoms-le"></div></div>
+              <div class="bi-fine">Conceptual normalization — atom별 실제 물리적 기여를 뜻하지 않는다.</div>
+            </div>
+            <div class="viz__msg">Same affinity with fewer atoms = more size-efficient starting point.</div>
+          </div>
+
+          <div class="card card--bio">
+            <div class="card__label"><span class="dot"></span>pIC50를 단순히 나누는 것과의 차이</div>
+            <p>LE는 pIC50 자체가 아니라 binding free energy(−ΔG) 스케일에서 정의된다. Kd/Ki가 thermodynamic quantity로 더 직접적이기 때문이다. 실무에서 IC50로 근사 LE를 계산할 때는 그것이 근사라는 점을 기억한다.</p>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> LE를 drug discovery 언어로 해석하기</h2>
+
+          <div class="oneline">이 molecule은 가진 atom을 얼마나 효율적으로 binding에 쓰는가?</div>
+
+          <h3>Fragment에서 특히 중요하다</h3>
+          <p>Fragment는 작기 때문에 보통 affinity가 약하다. Kd = 500 µM이면 나쁜 binder처럼 느껴지지만, heavy atom이 10개뿐이라면 매우 적은 atom으로 어느 정도 affinity를 얻은 것이다. 좋은 fragment는 <b>weak but efficient</b>할 수 있다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Fragment A</h5>
+              <ul class="clean" style="font-size:13px;margin:0;"><li>Kd = 300 µM</li><li>Heavy atoms = 11</li></ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Hit B</h5>
+              <ul class="clean" style="font-size:13px;margin:0;"><li>Kd = 3 µM</li><li>Heavy atoms = 35</li></ul>
+            </div>
+          </div>
+          <p>Raw affinity로는 B가 100배 강하다. 하지만 A는 작은 footprint로 상당한 binding energy를 얻고 있어 더 매력적인 starting point일 수 있다.</p>
+
+          <h3>LE가 알려주는 것</h3>
+          <p>LE가 높다는 것은 대략 "이 molecule의 atom들이 pocket에서 비교적 생산적으로 사용되고 있다"는 신호다. 반대로 큰 molecule인데 affinity가 약하다면 solvent-exposed atom이 많거나, binding에 기여하지 않는 부분이 있거나, conformational penalty가 크거나, complementarity가 나쁠 수 있다. 또 lead growth 과정에서 LE가 자연스럽게 감소하는 것은 흔하다.</p>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> LE의 함정</h2>
+
+          <p>LE는 유용하지만 완벽한 metric이 아니다. Size normalization 방식 자체가 molecule size에 의존하고, binding mode와 target class를 충분히 설명하지 못한다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>Size dependence</div><p>작은 molecule일수록 LE가 높게 나오기 쉽다.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>Assay type · IC50 vs Kd</div><p>IC50는 substrate 농도, inhibition mechanism, assay condition에 따라 달라진다. 서로 다른 assay의 LE를 정밀 비교하는 것은 조심한다.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>Covalent · membrane · macrocycle</div><p>Covalent inhibitor, membrane target, macrocycle에서는 해석이 복잡하다.</p></div>
+          </div>
+
+          <blockquote>
+            "LE가 0.3보다 낮으니 버린다"처럼 단일 threshold를 절대 기준으로 기계적으로 쓰면 안 된다.
+          </blockquote>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Lipophilic Efficiency (LipE / LLE)</h2>
+
+          <p>이번에는 molecule size가 아니라 lipophilicity에 대한 efficiency를 보자.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>정의</div>
+            <p style="font-size:1.1em;text-align:center;margin:6px 0;">LipE = pIC50 − logP <span style="font-size:.8em;color:var(--ink-faint);">(또는 logD)</span></p>
+          </div>
+
+          <div class="oneline">Potency가 높은 이유가 단순히 molecule이 더 greasy해졌기 때문은 아닌가?</div>
+
+          <h3>logP vs logD</h3>
+          <p>3강을 기억하자. Ionizable molecule에서는 logP와 logD가 다르다. 실무에서는 assay와 조직에 따라 logD7.4를 쓰기도 한다. 문헌에서 LipE를 볼 때는 logP인지 logD인지, pH 조건이 무엇인지 확인해야 한다.</p>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> pIC50 이해하기</h2>
+
+          <p>pIC50는 IC50를 log scale로 표현한 것이다: pIC50 = −log₁₀(IC50 [M]). IC50 = 1 µM = 10⁻⁶ M이면 pIC50 = 6이다. Potency가 10배 좋아질 때 pIC50는 1 증가한다.</p>
+
+          <!-- V2 -->
+          <div class="viz" data-le-ladder>
+            <div class="viz__title">pIC50 Ladder</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">아래 IC50의 pIC50는 대략 얼마일까요?</p>
+            <div class="le-ladder">
+              <div class="le-ladder-rungs">
+                <div class="le-rung"><span>1 µM</span><b>6</b></div>
+                <div class="le-rung"><span>100 nM</span><b>7</b></div>
+                <div class="le-rung"><span>10 nM</span><b>8</b></div>
+                <div class="le-rung"><span>1 nM</span><b>9</b></div>
+              </div>
+              <div class="le-ladder-q">
+                <div class="le-ladder-ic"></div>
+                <div class="le-btnrow le-ladder-opts"></div>
+                <div class="le-ladder-fb"></div>
+                <button class="bi-btn bi-btn--ghost" data-next-q>다음 문제</button>
+              </div>
+            </div>
+            <div class="viz__msg">10× potency = +1 pIC50.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> LipE Example</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Compound A</h5>
+              <ul class="clean" style="font-size:13px;margin:0;"><li>IC50 100 nM → pIC50 = 7</li><li>logD = 2</li><li><b>LipE = 5</b></li></ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Compound B</h5>
+              <ul class="clean" style="font-size:13px;margin:0;"><li>IC50 10 nM → pIC50 = 8</li><li>logD = 4</li><li><b>LipE = 4</b></li></ul>
+            </div>
+          </div>
+
+          <p>B는 10배 더 potent하지만 efficiency는 악화됐다. Potency를 1 log unit 얻는 동안 lipophilicity를 2 log unit 증가시켰기 때문이다. Raw potency 관점에서는 좋지만 potency per lipophilicity 관점에서는 나쁘다. Potency improvement가 대부분 "greasy하게 만든 결과"일 가능성을 의심한다.</p>
+
+          <!-- V5 -->
+          <div class="viz" data-le-lipe>
+            <div class="viz__title">LipE Calculator</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">기준 Compound A(IC50 100 nM, logD 2)와 비교해 보세요.</p>
+            <div class="le-calc">
+              <div class="le-slider"><label>IC50: <b class="lc-ic">10 nM</b></label><input type="range" class="lc-ic-in" min="-1" max="4" step="0.05" value="1" /></div>
+              <div class="le-slider"><label>logD: <b class="lc-ld">4.0</b></label><input type="range" class="lc-ld-in" min="-1" max="7" step="0.1" value="4" /></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>pIC50</span><b class="lc-p">—</b></div>
+                <div class="le-three-c"><span>LipE</span><b class="lc-l">—</b></div>
+                <div class="le-three-c"><span>vs A (LipE 5)</span><b class="lc-d">—</b></div>
+              </div>
+              <div class="le-fb lc-fb"></div>
+            </div>
+            <div class="viz__msg">Potency gain can be outweighed by lipophilicity cost.</div>
+          </div>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> 왜 high lipophilicity는 위험한가?</h2>
+
+          <p>높은 lipophilicity는 여러 development risk와 연관될 수 있다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Solubility ↓</div><p>aqueous solubility 감소, formulation 어려움</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Binding 쪽 ↑</div><p>nonspecific binding, PPB 증가 가능</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Safety / PK</div><p>CYP inhibition, hERG/off-target promiscuity, metabolic clearance 문제 가능</p></div>
+          </div>
+
+          <h3>왜 promiscuity가 늘 수 있을까?</h3>
+          <p>Lipophilic molecule은 여러 protein의 hydrophobic region과 상호작용할 가능성이 커진다. 특정 target에 대한 precise recognition보다 "여러 protein에 두루 붙는" 성질이 증가할 수 있다. 높은 lipophilicity와 basic amine 조합은 일부 chemical space에서 hERG liability와 연결되기도 한다(15강에서 더 정확히 본다).</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>절대법칙이 아니다</div>
+            <p>위 문제들은 모두 <b>risk tendency</b>이지 확정 규칙이 아니다. 그리고 lipophilicity 자체가 악은 아니다. Membrane permeability와 hydrophobic binding에는 어느 정도 필요하다. 최적화 목표는 logP 최소화가 아니라 <b>"필요 이상의 lipophilicity로 potency를 사고 있지 않은가"</b>를 확인하는 것이다.</p>
+          </div>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> LE와 LipE를 함께 보기</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>LE</h5><p>분자 크기에 비해 potency가 효율적인가?<br><b>"atom efficiency"</b></p></div>
+            <div class="panel panel--b"><h5>LipE</h5><p>Lipophilicity에 비해 potency가 효율적인가?<br><b>"lipophilicity efficiency"</b></p></div>
+          </div>
+
+          <p>두 지표는 서로 다른 질문에 답한다. 다음 세 compound를 보자.</p>
+          <ul class="clean">
+            <li><b>A:</b> MW 280, pIC50 7.0, logD 1.8</li>
+            <li><b>B:</b> MW 410, pIC50 8.0, logD 4.2</li>
+            <li><b>C:</b> MW 330, pIC50 8.0, logD 2.2</li>
+          </ul>
+          <p>Raw potency는 B = C &gt; A. 하지만 C가 가장 매력적일 수 있다. B와 같은 potency를 더 작은 size, 더 낮은 lipophilicity로 달성했기 때문이다. 이것이 <b>"quality of potency"</b>다. 두 molecule 모두 10 nM이어도 (MW 300, logD 2) 와 (MW 520, logD 5)를 같은 수준의 성과로 볼 수는 없다.</p>
+
+          <!-- V8 -->
+          <div class="viz" data-le-quality>
+            <div class="viz__title">Potency Quality Comparison</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">처음에는 raw potency만 보입니다.</p>
+            <div class="le-cmp">
+              <div class="le-cmp-card" data-c="A"><h6>Compound A</h6><div class="le-cmp-pot">pIC50 7.0</div><div class="le-cmp-cost"><span>MW 280</span><span>logD 1.8</span></div></div>
+              <div class="le-cmp-card" data-c="B"><h6>Compound B</h6><div class="le-cmp-pot">pIC50 8.0</div><div class="le-cmp-cost"><span>MW 410</span><span>logD 4.2</span></div></div>
+              <div class="le-cmp-card" data-c="C"><h6>Compound C</h6><div class="le-cmp-pot">pIC50 8.0</div><div class="le-cmp-cost"><span>MW 330</span><span>logD 2.2</span></div></div>
+            </div>
+            <button class="bi-btn" data-cost>Show molecular cost</button>
+            <div class="le-fb le-cmp-fb"></div>
+            <div class="viz__msg">Same potency can have very different medicinal-chemistry quality.</div>
+          </div>
+
+          <!-- V7 -->
+          <div class="viz" data-le-matrix>
+            <div class="viz__title">LE vs LipE Two-Axis Matrix</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">점을 탭해 보세요. (개념 학습용 가상 데이터, LE는 pIC50로 근사)</p>
+            <svg class="le-matrix-svg" viewBox="0 0 340 280" role="img" aria-label="LE vs LipE matrix"></svg>
+            <div class="le-three le-matrix-info"></div>
+            <div class="le-fb le-matrix-note">오른쪽 위 = size와 lipophilicity 모두 효율적. 그러나 automatically a drug candidate는 아니다.</div>
+            <div class="viz__msg">LE and LipE answer complementary questions.</div>
+          </div>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Fragment → Lead Growth</h2>
+
+          <p>Fragment A를 발견했다. Kd = 200 µM. Pocket extension을 이용해 group을 추가하면서 B(10 µM) → C(100 nM) → D(10 nM)로 potency가 빠르게 증가한다. 동시에 atom 수도 증가한다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>좋은 ligand growth</div>
+            <p>새 atom을 추가할 때마다 "추가된 atom이 의미 있는 binding energy를 가져오는가?"를 본다. Phenyl ring 6개 atom을 붙였는데 affinity가 2배만 좋아졌다면 매우 inefficient한 growth다. 반대로 small substituent 하나로 100배 개선을 얻었다면 매우 생산적인 SAR이다. LE는 growth 중 다소 감소할 수 있지만, <b>potency gain이 size 증가보다 충분히 커야</b> 한다.</p>
+          </div>
+
+          <!-- V4 -->
+          <div class="viz" data-le-grow>
+            <div class="viz__title">Fragment Growth</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Fragment(Kd 200 µM, 12 HA)에서 시작합니다. Route를 선택해 단계를 진행하세요.</p>
+            <div class="le-grow">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-path="A">Path A · 작은 group 추가</button>
+                <button class="bi-tab" data-path="B">Path B · 큰 phenyl 추가</button>
+              </div>
+              <div class="le-grow-steps"></div>
+              <button class="bi-btn" data-step>Add group ▶</button>
+              <button class="bi-btn bi-btn--ghost" data-reset>Reset</button>
+              <div class="le-fb le-grow-fb"></div>
+            </div>
+            <div class="viz__msg">Every added atom should earn its place.</div>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Real Drug Discovery Example — Fragment-to-lead 사고</h2>
+
+          <p>특정 약물 이름 하나에 억지로 LE를 계산하기보다, fragment-based drug discovery에서 efficiency metric이 왜 중요한지 workflow 관점에서 보자. 아래 수치는 개념 학습용 예시다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Fragment F</h5><ul class="clean" style="font-size:13px;margin:0;"><li>Kd = 300 µM</li><li>Heavy atoms = 12</li><li>logD = 1.0</li></ul></div>
+            <div class="panel panel--b"><h5>Lead L</h5><ul class="clean" style="font-size:13px;margin:0;"><li>Kd = 30 nM</li><li>Heavy atoms = 28</li><li>logD = 2.3</li></ul></div>
+          </div>
+
+          <p>Affinity는 약 10,000배 개선, heavy atom은 약 2.3배, logD는 +1.3이다. LE는 0.40 → 약 0.37로 거의 유지된다. 상당히 <b>생산적인 optimization</b>일 가능성이 있다. (물론 실제 판단에는 selectivity와 ADME가 필요하다.)</p>
+
+          <h3>반대 예</h3>
+          <p>같은 fragment(Kd 300 µM, 12 HA)가 Kd = 3 µM, heavy atom 40, logD 5.5인 lead로 갔다면? Affinity는 100배 증가했지만 molecule은 3배 이상 커지고 상당히 lipophilic해졌다. LE는 0.40 → 약 0.19로 크게 떨어졌다. 비효율적인 growth일 수 있다.</p>
+
+          <div class="oneline">Affinity gain은 얼마나 큰가? Atom growth에 비해 충분했는가? Lipophilicity는 얼마나 늘었는가?</div>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Potency Optimization Trap</h2>
+
+          <p>Hydrophobic pocket이 보인다 → phenyl 추가 → potency ↑ → 더 큰 hydrophobic group → potency ↑ → logD ↑↑ → solubility ↓ → clearance / PPB / selectivity 문제. 이 optimization을 계속하면 <b>potent but undruggable molecule</b>을 만들 수 있다.</p>
+
+          <p>SAR series H → CH₃ → Et → phenyl 에서는 단계별 효율이 다르다. A→B는 potency 약 5배 ↑에 logD +0.5(reasonable). B→C는 약 2.5배 ↑에 logD +0.8(덜 효율적). C→D는 8배 ↑에 logD +2.2로 큰 lipophilicity cost를 지불했다. 즉 D가 최종 lead라는 보장은 없다.</p>
+
+          <!-- V6 -->
+          <div class="viz" data-le-trap>
+            <div class="viz__title">Greasy Potency Trap</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">SAR 시리즈입니다. 어디서 optimization을 멈추겠습니까? (가상 데이터)</p>
+            <div class="le-trap">
+              <div class="le-trap-rows"></div>
+              <div class="le-fb le-trap-fb">행을 탭해서 멈출 지점을 선택하세요.</div>
+            </div>
+            <div class="viz__msg">More hydrophobic contact is an easy but expensive way to buy potency.</div>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>LE/LipE는 stop signal이다</div>
+            <p>Efficiency metric은 "potency는 좋아지고 있지만 chemistry quality가 나빠지고 있지는 않은가?"를 알려주는 경고등이다. Lead optimization 회의에서 raw potency에만 매몰되는 것을 막아준다.</p>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Multi-parameter Context</h2>
+
+          <p>LE/LipE만으로 candidate를 선택하지 않는다. Compound A는 LipE가 excellent하지만 permeability가 거의 0일 수 있다. Compound B는 LipE가 약간 나쁘지만 excellent oral exposure, good selectivity, long half-life를 가질 수 있다. 그러면 B가 더 좋은 candidate일 수 있다. LE/LipE는 <b>decision-support metric</b>이지 최종 decision rule이 아니다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>함께 볼 것 ①</div><p>solubility · permeability · metabolic stability</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>함께 볼 것 ②</div><p>selectivity · PPB · clearance</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>함께 볼 것 ③</div><p>toxicity · synthetic feasibility</p></div>
+          </div>
+
+          <h3>Potency sacrifice를 두려워하지 말자</h3>
+          <p>Compound B(IC50 3 nM, logD 5.0) vs Compound C(IC50 15 nM, logD 2.5, solubility ↑, clearance ↓, selectivity ↑)라면 C가 더 좋은 candidate일 가능성이 충분하다. 5배 potency를 잃더라도 free exposure가 20배 증가하고 selectivity가 개선된다면 in vivo efficacy는 더 좋아질 수 있다. 이 부분은 PK/PD에서 반복해서 보게 된다.</p>
+
+          <!-- V9 -->
+          <div class="viz" data-le-radar>
+            <div class="viz__title">Multi-Parameter Radar</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Project 유형을 선택하면 어떤 축이 중요해지는지 강조됩니다. (개념 학습용)</p>
+            <div class="le-btnrow">
+              <button class="bi-tab" data-proj="oral">Oral drug</button>
+              <button class="bi-tab" data-proj="cns">CNS drug</button>
+              <button class="bi-tab" data-proj="tool">Tool compound</button>
+            </div>
+            <svg class="le-radar-svg" viewBox="0 0 340 300" role="img" aria-label="Multi-parameter radar"></svg>
+            <div class="bi-radar-legend"><span class="lg lg--cooh">Compound X (potent, greasy)</span><span class="lg lg--tz">Compound Y (balanced)</span></div>
+            <div class="le-fb le-radar-fb"></div>
+            <div class="viz__msg">No single metric defines candidate quality.</div>
+          </div>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> AI Drug Discovery Connection</h2>
+
+          <h3>Potency만 reward로 주면?</h3>
+          <p>Generative model의 reward를 predicted activity ↑ 하나만 설정하면, 모델은 가장 쉬운 shortcut(aromatic ring 추가, lipophilic substituent 추가, molecule size 증가)을 찾을 수 있다. Training data에서 이런 feature가 potency와 상관있다면 모델은 이를 이용한다. 결과는 predicted IC50 1 nM이지만 MW 650, cLogP 7, solubility poor, synthetic complexity high인 molecule이다. AI 입장에서는 reward를 잘 최적화했지만 drug discovery에서는 실패다. 이를 <b>objective misspecification</b> 또는 <b>reward hacking</b>이라 볼 수 있다.</p>
+
+          <!-- V10 -->
+          <div class="viz" data-le-hack>
+            <div class="viz__title">AI Reward Hacking Demo (mock)</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Reward mode를 선택하고 Generate를 눌러 보세요.</p>
+            <div class="le-hack">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-mode="pot">Maximize predicted potency</button>
+                <button class="bi-tab" data-mode="mpo">Multi-objective reward</button>
+              </div>
+              <div class="le-hack-cards">
+                <div class="le-hack-c"><span>Predicted IC50</span><b class="hk-ic">—</b></div>
+                <div class="le-hack-c"><span>MW</span><b class="hk-mw">—</b></div>
+                <div class="le-hack-c"><span>cLogP</span><b class="hk-lp">—</b></div>
+                <div class="le-hack-c"><span>Solubility</span><b class="hk-sol">—</b></div>
+              </div>
+              <div class="le-hack-mol"></div>
+              <button class="bi-btn" data-gen>Generate next ▶</button>
+              <button class="bi-btn bi-btn--ghost" data-reset>Reset</button>
+              <div class="le-fb le-hack-fb"></div>
+            </div>
+            <div class="viz__msg">AI optimizes the objective you give it, not the drug you actually want.</div>
+          </div>
+
+          <h3>그러면 objective는 어떻게?</h3>
+          <p>Potency를 maximize하되 MW 범위, logD window, solubility, permeability, toxicity risk, synthetic feasibility를 동시에 고려하는 <b>multi-objective optimization</b>이 필요하다. 이때 하나의 "최고 molecule"이 존재하지 않을 수 있다. Potency가 최고인 A, solubility가 최고인 B, balanced한 C가 있고 어느 것도 모든 property에서 다른 것을 압도하지 않는다. 이런 후보 집합을 <b>Pareto optimal</b> solution 관점으로 본다.</p>
+
+          <!-- V11 -->
+          <div class="viz" data-le-pareto>
+            <div class="viz__title">Pareto Front Explorer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">logD 상한을 바꾸면 허용되는 compound와 Pareto 후보가 달라집니다. (가상 데이터)</p>
+            <div class="le-slider"><label>logD ≤ <b class="pf-ld">5.0</b></label><input type="range" class="pf-in" min="1" max="6" step="0.1" value="5" /></div>
+            <svg class="le-pareto-svg" viewBox="0 0 340 260" role="img" aria-label="Pareto front"></svg>
+            <div class="le-fb le-pareto-fb"></div>
+            <div class="viz__msg">In multi-parameter drug design, there may be several non-dominated "best" candidates.</div>
+          </div>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>LipE를 reward로 쓰면 해결될까?</div>
+            <p>일부 문제는 줄지만 완전한 해결은 아니다. LipE도 assay noise, predicted logD 오차, target context, permeability, metabolism을 반영하지 못한다. Metric 하나를 새로운 absolute objective로 바꾸면 또 다른 shortcut이 생길 수 있다. 또 AI가 predicted potency와 predicted logD로 LipE를 계산하면 두 prediction의 오차가 모두 들어간다. 특히 out-of-domain molecule에서는 둘 다 틀리면서도 계산된 LipE가 매우 좋아 보일 수 있다(25강 validation에서 다시 다룬다).</p>
+          </div>
+
+          <h3>Dataset bias와 shortcut 탐지</h3>
+          <p>Training data에서 medicinal chemists가 potency를 높이며 점점 hydrophobic group을 추가했다면 potency와 logP 사이에 correlation이 생긴다. AI는 이를 causal mechanism처럼 학습해 새 series에서도 "더 hydrophobic = 더 active"로 extrapolate할 수 있다. 반대로 이 사실을 이용해, AI top 100 molecule의 predicted potency, MW, logD, LE proxy, LipE 분포를 보면 모델이 size/lipophilicity shortcut을 쓰는지 의심할 수 있다. 상위 ranking으로 갈수록 MW ↑, logD ↑라면 경고 신호다.</p>
+
+          <h3>더 좋은 질문</h3>
+          <div class="bi-grid3">
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>나쁜 질문</div><p>"가장 potent한 molecule을 만들어줘."</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>좋은 질문</div><p>"Essential interaction은 유지하면서 logD를 증가시키지 않고 potency를 1 log unit 개선할 후보를 제안해라."</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>더 좋은 질문</div><p>"Potency, LipE, permeability, metabolic stability 사이 Pareto-optimal 후보를 제시하고 각 modification의 mechanistic hypothesis를 설명해라."</p></div>
+          </div>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> Failure Case — "Better score, worse molecule"</h2>
+
+          <p>Generated molecule G의 predicted IC50 = 0.3 nM. 기존 lead는 10 nM이었다. 팀은 기대했다. 하지만 G는 cLogP 6.4, MW 590, aqueous solubility 극히 낮음, strong nonspecific binding, poor microsomal behavior였고, 실험에서는 reliable potency measurement조차 어려웠다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>모델이 놓친 것</div>
+            <p>모델이 배운 것은 "larger hydrophobic molecule이 training set에서 potent했다"일 수 있다. 즉 target-specific recognition이 아니라 dataset correlation을 exploit한 것이다. <b>High predicted potency ≠ high-quality drug candidate.</b></p>
+          </div>
+
+          <p>MW 증가, cLogP 증가, synthetic complexity 증가, solubility 악화 — potency 숫자 하나는 좋아졌지만 molecule 전체는 나빠졌다.</p>
+        </section>
+
+        <!-- S17 -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> Scientist's Thinking — 20배 potent해졌다</h2>
+
+          <p>Observation: A (IC50 200 nM, logD 2.0, MW 320) → B (IC50 10 nM, logD 4.5, MW 430). 처음 생각은 "Great potency."다. 하지만 여기서 멈추지 않는다.</p>
+
+          <!-- V12 -->
+          <div class="viz" data-le-audit>
+            <div class="viz__title">Scientist's SAR Audit</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">카드를 순서대로 열어 A → B를 감사해 보세요.</p>
+            <div class="le-audit">
+              <div class="le-audit-steps"></div>
+              <div class="le-audit-next">
+                <div class="le-audit-q">5. Next analogue — 다음에 무엇을 만들까?</div>
+                <div class="le-btnrow">
+                  <button class="bi-tab" data-n="red">Reduce phenyl</button>
+                  <button class="bi-tab" data-n="het">Heteroaryl</button>
+                  <button class="bi-tab" data-n="cyc">Cyclopropyl</button>
+                  <button class="bi-tab" data-n="keep">Keep B</button>
+                </div>
+                <div class="le-fb le-audit-fb"></div>
+              </div>
+            </div>
+            <div class="viz__msg">After every potency gain, ask what you paid for it.</div>
+          </div>
+
+          <div class="card card--bio">
+            <div class="card__label"><span class="dot"></span>Optimization은 potency만 올리는 방향이 아니다</div>
+            <p>좋은 optimization은 <b>potency를 유지하면서 molecular cost를 되돌려 받는 것</b>이다. 때로는 potency를 일부 포기하고 molecule quality를 크게 얻는다.</p>
+          </div>
+
+          <h3>SAR을 볼 때 질문 순서</h3>
+          <div style="display:grid;gap:8px;margin:12px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>① Potency</div><p>얼마나 좋아졌나? (raw activity)</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>② Size</div><p>얼마나 커졌나? (MW / heavy atoms)</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>③ Lipophilicity</div><p>얼마나 증가했나? (logP / logD)</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>④ LE / LipE</div><p>효율은 좋아졌나?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>⑤ 다른 property</div><p>solubility, permeability, metabolism, selectivity는?</p></div>
+          </div>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>1–6강 연결</div>
+            <p>1강 binding free energy → 2강 interaction → 3강 logP/logD → 4강 conformation → 5강 functional group → 6강 bioisostere → 7강: <b>그 모든 modification이 실제로 얼마나 효율적인 optimization이었는지 평가하는 scorecard</b>.</p>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>7강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Potency improvement 자체는 medicinal chemistry 성공을 의미하지 않는다.</b>
+              <span>Potency has quality.</span>
+            </li>
+            <li>
+              <b>Ligand Efficiency는 molecular size 대비 얼마나 효율적으로 binding energy를 얻는지 평가한다.</b>
+              <span>LE = binding efficiency per molecular size.</span>
+            </li>
+            <li>
+              <b>Lipophilic Efficiency는 potency improvement가 단순 lipophilicity 증가에 의존하는지 평가하는 데 도움을 준다.</b>
+              <span>LipE = potency without excessive lipophilicity.</span>
+            </li>
+            <li>
+              <b>LE와 LipE는 절대 합격선이 아니라 SAR quality를 비교하고 문제를 발견하기 위한 도구다.</b>
+              <span>Decision-support metric, not a decision rule.</span>
+            </li>
+            <li>
+              <b>AI optimization에서도 potency-only objective를 쓰면 더 크고 더 greasy한 molecule로 score를 해킹할 수 있으므로 multi-objective optimization이 필요하다.</b>
+              <span>Bigger and greasier is an easy shortcut.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>Potency가 좋아지면 네 가지를 바로 확인한다</div>
+          <p><b>1.</b> 얼마나 potent해졌는가?<br><b>2.</b> 얼마나 커졌는가?<br><b>3.</b> 얼마나 greasy해졌는가?<br><b>4.</b> 다른 drug property는 어떻게 변했는가?<br><br><i>A good lead buys potency cheaply.</i></p>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Compound A: IC50 100 nM, logD 2. Compound B: IC50 10 nM, logD 4. 어느 것이 raw potency가 좋은가? LipE는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              B가 10배 potent하다.
+              <div class="exp">LipE: A = 7 − 2 = 5, B = 8 − 4 = 4. 따라서 lipophilicity 대비 potency 효율은 A가 더 좋다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Fragment A: Kd 100 µM, heavy atoms 10. Compound B: Kd 10 µM, heavy atoms 35. B가 10배 강하다. 무조건 B가 더 좋은 starting point인가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">B는 훨씬 많은 atom을 사용해 affinity를 얻었다. Fragment A는 raw affinity는 약하지만 높은 ligand efficiency를 가진 valuable starting point일 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>A → B에서 phenyl ring 하나를 추가했다. Potency 30배 개선, logD 2.0 → 5.0. 추가로 무엇을 가장 보고 싶은가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              최소한 solubility, metabolic stability, PPB, selectivity, permeability를 보고 싶다.
+              <div class="exp">Potency gain이 큰 lipophilicity cost와 함께 왔기 때문이다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Compound A: IC50 2 nM, logD 5.1. Compound B: IC50 15 nM, logD 2.2, solubility 30배 증가, clearance 감소, selectivity 개선. 어느 것이 더 좋은 candidate일 수 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              B가 충분히 더 좋은 candidate일 수 있다.
+              <div class="exp">Raw potency가 약간 낮더라도 실제 exposure와 safety/selectivity profile이 크게 좋아질 수 있기 때문이다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>Generative model의 top-ranked molecule이 모두 MW &gt; 550, cLogP &gt; 5.5로 몰려 있다. 어떤 문제를 의심하는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              모델 또는 reward function이 size와 lipophilicity를 이용해 predicted potency를 높이는 shortcut을 학습했을 가능성을 의심한다.
+              <div class="exp">따라서 LipE, MW distribution, solubility, property constraints, out-of-domain uncertainty 등을 함께 평가해야 한다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">8강 · SAR을 읽는 법</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">Part 1 Medicinal Chemistry의 마지막 강의다. 실제 medicinal chemistry table을 보고 "어떤 modification이 potency를 올렸는가?"에서 끝나지 않고, 왜 그랬는지 — steric effect인가, electronic effect인가, pKa인가, conformation인가, lipophilicity shortcut인가 — 를 분리해서 읽는다. 마지막에는 "다음 compound 하나만 만들 수 있다면 무엇을 만들 것인가?"를 직접 결정한다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="06.html">◀ 6강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="08.html" aria-disabled="true">▶ 8강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

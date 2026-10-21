@@ -10,7 +10,7 @@ window.AIDD_TRACKS = [
     name:  "AI 신약개발 이론",
     ko:    "30강 도메인 지식 과정",
     icon:  "🧬",
-    desc:  "약물–단백질 결합 기초부터 AI/전산 방법론, 신약개발 파이프라인까지 체계적으로 학습합니다.",
+    desc:  "AI 신약개발에 필요한 도메인 지식을 체계적으로 학습하는 30강 이론 과정입니다.",
     lessons: [
       {
         no: 1,
@@ -23,7 +23,7 @@ window.AIDD_TRACKS = [
       {
         no: 2,
         href: "lessons/theory/02.html",
-        title: "비공유결합 — Hydrogen bond, ionic, π, hydrophobic",
+        title: "비공유결합: H-bond, ionic, π-interaction, hydrophobic interaction",
         desc: "Binding free-energy를 구성하는 4가지 비공유결합의 원자 수준 기하학, 강도, 그리고 각 interaction의 숨겨진 비용.",
         tags: ["H-bond", "Electrostatics", "π interaction", "Hydrophobic effect"],
         status: "ready"
@@ -31,7 +31,7 @@ window.AIDD_TRACKS = [
       {
         no: 3,
         href: "lessons/theory/03.html",
-        title: "pKa, ionization, logP / logD",
+        title: "pKa, ionization, logP, logD",
         desc: "pH에 따라 molecule이 바뀐다. Ionization이 binding, permeability, distribution에 미치는 영향.",
         tags: ["pKa", "Ionization", "logP", "logD", "pH effect"],
         status: "ready"
@@ -39,7 +39,7 @@ window.AIDD_TRACKS = [
       {
         no: 4,
         href: "lessons/theory/04.html",
-        title: "Stereochemistry와 conformation",
+        title: "입체화학과 conformational restriction",
         desc: "Chirality, conformational restriction, ring system이 binding에 미치는 영향. Bioactive conformation의 개념.",
         tags: ["Chirality", "Conformation", "Atropisomer", "Ring"],
         status: "ready"
@@ -47,7 +47,7 @@ window.AIDD_TRACKS = [
       {
         no: 5,
         href: "lessons/theory/05.html",
-        title: "Functional group — 결합과 성질의 연결",
+        title: "Functional group별 성질",
         desc: "흔한 functional group이 pKa, logP, H-bond capacity, metabolic liability에 미치는 영향.",
         tags: ["Functional group", "SAR", "Bioisostere"],
         status: "ready"
@@ -55,201 +55,201 @@ window.AIDD_TRACKS = [
       {
         no: 6,
         href: "lessons/theory/06.html",
-        title: "Scaffold, pharmacophore, privileged structure",
-        desc: "Drug-like scaffold의 개념, pharmacophore 모델링, privileged structure가 drug discovery에서 갖는 의미.",
-        tags: ["Scaffold", "Pharmacophore", "Privileged structure"],
-        status: "soon"
+        title: "Bioisostere",
+        desc: "원자·작용기를 바꿔도 activity는 유지하면서 ADME·toxicity·IP를 개선하는 방법. Classical/non-classical bioisostere의 trade-off.",
+        tags: ["Bioisostere", "Amide isostere", "Acid isostere", "Scaffold hopping"],
+        status: "ready"
       },
       {
         no: 7,
         href: "lessons/theory/07.html",
-        title: "Ligand efficiency — LE, LLE, LELP",
-        desc: "Potency per atom, potency per logP. 작고 효율적인 molecule이 왜 유리한가.",
-        tags: ["LE", "LLE", "LELP", "Fragment"],
-        status: "soon"
+        title: "Ligand efficiency / Lipophilic efficiency",
+        desc: "Potency per heavy atom, potency per logP. 크고 기름진 molecule로 얻은 potency가 왜 비싼가.",
+        tags: ["LE", "LLE", "LipE", "LELP", "Fragment"],
+        status: "ready"
       },
       {
         no: 8,
         href: "lessons/theory/08.html",
-        title: "Rule of Five와 drug-likeness",
-        desc: "Lipinski의 Ro5부터 현대 drug-likeness 개념까지. 왜 규칙은 rule이지 law가 아닌가.",
-        tags: ["Ro5", "Drug-likeness", "Oral bioavailability"],
+        title: "SAR을 읽는 법",
+        desc: "SAR table에서 신호와 noise를 구분하기. Matched molecular pair, activity cliff, additivity로 다음 analog를 결정합니다.",
+        tags: ["SAR", "MMP", "Activity cliff", "Additivity"],
         status: "soon"
       },
       {
         no: 9,
         href: "lessons/theory/09.html",
-        title: "ADMET 개론 — Absorption, Distribution",
-        desc: "경구흡수의 결정요인 (permeability × solubility), distribution의 Vd, plasma protein binding.",
-        tags: ["Absorption", "Bioavailability", "Vd", "PPB"],
+        title: "Solubility",
+        desc: "Kinetic vs thermodynamic solubility, crystal packing, pH-dependent solubility. Assay 결과와 oral absorption을 망치는 첫 번째 원인.",
+        tags: ["Solubility", "Kinetic", "Thermodynamic", "Crystal packing"],
         status: "soon"
       },
       {
         no: 10,
         href: "lessons/theory/10.html",
-        title: "ADMET — Metabolism, Excretion, Toxicity",
-        desc: "CYP450 산화, glucuronidation, renal/biliary excretion, reactive metabolite, hERG.",
-        tags: ["CYP450", "Metabolism", "hERG", "Toxicity"],
+        title: "Permeability",
+        desc: "Passive diffusion과 efflux. PAMPA, Caco-2, MDCK 데이터를 읽는 법과 TPSA·HBD의 영향.",
+        tags: ["Permeability", "PAMPA", "Caco-2", "Efflux", "TPSA"],
         status: "soon"
       },
       {
         no: 11,
         href: "lessons/theory/11.html",
-        title: "QSAR의 기초 — 구조와 활성의 관계",
-        desc: "Hansch 방정식부터 MLR-QSAR까지. 2D descriptor란 무엇인가.",
-        tags: ["QSAR", "Descriptor", "Hansch"],
+        title: "Plasma protein binding",
+        desc: "Fraction unbound와 free drug hypothesis. PPB가 높으면 정말 나쁜가?",
+        tags: ["PPB", "fu", "Free drug", "Albumin"],
         status: "soon"
       },
       {
         no: 12,
         href: "lessons/theory/12.html",
-        title: "Molecular fingerprint과 유사도",
-        desc: "ECFP, MACCS, RDKit Morgan fingerprint. Tanimoto similarity. Virtual screening의 기초.",
-        tags: ["Fingerprint", "ECFP", "Tanimoto", "Similarity"],
+        title: "Metabolism / CYP",
+        desc: "CYP450 산화, phase II conjugation, metabolic soft spot. CYP inhibition과 DDI.",
+        tags: ["CYP450", "Soft spot", "Phase II", "DDI"],
         status: "soon"
       },
       {
         no: 13,
         href: "lessons/theory/13.html",
-        title: "Docking — 원리, 한계, 사용법",
-        desc: "Docking의 pose prediction과 scoring function. 앞서 배운 '다이야 방정식'로 docking의 한계를 정확히 이해합니다.",
-        tags: ["Docking", "Scoring function", "AutoDock", "Glide"],
+        title: "Clearance와 half-life",
+        desc: "CL, Vd, t½의 관계. Hepatic extraction과 in vitro–in vivo extrapolation.",
+        tags: ["Clearance", "Half-life", "Vd", "IVIVE"],
         status: "soon"
       },
       {
         no: 14,
         href: "lessons/theory/14.html",
-        title: "Molecular dynamics — 단백질이 움직인다",
-        desc: "MD simulation의 원리. Protein flexibility, water, entropy를 docking이 어떻게 근사하는가.",
-        tags: ["MD", "Force field", "Sampling", "Ensemble"],
+        title: "Transporter와 tissue distribution",
+        desc: "P-gp, BCRP, OATP. Kp,uu와 BBB 투과. Total concentration ≠ target-site concentration.",
+        tags: ["Transporter", "P-gp", "Kp,uu", "BBB"],
         status: "soon"
       },
       {
         no: 15,
         href: "lessons/theory/15.html",
-        title: "FEP와 alchemical methods",
-        desc: "Free energy perturbation, thermodynamic integration. ΔΔG 계산이 실제로 무엇을 하는가.",
-        tags: ["FEP", "TI", "ΔΔG", "Binding free energy"],
+        title: "Toxicity, hERG, reactive metabolite",
+        desc: "hERG blockade의 구조적 원인, structural alert, reactive metabolite와 idiosyncratic toxicity.",
+        tags: ["hERG", "Structural alert", "Reactive metabolite", "DILI"],
         status: "soon"
       },
       {
         no: 16,
         href: "lessons/theory/16.html",
-        title: "Protein structure prediction — AlphaFold2와 그 이후",
-        desc: "AlphaFold2의 작동 원리, 신뢰도 (pLDDT), drug discovery에서의 활용과 한계.",
-        tags: ["AlphaFold2", "Structure prediction", "pLDDT", "MSA"],
+        title: "Target validation",
+        desc: "이 target을 건드리면 질병이 바뀌는가? Genetic evidence, tool compound, target engagement로 가설을 검증하는 법.",
+        tags: ["Target validation", "Genetics", "Tool compound", "Target engagement"],
         status: "soon"
       },
       {
         no: 17,
         href: "lessons/theory/17.html",
-        title: "Pocket detection과 druggability",
-        desc: "FPocket, SiteMap. Pocket volume, hydrophobicity. Druggable target이란 무엇인가.",
-        tags: ["Pocket detection", "Druggability", "FPocket"],
+        title: "Enzyme / receptor / PPI의 차이",
+        desc: "Target class에 따라 binding site, assay, 성공 확률이 어떻게 달라지는가.",
+        tags: ["Enzyme", "Receptor", "PPI", "Mechanism of action"],
         status: "soon"
       },
       {
         no: 18,
         href: "lessons/theory/18.html",
-        title: "Target engagement와 covalent inhibitor",
-        desc: "Target engagement의 측정 (CETSA, SPR). Covalent binding의 설계 원리와 warhead.",
-        tags: ["Target engagement", "CETSA", "Covalent", "Warhead"],
+        title: "Protein structure와 binding pocket",
+        desc: "X-ray, cryo-EM 구조를 읽는 법. Pocket의 shape, polarity, druggability 평가.",
+        tags: ["Protein structure", "PDB", "Binding pocket", "Druggability"],
         status: "soon"
       },
       {
         no: 19,
         href: "lessons/theory/19.html",
         title: "Protein flexibility, water network, induced fit",
-        desc: "Pocket water의 energetics. WaterMap. IFD의 원리. Entropy trapping.",
-        tags: ["Water network", "WaterMap", "IFD", "Cryptic pocket"],
+        desc: "Pocket water의 energetics, induced fit, cryptic pocket. 정적 구조 하나로 설명되지 않는 binding.",
+        tags: ["Flexibility", "Water network", "Induced fit", "Cryptic pocket"],
         status: "soon"
       },
       {
         no: 20,
         href: "lessons/theory/20.html",
-        title: "Allosteric binding과 protein–protein interaction",
-        desc: "Orthosteric vs allosteric. PPI 억제의 도전. Molecular glue와 PROTAC.",
-        tags: ["Allosteric", "PPI", "PROTAC", "Molecular glue"],
+        title: "Mutation, resistance, allostery",
+        desc: "Resistance mutation이 binding을 깨는 방식과 allosteric site를 이용한 우회 전략.",
+        tags: ["Mutation", "Resistance", "Gatekeeper", "Allostery"],
         status: "soon"
       },
       {
         no: 21,
         href: "lessons/theory/21.html",
-        title: "GNN — Graph Neural Network으로 molecule 학습",
-        desc: "Molecule을 graph로 표현하는 방법. Message passing. MPNN, D-MPNN, ChemProp.",
-        tags: ["GNN", "Graph", "MPNN", "ChemProp"],
+        title: "QSAR / classical ML",
+        desc: "Descriptor와 fingerprint에서 RF·XGBoost까지. Classical ML이 여전히 강한 이유와 applicability domain.",
+        tags: ["QSAR", "Fingerprint", "Random forest", "Applicability domain"],
         status: "soon"
       },
       {
         no: 22,
         href: "lessons/theory/22.html",
-        title: "Generative model — VAE, GAN, flow-based",
-        desc: "Latent space에서 molecule을 생성하는 방법. Property optimization. Chemical validity.",
-        tags: ["VAE", "GAN", "Generative", "Latent space"],
+        title: "Molecular representation와 GNN",
+        desc: "SMILES, fingerprint, graph, 3D — molecule을 숫자로 바꾸는 방법과 message passing GNN의 원리.",
+        tags: ["SMILES", "Representation", "GNN", "MPNN"],
         status: "soon"
       },
       {
         no: 23,
         href: "lessons/theory/23.html",
-        title: "Language model — SMILES, SELFIES, molecular transformer",
-        desc: "SMILES를 sequence로 취급. Transformer 기반 molecule generation과 property prediction.",
-        tags: ["SMILES", "SELFIES", "Transformer", "ChemBERTa"],
+        title: "Generative model",
+        desc: "VAE, RL, diffusion 기반 molecule 생성. Property optimization과 synthesizability 문제.",
+        tags: ["Generative", "VAE", "Diffusion", "Synthesizability"],
         status: "soon"
       },
       {
         no: 24,
         href: "lessons/theory/24.html",
-        title: "3D-aware model — EquiBind, DiffDock, SE(3)",
-        desc: "SE(3)-equivariant network. 3D structure를 직접 다루는 모델들의 원리와 한계.",
-        tags: ["SE(3)", "EquiBind", "DiffDock", "3D"],
+        title: "Protein language model / structure prediction",
+        desc: "ESM 계열 protein language model과 AlphaFold. pLDDT·PAE 해석과 drug discovery에서의 한계.",
+        tags: ["Protein LM", "ESM", "AlphaFold", "pLDDT"],
         status: "soon"
       },
       {
         no: 25,
         href: "lessons/theory/25.html",
-        title: "ADMET AI prediction — 무엇을 믿고 무엇을 의심할까",
-        desc: "ADMET AI 모델의 종류, 벤치마크, applicability domain. 실제 data gap.",
-        tags: ["ADMET AI", "SwissADME", "pkCSM", "Applicability domain"],
+        title: "AI 모델 validation과 failure mode",
+        desc: "Random split의 함정, data leakage, out-of-distribution. 모델 성능 숫자를 의심하는 법.",
+        tags: ["Validation", "Scaffold split", "Data leakage", "OOD"],
         status: "soon"
       },
       {
         no: 26,
         href: "lessons/theory/26.html",
-        title: "Virtual screening 파이프라인 설계",
-        desc: "Docking-based, ligand-based, ML-based screening의 조합. Funnel 설계와 hit rate.",
-        tags: ["Virtual screening", "Funnel", "Hit rate", "Filter"],
+        title: "Hit → Lead → Candidate 전체 흐름",
+        desc: "Hit identification부터 candidate nomination까지 각 단계의 질문과 통과 기준.",
+        tags: ["Hit-to-lead", "Lead optimization", "Candidate", "Pipeline"],
         status: "soon"
       },
       {
         no: 27,
         href: "lessons/theory/27.html",
-        title: "Lead optimization — SAR에서 candidate까지",
-        desc: "SAR의 체계적 분석. matched molecular pair. Property-activity relationship. Optimization strategy.",
-        tags: ["Lead optimization", "SAR", "MMP", "PAR"],
+        title: "Multi-parameter optimization",
+        desc: "Potency × selectivity × ADMET를 동시에 최적화하기. MPO score, desirability function, Pareto front.",
+        tags: ["MPO", "Desirability", "Pareto", "Multi-objective"],
         status: "soon"
       },
       {
         no: 28,
         href: "lessons/theory/28.html",
-        title: "Multi-parameter optimization와 Pareto front",
-        desc: "Potency × selectivity × ADMET를 동시에 최적화하는 방법. Pareto front와 desirability function.",
-        tags: ["MPO", "Pareto", "Desirability", "Multi-objective"],
+        title: "Assay cascade와 experimental design",
+        desc: "Primary → secondary → counter-screen. Assay window, 재현성, 다음 실험을 고르는 기준.",
+        tags: ["Assay cascade", "Counter-screen", "Experimental design", "Reproducibility"],
         status: "soon"
       },
       {
         no: 29,
         href: "lessons/theory/29.html",
-        title: "AI 예측 실패 분석 — 왜 wet-lab에서 틀렸는가",
-        desc: "1강에서 시작한 'binding은 자유에너지 문제'라는 프레임으로 AI 예측 실패의 유형을 종합 분석합니다.",
-        tags: ["Failure analysis", "AI limitation", "OOD", "Activity cliff"],
+        title: "AI prediction vs wet-lab discrepancy",
+        desc: "AI 예측과 실험 결과가 어긋날 때 — assay noise, domain shift, activity cliff 중 무엇이 원인인가.",
+        tags: ["Failure analysis", "Assay noise", "Domain shift", "Activity cliff"],
         status: "soon"
       },
       {
         no: 30,
         href: "lessons/theory/30.html",
-        title: "AI Drug Discovery Translational Scientist의 역할",
-        desc: "30강 전체를 종합. Wet-lab과 AI 팀 사이에서 번역가로 일하는 방법. 커리어 로드맵.",
-        tags: ["Translational", "Career", "Integration", "Summary"],
+        title: "실제 drug discovery project를 종합적으로 평가하는 방법",
+        desc: "30강 전체를 종합해 실제 project의 target, chemistry, ADME, data, risk를 평가하는 프레임.",
+        tags: ["Project review", "Risk", "Go/No-go", "Synthesis"],
         status: "soon"
       }
     ]

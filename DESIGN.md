@@ -411,7 +411,7 @@ Track A 강의 파일을 새로 만들 때 이 구조를 복사하세요.
 ```js
 {
   no: 2,
-  title: "비공유결합 — Hydrogen bond, ionic, π interaction",
+  title: "비공유결합: H-bond, ionic, π-interaction, hydrophobic interaction",
   desc: "Binding을 구성하는 실제 interaction 유형과 각각의 에너지 특성.",
   tags: ["H-bond", "Hydrophobic", "π-stack", "Desolvation"],
   status: "ready",            // "ready" 또는 "soon"
@@ -425,38 +425,40 @@ Track A 강의 파일을 새로 만들 때 이 구조를 복사하세요.
 
 ## 7. Track A — 30강 목차
 
-| 강의 | 제목 | 핵심 토픽 |
-|------|------|-----------|
-| L01 | 약물–단백질 결합의 기본 | Kd, ΔG, Desolvation, Ensemble, Docking 한계 |
-| L02 | 비공유결합 | H-bond, Hydrophobic, π-π, Ionic, vdW |
-| L03 | 단백질 구조 개요 | Primary→Quaternary, Binding pocket 유형 |
-| L04 | 약물 유사성과 Lipinski | Ro5, ADMET, LogD, Permeability |
-| L05 | Medicinal chemistry 기초 | SAR, Bioisostere, Matched molecular pair |
-| L06 | Kinase — 구조와 selectivity | DFG, Gatekeeper, Type I/II/III |
-| L07 | GPCR — 구조와 신호 | 7TM, Active/inactive, Allosteric |
-| L08 | Protease inhibitors | Serine/Cysteine/Metalloprotease, 전이상태 유사체 |
-| L09 | ADMET 개요 | Absorption, Distribution, Metabolism, Excretion |
-| L10 | CYP450 대사 | CYP3A4/2D6, Mechanism-based inhibition |
-| L11 | Structure-based drug design | Docking, Fragment-based, Hot spot |
-| L12 | Ligand-based drug design | Pharmacophore, QSAR, 3D-QSAR |
-| L13 | Free energy calculation | FEP, MM-GBSA, Relative binding |
-| L14 | Molecular dynamics | Force field, Enhanced sampling, Allostery |
-| L15 | Virtual screening | SBVS vs LBVS, Enrichment, BEDROC |
-| L16 | Fragment-based drug discovery | FBDD, Linking, Growing, SPR/NMR |
-| L17 | PROTACs & Targeted degradation | E3 ligase, Binary→ternary, Hook effect |
-| L18 | Covalent drugs | Warhead, Reversible covalent, Selectivity |
-| L19 | Water & Solvation | WaterMap, Displaced water, Hydrophobic effect |
-| L20 | Protein flexibility | Cryptic pockets, Induced fit, IFD |
-| L21 | ML in drug discovery 개요 | SMILES, GNN, Property prediction |
-| L22 | Deep generative models | VAE, GAN, Flow-based, Diffusion |
-| L23 | AlphaFold & structure prediction | pLDDT, PAE, Drug design 응용 |
-| L24 | Reinvention: AI de novo design | REINVENT, Scaffold hopping, MMP |
-| L25 | AI scoring functions | RF-Score, Δ-Vina, GNINA, 한계 |
-| L26 | ADMET prediction AI | Graph-based, Uncertainty, Transfer learning |
-| L27 | Multi-parameter optimization | MPO, Pareto front, Active learning |
-| L28 | Resistance & Mutation | Driver mutation, Kinase resistance |
-| L29 | Allosteric drug discovery | Allosteric sites, Cooperativity, AI |
-| L30 | 신약개발 파이프라인 AI | Hit→Lead→IND, AI의 역할 총정리 |
+AI 신약개발에 필요한 도메인 지식을 체계적으로 학습하는 30강 이론 과정입니다.
+
+| Part | 강의 | 제목 | 핵심 토픽 |
+|------|------|------|-----------|
+| **1. Medicinal Chemistry** | L01 | 약물–단백질 결합의 기본 | Kd, ΔG, Desolvation, Ensemble, Docking 한계 |
+| | L02 | 비공유결합: H-bond, ionic, π-interaction, hydrophobic interaction | H-bond, Electrostatics, π interaction, Hydrophobic effect |
+| | L03 | pKa, ionization, logP, logD | pKa, Ionization, logP, logD, pH effect |
+| | L04 | 입체화학과 conformational restriction | Chirality, Conformation, Atropisomer, Ring |
+| | L05 | Functional group별 성질 | pKa/logP/H-bond 영향, Metabolic liability |
+| | L06 | Bioisostere | Classical/non-classical, Amide·acid isostere, Scaffold hopping |
+| | L07 | Ligand efficiency / Lipophilic efficiency | LE, LLE(LipE), LELP, Fragment |
+| | L08 | SAR을 읽는 법 | SAR table, MMP, Activity cliff, Additivity |
+| **2. Drug-like Property & ADME** | L09 | Solubility | Kinetic vs thermodynamic, Crystal packing, pH-solubility |
+| | L10 | Permeability | Passive diffusion, PAMPA/Caco-2, Efflux, TPSA/HBD |
+| | L11 | Plasma protein binding | fu, Free drug hypothesis, Albumin/AGP |
+| | L12 | Metabolism / CYP | CYP3A4/2D6, Soft spot, Phase II, DDI/TDI |
+| | L13 | Clearance와 half-life | CL, Vd, t½, Hepatic extraction, IVIVE |
+| | L14 | Transporter와 tissue distribution | P-gp, BCRP, OATP, Kp,uu, BBB |
+| | L15 | Toxicity, hERG, reactive metabolite | hERG, Structural alert, GSH adduct, DILI |
+| **3. Target & Structural Biology** | L16 | Target validation | Genetic evidence, Tool compound, Target engagement |
+| | L17 | Enzyme / receptor / PPI의 차이 | Enzyme kinetics, Agonist/antagonist, PPI hot spot |
+| | L18 | Protein structure와 binding pocket | X-ray/cryo-EM, Pocket detection, Druggability |
+| | L19 | Protein flexibility, water network, induced fit | Water network, WaterMap, IFD, Cryptic pocket |
+| | L20 | Mutation, resistance, allostery | Gatekeeper, Resistance mutation, Allosteric site |
+| **4. AI Drug Discovery** | L21 | QSAR / classical ML | Descriptor, Fingerprint, RF/XGBoost, Applicability domain |
+| | L22 | Molecular representation와 GNN | SMILES/SELFIES, Graph, MPNN, 3D representation |
+| | L23 | Generative model | VAE, RL, Diffusion, Synthesizability |
+| | L24 | Protein language model / structure prediction | ESM, AlphaFold, pLDDT/PAE, Co-folding |
+| | L25 | AI 모델 validation과 failure mode | Scaffold split, Data leakage, OOD, Uncertainty |
+| **5. Translational Drug Discovery** | L26 | Hit → Lead → Candidate 전체 흐름 | Hit-to-lead, Lead optimization, Candidate criteria |
+| | L27 | Multi-parameter optimization | MPO score, Desirability, Pareto front |
+| | L28 | Assay cascade와 experimental design | Primary/secondary assay, Counter-screen, Assay window |
+| | L29 | AI prediction vs wet-lab discrepancy | Assay noise, Domain shift, Activity cliff, 원인 분석 |
+| | L30 | 실제 drug discovery project를 종합적으로 평가하는 방법 | Project review, Risk, Go/No-go, 30강 종합 |
 
 ---
 

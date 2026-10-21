@@ -36,6 +36,21 @@
         if (window.matchMedia("(max-width: 860px)").matches) close();
       });
     });
+    var tg = document.createElement("button");
+    tg.className = "sidebar-toggle";
+    tg.setAttribute("aria-label", "목차 접기/펼치기");
+    function setCollapsed(c) {
+      document.body.classList.toggle("sb-collapsed", c);
+      tg.textContent = c ? "☰" : "◀";
+      try { localStorage.setItem("aidd-sb-collapsed", c ? "1" : "0"); } catch (e) {}
+    }
+    tg.addEventListener("click", function () {
+      setCollapsed(!document.body.classList.contains("sb-collapsed"));
+    });
+    document.body.appendChild(tg);
+    var saved = null;
+    try { saved = localStorage.getItem("aidd-sb-collapsed"); } catch (e) {}
+    setCollapsed(saved === "1");
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") close();
     });
@@ -2214,6 +2229,970 @@
     });
   }
 
+  /* ============================================================
+     L06 – Bioisostere
+     ============================================================ */
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function svgEl(tag, attrs, parent) {
+    var el = document.createElementNS(SVGNS, tag);
+    Object.keys(attrs || {}).forEach(function(k){ el.setAttribute(k, attrs[k]); });
+    if (parent) parent.appendChild(el);
+    return el;
+  }
+
+  /* V1 – Preserve vs Change Designer */
+  var BI_CANDS = {
+    tz:      { charge:.9, arg:.85, geom:.8, metab:.8, perm:.3,  pk:.6,
+               name:'Tetrazole',        keepNote:'acidic anchor를 유지하는 대표 후보', changeNote:'metabolism은 개선 가능하지만 permeability 개선은 제한적일 수 있다' },
+    acs:     { charge:.8, arg:.7,  geom:.6, metab:.6, perm:.6,  pk:.55,
+               name:'Acyl sulfonamide', keepNote:'acidic하지만 geometry가 COOH와 다를 수 있다', changeNote:'lipophilicity·permeability가 다르게 움직일 수 있다' },
+    neutral: { charge:.1, arg:.2,  geom:.3, metab:.7, perm:.85, pk:.6,
+               name:'Neutral mimic',    keepNote:'charge/Arg interaction을 유지하기 어렵다', changeNote:'permeability에 유리할 수 있으나 binding 손실 위험이 크다' }
+  };
+
+  function initBiDesigner() {
+    document.querySelectorAll('[data-bi-designer]').forEach(function(wrap) {
+      var chips = wrap.querySelectorAll('.bi-chip');
+      var cands = wrap.querySelectorAll('.bi-cand');
+      var note  = wrap.querySelector('.bi-des-note');
+      var sel = {};
+
+      function update() {
+        var keys = Object.keys(sel).filter(function(k){ return sel[k]; });
+        var keepKeys = keys.filter(function(k){ return ['charge','arg','geom'].indexOf(k) >= 0; });
+        var best = null, bestScore = -1;
+        cands.forEach(function(c) {
+          var d = BI_CANDS[c.dataset.cand];
+          var fill = c.querySelector('.bi-cand-fill');
+          var flag = c.querySelector('.bi-cand-flag');
+          c.classList.remove('best');
+          if (!keys.length) { fill.style.width = '0'; flag.textContent = ''; return; }
+          var s = keys.reduce(function(a, k){ return a + d[k]; }, 0) / keys.length;
+          fill.style.width = Math.round(s * 100) + '%';
+          var lost = keepKeys.some(function(k){ return d[k] < .4; });
+          flag.textContent = lost ? '⚠ 손실' : '';
+          if (!lost && s > bestScore) { bestScore = s; best = c; }
+        });
+        if (!keys.length) { note.textContent = 'PRESERVE와 CHANGE 항목을 선택해 보세요.'; return; }
+        if (best) {
+          best.classList.add('best');
+          var d = BI_CANDS[best.dataset.cand];
+          note.innerHTML = '<b>' + d.name + '</b> — ' + d.keepNote + '. ' + d.changeNote + '.';
+        } else {
+          note.textContent = '보존 조건을 만족하는 후보가 없다. 보존 항목을 줄이거나 새 후보 panel이 필요하다.';
+        }
+      }
+
+      chips.forEach(function(ch) {
+        ch.addEventListener('click', function() {
+          sel[ch.dataset.key] = !sel[ch.dataset.key];
+          ch.classList.toggle('active', !!sel[ch.dataset.key]);
+          update();
+        });
+      });
+      update();
+    });
+  }
+
+  /* V2 – COOH vs Tetrazole overlay */
+  function initBiCompare() {
+    document.querySelectorAll('[data-bi-compare]').forEach(function(wrap) {
+      var btn = wrap.querySelector('[data-overlay]');
+      var ov  = wrap.querySelector('.bi-cmp-overlay');
+      if (!btn || !ov) return;
+      btn.addEventListener('click', function() {
+        var on = ov.classList.toggle('show');
+        btn.textContent = on ? 'Hide overlay' : 'Overlay pharmacophore';
+      });
+    });
+  }
+
+  /* V3 – Property radar (conceptual) */
+  function initBiRadar() {
+    document.querySelectorAll('[data-bi-radar]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.bi-radar-svg');
+      var tabs = wrap.querySelectorAll('.bi-tab');
+      var axes = ['Binding geometry','Acidity','Lipophilicity','Metabolic stability','Permeability','Size'];
+      var data = {
+        cooh: [.9, .8, .3, .4, .3, .4],
+        tz:   [.75, .8, .5, .7, .4, .6]
+      };
+      var colors = { cooh:'#c2410c', tz:'#5b3fd4' };
+      var cx = 160, cy = 150, R = 100;
+
+      function pt(i, v) {
+        var a = -Math.PI / 2 + i * 2 * Math.PI / axes.length;
+        return [cx + Math.cos(a) * R * v, cy + Math.sin(a) * R * v];
+      }
+
+      function draw(show) {
+        svg.innerHTML = '';
+        [.25, .5, .75, 1].forEach(function(r) {
+          svgEl('polygon', { points: axes.map(function(_, i){ return pt(i, r).join(','); }).join(' '), fill:'none', stroke:'#dce3ef', 'stroke-width':1 }, svg);
+        });
+        axes.forEach(function(name, i) {
+          var p = pt(i, 1), l = pt(i, 1.2);
+          svgEl('line', { x1:cx, y1:cy, x2:p[0], y2:p[1], stroke:'#dce3ef', 'stroke-width':1 }, svg);
+          var t = svgEl('text', { x:l[0], y:l[1] + 4, 'text-anchor': l[0] < cx - 5 ? 'end' : (l[0] > cx + 5 ? 'start' : 'middle') }, svg);
+          t.textContent = name;
+        });
+        ['cooh','tz'].forEach(function(k) {
+          if (show !== 'both' && show !== k) return;
+          svgEl('polygon', {
+            points: data[k].map(function(v, i){ return pt(i, v).join(','); }).join(' '),
+            fill: colors[k], 'fill-opacity': .18, stroke: colors[k], 'stroke-width': 2
+          }, svg);
+        });
+      }
+
+      tabs.forEach(function(t) {
+        t.addEventListener('click', function() {
+          tabs.forEach(function(x){ x.classList.toggle('active', x === t); });
+          draw(t.dataset.show);
+        });
+      });
+      tabs[0].classList.add('active');
+      draw('both');
+    });
+  }
+
+  /* V4 – Heteroaryl scanner */
+  function initBiScan() {
+    document.querySelectorAll('[data-bi-scan]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.bi-scan-svg');
+      var tabs = wrap.querySelectorAll('.bi-tab');
+      var hba = wrap.querySelector('.sc-hba'), dip = wrap.querySelector('.sc-dip'), geo = wrap.querySelector('.sc-geo');
+      var verdict = wrap.querySelector('.bi-scan-verdict');
+      var cx = 120, cy = 110, r = 48;
+      var info = [
+        { hba:'없음', dip:'작음 (대칭)', geo:'H-bond 불가', ok:false, msg:'✗ Phenyl에는 HBA가 없어 donor와 H-bond을 만들 수 없다.' },
+        { hba:'ring 연결부 바로 옆 (ortho)', dip:'N 방향으로 치우침', geo:'N의 방향이 donor와 어긋남', ok:false, msg:'✗ N 방향이 donor와 맞지 않는다. 위치가 다르면 같은 pyridyl도 다른 experiment다.' },
+        { hba:'오른쪽 아래 (meta)', dip:'N 쪽으로 향함', geo:'N lone pair가 donor를 향함', ok:true, msg:'✓ N lone pair가 protein donor 방향에 놓여 H-bond geometry에 맞는다.' },
+        { hba:'ring 반대편 (para)', dip:'축 방향 (linear)', geo:'donor와 거리가 멀다', ok:false, msg:'✗ N이 donor에서 멀어 interaction이 성립하지 않는다.' }
+      ];
+
+      function vtx(i) {
+        var a = (-90 + 60 * i) * Math.PI / 180;
+        return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+      }
+
+      function draw(pos) {
+        svg.innerHTML = '';
+        var pts = [0,1,2,3,4,5].map(function(i){ return vtx(i).join(','); }).join(' ');
+        svgEl('polygon', { points: pts, fill:'#f8fafc', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+        var v0 = vtx(0);
+        svgEl('line', { x1:v0[0], y1:v0[1], x2:v0[0], y2:v0[1] - 28, stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+        svgEl('text', { x:v0[0] + 6, y:v0[1] - 22 }, svg).textContent = 'scaffold';
+        [1,2,3].forEach(function(i) {
+          var p = vtx(i);
+          svgEl('text', { x:p[0] + (i === 3 ? 8 : 10), y:p[1] + 4 }, svg).textContent = i + 1;
+        });
+        var donor = { x: 250, y: 150 };
+        svgEl('circle', { cx:donor.x, cy:donor.y, r:16, fill:'#dbeafe', stroke:'#2563eb', 'stroke-width':2 }, svg);
+        svgEl('text', { x:donor.x - 9, y:donor.y + 4 }, svg).textContent = 'N–H';
+        svgEl('text', { x:donor.x - 26, y:donor.y + 32 }, svg).textContent = 'protein donor';
+        if (pos > 0) {
+          var p = vtx(pos);
+          svgEl('circle', { cx:p[0], cy:p[1], r:11, fill:'#fee2e2', stroke:'#dc2626', 'stroke-width':2 }, svg);
+          svgEl('text', { x:p[0] - 4, y:p[1] + 4 }, svg).textContent = 'N';
+          svgEl('line', { x1:p[0], y1:p[1], x2:donor.x - 16, y2:donor.y, stroke: pos === 2 ? '#15803d' : '#94a3b8', 'stroke-width':2, 'stroke-dasharray':'5 4' }, svg);
+        }
+      }
+
+      function update(pos) {
+        tabs.forEach(function(t){ t.classList.toggle('active', +t.dataset.pos === pos); });
+        draw(pos);
+        var d = info[pos];
+        hba.textContent = d.hba; dip.textContent = d.dip; geo.textContent = d.geo;
+        verdict.textContent = d.msg;
+        verdict.className = 'bi-scan-verdict ' + (d.ok ? 'ok' : 'bad');
+      }
+
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ update(+t.dataset.pos); }); });
+      draw(0);
+      verdict.textContent = 'Analogue를 선택하세요.';
+    });
+  }
+
+  /* V5 – Fluorine simulator */
+  function initBiFluor() {
+    document.querySelectorAll('[data-bi-fluor]').forEach(function(wrap) {
+      var atomBtns = wrap.querySelectorAll('[data-atom]');
+      var distBtns = wrap.querySelectorAll('[data-dist]');
+      var ster = wrap.querySelector('.fl-ster'), elec = wrap.querySelector('.fl-elec'),
+          pka = wrap.querySelector('.fl-pka'), met = wrap.querySelector('.fl-met');
+      var bar = wrap.querySelector('.bi-fl-bar-fill');
+      var state = { atom:'F', dist:'beta' };
+      var pkaData = {
+        alpha: { txt:'amine basicity 크게 ↓ (큰 ΔpKa)', w:90 },
+        beta:  { txt:'amine basicity ↓ (중간 ΔpKa)',     w:55 },
+        far:   { txt:'영향 작음',                         w:15 }
+      };
+
+      function update() {
+        atomBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.atom === state.atom); });
+        distBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.dist === state.dist); });
+        if (state.atom === 'H') {
+          ster.textContent = '기준 (H)';
+          elec.textContent = '기준';
+          pka.textContent = '기준 pKa';
+          bar.style.width = '0';
+          met.textContent = 'C–H: oxidation soft spot일 수 있음';
+        } else {
+          ster.textContent = '작은 변화 (H보다 약간 큼)';
+          elec.textContent = '큰 변화 가능 (strong EWG)';
+          pka.textContent = pkaData[state.dist].txt;
+          bar.style.width = pkaData[state.dist].w + '%';
+          met.textContent = '해당 C–H oxidation 차단 가능 · metabolic switching 주의';
+        }
+      }
+
+      atomBtns.forEach(function(b){ b.addEventListener('click', function(){ state.atom = b.dataset.atom; update(); }); });
+      distBtns.forEach(function(b){ b.addEventListener('click', function(){ state.dist = b.dataset.dist; update(); }); });
+      update();
+    });
+  }
+
+  /* V6 – Metabolic switching */
+  function initBiSwitch() {
+    document.querySelectorAll('[data-bi-switch]').forEach(function(wrap) {
+      var sites = wrap.querySelectorAll('.bi-sw-site');
+      var totalFill = wrap.querySelector('.bi-sw-fill--total');
+      var totalTag = wrap.querySelector('.bi-sw-total-tag');
+      var msg = wrap.querySelector('.bi-sw-msg');
+      var before = [60, 20, 20];
+      var after  = [0, 60, 20];
+
+      function render(vals, blocked) {
+        var total = vals[0] + vals[1] + vals[2];
+        sites.forEach(function(s, i) {
+          var f = s.querySelector('.bi-sw-fill');
+          f.style.width = vals[i] + '%';
+          f.style.background = vals[i] >= 50 ? '#dc2626' : '#f59e0b';
+          s.querySelector('.bi-sw-tag').textContent = (i === 0 && blocked) ? 'blocked (F)' : '';
+        });
+        totalFill.style.width = total + '%';
+        totalTag.textContent = total >= 100 ? '≈ 변화 없음' : 'baseline';
+      }
+
+      wrap.querySelector('[data-block]').addEventListener('click', function() {
+        render(after, true);
+        msg.textContent = 'Site 1은 막혔지만 CYP가 Site 2를 산화한다. Total clearance는 거의 변하지 않는다.';
+      });
+      wrap.querySelector('[data-reset]').addEventListener('click', function() {
+        render(before, false);
+        msg.textContent = 'Site 1이 major pathway다.';
+      });
+      render(before, false);
+      msg.textContent = 'Site 1이 major pathway다.';
+    });
+  }
+
+  /* V7 – Amide deconstruction */
+  function initBiAmide() {
+    document.querySelectorAll('[data-bi-amide]').forEach(function(wrap) {
+      var btns = wrap.querySelectorAll('[data-cand]');
+      var roles = wrap.querySelectorAll('.bi-am-role');
+      var note = wrap.querySelector('.bi-am-note');
+      var mark = { keep:'✓', part:'~', lost:'✗' };
+      var D = {
+        oxa:  { hba:'keep', hbd:'lost', plan:'keep', space:'keep', dip:'part',
+                note:'NH donor가 사라진다. Amide NH가 critical HBD였다면 potency 손실 위험, polarity만 높이던 NH였다면 오히려 유리할 수 있다.' },
+        tri:  { hba:'part', hbd:'lost', plan:'keep', space:'keep', dip:'keep',
+                note:'planar하고 dipole이 amide와 유사한 편이지만 NH donor는 없다. Acceptor 위치·방향은 substitution pattern에 의존한다.' },
+        urea: { hba:'keep', hbd:'keep', plan:'part', space:'part', dip:'part',
+                note:'HBD는 유지(오히려 2개)되지만 polarity와 desolvation cost가 커져 permeability 문제가 생길 수 있고 spacing도 달라진다.' }
+      };
+
+      function update(c) {
+        btns.forEach(function(b){ b.classList.toggle('active', b.dataset.cand === c); });
+        var d = D[c];
+        roles.forEach(function(r) {
+          var st = d[r.dataset.role];
+          r.className = 'bi-am-role ' + st;
+          r.querySelector('b').textContent = mark[st];
+        });
+        note.textContent = d.note;
+      }
+
+      btns.forEach(function(b){ b.addEventListener('click', function(){ update(b.dataset.cand); }); });
+    });
+  }
+
+  /* V8 – Scaffold hopping */
+  function initBiHop() {
+    document.querySelectorAll('[data-bi-hop]').forEach(function(wrap) {
+      var box = wrap.querySelector('.bi-hop');
+      var btn = wrap.querySelector('[data-hop]');
+      var msg = wrap.querySelector('.bi-hop-msg');
+      var feats = [
+        { x:230, y:45,  c:'#dc2626', t:'HBA' },
+        { x:240, y:150, c:'#2563eb', t:'+' },
+        { x:45,  y:160, c:'#94a3b8', t:'hyd' }
+      ];
+
+      function ring(svg, pts, closed) {
+        svgEl(closed ? 'polygon' : 'polyline', { points: pts.map(function(p){ return p.join(','); }).join(' '), fill:'none', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      }
+      function hexAt(x, y, r) {
+        var out = [];
+        for (var i = 0; i < 6; i++) { var a = (60 * i - 30) * Math.PI / 180; out.push([x + Math.cos(a) * r, y + Math.sin(a) * r]); }
+        return out;
+      }
+      function pentAt(x, y, r) {
+        var out = [];
+        for (var i = 0; i < 5; i++) { var a = (72 * i - 90) * Math.PI / 180; out.push([x + Math.cos(a) * r, y + Math.sin(a) * r]); }
+        return out;
+      }
+
+      wrap.querySelectorAll('.bi-hop-svg').forEach(function(svg) {
+        if (svg.dataset.mol === 'a') {
+          ring(svg, hexAt(95, 100, 32), true);
+          ring(svg, hexAt(151, 100, 32), true);
+          ring(svg, [[170,82],[200,60],[230,45]], false);
+          ring(svg, [[170,118],[205,138],[240,150]], false);
+          ring(svg, [[78,116],[60,140],[45,160]], false);
+        } else {
+          ring(svg, pentAt(110, 95, 34), true);
+          ring(svg, pentAt(165, 118, 28), true);
+          ring(svg, [[170,92],[200,70],[230,45]], false);
+          ring(svg, [[190,122],[215,140],[240,150]], false);
+          ring(svg, [[95,120],[70,140],[45,160]], false);
+        }
+        var g = svgEl('g', { 'class':'feat' }, svg);
+        feats.forEach(function(f) {
+          svgEl('circle', { cx:f.x, cy:f.y, r:11, fill:f.c, 'fill-opacity':.85 }, g);
+          svgEl('text', { x:f.x, y:f.y + 4, 'text-anchor':'middle', style:'fill:#fff;font-size:9px' }, g).textContent = f.t;
+        });
+        svgEl('polygon', { points: feats.map(function(f){ return f.x + ',' + f.y; }).join(' '), fill:'none', stroke:'#5b3fd4', 'stroke-width':1.5, 'stroke-dasharray':'5 4' }, g);
+      });
+
+      btn.addEventListener('click', function() {
+        var on = box.classList.toggle('on');
+        btn.textContent = on ? 'Hide pharmacophore' : 'Show pharmacophore';
+        msg.innerHTML = on ? '2D similarity: <b>낮음</b> · Pharmacophoric similarity: <b>높음</b> (feature 3개의 3D 위치가 일치)'
+                           : '2D similarity: <b>낮음</b>';
+      });
+    });
+  }
+
+  /* V9 – Property triangle */
+  function initBiTri() {
+    document.querySelectorAll('[data-bi-tri]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.bi-tri-svg');
+      var tabs = wrap.querySelectorAll('.bi-tab');
+      var q = function(s){ return wrap.querySelector(s); };
+      var D = {
+        cooh: { s:[.9, .3, .3], pot:'기준 (strong)', logd:'낮음', perm:'낮음', stab:'acyl glucuronide 우려',
+                v:'Target recognition은 강하지만 property와 PK 축이 약하다 → 삼각형이 target 쪽으로 기울었다.' },
+        tz:   { s:[.8, .5, .7], pot:'비슷하게 유지', logd:'↑', perm:'큰 개선 없음', stab:'개선',
+                v:'Stability는 좋아졌지만 logD ↑로 PPB 증가 위험이 있다. 목적함수에 따라 성공/실패가 갈린다.' },
+        acs:  { s:[.7, .6, .55], pot:'약간 ↓ 가능', logd:'중간', perm:'개선 가능', stab:'중간',
+                v:'세 축이 비교적 균형적이지만 geometry가 COOH와 달라 potency를 확인해야 한다.' }
+      };
+      var V = [[160,30],[40,220],[280,220]];
+      var labels = ['TARGET','PROPERTY','PK'];
+
+      function draw(s) {
+        svg.innerHTML = '';
+        svgEl('polygon', { points: V.map(function(p){ return p.join(','); }).join(' '), fill:'#f8fafc', stroke:'#c2cede', 'stroke-width':2 }, svg);
+        var c = [160, 160];
+        V.forEach(function(p, i) {
+          var t = svgEl('text', { x:p[0], y: i === 0 ? p[1] - 10 : p[1] + 20, 'text-anchor':'middle' }, svg);
+          t.textContent = labels[i];
+        });
+        if (!s) return;
+        var pts = V.map(function(p, i){ return [c[0] + (p[0] - c[0]) * s[i], c[1] + (p[1] - c[1]) * s[i]]; });
+        svgEl('polygon', { points: pts.map(function(p){ return p.join(','); }).join(' '), fill:'#5b3fd4', 'fill-opacity':.2, stroke:'#5b3fd4', 'stroke-width':2.5 }, svg);
+        pts.forEach(function(p){ svgEl('circle', { cx:p[0], cy:p[1], r:5, fill:'#5b3fd4' }, svg); });
+      }
+
+      function update(k) {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.c === k); });
+        var d = D[k];
+        draw(d.s);
+        q('.t-pot').textContent = d.pot; q('.t-logd').textContent = d.logd;
+        q('.t-perm').textContent = d.perm; q('.t-stab').textContent = d.stab;
+        q('.bi-tri-verdict').textContent = d.v;
+      }
+
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ update(t.dataset.c); }); });
+      draw(null);
+      q('.bi-tri-verdict').textContent = '후보를 선택하세요.';
+    });
+  }
+
+  /* V10 – Matched molecular pair explorer (illustrative data) */
+  function initBiMmp() {
+    document.querySelectorAll('[data-bi-mmp]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-mode]');
+      var prev = wrap.querySelector('[data-prev]'), next = wrap.querySelector('[data-next]');
+      var count = wrap.querySelector('.bi-mmp-count'), title = wrap.querySelector('.bi-mmp-title');
+      var note = wrap.querySelector('.bi-mmp-note');
+      var q = function(s){ return wrap.querySelector(s); };
+      var pairs = [
+        { pot:1.0, logd:-0.8, sol:4, cl:-30, src:'Series 1' },
+        { pot:2.0, logd:-0.6, sol:3, cl:-20, src:'Series 2' },
+        { pot:0.8, logd:-1.0, sol:6, cl:-40, src:'Series 3' },
+        { pot:0.5, logd:-0.5, sol:2, cl:-10, src:'Series 4' },
+        { pot:1.2, logd:-0.9, sol:5, cl:-35, src:'Series 5' }
+      ];
+      var proj = { pot:0.005, logd:-0.7, sol:5, cl:-25 };
+      var state = { mode:'pairs', i:0 };
+
+      function mean(k){ return pairs.reduce(function(a, p){ return a + p[k]; }, 0) / pairs.length; }
+      function gmean(k){ return Math.exp(pairs.reduce(function(a, p){ return a + Math.log(p[k]); }, 0) / pairs.length); }
+      function fold(v){ return v >= 1 ? v.toFixed(1) + '× ↑' : (1 / v >= 100 ? Math.round(1 / v) : (1 / v).toFixed(1)) + '× ↓'; }
+      function setCard(sel, txt, cls){ var e = q(sel); e.textContent = txt; e.className = cls || ''; }
+
+      function show(d, ttl) {
+        title.textContent = ttl;
+        setCard('.m-pot', d.pot === 1 ? '≈ 1×' : fold(d.pot), d.pot >= 1 ? 'good' : 'bad');
+        setCard('.m-logd', (d.logd > 0 ? '+' : '') + d.logd.toFixed(1), d.logd < 0 ? 'good' : 'bad');
+        setCard('.m-sol', d.sol.toFixed(0) + '× ↑', 'good');
+        setCard('.m-cl', d.cl + '%', d.cl < 0 ? 'good' : 'bad');
+      }
+
+      function update() {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.mode === state.mode); });
+        var nav = state.mode === 'pairs';
+        prev.style.visibility = next.style.visibility = nav ? 'visible' : 'hidden';
+        count.textContent = nav ? (state.i + 1) + ' / ' + pairs.length : '';
+        if (state.mode === 'pairs') {
+          show(pairs[state.i], pairs[state.i].src + ' (historical, 가상)');
+          note.textContent = '개별 pair마다 결과가 다르다. 한 pair로 일반 법칙을 만들면 위험하다.';
+        } else if (state.mode === 'avg') {
+          show({ pot:gmean('pot'), logd:mean('logd'), sol:gmean('sol'), cl:Math.round(mean('cl')) }, 'Average trend (n = ' + pairs.length + ')');
+          note.textContent = '평균적으로 logD ↓, solubility ↑, clearance ↓. Potency는 대체로 유지 → "pyridyl이 유리하다"는 가설이 생긴다.';
+        } else {
+          show(proj, 'This project');
+          note.textContent = '평균 trend는 개선이지만 이 project에서는 potency가 200× 악화됐다. Pyridine N이 H-bond partner 없이 buried된 구조적 context 때문일 수 있다.';
+        }
+      }
+
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ state.mode = t.dataset.mode; update(); }); });
+      prev.addEventListener('click', function(){ state.i = (state.i + pairs.length - 1) % pairs.length; update(); });
+      next.addEventListener('click', function(){ state.i = (state.i + 1) % pairs.length; update(); });
+      update();
+    });
+  }
+
+  /* V11 – AI bioisostere generator (mock) */
+  function initBiGen() {
+    document.querySelectorAll('[data-bi-gen]').forEach(function(wrap) {
+      var goals = wrap.querySelectorAll('[data-goal]');
+      var anchor = wrap.querySelector('.gen-anchor');
+      var cards = wrap.querySelector('.bi-gen-cards');
+      var detail = wrap.querySelector('.bi-gen-detail');
+      var C = {
+        tz: { name:'Tetrazole', keep:'acidic anchor, 음전하', anchor:true,
+              chg:{ metab:'acyl glucuronidation 경로 회피 가능', logd:'logD는 오히려 ↑ 가능', perm:'ionized 상태 유지 → 개선 제한적' },
+              risk:{ metab:'다른 soft spot으로 metabolic switching', logd:'PPB ↑, free fraction ↓', perm:'permeability 기대만큼 안 오를 수 있음' },
+              bind:'Arg와의 salt bridge geometry가 유지되는지 co-crystal/docking으로 확인',
+              prop:'pKa, logD 측정으로 charge/lipophilicity 변화 확인',
+              exp:'biochemical IC50 · pKa · logD · microsomal stability · PPB' },
+        acs: { name:'Acyl sulfonamide', keep:'acidic anchor', anchor:true,
+              chg:{ metab:'COOH와 다른 metabolic profile', logd:'lipophilicity 조절 폭이 넓음', perm:'logD 조절로 개선 가능성' },
+              risk:{ metab:'새 soft spot 가능', logd:'substituent에 따라 logD 편차 큼', perm:'여전히 anionic, 개선 폭 불확실' },
+              bind:'acid의 위치·방향이 COOH와 달라 potency 변화 가능',
+              prop:'pKa 범위와 lipophilicity가 COOH와 다름',
+              exp:'IC50 · pKa · logD · permeability(PAMPA/Caco-2)' },
+        neutral: { name:'Neutral mimic', keep:'geometry 일부', anchor:false,
+              chg:{ metab:'acid 특이 경로 제거', logd:'logD 변화 큼', perm:'charge 제거로 큰 개선 가능' },
+              risk:{ metab:'새 soft spot', logd:'너무 lipophilic해질 위험', perm:'Arg interaction 손실로 potency ↓ 위험 큼' },
+              bind:'ionic interaction을 다른 interaction이 대체해야 함',
+              prop:'neutral이므로 ionization 의존성 제거',
+              exp:'IC50 · logD · permeability · target engagement' }
+      };
+      var order = {
+        metab:['tz','acs','neutral'], logd:['acs','neutral','tz'], perm:['neutral','acs','tz']
+      };
+      var state = { goal:'metab' };
+
+      function render() {
+        goals.forEach(function(g){ g.classList.toggle('active', g.dataset.goal === state.goal); });
+        cards.innerHTML = '';
+        detail.className = 'bi-gen-detail';
+        detail.innerHTML = '';
+        order[state.goal].forEach(function(k, i) {
+          var c = C[k];
+          var btn = document.createElement('button');
+          var violates = anchor.checked && !c.anchor;
+          btn.className = 'bi-gen-card' + (violates ? ' dim' : '');
+          btn.innerHTML = '<h6>Candidate ' + (i + 1) + ' · ' + c.name + '</h6>' +
+            '<div><b>Preserved:</b> ' + (violates ? 'acidic anchor 유지 안 됨 ⚠' : c.keep) + '</div>' +
+            '<div><b>Changes:</b> ' + c.chg[state.goal] + '</div>' +
+            '<div><b>Main risk:</b> ' + c.risk[state.goal] + '</div>';
+          btn.addEventListener('click', function() {
+            cards.querySelectorAll('.bi-gen-card').forEach(function(x){ x.classList.remove('active'); });
+            btn.classList.add('active');
+            detail.innerHTML = '<div><b>Binding hypothesis</b>' + c.bind + '</div>' +
+              '<div><b>Property hypothesis</b>' + c.prop + '</div>' +
+              '<div><b>Required experiment</b>' + c.exp + '</div>';
+            detail.classList.add('show');
+          });
+          cards.appendChild(btn);
+        });
+      }
+
+      goals.forEach(function(g){ g.addEventListener('click', function(){ state.goal = g.dataset.goal; render(); }); });
+      anchor.addEventListener('change', render);
+      render();
+    });
+  }
+
+  /* V12 – Decision flow */
+  function initBiFlow() {
+    document.querySelectorAll('[data-bi-flow]').forEach(function(wrap) {
+      var out = wrap.querySelector('.bi-flow-out');
+      var state = { ess:null, liab:null };
+      var ESS = {
+        charge: 'negative charge를 유지해야 한다 → acidic replacement(tetrazole, acyl sulfonamide 등)가 중심 후보.',
+        hba:    'HBA geometry가 핵심이다 → acceptor 위치·방향을 맞추는 후보를 구조 정보로 선별.',
+        shape:  'Shape/spacing이 핵심이다 → 형태를 유지하는 ring/heterocycle 후보를 고려.',
+        all:    '⚠ 모든 것을 보존하려 하면 사실상 같은 group만 남는다. 무엇이 진짜 essential인지 먼저 구조 데이터로 분리해야 한다.'
+      };
+      var LIAB = {
+        metab: ['Tetrazole', 'Acyl sulfonamide', 'Neutral mimic'],
+        perm:  ['Acyl sulfonamide (logD 조절)', 'Neutral mimic', 'Tetrazole'],
+        sol:   ['Heteroaryl 치환', 'Acidic heterocycle', 'Polar group 조정'],
+        sel:   ['Geometry가 다른 acid isostere', 'Scaffold hopping', 'Selectivity pocket 이용']
+      };
+
+      function update() {
+        wrap.querySelectorAll('.bi-flow-opts').forEach(function(g) {
+          g.querySelectorAll('.bi-tab').forEach(function(b){ b.classList.toggle('active', state[g.dataset.grp] === b.dataset.v); });
+        });
+        if (!state.ess || !state.liab) { out.classList.remove('show'); return; }
+        var warn = state.ess === 'all' ? ' bi-flow-box--warn' : '';
+        out.innerHTML =
+          '<div class="bi-flow-box' + warn + '"><b>Preserve:</b> ' + ESS[state.ess] + '</div>' +
+          '<div class="bi-flow-box"><b>Candidate panel:</b> ' + LIAB[state.liab].join(' · ') + ' — 하나만 고르지 않고 panel로 설계한다.</div>' +
+          '<div class="bi-flow-box"><b>Experiments:</b> potency · pKa · logD · permeability · microsomal stability (가능하면 structure)</div>' +
+          '<div class="bi-flow-box"><b>Decision:</b> Target recognition · Physicochemical · Metabolism/PK 세 축을 함께 보고, project goal에 맞춰 판단한다.</div>';
+        out.classList.add('show');
+      }
+
+      wrap.querySelectorAll('.bi-flow-opts').forEach(function(g) {
+        g.querySelectorAll('.bi-tab').forEach(function(b) {
+          b.addEventListener('click', function(){ state[g.dataset.grp] = b.dataset.v; update(); });
+        });
+      });
+    });
+  }
+
+  /* ============================================================
+     L07 – Ligand Efficiency / Lipophilic Efficiency
+     ============================================================ */
+
+  function leLE(pK, ha) { return 1.37 * pK / ha; }
+  function lePfromNM(nm) { return 9 - Math.log(nm) / Math.LN10; }
+  function leFmtNM(nm) {
+    if (nm >= 1000) return (nm / 1000).toPrecision(2).replace(/\.0+$/, '') + ' µM';
+    if (nm < 1) return nm.toPrecision(2) + ' nM';
+    return (nm >= 10 ? Math.round(nm) : nm.toPrecision(2)) + ' nM';
+  }
+
+  /* V1 */
+  function initLeOpen() {
+    document.querySelectorAll('[data-le-open]').forEach(function(wrap) {
+      var btns = wrap.querySelectorAll('[data-ans]');
+      var rev = wrap.querySelector('.le-reveal');
+      var fb = wrap.querySelector('.le-fb');
+      var msg = {
+        A: '아직 판단할 수 없다. A는 더 작고 덜 greasy하지만 potency는 20× 낮다. 비교하려면 potency, size, lipophilicity를 함께 봐야 한다.',
+        B: 'Raw potency는 B가 낫지만, B는 MW +110, logD +2.2를 지불했다. 그 대가를 보기 전에는 B가 낫다고 말할 수 없다.',
+        N: '✓ 정답. Potency만으로는 lead quality를 비교할 수 없다. 세 축(potency / size / lipophilicity)을 함께 본다.'
+      };
+      btns.forEach(function(b) {
+        b.addEventListener('click', function() {
+          btns.forEach(function(x){ x.classList.toggle('active', x === b); });
+          fb.textContent = msg[b.dataset.ans];
+          fb.classList.toggle('ok', b.dataset.ans === 'N');
+          rev.classList.add('show');
+        });
+      });
+    });
+  }
+
+  /* V2 */
+  function initLeLadder() {
+    document.querySelectorAll('[data-le-ladder]').forEach(function(wrap) {
+      var qs = [30, 3, 250, 2000, 60, 0.5];
+      var idx = -1;
+      var ic = wrap.querySelector('.le-ladder-ic');
+      var opts = wrap.querySelector('.le-ladder-opts');
+      var fb = wrap.querySelector('.le-ladder-fb');
+      var rungs = wrap.querySelectorAll('.le-rung');
+
+      function next() {
+        idx = (idx + 1) % qs.length;
+        var nm = qs[idx];
+        var p = lePfromNM(nm);
+        var right = Math.round(p * 2) / 2;
+        var choices = [right, right + 1, right - 1].sort(function(a, b){ return ((a * 7) % 3) - ((b * 7) % 3); });
+        ic.textContent = 'IC50 = ' + leFmtNM(nm);
+        fb.textContent = ''; fb.className = 'le-ladder-fb';
+        opts.innerHTML = '';
+        choices.forEach(function(c) {
+          var b = document.createElement('button');
+          b.className = 'bi-tab';
+          b.textContent = 'pIC50 ≈ ' + c.toFixed(1);
+          b.addEventListener('click', function() {
+            var ok = c === right;
+            b.classList.add('active');
+            fb.textContent = (ok ? '✓ ' : '✗ ') + '정밀 계산: pIC50 = −log₁₀(' + nm + '×10⁻⁹) = ' + p.toFixed(2);
+            fb.className = 'le-ladder-fb ' + (ok ? 'ok' : 'bad');
+          });
+          opts.appendChild(b);
+        });
+        rungs.forEach(function(r){ r.classList.remove('hl'); });
+        var near = Math.min(3, Math.max(0, Math.round(p) - 6));
+        if (rungs[near]) rungs[near].classList.add('hl');
+      }
+      wrap.querySelector('[data-next-q]').addEventListener('click', next);
+      next();
+    });
+  }
+
+  /* V3 */
+  function initLeAtoms() {
+    document.querySelectorAll('[data-le-atoms]').forEach(function(wrap) {
+      wrap.querySelectorAll('.le-atoms-row').forEach(function(row) {
+        var ha = +row.dataset.ha;
+        var le = leLE(6, ha);
+        var box = row.querySelector('.le-atoms-blocks');
+        for (var i = 0; i < ha; i++) {
+          var b = document.createElement('div');
+          b.className = 'le-atom';
+          var f = document.createElement('div');
+          f.className = 'le-atom-fill';
+          f.style.height = Math.min(100, le / 0.6 * 100) + '%';
+          b.appendChild(f);
+          box.appendChild(b);
+        }
+        row.querySelector('.le-atoms-le').textContent = 'LE ≈ ' + le.toFixed(2);
+      });
+    });
+  }
+
+  /* V4 */
+  function initLeGrow() {
+    document.querySelectorAll('[data-le-grow]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-path]');
+      var box = wrap.querySelector('.le-grow-steps');
+      var fb = wrap.querySelector('.le-grow-fb');
+      var start = { label:'Fragment', kd:200000, ha:12 };
+      var P = {
+        A: [ { label:'+ small group 1', kd:20000, ha:14 }, { label:'+ small group 2', kd:1500, ha:17 }, { label:'+ small group 3', kd:80, ha:20 } ],
+        B: [ { label:'+ phenyl', kd:100000, ha:18 }, { label:'+ second aryl', kd:30000, ha:24 }, { label:'+ large group', kd:8000, ha:30 } ]
+      };
+      var path = null, n = 0;
+
+      function row(s) {
+        var le = leLE(lePfromNM(s.kd), s.ha);
+        return '<div class="le-grow-row"><b>' + s.label + '</b><span>Kd ' + leFmtNM(s.kd) + '</span><span>' + s.ha + ' HA</span><span class="le-pill">LE ' + le.toFixed(2) + '</span></div>';
+      }
+      function render() {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.path === path); });
+        var html = row(start);
+        if (path) for (var i = 0; i < n; i++) html += row(P[path][i]);
+        box.innerHTML = html;
+        if (!path) { fb.textContent = 'Route를 먼저 선택하세요.'; return; }
+        if (n === 0) { fb.textContent = '“Add group”을 눌러 단계를 진행하세요.'; return; }
+        var s = P[path][n - 1];
+        var gain = Math.round(start.kd / s.kd), grow = s.ha - start.ha;
+        fb.textContent = 'Affinity ' + gain + '× ↑, heavy atom +' + grow + '. ' +
+          (path === 'A' ? '추가한 atom이 비교적 생산적으로 affinity를 만든다 (LE 유지).' : '큰 group을 붙였지만 affinity gain이 작아 LE가 빠르게 떨어진다.');
+      }
+
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ path = t.dataset.path; n = 0; render(); }); });
+      wrap.querySelector('[data-step]').addEventListener('click', function() { if (path && n < 3) { n++; render(); } });
+      wrap.querySelector('[data-reset]').addEventListener('click', function(){ path = null; n = 0; render(); });
+      render();
+    });
+  }
+
+  /* V5 */
+  function initLeLipe() {
+    document.querySelectorAll('[data-le-lipe]').forEach(function(wrap) {
+      var icIn = wrap.querySelector('.lc-ic-in'), ldIn = wrap.querySelector('.lc-ld-in');
+      var q = function(s){ return wrap.querySelector(s); };
+
+      function update() {
+        var nm = Math.pow(10, +icIn.value);
+        var ld = +ldIn.value;
+        var p = lePfromNM(nm);
+        var lipe = p - ld;
+        q('.lc-ic').textContent = leFmtNM(nm);
+        q('.lc-ld').textContent = ld.toFixed(1);
+        q('.lc-p').textContent = p.toFixed(1);
+        q('.lc-l').textContent = lipe.toFixed(1);
+        var d = lipe - 5;
+        q('.lc-d').textContent = (d >= 0 ? '+' : '') + d.toFixed(1);
+        var fb = q('.lc-fb');
+        if (p > 7 && d < -0.5) { fb.textContent = 'A보다 potent하지만 lipophilicity cost가 더 커서 LipE가 악화됐다.'; fb.className = 'le-fb lc-fb bad'; }
+        else if (p > 7 && d >= 0) { fb.textContent = 'Potency는 오르고 LipE도 유지/개선 — 효율적인 potency gain이다.'; fb.className = 'le-fb lc-fb ok'; }
+        else if (p <= 7 && d > 0.5) { fb.textContent = 'Potency는 같거나 낮지만 LipE는 더 좋다. Quality 관점의 개선일 수 있다.'; fb.className = 'le-fb lc-fb ok'; }
+        else { fb.textContent = 'A와 비슷한 수준이다.'; fb.className = 'le-fb lc-fb'; }
+      }
+      icIn.addEventListener('input', update);
+      ldIn.addEventListener('input', update);
+      update();
+    });
+  }
+
+  /* V6 */
+  function initLeTrap() {
+    document.querySelectorAll('[data-le-trap]').forEach(function(wrap) {
+      var box = wrap.querySelector('.le-trap-rows');
+      var fb = wrap.querySelector('.le-trap-fb');
+      var rows = [
+        { n:'H',        nm:1000, ld:1.5, msg:'시작점이다. 아직 SAR을 탐색할 여지가 많다. 너무 일찍 멈춘 것일 수 있다.' },
+        { n:'CH₃',      nm:200,  ld:2.0, msg:'potency 5× ↑에 logD +0.5. LipE는 오히려 개선(4.5 → 4.7). 매우 생산적인 단계다.' },
+        { n:'Et',       nm:80,   ld:2.8, msg:'LipE가 4.3으로 하락하기 시작한다. 아직 감당 가능하지만 다른 방향(polar, constrained group)을 시도할 시점이다.' },
+        { n:'Phenyl',   nm:10,   ld:5.0, msg:'Potency는 8× 더 올랐지만 logD가 +2.2. LipE 3.0. 여기까지 오면 비용이 크다 — 반드시 property panel을 확인해야 한다.' },
+        { n:'Biphenyl', nm:6,    ld:6.4, msg:'Potency는 거의 늘지 않았는데 logD는 6.4. 명백히 over-optimized. Solubility, PPB, off-target 문제가 예상된다.' }
+      ];
+      rows.forEach(function(r, i) {
+        var p = lePfromNM(r.nm), lipe = p - r.ld;
+        var el = document.createElement('button');
+        el.className = 'le-trap-row';
+        el.innerHTML = '<b>' + r.n + '</b><span>IC50 ' + leFmtNM(r.nm) + '</span><span>logD ' + r.ld.toFixed(1) +
+          '</span><span class="le-trap-bar"><i style="width:' + Math.min(100, r.ld / 7 * 100) + '%"></i></span><span class="le-pill">LipE ' + lipe.toFixed(1) + '</span>';
+        el.addEventListener('click', function() {
+          box.querySelectorAll('.le-trap-row').forEach(function(x){ x.classList.remove('stop'); });
+          el.classList.add('stop');
+          fb.textContent = '“' + r.n + '”에서 멈춤 → ' + r.msg;
+          fb.className = 'le-fb le-trap-fb' + (i >= 3 ? ' bad' : (i === 1 ? ' ok' : ''));
+        });
+        box.appendChild(el);
+      });
+    });
+  }
+
+  /* V7 */
+  function initLeMatrix() {
+    document.querySelectorAll('[data-le-matrix]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.le-matrix-svg');
+      var info = wrap.querySelector('.le-matrix-info');
+      var cs = [
+        { n:'P', mw:280, ha:20, p:7.0, ld:1.8 },
+        { n:'Q', mw:410, ha:30, p:8.0, ld:4.2 },
+        { n:'R', mw:330, ha:24, p:8.0, ld:2.2 },
+        { n:'S', mw:520, ha:38, p:8.0, ld:5.0 }
+      ];
+      function X(v){ return 40 + (v - 2) / 5 * 280; }
+      function Y(v){ return 240 - (v - 0.2) / 0.4 * 220; }
+
+      svgEl('line', { x1:40, y1:240, x2:320, y2:240, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+      svgEl('line', { x1:40, y1:20, x2:40, y2:240, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+      svgEl('rect', { x:X(5), y:20, width:X(7) - X(5), height:Y(0.4) - 20, fill:'#5b3fd4', 'fill-opacity':.07 }, svg);
+      svgEl('text', { x:X(5) + 4, y:34 }, svg).textContent = '상대적으로 효율적인 영역';
+      svgEl('text', { x:180, y:268, 'text-anchor':'middle' }, svg).textContent = 'LipE  (low → high)';
+      var yl = svgEl('text', { x:12, y:130, transform:'rotate(-90 12 130)', 'text-anchor':'middle' }, svg);
+      yl.textContent = 'LE  (low → high)';
+
+      cs.forEach(function(c) {
+        c.le = leLE(c.p, c.ha); c.lipe = c.p - c.ld;
+        var g = svgEl('g', { style:'cursor:pointer' }, svg);
+        svgEl('circle', { cx:X(c.lipe), cy:Y(c.le), r:15, fill:'#5b3fd4', 'fill-opacity':.2, stroke:'#5b3fd4', 'stroke-width':2 }, g);
+        svgEl('text', { x:X(c.lipe), y:Y(c.le) + 4, 'text-anchor':'middle', style:'fill:#3d28a8;font-size:12px' }, g).textContent = c.n;
+        g.addEventListener('click', function() {
+          info.innerHTML = '<div class="le-three-c"><span>Compound ' + c.n + '</span><b>MW ' + c.mw + '</b></div>' +
+            '<div class="le-three-c"><span>pIC50 · logD</span><b>' + c.p.toFixed(1) + ' · ' + c.ld.toFixed(1) + '</b></div>' +
+            '<div class="le-three-c"><span>LE · LipE</span><b>' + c.le.toFixed(2) + ' · ' + c.lipe.toFixed(1) + '</b></div>';
+        });
+      });
+    });
+  }
+
+  /* V8 */
+  function initLeQuality() {
+    document.querySelectorAll('[data-le-quality]').forEach(function(wrap) {
+      var btn = wrap.querySelector('[data-cost]');
+      var cmp = wrap.querySelector('.le-cmp');
+      var fb = wrap.querySelector('.le-cmp-fb');
+      fb.textContent = 'Raw potency만 보면: B = C > A. 두 compound를 승자로 볼 수밖에 없다.';
+      btn.addEventListener('click', function() {
+        var on = cmp.classList.toggle('on');
+        btn.textContent = on ? 'Hide molecular cost' : 'Show molecular cost';
+        fb.textContent = on ? 'C가 B와 같은 potency를 더 작은 size(MW 330 vs 410)와 더 낮은 lipophilicity(logD 2.2 vs 4.2)로 달성했다. LipE: A 5.2 · B 3.8 · C 5.8.'
+                            : 'Raw potency만 보면: B = C > A. 두 compound를 승자로 볼 수밖에 없다.';
+      });
+    });
+  }
+
+  /* V9 */
+  function initLeRadar() {
+    document.querySelectorAll('[data-le-radar]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.le-radar-svg');
+      var tabs = wrap.querySelectorAll('[data-proj]');
+      var fb = wrap.querySelector('.le-radar-fb');
+      var axes = ['Potency','LipE','Solubility','Permeability','Metabolic stability','Selectivity'];
+      var X = [.95, .3, .2, .3, .3, .3];
+      var Y = [.65, .8, .8, .7, .7, .75];
+      var P = {
+        oral: { emph:[2,3,4], msg: 'Oral drug: solubility, permeability, metabolic stability가 exposure를 좌우한다. Compound X는 potency가 높아도 이 축들이 약하다.' },
+        cns:  { emph:[1,3,5], msg: 'CNS drug: 낮은 lipophilicity 비용(LipE), permeability, off-target selectivity가 특히 중요하다. 과도하게 greasy한 X는 불리하다.' },
+        tool: { emph:[0,5],   msg: 'Tool compound: 짧은 실험에서 potency와 selectivity가 핵심이다. 이 경우 X도 쓸 만할 수 있다 — 목적에 따라 해석이 달라진다.' }
+      };
+      var cx = 170, cy = 150, R = 95;
+      function pt(i, v) { var a = -Math.PI / 2 + i * 2 * Math.PI / 6; return [cx + Math.cos(a) * R * v, cy + Math.sin(a) * R * v]; }
+
+      function draw(key) {
+        svg.innerHTML = '';
+        var em = key ? P[key].emph : [];
+        [.33, .66, 1].forEach(function(r) {
+          svgEl('polygon', { points: axes.map(function(_, i){ return pt(i, r).join(','); }).join(' '), fill:'none', stroke:'#dce3ef' }, svg);
+        });
+        axes.forEach(function(nm, i) {
+          var e = pt(i, 1), l = pt(i, 1.2);
+          svgEl('line', { x1:cx, y1:cy, x2:e[0], y2:e[1], stroke:'#dce3ef' }, svg);
+          var on = em.indexOf(i) >= 0;
+          var t = svgEl('text', { x:l[0], y:l[1] + 4, 'text-anchor': l[0] < cx - 5 ? 'end' : (l[0] > cx + 5 ? 'start' : 'middle'),
+            style: on ? 'fill:#5b3fd4;font-weight:800;font-size:12px' : '' }, svg);
+          t.textContent = nm;
+        });
+        [[X, '#c2410c'], [Y, '#5b3fd4']].forEach(function(s) {
+          svgEl('polygon', { points: s[0].map(function(v, i){ return pt(i, v).join(','); }).join(' '), fill:s[1], 'fill-opacity':.16, stroke:s[1], 'stroke-width':2 }, svg);
+        });
+      }
+      tabs.forEach(function(t) {
+        t.addEventListener('click', function() {
+          tabs.forEach(function(x){ x.classList.toggle('active', x === t); });
+          draw(t.dataset.proj);
+          fb.textContent = P[t.dataset.proj].msg;
+        });
+      });
+      draw(null);
+      fb.textContent = 'Compound X는 potency가 압도적이지만 나머지가 약하고, Y는 balanced하다. Project 유형을 선택하세요.';
+    });
+  }
+
+  /* V10 */
+  function initLeHack() {
+    document.querySelectorAll('[data-le-hack]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-mode]');
+      var mol = wrap.querySelector('.le-hack-mol');
+      var fb = wrap.querySelector('.le-hack-fb');
+      var q = function(s){ return wrap.querySelector(s); };
+      var D = {
+        pot: [
+          { mol:'core', ic:'10 nM', mw:380, lp:3.1, sol:'good' },
+          { mol:'core–Ph', ic:'3 nM', mw:455, lp:4.2, sol:'moderate' },
+          { mol:'core–Ph–Ph', ic:'1 nM', mw:530, lp:5.3, sol:'low' },
+          { mol:'core–Ph–Ph–CF₃', ic:'0.3 nM', mw:600, lp:6.4, sol:'very low' }
+        ],
+        mpo: [
+          { mol:'core', ic:'10 nM', mw:380, lp:3.1, sol:'good' },
+          { mol:'core–pyridyl', ic:'5 nM', mw:392, lp:2.9, sol:'good' },
+          { mol:'core–pyridyl–F', ic:'2 nM', mw:410, lp:3.1, sol:'good' },
+          { mol:'core–pyridyl–F (cyclopropyl)', ic:'1.5 nM', mw:424, lp:3.3, sol:'good' }
+        ]
+      };
+      var mode = 'pot', i = 0;
+
+      function show() {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.mode === mode); });
+        var d = D[mode][i];
+        q('.hk-ic').textContent = d.ic; q('.hk-mw').textContent = d.mw;
+        q('.hk-lp').textContent = d.lp.toFixed(1); q('.hk-sol').textContent = d.sol;
+        mol.textContent = d.mol;
+        var last = i === D[mode].length - 1;
+        if (mode === 'pot') {
+          fb.className = 'le-fb le-hack-fb' + (last ? ' bad' : '');
+          fb.textContent = last ? 'High score / Poor molecule — potency 숫자는 좋아졌지만 MW 600, cLogP 6.4.' : (i === 0 ? '시작 분자.' : '모델이 ring과 lipophilic group을 추가해 score를 올리고 있다.');
+        } else {
+          fb.className = 'le-fb le-hack-fb' + (last ? ' ok' : '');
+          fb.textContent = last ? 'MW·cLogP·solubility 제약 안에서 개선 — 더 balanced한 분자. (그래도 mechanistic validation은 필요)' : (i === 0 ? '시작 분자.' : 'Constraint(MW, logD, solubility) 안에서만 modification이 채택된다.');
+        }
+      }
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ mode = t.dataset.mode; i = 0; show(); }); });
+      wrap.querySelector('[data-gen]').addEventListener('click', function() {
+        if (i < D[mode].length - 1) { i++; show(); }
+      });
+      wrap.querySelector('[data-reset]').addEventListener('click', function(){ i = 0; show(); });
+      show();
+    });
+  }
+
+  /* V11 */
+  function initLePareto() {
+    document.querySelectorAll('[data-le-pareto]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.le-pareto-svg');
+      var inp = wrap.querySelector('.pf-in');
+      var lab = wrap.querySelector('.pf-ld');
+      var fb = wrap.querySelector('.le-pareto-fb');
+      var pts = [
+        ['a',9.0,5,5.8],['b',8.7,12,5.2],['c',8.5,30,4.1],['d',8.2,45,3.6],['e',7.9,55,3.2],['f',7.6,70,2.5],
+        ['g',7.2,78,2.0],['h',6.8,85,1.6],['i',8.0,25,4.6],['j',7.5,40,3.4],['k',8.4,20,4.7],['l',7.0,60,2.8]
+      ].map(function(a){ return { id:a[0], p:a[1], s:a[2], ld:a[3] }; });
+      function X(v){ return 40 + (v - 6.5) / 2.8 * 280; }
+      function Y(v){ return 220 - v / 100 * 200; }
+
+      function draw() {
+        var max = +inp.value;
+        lab.textContent = max.toFixed(1);
+        svg.innerHTML = '';
+        svgEl('line', { x1:40, y1:220, x2:320, y2:220, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+        svgEl('line', { x1:40, y1:20, x2:40, y2:220, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+        svgEl('text', { x:180, y:248, 'text-anchor':'middle' }, svg).textContent = 'Potency (pIC50) →';
+        svgEl('text', { x:12, y:120, transform:'rotate(-90 12 120)', 'text-anchor':'middle' }, svg).textContent = 'Solubility →';
+        var ok = pts.filter(function(p){ return p.ld <= max; });
+        var front = ok.filter(function(a) {
+          return !ok.some(function(b){ return b !== a && b.p >= a.p && b.s >= a.s && (b.p > a.p || b.s > a.s); });
+        }).sort(function(a, b){ return a.p - b.p; });
+        if (front.length > 1) {
+          svgEl('polyline', { points: front.map(function(p){ return X(p.p) + ',' + Y(p.s); }).join(' '), fill:'none', stroke:'#5b3fd4', 'stroke-width':2, 'stroke-dasharray':'5 4' }, svg);
+        }
+        pts.forEach(function(p) {
+          var allowed = p.ld <= max, onF = front.indexOf(p) >= 0;
+          svgEl('circle', { cx:X(p.p), cy:Y(p.s), r: onF ? 8 : 6, fill: onF ? '#5b3fd4' : (allowed ? '#94a3b8' : '#e2e8f0'), stroke: allowed ? 'none' : '#cbd5e1' }, svg);
+          if (onF) svgEl('text', { x:X(p.p) + 11, y:Y(p.s) + 4 }, svg).textContent = p.id;
+        });
+        fb.textContent = 'logD ≤ ' + max.toFixed(1) + ' 허용 compound ' + ok.length + '개 중 Pareto 후보 ' + front.length + '개 (' +
+          front.map(function(p){ return p.id; }).join(', ') + '). 하나의 “최고”가 아니라 trade-off 집합이다.';
+      }
+      inp.addEventListener('input', draw);
+      draw();
+    });
+  }
+
+  /* V12 */
+  function initLeAudit() {
+    document.querySelectorAll('[data-le-audit]').forEach(function(wrap) {
+      var box = wrap.querySelector('.le-audit-steps');
+      var fb = wrap.querySelector('.le-audit-fb');
+      var steps = [
+        { h:'1. Potency gain', b:'200 nM → 10 nM, 20× 개선. pIC50 6.7 → 8.0, 약 +1.3.' },
+        { h:'2. Size cost', b:'MW 320 → 430 (+110), heavy atom 증가. LE는 감소했을 가능성이 있다.' },
+        { h:'3. Lipophilicity cost', b:'logD 2.0 → 4.5 (+2.5). LipE: 6.7 − 2.0 = 4.7 → 8.0 − 4.5 = 3.5. Potency gain(+1.3)보다 lipophilicity cost(+2.5)가 크다.' },
+        { h:'4. Property consequences', b:'반드시 보고 싶은 데이터: solubility · permeability · PPB · microsomal stability · selectivity panel · hERG · PK.' }
+      ];
+      var nexts = {
+        red:  'B의 새 hydrophobic group이 전부 필요한지 줄여 본다 (예: 작은 aryl, 위치 이동). Potency를 유지하며 cost를 돌려받는 것이 목표다.',
+        het:  'Phenyl → pyridyl 등 heteroaryl 치환 (6강). Polarity를 올리고 logD를 낮추되, buried N의 desolvation penalty를 확인한다.',
+        cyc:  'Cyclopropyl 같은 작고 constrained한 group으로 hydrophobic pocket을 채우면서 MW/logD 증가를 최소화할 수 있다.',
+        keep: 'Property panel 결과가 나오기 전에 B를 확정하는 것은 이르다. 최소한 위 4번의 데이터를 확인한 뒤 결정한다.'
+      };
+      steps.forEach(function(s, i) {
+        var el = document.createElement('div');
+        el.className = 'le-audit-card';
+        el.innerHTML = '<div class="le-audit-h">' + s.h + '<span>▼</span></div><div class="le-audit-b">' + s.b + '</div>';
+        el.querySelector('.le-audit-h').addEventListener('click', function(){ el.classList.toggle('open'); });
+        box.appendChild(el);
+      });
+      wrap.querySelectorAll('[data-n]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          wrap.querySelectorAll('[data-n]').forEach(function(x){ x.classList.toggle('active', x === b); });
+          fb.textContent = nexts[b.dataset.n];
+        });
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initSidebar();
     initScrollSpy();
@@ -2285,6 +3264,32 @@
     initAiStereo();
     initSingleConf();
     initRigidLab();
+
+    initBiDesigner();
+    initBiCompare();
+    initBiRadar();
+    initBiScan();
+    initBiFluor();
+    initBiSwitch();
+    initBiAmide();
+    initBiHop();
+    initBiTri();
+    initBiMmp();
+    initBiGen();
+    initBiFlow();
+
+    initLeOpen();
+    initLeLadder();
+    initLeAtoms();
+    initLeGrow();
+    initLeLipe();
+    initLeTrap();
+    initLeMatrix();
+    initLeQuality();
+    initLeRadar();
+    initLeHack();
+    initLePareto();
+    initLeAudit();
 
     initHub();
   });

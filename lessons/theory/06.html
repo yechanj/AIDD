@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L06 · Bioisostere — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L06 · Bioisostere</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L06</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Bioisostere</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> Bioisostere란?</a></li>
+          <li><a href="#s03"><span class="num">03</span> Replacement의 목적</a></li>
+          <li><a href="#s04"><span class="num">04</span> Plug-and-play가 아니다</a></li>
+          <li><a href="#s05"><span class="num">05</span> COOH → Tetrazole</a></li>
+          <li><a href="#s06"><span class="num">06</span> Phenyl → Pyridyl</a></li>
+          <li><a href="#s07"><span class="num">07</span> H → F</a></li>
+          <li><a href="#s08"><span class="num">08</span> Amide Bioisostere</a></li>
+          <li><a href="#s09"><span class="num">09</span> Ester → Amide</a></li>
+          <li><a href="#s10"><span class="num">10</span> Aromatic Ring Replacement</a></li>
+          <li><a href="#s11"><span class="num">11</span> Scaffold Hopping</a></li>
+          <li><a href="#s12"><span class="num">12</span> Real Drug — ARB</a></li>
+          <li><a href="#s13"><span class="num">13</span> Property Triangle</a></li>
+          <li><a href="#s14"><span class="num">14</span> Failure Case</a></li>
+          <li><a href="#s15"><span class="num">15</span> AI Connection</a></li>
+          <li><a href="#s16"><span class="num">16</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 06</div>
+          <h1>Bioisostere</h1>
+          <p>이 functional group의 역할은 유지하면서, 문제만 바꿀 수 있을까?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — Binding에 꼭 필요한 COOH가 drug property를 망친다</h2>
+
+          <p>Lead compound A가 있다. Target structure를 확인했더니 carboxylate가 Arg residue와 강한 ionic interaction을 형성한다. COOH를 제거해 methyl로 바꾸자 potency가 100배 이상 떨어졌다. 따라서 이 acidic group은 중요한 pharmacophore처럼 보인다.</p>
+
+          <p>하지만 compound A에는 문제가 있다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>COOH가 해주는 것</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>Arg와 salt bridge</li>
+                <li>COOH → CH₃ 시 potency 100× 이상 ↓</li>
+                <li>핵심 pharmacophore</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>COOH가 만드는 문제</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>pH 7.4에서 대부분 negatively charged</li>
+                <li>passive permeability 낮음</li>
+                <li>cellular potency ≪ biochemical potency</li>
+                <li>acyl glucuronide 형성 가능성</li>
+                <li>PK 불만족</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>Medicinal chemist에게 딜레마가 생긴다.</p>
+
+          <blockquote>
+            COOH는 없앨 수 없다. 하지만 그대로 둘 수도 없다.
+          </blockquote>
+
+          <p>이때 떠올릴 수 있는 질문이 바로 이것이다.</p>
+
+          <div class="oneline">COOH와 완전히 같지는 않지만, target이 필요로 하는 역할을 비슷하게 수행하는 다른 group은 없을까?</div>
+
+          <p>이것이 <b>bioisostere</b>의 출발점이다.</p>
+
+          <!-- V1: Preserve vs Change Designer -->
+          <div class="viz" data-bi-designer>
+            <div class="viz__title">Preserve vs Change — Bioisostere Designer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">유지할 property와 바꿀 property를 선택하면, 그 조건에 맞는 후보가 강조됩니다.</p>
+            <div class="bi-des">
+              <div class="bi-des-center">R–COOH &nbsp;⇌&nbsp; R–COO⁻</div>
+              <div class="bi-des-cols">
+                <div class="bi-des-col bi-des-col--keep">
+                  <div class="bi-des-head">PRESERVE</div>
+                  <button class="bi-chip" data-side="keep" data-key="charge">negative charge</button>
+                  <button class="bi-chip" data-side="keep" data-key="arg">Arg interaction</button>
+                  <button class="bi-chip" data-side="keep" data-key="geom">geometry</button>
+                </div>
+                <div class="bi-des-col bi-des-col--change">
+                  <div class="bi-des-head">CHANGE</div>
+                  <button class="bi-chip" data-side="change" data-key="metab">metabolism</button>
+                  <button class="bi-chip" data-side="change" data-key="perm">permeability</button>
+                  <button class="bi-chip" data-side="change" data-key="pk">PK</button>
+                </div>
+              </div>
+              <div class="bi-des-cands">
+                <div class="bi-cand" data-cand="tz"><div class="bi-cand-name">Tetrazole</div><div class="bi-cand-track"><div class="bi-cand-fill"></div></div><div class="bi-cand-flag"></div></div>
+                <div class="bi-cand" data-cand="acs"><div class="bi-cand-name">Acyl sulfonamide</div><div class="bi-cand-track"><div class="bi-cand-fill"></div></div><div class="bi-cand-flag"></div></div>
+                <div class="bi-cand" data-cand="neutral"><div class="bi-cand-name">Neutral mimic</div><div class="bi-cand-track"><div class="bi-cand-fill"></div></div><div class="bi-cand-flag"></div></div>
+              </div>
+              <div class="bi-des-note"></div>
+              <div class="bi-fine">* 개념 학습용 profile입니다. 실제 결과는 target과 molecular context에 따라 달라집니다.</div>
+            </div>
+            <div class="viz__msg">Bioisostere design은 비슷한 group을 찾는 것이 아니라, 보존할 property와 바꿀 property를 정의하는 것이다.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> Bioisostere란 무엇인가?</h2>
+
+          <p>가장 실용적으로 정의하면 이렇다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Working definition</div>
+            <p>기존 functional group 또는 scaffold가 수행하던 중요한 biological role을 <b>어느 정도 유지</b>하면서, 다른 physicochemical 또는 pharmacokinetic property를 얻기 위해 교체하는 구조 요소.</p>
+          </div>
+
+          <p>중요한 표현은 <b>"어느 정도 유지"</b>다. Bioisostere는 원본을 완벽하게 복제하지 않는다. 오히려 <b>완전히 같지 않기 때문에 유용하다.</b></p>
+
+          <h3>완전히 같다면 바꿀 이유가 없다</h3>
+
+          <p>우리가 COOH를 다른 group으로 바꾸고 싶은 이유는 COOH의 모든 성질을 그대로 유지하고 싶어서가 아니다. 보통 일부는 유지하고 일부는 바꾸고 싶다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>유지하고 싶은 것</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>negative charge</li>
+                <li>Arg/Lys와 ionic interaction</li>
+                <li>H-bond acceptor geometry</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>바꾸고 싶은 것</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>metabolic liability</li>
+                <li>lipophilicity</li>
+                <li>permeability</li>
+                <li>PK</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>즉 bioisosteric design은 <b>어떤 property를 보존하고 어떤 property를 의도적으로 깨뜨릴 것인가</b>의 문제다.</p>
+
+          <h3>"비슷한 모양"만으로는 부족하다</h3>
+
+          <p>두 functional group이 shape만 비슷하다고 bioisostere가 되는 것은 아니다. 비교할 수 있는 요소는 많다.</p>
+
+          <div class="bi-chips-static">
+            <span>size</span><span>shape</span><span>charge</span><span>pKa</span><span>HBD/HBA pattern</span><span>dipole</span><span>polarizability</span><span>conformational effect</span><span>lipophilicity</span>
+          </div>
+
+          <p>Bioisostere는 이 중 일부를 보존하고 일부를 다르게 한다.</p>
+
+          <div class="oneline">Structural similarity ≠ biological equivalence</div>
+
+          <h3>Classical isostere와 bioisostere</h3>
+
+          <p>역사적으로 isostere는 비슷한 valence electron arrangement나 물리적 구조를 가진 group을 비교하는 개념에서 시작했다. 하지만 modern medicinal chemistry에서 더 중요한 것은 <b>bioisostere</b>다. Target recognition과 drug property 측면에서 실용적인 대체 관계를 본다. 그래서 겉보기에는 상당히 다른 구조도 같은 pharmacophoric 역할을 수행할 수 있다.</p>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Bioisosteric Replacement를 하는 이유</h2>
+
+          <div class="bi-grid2">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>① Potency</div><p>더 좋은 geometry나 interaction을 만들 수 있다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>② Selectivity</div><p>다른 target에서는 허용되지 않는 interaction을 만들 수 있다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>③ pKa 조절</div><p>ionization state를 바꿀 수 있다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>④ Lipophilicity</div><p>logP/logD를 바꾼다. Permeability와 solubility도 함께 움직인다.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>⑤ Metabolic stability</div><p>metabolic soft spot을 제거할 수 있다.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>⑥ Toxicity</div><p>reactive metabolite 또는 off-target 문제를 줄일 수 있다.</p></div>
+          </div>
+          <div class="card card--ai" style="margin-top:10px;">
+            <div class="card__label"><span class="dot"></span>⑦ 새로운 chemical space</div>
+            <p>기존 scaffold와 다른 SAR 및 특허(IP) 공간을 탐색할 수 있다.</p>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> 가장 중요한 원칙 — Bioisostere는 plug-and-play가 아니다</h2>
+
+          <p>COOH → tetrazole은 유명한 replacement다. 하지만 "COOH 문제가 있으면 tetrazole로 바꾼다"는 recipe가 아니다. H → F가 항상 metabolic stability를 개선하는 것도 아니다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Bioisostere는 공식이 아니다</div>
+            <p>Carboxylic-acid bioisostere의 효과는 molecule과 target의 context에 크게 의존한다. 실제 medicinal chemistry에서는 여러 대체체를 <b>직접 비교</b>해야 하는 경우가 많다.</p>
+          </div>
+
+          <blockquote>
+            Context beats rules. Target과 molecular context에 의존한다.
+          </blockquote>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> COOH → Tetrazole</h2>
+
+          <p>가장 대표적인 bioisostere부터 보자. Tetrazole은 5-membered aromatic ring에 여러 N이 존재하는 acidic heterocycle로, 오래전부터 carboxylic acid의 대표적 bioisosteric replacement로 사용돼 왔다.</p>
+
+          <h3>공통점: acidic character</h3>
+          <p>Carboxylic acid는 proton을 잃으면 R–COO⁻가 된다. Tetrazole 역시 acidic proton을 잃어 anionic tetrazolate가 될 수 있다. 따라서 physiological condition에서 둘 다 negative charge를 제공할 수 있고, Arg, Lys, metal-associated binding site에서 유사한 pharmacophoric role을 수행할 가능성이 있다.</p>
+
+          <h3>하지만 charge distribution은 다르다</h3>
+          <p>Carboxylate에서는 negative charge가 두 oxygen 사이에 delocalize된다. Tetrazolate에서는 charge가 여러 nitrogen으로 분산될 수 있다. 따라서 charge distribution, hydrogen-bond geometry, molecular volume, orientation이 동일하지 않다. <b>Tetrazole은 COOH의 복사본이 아니다.</b></p>
+
+          <!-- V2: COOH vs Tetrazole -->
+          <div class="viz" data-bi-compare>
+            <div class="viz__title">COOH vs Tetrazole Comparison</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">두 group을 Arg 기준으로 겹쳐 보세요.</p>
+            <div class="bi-cmp">
+              <div class="bi-cmp-cols">
+                <div class="bi-cmp-col">
+                  <div class="bi-cmp-name">COOH / COO⁻</div>
+                  <ul class="clean" style="font-size:13px;margin:0;">
+                    <li>acidic</li>
+                    <li>negative charge</li>
+                    <li>2 O atoms</li>
+                    <li>glucuronidation concern 가능</li>
+                  </ul>
+                </div>
+                <div class="bi-cmp-col bi-cmp-col--tz">
+                  <div class="bi-cmp-name">Tetrazole / tetrazolate</div>
+                  <ul class="clean" style="font-size:13px;margin:0;">
+                    <li>acidic</li>
+                    <li>delocalized negative charge</li>
+                    <li>더 큰 aromatic heterocycle</li>
+                    <li>다른 metabolic profile</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="bi-cmp-arg">Protein Arg⁺ &nbsp;·····&nbsp; 두 group이 같은 위치의 Arg를 향한다</div>
+              <button class="bi-btn" data-overlay>Overlay pharmacophore</button>
+              <div class="bi-cmp-overlay">
+                <div class="bi-ov-row"><span class="bi-ov-k">Acidic center</span><span class="bi-ov-v bi-ov-v--ok">겹침 ✓</span></div>
+                <div class="bi-ov-row"><span class="bi-ov-k">Acceptor region</span><span class="bi-ov-v bi-ov-v--part">대체로 겹침, 방향 약간 다름 ~</span></div>
+                <div class="bi-ov-row"><span class="bi-ov-k">Volume</span><span class="bi-ov-v bi-ov-v--diff">tetrazole이 더 큼 ✗</span></div>
+                <div class="bi-ov-row"><span class="bi-ov-k">Charge 분포</span><span class="bi-ov-v bi-ov-v--diff">O 2개 vs N 여러 개 ✗</span></div>
+              </div>
+            </div>
+            <div class="viz__msg">Similar role does not mean identical chemistry.</div>
+          </div>
+
+          <h3>Metabolism 관점</h3>
+          <p>Carboxylic acid는 일부 compound에서 glucuronidation, acyl glucuronide formation 같은 경로에 관여할 수 있다. Tetrazole은 이런 carboxylic-acid-specific pathway를 피하기 위한 <b>metabolism-resistant isosteric replacement</b>로 널리 연구되어 왔다. 하지만 tetrazole이 항상 metabolically superior한 것은 아니다. 분자 전체의 metabolism을 확인해야 한다.</p>
+
+          <h3>Permeability는 항상 좋아질까?</h3>
+          <p>아니다. Tetrazole 역시 acidic하고 physiological pH에서 ionized될 수 있다. <b>Charge 자체가 사라진 것이 아니다.</b> 따라서 COOH → tetrazole의 목적을 "charge를 없애 permeability를 올린다"로 이해하면 틀렸다. 대신 charge distribution, lipophilicity, protein binding, metabolism, binding geometry를 동시에 바꾸는 것이다.</p>
+
+          <h3>결과는 context-dependent다</h3>
+          <div class="bi-grid3">
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Case A</div><p>potency 유지<br>metabolic stability ↑<br>PK ↑</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Case B</div><p>potency ↑<br>lipophilicity ↑<br>PPB ↑</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>Case C</div><p>binding geometry 틀어짐<br>potency ↓</p></div>
+          </div>
+          <p>셋 모두 가능하다. Replacement 결과가 일률적으로 예측되지 않는다는 점은 medicinal chemistry review에서도 반복적으로 강조된다.</p>
+
+          <!-- V3: Property Radar -->
+          <div class="viz" data-bi-radar>
+            <div class="viz__title">Bioisostere Property Radar</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">COOH와 tetrazole의 <b>개념적</b> profile입니다. 숫자는 보편적 값이 아닙니다.</p>
+            <div class="bi-radar">
+              <div class="bi-radar-btns">
+                <button class="bi-tab" data-show="both">Both</button>
+                <button class="bi-tab" data-show="cooh">COOH</button>
+                <button class="bi-tab" data-show="tz">Tetrazole</button>
+                <span class="bi-badge">Context dependent</span>
+              </div>
+              <svg class="bi-radar-svg" viewBox="0 0 320 300" role="img" aria-label="COOH와 tetrazole의 conceptual property radar"></svg>
+              <div class="bi-radar-legend"><span class="lg lg--cooh">COOH</span><span class="lg lg--tz">Tetrazole</span></div>
+            </div>
+            <div class="viz__msg">Replacement는 여러 property를 동시에 이동시킨다.</div>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Phenyl → Pyridyl</h2>
+
+          <p>Compound A에 phenyl ring이 있다. 문제는 logP가 너무 높고, solubility가 낮고, aromatic oxidation이 가능하다는 것이다. Medicinal chemist는 CH 하나를 N으로 바꿔 pyridyl analogue를 만든다. 작은 변화처럼 보이지만 chemistry는 크게 변한다.</p>
+
+          <h3>일어날 수 있는 변화</h3>
+          <div class="bi-grid2">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>HBA 추가</div><p>Pyridine-like N이 HBA 역할을 할 수 있다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Polarity ↑ / logP ↓ 가능</div><p>heteroatom 도입으로 polarity가 증가하고 전체 logP가 낮아질 수 있다.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>New interaction</div><p>Protein donor와 새로운 H-bond이 가능하다.</p></div>
+            <div class="card card--ai" style="margin:0;"><div class="card__label"><span class="dot"></span>Electronics / Metabolism</div><p>electron distribution과 oxidation 위치·속도가 바뀐다.</p></div>
+          </div>
+
+          <h3>하지만 pyridyl이 항상 좋은 것은 아니다</h3>
+          <p>새 N이 protein pocket 내부에 buried되는데 H-bond partner가 없다면 unsatisfied polar atom이 되어 potency가 나빠질 수 있다. Pyridine N이 protonated될 수 있는 환경이라면 pKa와 distribution도 고려해야 한다. 즉 phenyl → pyridyl은 단순히 "solubility 개선용 N 하나 추가"가 아니다.</p>
+
+          <h3>위치도 중요하다</h3>
+          <p>Phenyl을 2-, 3-, 4-pyridyl로 바꾸는 것은 서로 다른 experiment다. N의 위치에 따라 H-bond geometry, dipole, pKa, conformational preference가 달라진다. 그래서 medicinal chemist는 흔히 <b>heteroatom scan</b>을 한다.</p>
+
+          <!-- V4: Heteroaryl Scanner -->
+          <div class="viz" data-bi-scan>
+            <div class="viz__title">Phenyl → Heteroaryl Scanner</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Protein donor(N–H)는 ring의 오른쪽 아래에 있다. 어느 analogue가 H-bond geometry에 맞을까?</p>
+            <div class="bi-scan">
+              <div class="bi-scan-btns">
+                <button class="bi-tab" data-pos="0">Phenyl</button>
+                <button class="bi-tab" data-pos="1">2-pyridyl</button>
+                <button class="bi-tab" data-pos="2">3-pyridyl</button>
+                <button class="bi-tab" data-pos="3">4-pyridyl</button>
+              </div>
+              <svg class="bi-scan-svg" viewBox="0 0 320 220" role="img" aria-label="heteroaryl ring과 protein donor"></svg>
+              <div class="bi-scan-info">
+                <div class="bi-scan-row"><span>HBA 위치</span><b class="sc-hba">—</b></div>
+                <div class="bi-scan-row"><span>Ring dipole</span><b class="sc-dip">—</b></div>
+                <div class="bi-scan-row"><span>H-bond geometry</span><b class="sc-geo">—</b></div>
+              </div>
+              <div class="bi-scan-verdict"></div>
+            </div>
+            <div class="viz__msg">Heteroatom의 존재보다 위치가 중요하다.</div>
+          </div>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> H → F — 가장 작은 것처럼 보이는 변화</h2>
+
+          <p>Hydrogen을 fluorine으로 바꾸는 전략은 매우 자주 등장한다. F는 크기가 상대적으로 작아 steric perturbation을 제한적으로 만들 수 있다. 하지만 electronic effect는 매우 크다. Fluorine은 potency, conformation, metabolism, permeability, transporter recognition까지 영향을 줄 수 있다.</p>
+
+          <h3>역할 ① Metabolic blocking</h3>
+          <p>Aromatic 또는 alkyl C–H가 CYP oxidation의 주요 soft spot이라고 하자. C–F bond는 강하기 때문에 해당 위치의 oxidative metabolism을 줄일 가능성이 있다. <b>하지만 metabolism이 사라진 것은 아니다.</b> 한 site를 막으면 enzyme이 다른 위치를 산화할 수 있다(metabolic switching).</p>
+
+          <h3>역할 ② pKa tuning</h3>
+          <p>Fluorine은 강한 electron-withdrawing effect를 가진다. Basic amine 근처에 F를 배치하면 electron density가 낮아져 basicity가 감소할 수 있다. pKa ↓ → physiological pH에서 neutral fraction ↑ → permeability ↑ 가능.</p>
+
+          <h3>역할 ③ Conformation</h3>
+          <p>C–F substitution은 stereoelectronic effect를 통해 preferred conformation을 바꿀 수 있다. 4강의 <b>conformational bias</b>를 만드는 도구가 될 수도 있다. 그래서 H → F 후 potency가 올랐을 때 "F가 pocket을 잘 채웠다"로만 해석하면 부족하다.</p>
+
+          <!-- V5: Fluorine Multi-Effect Simulator -->
+          <div class="viz" data-bi-fluor>
+            <div class="viz__title">Fluorine Multi-Effect Simulator</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">H ↔ F를 전환하고, F와 amine 사이 거리를 바꿔 보세요.</p>
+            <div class="bi-fl">
+              <div class="bi-fl-row">
+                <div class="bi-fl-btns">
+                  <button class="bi-tab" data-atom="H">H analogue</button>
+                  <button class="bi-tab" data-atom="F">F analogue</button>
+                </div>
+                <div class="bi-fl-btns">
+                  <button class="bi-tab" data-dist="alpha">α</button>
+                  <button class="bi-tab" data-dist="beta">β</button>
+                  <button class="bi-tab" data-dist="far">distant</button>
+                </div>
+              </div>
+              <div class="bi-fl-panels">
+                <div class="bi-fl-panel"><div class="bi-fl-h">Sterics</div><div class="bi-fl-v fl-ster">—</div></div>
+                <div class="bi-fl-panel"><div class="bi-fl-h">Electronics</div><div class="bi-fl-v fl-elec">—</div></div>
+                <div class="bi-fl-panel"><div class="bi-fl-h">pKa (nearby amine)</div><div class="bi-fl-v fl-pka">—</div>
+                  <div class="bi-fl-bar"><div class="bi-fl-bar-fill"></div></div></div>
+                <div class="bi-fl-panel"><div class="bi-fl-h">Metabolism</div><div class="bi-fl-v fl-met">—</div></div>
+              </div>
+            </div>
+            <div class="viz__msg">F는 작은 steric change로 큰 electronic effect를 만들 수 있다.</div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Fluorine에 대한 오해</div>
+            <p>F는 단순히 "hydrogen과 똑같은 atom"이 아니고, organic fluorine을 "작은 H-bond acceptor"로 자동 취급해서도 안 된다. C–F의 interaction chemistry는 oxygen이나 pyridine N과 상당히 다르다. F의 목적은 흔히 steric, electronic, metabolic, conformational 효과다.</p>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> Amide Bioisostere</h2>
+
+          <p>Amide가 target에서 중요한 interaction을 만든다고 하자. Carbonyl O는 protein NH와, amide NH는 protein carbonyl과 H-bond을 만들고, planar geometry가 ligand orientation을 잡아준다. 그런데 polarity가 너무 높고, permeability가 나쁘고, 특정 amide는 metabolically unstable하며, peptide-like character가 있다.</p>
+
+          <p>먼저 amide가 제공하는 핵심을 <b>분리</b>해야 한다. 유지해야 하는 것이 carbonyl oxygen의 acceptor인지, NH donor인지, planar geometry인지, 두 substituent 사이의 spacing인지 확인한다. 그 후 다른 structural motif로 해당 역할을 구현한다.</p>
+
+          <h3>Heterocyclic amide replacement</h3>
+          <p>일부 5-membered heteroaromatic ring(예: oxadiazole 계열)은 planar geometry, HBA pattern, 비슷한 substituent orientation을 제공하면서 amide와 다른 lipophilicity, metabolic stability, hydrogen-bond pattern을 가질 수 있다. 하지만 중요한 것은 이름 암기가 아니다.</p>
+
+          <div class="oneline">Amide의 어떤 역할을 mimic하려는가?</div>
+
+          <p>원래 amide NH가 critical HBD라면 HBD가 없는 heterocycle로 교체할 때 potency가 떨어질 수 있다. 반대로 NH가 binding에 필요하지 않고 polarity만 높이고 있었다면 donor를 제거하는 것이 오히려 유리할 수 있다.</p>
+
+          <!-- V7: Amide Deconstruction -->
+          <div class="viz" data-bi-amide>
+            <div class="viz__title">Amide Bioisostere Deconstruction</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">후보를 선택하면 amide의 5가지 기능 중 무엇을 유지하고 잃는지 표시됩니다.</p>
+            <div class="bi-am">
+              <div class="bi-am-center">R–C(=O)–NH–R′</div>
+              <div class="bi-am-roles">
+                <div class="bi-am-role" data-role="hba"><span>Carbonyl HBA</span><b>—</b></div>
+                <div class="bi-am-role" data-role="hbd"><span>NH HBD</span><b>—</b></div>
+                <div class="bi-am-role" data-role="plan"><span>Planarity</span><b>—</b></div>
+                <div class="bi-am-role" data-role="space"><span>Spacing</span><b>—</b></div>
+                <div class="bi-am-role" data-role="dip"><span>Dipole</span><b>—</b></div>
+              </div>
+              <div class="bi-am-cands">
+                <button class="bi-tab" data-cand="oxa">1,2,4-oxadiazole</button>
+                <button class="bi-tab" data-cand="tri">1,2,3-triazole</button>
+                <button class="bi-tab" data-cand="urea">urea-like motif</button>
+              </div>
+              <div class="bi-am-note">후보를 선택하세요.</div>
+              <div class="bi-fine">* 개념 학습용 요약입니다. 실제 geometry·dipole 일치도는 substitution pattern과 conformation에 따라 달라집니다.</div>
+            </div>
+            <div class="viz__msg">"Amide를 무엇으로 바꿀까?"보다 "amide의 어떤 기능을 유지할까?"를 먼저 묻는다.</div>
+          </div>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> Ester → Amide</h2>
+
+          <p>엄밀히 모든 ester–amide 변화가 bioisosteric하다고 부르기는 적절하지 않다. 하지만 medicinal chemistry에서 중요한 <b>functional replacement</b>이며, 이 사고를 배우기에 좋은 비교다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Ester</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>HBA 2 (C=O, O–R)</li>
+                <li>HBD 없음</li>
+                <li>esterase hydrolysis 가능</li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Amide</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>carbonyl HBA</li>
+                <li>secondary amide면 NH HBD</li>
+                <li>resonance, planarity</li>
+                <li>hydrolysis 저항성 ↑ 가능</li>
+                <li>polarity ↑ 가능</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>따라서 ester → amide는 metabolic stability를 높일 수 있지만 <b>permeability와 binding pattern</b>을 바꿀 수 있다. Conformation도 달라질 수 있다.</p>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Aromatic Ring Replacement</h2>
+
+          <p>Phenyl은 medicinal chemistry에서 매우 유용하지만 lipophilicity, aromatic oxidation, nonspecific hydrophobic binding 문제를 만들 수 있다. 그래서 phenyl을 pyridine, pyrimidine, pyrazine, bicyclic heteroaryl 등으로 바꿔 시험한다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Shape conservation + property perturbation</div>
+            <p>Aromatic ring의 shape와 rigidity는 유지하면서 polarity, HBA pattern, electronics, metabolism(CYP oxidation pattern)을 바꾼다. 새로운 directional interaction도 노릴 수 있다.</p>
+          </div>
+
+          <p>6강의 핵심은 여기서도 같다. <b>무엇을 유지하고(shape) 무엇을 바꾸는가(polarity, lipophilicity, metabolism).</b></p>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Scaffold Hopping — Bioisostere의 더 큰 버전</h2>
+
+          <p>지금까지는 functional group 하나를 바꿨다. 더 크게 생각할 수 있다. Compound A의 core scaffold가 HBD, aromatic region, basic amine이라는 세 feature를 배치한다고 하자. 이 세 feature의 <b>3D 위치만 유지</b>할 수 있다면 완전히 다른 core를 사용할 수도 있다. 이를 <b>scaffold hopping</b>이라고 한다.</p>
+
+          <div class="bi-grid2">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>목적</div><p>새로운 chemical space, selectivity 개선, physicochemical property 변경</p></div>
+            <div class="card card--ai" style="margin:0;"><div class="card__label"><span class="dot"></span>부가 효과</div><p>IP 확보, synthetic route 변경, resistance mutation 회피</p></div>
+          </div>
+
+          <h3>Similarity란 무엇인가?</h3>
+          <p>두 molecule은 2D fingerprint상 전혀 다를 수 있다. 하지만 protein pocket에서는 같은 H-bond donor 위치, 같은 hydrophobic feature 위치, 같은 positive charge 위치를 제공할 수 있다. 그러면 biological space에서는 비슷하게 행동할 가능성이 있다.</p>
+
+          <div class="oneline">Chemical similarity와 pharmacophoric similarity는 다르다.</div>
+
+          <!-- V8: Scaffold Hopping -->
+          <div class="viz" data-bi-hop>
+            <div class="viz__title">Scaffold Hopping Pharmacophore</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">처음에는 두 molecule이 완전히 달라 보인다. 버튼을 눌러 보세요.</p>
+            <div class="bi-hop">
+              <div class="bi-hop-pair">
+                <div class="bi-hop-card"><div class="bi-hop-name">Compound A</div><svg class="bi-hop-svg" data-mol="a" viewBox="0 0 300 200" role="img" aria-label="Compound A 2D structure"></svg></div>
+                <div class="bi-hop-card"><div class="bi-hop-name">Compound B</div><svg class="bi-hop-svg" data-mol="b" viewBox="0 0 300 200" role="img" aria-label="Compound B 2D structure"></svg></div>
+              </div>
+              <button class="bi-btn" data-hop>Show pharmacophore</button>
+              <div class="bi-hop-legend">
+                <span><i class="dot dot--hba"></i>HBA</span>
+                <span><i class="dot dot--pos"></i>positive center</span>
+                <span><i class="dot dot--hyd"></i>hydrophobic</span>
+              </div>
+              <div class="bi-hop-msg">2D similarity: <b>낮음</b></div>
+            </div>
+            <div class="viz__msg">Low 2D similarity can coexist with high pharmacophoric similarity.</div>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Real Drug Example — ARB의 Tetrazole Motif</h2>
+
+          <p>Losartan을 비롯한 여러 angiotensin II receptor blocker(ARB)에서 biphenyl-tetrazole motif를 볼 수 있다. 여기서 tetrazolate는 receptor의 basic binding environment와 상호작용하는 <b>carboxylate-like acidic pharmacophore</b>로 기능할 수 있다. Tetrazole은 carboxylic acid의 대표적 medicinal-chemistry bioisostere로 오랫동안 활용되어 왔다.</p>
+
+          <div class="card card--bio">
+            <div class="card__label"><span class="dot"></span>중요한 교훈</div>
+            <p>"Tetrazole이 있어서 ARB다"가 아니다. 기존 acidic pharmacophore가 필요로 하는 <b>ionization과 spatial recognition</b>을 tetrazole이라는 다른 chemical motif로 구현할 수 있다는 것이다.</p>
+          </div>
+
+          <p>또 tetrazole은 단순한 "COOH의 복제품"이 아니라, 음전하 distribution, binding geometry, lipophilicity, metabolism이 다른 대체체라는 점을 기억하자.</p>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Bioisostere Property Triangle</h2>
+
+          <p>Replacement 전후에 최소 세 축을 비교한다. 한 축만 좋아졌다고 성공이라고 하지 않는다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Target Recognition</div><p>potency, binding geometry, selectivity</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Physicochemical</div><p>pKa, logD, solubility, permeability</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Metabolism / PK</div><p>microsomal stability, clearance, metabolite pattern, PPB</p></div>
+          </div>
+
+          <h3>SAR table을 보는 방식</h3>
+          <p>Compound 1(COOH), 2(tetrazole), 3(acyl sulfonamide)가 있다면 potency만 비교하지 않고 표를 이렇게 확장한다.</p>
+
+          <div class="bi-table" role="table">
+            <div class="bi-tr bi-tr--h" role="row"><span>변화</span><span>Potency</span><span>pKa</span><span>logD</span><span>Perm.</span><span>CL</span></div>
+            <div class="bi-tr" role="row"><b>COOH</b><span>?</span><span>?</span><span>?</span><span>?</span><span>?</span></div>
+            <div class="bi-tr" role="row"><b>Tetrazole</b><span>?</span><span>?</span><span>?</span><span>?</span><span>?</span></div>
+            <div class="bi-tr" role="row"><b>Alternative</b><span>?</span><span>?</span><span>?</span><span>?</span><span>?</span></div>
+          </div>
+
+          <!-- V9: Property Triangle -->
+          <div class="viz" data-bi-tri>
+            <div class="viz__title">Property Triangle</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">후보를 선택하면 세 축의 균형이 삼각형으로 표시됩니다. (가상의 matched-pair 예시)</p>
+            <div class="bi-tri">
+              <div class="bi-tri-btns">
+                <button class="bi-tab" data-c="cooh">COOH (parent)</button>
+                <button class="bi-tab" data-c="tz">Tetrazole</button>
+                <button class="bi-tab" data-c="acs">Acyl sulfonamide</button>
+              </div>
+              <svg class="bi-tri-svg" viewBox="0 0 320 260" role="img" aria-label="Property triangle"></svg>
+              <div class="bi-tri-cards">
+                <div class="bi-tri-card"><span>Potency</span><b class="t-pot">—</b></div>
+                <div class="bi-tri-card"><span>logD</span><b class="t-logd">—</b></div>
+                <div class="bi-tri-card"><span>Permeability</span><b class="t-perm">—</b></div>
+                <div class="bi-tri-card"><span>Stability</span><b class="t-stab">—</b></div>
+              </div>
+              <div class="bi-tri-verdict"></div>
+            </div>
+            <div class="viz__msg">Bioisostere success is multi-dimensional.</div>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Failure Case — Bioisostere는 새로운 문제를 만든다</h2>
+
+          <h3>Case 1. COOH → Tetrazole</h3>
+          <p>가상의 matched pair를 생각하자. Compound A는 COOH, B는 tetrazole이다. 결과는 이렇다.</p>
+
+          <div class="bi-grid2">
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>좋아진 것</div><p>Potency 비슷하게 유지<br>Microsomal stability / half-life 개선</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>기대와 다른 것</div><p>logD ↑, PPB ↑<br>Permeability 큰 개선 없음</p></div>
+          </div>
+
+          <p>이 결과는 실패일까? <b>Project goal에 달려 있다.</b> 가장 큰 문제가 rapid metabolism이었다면 B는 유용하다. 하지만 free drug exposure가 이미 낮은 project에서 PPB 증가가 치명적이라면 B는 좋지 않을 수 있다. Lipophilicity ↑ → PPB ↑ → free concentration ↓ 가능. 즉 <b>property improvement에는 목적함수가 필요하다.</b></p>
+
+          <h3>Case 2. "F를 넣으면 metabolism이 좋아질 것이다"</h3>
+          <p>Lead A의 para-position이 주요 oxidative soft spot으로 예측됐다. Team은 H → F analogue B를 만들었고, 실제로 해당 위치의 oxidation은 사라졌다. 그런데 total microsomal clearance는 거의 변하지 않았다. 왜? CYP가 Position 2를 산화하기 시작했기 때문이다(<b>metabolic switching</b>).</p>
+
+          <!-- V6: Metabolic Switching -->
+          <div class="viz" data-bi-switch>
+            <div class="viz__title">Metabolic Switching Animation</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Site 1에 F를 도입해 차단해 보세요.</p>
+            <div class="bi-sw">
+              <div class="bi-sw-sites">
+                <div class="bi-sw-site" data-site="1"><span class="bi-sw-name">Site 1</span><div class="bi-sw-track"><div class="bi-sw-fill"></div></div><span class="bi-sw-tag"></span></div>
+                <div class="bi-sw-site" data-site="2"><span class="bi-sw-name">Site 2</span><div class="bi-sw-track"><div class="bi-sw-fill"></div></div><span class="bi-sw-tag"></span></div>
+                <div class="bi-sw-site" data-site="3"><span class="bi-sw-name">Site 3</span><div class="bi-sw-track"><div class="bi-sw-fill"></div></div><span class="bi-sw-tag"></span></div>
+              </div>
+              <div class="bi-sw-total"><span class="bi-sw-name">Total clearance</span><div class="bi-sw-track bi-sw-track--total"><div class="bi-sw-fill bi-sw-fill--total"></div></div><span class="bi-sw-tag bi-sw-total-tag"></span></div>
+              <div class="bi-sw-btns">
+                <button class="bi-btn" data-block>Block Site 1 (H → F)</button>
+                <button class="bi-btn bi-btn--ghost" data-reset>Reset</button>
+              </div>
+              <div class="bi-sw-msg"></div>
+              <div class="bi-fine">* 개념 학습용 애니메이션입니다. 실제 분배는 enzyme과 분자 context에 따라 달라집니다.</div>
+            </div>
+            <div class="viz__msg">One soft spot blocked ≠ molecule metabolically stable.</div>
+          </div>
+
+          <h3>Case 3. Phenyl → Pyridyl</h3>
+          <p>목표는 logP 감소였다. 실제로 logP ↓, solubility ↑였다. 그런데 potency는 200배 감소했다. Crystal structure를 보니 pyridine N이 deep hydrophobic pocket 안에 buried되어 있지만 H-bond partner가 없다. 즉 polarity를 올린 대가로 큰 <b>desolvation penalty</b>를 만들었다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Bioisostere의 핵심 교훈</div>
+            <p>Replacement 자체에 좋은 것과 나쁜 것이 있는 게 아니다. 질문은 항상 <b>"이 target의 이 위치에서 이 replacement가 무엇을 바꾸는가?"</b>이다.</p>
+          </div>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> AI Drug Discovery Connection</h2>
+
+          <p>Bioisostere suggestion은 AI가 잘할 수 있는 문제처럼 보인다. Input은 lead molecule과 desired property, output은 replacement candidate다. 예: COOH → tetrazole, acyl sulfonamide, heterocyclic acidic group. 하지만 이것만으로 충분하지 않다.</p>
+
+          <h3>Matched Molecular Pair</h3>
+          <p>A와 B가 bioisosteric replacement 하나만 다르면 결과를 비교하기 좋다. 예: A는 phenyl, B는 3-pyridyl이고 나머지는 동일하다. 그러면 potency, logD, clearance 변화가 replacement와 관련 있을 가능성을 비교적 명확하게 분석할 수 있다. 이런 구조쌍이 <b>matched molecular pair(MMP)</b>다.</p>
+
+          <p>수백~수천 개 matched pair를 모으면 특정 transformation이 평균적으로 property를 어떻게 움직이는지 배울 수 있다. 이것이 cheminformatics와 medicinal chemistry가 만나는 지점이고, <b>transformation library</b>(A → B 구조 변화와 property Δ의 database)의 기반이다.</p>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>평균값은 내 molecule의 답이 아니다</div>
+            <p>Phenyl → pyridyl이 평균적으로 solubility를 개선해도, 내 target에서는 pyridine N이 hydrophobic pocket 한가운데 들어갈 수 있다. <b>Population-level trend</b>와 <b>project-specific structural context</b>를 구분해야 한다.</p>
+          </div>
+
+          <!-- V10: MMP Explorer -->
+          <div class="viz" data-bi-mmp>
+            <div class="viz__title">Matched Molecular Pair Explorer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Phenyl → pyridyl의 historical pair(가상 데이터)를 넘겨 보고, 평균 trend와 현재 project를 비교하세요.</p>
+            <div class="bi-mmp">
+              <div class="bi-mmp-mode">
+                <button class="bi-tab" data-mode="pairs">Historical pairs</button>
+                <button class="bi-tab" data-mode="avg">Average trend</button>
+                <button class="bi-tab" data-mode="proj">This project</button>
+              </div>
+              <div class="bi-mmp-head">
+                <span class="bi-mmp-a">Phenyl</span><span class="bi-mmp-arrow">→</span><span class="bi-mmp-b">Pyridyl</span>
+              </div>
+              <div class="bi-mmp-title"></div>
+              <div class="bi-mmp-cards">
+                <div class="bi-mmp-card"><span>Δ potency</span><b class="m-pot">—</b></div>
+                <div class="bi-mmp-card"><span>Δ logD</span><b class="m-logd">—</b></div>
+                <div class="bi-mmp-card"><span>Δ solubility</span><b class="m-sol">—</b></div>
+                <div class="bi-mmp-card"><span>Δ clearance</span><b class="m-cl">—</b></div>
+              </div>
+              <div class="bi-mmp-nav">
+                <button class="bi-btn bi-btn--ghost" data-prev>◀</button>
+                <span class="bi-mmp-count"></span>
+                <button class="bi-btn bi-btn--ghost" data-next>▶</button>
+              </div>
+              <div class="bi-mmp-note"></div>
+              <div class="bi-fine">* 모든 숫자는 개념 학습용 가상 데이터입니다.</div>
+            </div>
+            <div class="viz__msg">Dataset trend generates hypotheses; structural context decides the project.</div>
+          </div>
+
+          <h3>AI가 알아야 할 것</h3>
+          <div class="bi-grid2">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>① 무엇을 보존해야 하는가?</div><p>Potency score만 최대화하면 원래 critical interaction을 파괴할 수 있다. Protein interaction, pharmacophore, molecular shape를 constraint로 줘야 한다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>② 무엇을 개선해야 하는가?</div><p>Objective가 potency only면 hydrophobic group을 계속 붙이는 trivial solution이 나온다. 실제 objective는 potency + logD + solubility + permeability + stability + selectivity, 즉 <b>multi-parameter optimization</b>이다.</p></div>
+          </div>
+
+          <h3>Generative model과 scaffold hopping</h3>
+          <p>Generative model은 scaffold, linker, heterocycle 변경을 더 과감하게 제안할 수 있다. 생성된 molecule이 기존 ligand와 2D로는 매우 달라도 pharmacophoric 3D arrangement가 비슷할 수 있어서 scaffold hopping에 매력적이다. 하지만 generated molecule은 합성이 매우 어렵거나, wrong tautomer·protonation·stereochemistry를 가졌거나, reactive metabolite를 만들거나, solubility가 낮을 수 있다.</p>
+
+          <div class="oneline">AI bioisostere recommendation은 hypothesis generator이지 자동 정답 생성기가 아니다.</div>
+
+          <!-- V11: AI Bioisostere Generator -->
+          <div class="viz" data-bi-gen>
+            <div class="viz__title">AI Bioisostere Generator (mock)</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Optimization goal을 고르면 후보 카드가 생성됩니다. 후보를 탭하면 검증용 가설이 표시됩니다.</p>
+            <div class="bi-gen">
+              <div class="bi-gen-goals">
+                <button class="bi-tab" data-goal="metab">improve metabolic stability</button>
+                <button class="bi-tab" data-goal="logd">lower logD</button>
+                <button class="bi-tab" data-goal="perm">improve permeability</button>
+              </div>
+              <label class="bi-gen-anchor"><input type="checkbox" class="gen-anchor" checked /> retain acidic anchor</label>
+              <div class="bi-gen-cards"></div>
+              <div class="bi-gen-detail"></div>
+            </div>
+            <div class="viz__msg">A useful AI suggestion includes a testable medicinal-chemistry hypothesis, not merely a predicted score.</div>
+          </div>
+
+          <h3>Learned similarity vs pharmacophoric similarity</h3>
+          <p>AI가 compound B를 A보다 active하다고 예측했다고 하자. B는 A의 COOH를 tetrazole로 바꾼 analogue다. Ligand-only QSAR라면 tetrazole이 training data에서 좋은 feature였기 때문에 점수가 올라갔을 수도 있다. 하지만 target에서 geometry가 안 맞으면 activity는 떨어진다. AI는 <b>bioisostere category</b>는 배웠어도 <b>project-specific binding requirement</b>는 모를 수 있다.</p>
+
+          <p>반대로 training set이 한 scaffold에 집중돼 있으면, 새로운 bioisosteric scaffold를 extrapolation 영역으로 판단해 낮은 score를 줄 수 있다. 실제로는 pharmacophoric geometry를 완벽하게 유지하는데도 말이다. 이것이 scaffold bias, applicability domain, domain shift 문제이며 25강에서 본격적으로 다룬다.</p>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> Scientist's Thinking — Lead의 COOH가 문제다</h2>
+
+          <p>Observation: affinity excellent, biochemical potency excellent, permeability poor, cellular potency poor, carboxylate–Arg interaction 관찰. 어떻게 접근할까?</p>
+
+          <div style="display:grid;gap:8px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 1 — COOH 역할 정의</div><p>Salt bridge를 만드는가? 두 개의 H-bond를 만드는가? 단순 solvent exposed인가? Structural data로 확인한다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 2 — Preserve list</div><p>Negative charge, Arg까지의 거리, planar acidic headgroup.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 3 — Change list</div><p>Metabolic liability 감소, lipophilicity 약간 증가, cell exposure 개선.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 4 — Replacement panel</div><p>하나만 고르지 않는다. Tetrazole, acyl sulfonamide, 다른 acidic heterocycle, neutral mimic을 panel로 설계한다. Carboxylic-acid bioisostere에는 ionized replacement뿐 아니라 neutral replacement 전략도 연구되고 있다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 5 — 실험</div><p>Biochemical potency, pKa, logD, solubility, permeability, microsomal stability를 비교한다. 가능하면 structure도 확인한다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 6 — Cellular result</div><p>Binding은 유지되고 cell potency가 개선됐다면 exposure 개선 가설을 지지한다. 하지만 바로 원인을 단정하지 않고 permeability나 intracellular exposure 데이터를 확인한다.</p></div>
+          </div>
+
+          <!-- V12: Decision Flow -->
+          <div class="viz" data-bi-flow>
+            <div class="viz__title">Scientist's Bioisostere Decision Flow</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Problem: <b>Carboxylic acid required for binding but PK poor</b></p>
+            <div class="bi-flow">
+              <div class="bi-flow-q">What is essential?</div>
+              <div class="bi-flow-opts" data-grp="ess">
+                <button class="bi-tab" data-v="charge">negative charge</button>
+                <button class="bi-tab" data-v="hba">HBA geometry</button>
+                <button class="bi-tab" data-v="shape">shape</button>
+                <button class="bi-tab" data-v="all">all</button>
+              </div>
+              <div class="bi-flow-arrow">↓</div>
+              <div class="bi-flow-q">What is the main liability?</div>
+              <div class="bi-flow-opts" data-grp="liab">
+                <button class="bi-tab" data-v="metab">metabolism</button>
+                <button class="bi-tab" data-v="perm">permeability</button>
+                <button class="bi-tab" data-v="sol">solubility</button>
+                <button class="bi-tab" data-v="sel">selectivity</button>
+              </div>
+              <div class="bi-flow-out"></div>
+            </div>
+            <div class="viz__msg">Bioisostere selection should begin with a mechanistic problem statement.</div>
+          </div>
+
+          <h3>Bioisostere를 볼 때 쓰는 7가지 질문</h3>
+          <div class="bi-grid2">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Recognition</div><p>원래 group은 target에서 정확히 무엇을 했는가?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Geometry</div><p>Replacement의 interaction point가 같은 위치에 놓이는가?</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Charge</div><p>pKa와 protonation state가 같은가? 같아야 하는가?</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Solvation</div><p>새 group의 desolvation은 어떻게 다른가?</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Lipophilicity</div><p>logP/logD는 어느 방향으로 갈까?</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Metabolism</div><p>원래 soft spot을 없애는가? 새 soft spot을 만드는가?</p></div>
+          </div>
+          <div class="card card--ai" style="margin-top:10px;">
+            <div class="card__label"><span class="dot"></span>Conformation</div>
+            <p>분자의 preferred shape를 바꾸는가?</p>
+          </div>
+
+          <h3>5강과의 연결</h3>
+          <p>5강에서는 functional group을 보고 그 성질을 읽었다. 이번에는 그 지식을 optimization에 사용한다. Amide의 polarity / metabolic issue는 "amide의 필요한 역할만 유지할 group은?"으로, phenyl의 lipophilicity 문제는 "shape는 유지하며 polarity를 조절할 heteroaryl은?"로 이어진다. 즉 <b>functional-group knowledge → bioisosteric design</b>이다.</p>
+
+          <div class="card card--bio">
+            <div class="card__label"><span class="dot"></span>이번 강의의 가장 중요한 사고 전환</div>
+            <p>초보자는 bioisostere를 "A 대신 B를 쓰는 공식"으로 배운다. 하지만 실제 medicinal chemistry에서는 <b>특정 molecular function을 분해하고 필요한 부분만 다른 chemistry로 재구현하는 작업</b>이다.</p>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>6강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Bioisostere는 구조를 똑같이 만드는 것이 아니라 필요한 biological role을 유지하면서 다른 property를 얻는 전략이다.</b>
+              <span>Preserve function, change properties.</span>
+            </li>
+            <li>
+              <b>Bioisosteric replacement를 하기 전에 반드시 무엇을 유지하고 무엇을 바꿀지 정의해야 한다.</b>
+              <span>Preserve / Change 두 칸이 없으면 "왜 이 group인가?"가 불분명해진다.</span>
+            </li>
+            <li>
+              <b>COOH → tetrazole, phenyl → pyridyl, H → F 같은 replacement는 유용하지만 결과는 target과 molecular context에 따라 달라진다.</b>
+              <span>Context beats rules.</span>
+            </li>
+            <li>
+              <b>Replacement 성공 여부는 potency만이 아니라 pKa, logD, permeability, metabolism, PK를 함께 봐야 한다.</b>
+              <span>Target recognition · Physicochemical · Metabolism/PK 세 축.</span>
+            </li>
+            <li>
+              <b>AI는 bioisostere 후보를 잘 생성할 수 있지만, 실제 medicinal chemistry에서는 그것을 mechanistic hypothesis로 검증해야 한다.</b>
+              <span>AI suggestion = hypothesis, not answer.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>Bioisostere를 설계할 때 세 문장으로 시작하라</div>
+          <p><b>1.</b> 원래 group에서 반드시 유지해야 할 것은 무엇인가?<br><b>2.</b> 지금 해결하려는 liability는 무엇인가?<br><b>3.</b> Replacement가 새로 만들 수 있는 문제는 무엇인가?</p>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Lead의 COOH가 Arg와 critical salt bridge를 만든다. COOH 때문에 permeability가 나쁘다고 판단했다. 가장 나쁜 전략은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              COOH를 아무 hydrophobic group으로 바로 제거하고 potency가 유지되길 기대하는 것이다.
+              <div class="exp">먼저 COOH의 charge, H-bond pattern, geometry 중 무엇이 critical한지 정의하고 replacement를 설계해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>COOH를 tetrazole로 바꾸었다. 왜 permeability가 반드시 크게 증가하지 않는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Tetrazole 역시 acidic하며 physiological pH에서 ionized될 수 있기 때문이다.
+              <div class="exp">따라서 이 replacement는 charge를 완전히 제거하는 전략이 아니다. 대신 charge distribution, lipophilicity, metabolism 및 geometry 등을 바꾼다. Tetrazole의 효과 역시 molecular context에 따라 달라진다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Phenyl → pyridyl 후 logP ↓, solubility ↑, potency ↓ 100×. 가능한 이유는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Pyridine N이 target pocket 안에서 H-bond partner 없이 buried되어 desolvation penalty를 만들었을 수 있다.
+              <div class="exp">또 N 도입으로 electronics 또는 ligand orientation이 바뀌었을 수도 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Aromatic H를 F로 바꿨더니 해당 위치의 metabolism은 사라졌지만 total clearance는 그대로였다. 왜?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              다른 molecular position으로 metabolism이 이동하는 metabolic switching이 일어났을 가능성이 있다.
+              <div class="exp">따라서 local metabolic blocking과 overall metabolic stability는 구분해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>Generative AI가 lead와 2D similarity가 매우 낮은 molecule을 추천했다. 바로 버려야 하는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다. 새 molecule이 중요한 HBD/HBA 위치, charge, hydrophobic feature, 3D spacing 등을 유지한다면 scaffold hopping 후보일 수 있다.
+              <div class="exp">다만 binding, physicochemical property, synthesis 가능성 등을 실제로 검증해야 한다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">7강 · Ligand Efficiency / Lipophilic Efficiency</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">Compound B가 A보다 potency가 10배 좋아졌다. 그런데 B에는 phenyl ring 하나가 추가됐고, logP와 MW도 크게 늘었다. 그러면 정말 medicinal chemistry가 좋아진 것일까? 다음 강의에서는 단순 potency 대신 <b>"얼마나 효율적으로 potency를 얻었는가?"</b>를 평가하는 Ligand Efficiency와 Lipophilic Efficiency를 다룬다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="05.html">◀ 5강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="07.html">▶ 7강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>
