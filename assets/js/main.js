@@ -3193,6 +3193,416 @@
     });
   }
 
+  /* ============================================================
+     L08 – SAR을 읽는 법
+     ============================================================ */
+
+  function srHex(x, y, r, rot) {
+    var out = [];
+    for (var i = 0; i < 6; i++) { var a = (60 * i + (rot || 0)) * Math.PI / 180; out.push((x + Math.cos(a) * r) + ',' + (y + Math.sin(a) * r)); }
+    return out.join(' ');
+  }
+
+  /* V1 – SAR table detective */
+  function initSrDetective() {
+    document.querySelectorAll('[data-sr-detective]').forEach(function(wrap) {
+      var tbl = wrap.querySelector('.sr-det-table');
+      var fb = wrap.querySelector('.sr-det-fb');
+      var rows = [
+        { id:'A', r:'H',      nm:800, ld:1.5, perm:'good',     stab:'high' },
+        { id:'B', r:'CH₃',    nm:180, ld:2.0, perm:'good',     stab:'medium' },
+        { id:'C', r:'Cl',     nm:70,  ld:2.7, perm:'good',     stab:'medium' },
+        { id:'D', r:'OMe',    nm:120, ld:2.1, perm:'moderate', stab:'low' },
+        { id:'E', r:'OH',     nm:950, ld:1.2, perm:'poor',     stab:'medium' },
+        { id:'F', r:'Phenyl', nm:8,   ld:4.8, perm:'good',     stab:'low' }
+      ];
+      var st = { logd:false, perm:false, stab:false };
+      var pick = null;
+
+      function lipe(r) { return lePfromNM(r.nm) - r.ld; }
+      function favorite() {
+        var pool = rows.filter(function(r) {
+          return !(st.perm && r.perm === 'poor') && !(st.stab && r.stab === 'low');
+        });
+        if (!st.logd) { // IC50 only (permeability/stability filters still applied)
+          return pool.slice().sort(function(a, b){ return a.nm - b.nm; })[0];
+        }
+        return pool.slice().sort(function(a, b){ return lipe(b) - lipe(a); })[0];
+      }
+      function render() {
+        var cols = ['.5fr', '.8fr', '1fr'];
+        if (st.logd) { cols.push('.8fr', '.8fr'); }
+        if (st.perm) cols.push('1fr');
+        if (st.stab) cols.push('1fr');
+        var fav = favorite();
+        var h = '<div class="sr-tbl" style="--cols:' + cols.join(' ') + ';"><div class="sr-tr sr-tr--h"><span>Cpd</span><span>R</span><span>IC50</span>' +
+          (st.logd ? '<span>logD</span><span>LipE</span>' : '') + (st.perm ? '<span>Perm.</span>' : '') + (st.stab ? '<span>Met. stab.</span>' : '') + '</div>';
+        rows.forEach(function(r) {
+          var out = (st.perm && r.perm === 'poor') || (st.stab && r.stab === 'low');
+          h += '<div class="sr-tr sr-tr--pick' + (r === fav ? ' fav' : '') + (out ? ' out' : '') + (pick === r ? ' picked' : '') + '" data-id="' + r.id + '"><b>' + r.id + '</b><span>' + r.r + '</span><span>' + leFmtNM(r.nm) + '</span>' +
+            (st.logd ? '<span>' + r.ld.toFixed(1) + '</span><span>' + lipe(r).toFixed(1) + '</span>' : '') +
+            (st.perm ? '<span>' + r.perm + '</span>' : '') + (st.stab ? '<span>' + r.stab + '</span>' : '') + '</div>';
+        });
+        tbl.innerHTML = h + '</div>';
+        tbl.querySelectorAll('.sr-tr--pick').forEach(function(el) {
+          el.addEventListener('click', function() { pick = rows.filter(function(r){ return r.id === el.dataset.id; })[0]; render(); });
+        });
+        var basis = st.logd ? 'LipE 기준' : 'IC50 기준';
+        var txt = '이 시점의 유력 후보(' + basis + '): Compound ' + fav.id + ' (R = ' + fav.r + ')';
+        if (st.logd) txt += ' · LipE ' + lipe(fav).toFixed(1);
+        if (st.logd && !st.perm && !st.stab) txt += '. F는 가장 potent하지만 LipE 3.3으로 가장 낮다.';
+        if (st.perm) txt += '. E(OH)는 permeability poor로 탈락 후보.';
+        if (st.stab) txt += ' D·F는 대사 안정성이 낮다.';
+        if (pick) txt += ' 당신의 선택: ' + pick.id + (pick === fav ? ' (현재 유력 후보와 일치)' : ' (유력 후보와 다름)') + '.';
+        fb.textContent = txt;
+      }
+      wrap.querySelectorAll('[data-add]').forEach(function(b) {
+        b.addEventListener('click', function(){ st[b.dataset.add] = true; render(); });
+      });
+      wrap.querySelector('[data-reset]').addEventListener('click', function(){ st = { logd:false, perm:false, stab:false }; pick = null; render(); });
+      render();
+    });
+  }
+
+  /* V2 – MMP viewer */
+  function initSrMmp() {
+    document.querySelectorAll('[data-sr-mmp]').forEach(function(wrap) {
+      var pairs = [
+        { a:'H',      b:'CH₃',        p:'+0.7', l:'+0.5', s:'0.7×', n:'Hydrophobic contact, cavity filling, logD 증가가 섞여 있어 원인을 단정할 수 없다.' },
+        { a:'OH',     b:'OMe',        p:'+0.2', l:'+0.6', s:'0.5×', n:'Donor 제거 + size/lipophilicity 증가가 동시에 일어났다. 변수가 분리되지 않았다.' },
+        { a:'Phenyl', b:'3-pyridyl',  p:'+0.1', l:'−0.9', s:'4×',   n:'Potency를 유지하며 logD를 낮춘 이상적인 pair. 다른 series에서는 결과가 다를 수 있다.' },
+        { a:'NH₂',    b:'NHAc',       p:'−0.4', l:'−1.0', s:'2×',   n:'Basicity/charge가 사라지는 큰 chemistry 변화. “acetyl 하나”가 아니다.' },
+        { a:'H',      b:'Cl',         p:'+0.6', l:'+0.7', s:'0.4×', n:'Potency는 오르지만 logD·solubility 비용이 따라온다.' }
+      ];
+      var i = 0;
+      var q = function(s){ return wrap.querySelector(s); };
+      function show() {
+        var d = pairs[i];
+        q('.sr-mmp-r-a').textContent = d.a; q('.sr-mmp-r-b').textContent = d.b;
+        q('.mm-p').textContent = d.p; q('.mm-l').textContent = d.l; q('.mm-s').textContent = d.s;
+        q('.sr-mmp-count').textContent = (i + 1) + ' / ' + pairs.length;
+        q('.sr-mmp-fb').textContent = d.n + ' (한 pair의 결과를 일반 법칙으로 만들지 않는다. 가상 데이터)';
+      }
+      q('[data-prev]').addEventListener('click', function(){ i = (i + pairs.length - 1) % pairs.length; show(); });
+      q('[data-next]').addEventListener('click', function(){ i = (i + 1) % pairs.length; show(); });
+      show();
+    });
+  }
+
+  /* V3 – Steric pocket scanner */
+  function initSrSteric() {
+    document.querySelectorAll('[data-sr-steric]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.sr-steric-svg');
+      var tabs = wrap.querySelectorAll('[data-r]');
+      var D = {
+        H:   { w:6,  h:6,  ic:'1 µM',   fit:'빈 공간 큼',   msg:'Cavity가 거의 비어 있다. Hydrophobic contact 없음.', bad:false },
+        Me:  { w:26, h:20, ic:'200 nM', fit:'일부 채움',    msg:'Cavity의 일부를 채워 potency가 5× 개선된다.', bad:false },
+        Et:  { w:50, h:24, ic:'60 nM',  fit:'good fill',    msg:'Cavity를 잘 채운다. 이 위치의 favorable한 크기.', bad:false },
+        iPr: { w:64, h:46, ic:'2 µM',   fit:'steric clash', msg:'Cavity 경계를 넘어 clash가 생긴다. Pocket volume의 upper limit를 찾았다. 다음 analogue: cyclopropyl로 size/shape를 분리.', bad:true }
+      };
+      function draw(k) {
+        svg.innerHTML = '';
+        svgEl('rect', { x:178, y:60, width:100, height:46, rx:16, fill:'#ede9ff', stroke:'#5b3fd4', 'stroke-width':2, 'stroke-dasharray':'6 4' }, svg);
+        svgEl('text', { x:228, y:50, 'text-anchor':'middle' }, svg).textContent = 'hydrophobic cavity';
+        svgEl('rect', { x:40, y:62, width:130, height:42, rx:8, fill:'#f8fafc', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+        svgEl('text', { x:105, y:88, 'text-anchor':'middle' }, svg).textContent = 'core scaffold';
+        if (!k) return;
+        var d = D[k];
+        svgEl('ellipse', { cx:170 + d.w / 2 + 4, cy:83, rx:d.w / 2, ry:d.h / 2, fill: d.bad ? '#fee2e2' : '#dcfce7', stroke: d.bad ? '#dc2626' : '#15803d', 'stroke-width':2 }, svg);
+        svgEl('text', { x:170 + d.w / 2 + 4, y:150, 'text-anchor':'middle', style: d.bad ? 'fill:#dc2626' : '' }, svg).textContent = k === 'Me' ? 'CH₃' : (k === 'iPr' ? 'i-Pr' : k);
+      }
+      tabs.forEach(function(t) {
+        t.addEventListener('click', function() {
+          tabs.forEach(function(x){ x.classList.toggle('active', x === t); });
+          var d = D[t.dataset.r];
+          draw(t.dataset.r);
+          wrap.querySelector('.st-ic').textContent = d.ic;
+          wrap.querySelector('.st-fit').textContent = d.fit;
+          var fb = wrap.querySelector('.sr-steric-fb');
+          fb.textContent = d.msg; fb.className = 'le-fb sr-steric-fb' + (d.bad ? ' bad' : '');
+        });
+      });
+      draw(null);
+      wrap.querySelector('.sr-steric-fb').textContent = 'Substituent를 선택하세요.';
+    });
+  }
+
+  /* V6 – Activity cliff */
+  function initSrCliff() {
+    document.querySelectorAll('[data-sr-cliff]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.sr-cliff-svg');
+      var fb = wrap.querySelector('.sr-cliff-fb');
+      var W = {
+        steric: 'meta 위치의 F가 pocket 벽과 clash를 만들었거나, 반대로 para 위치에서만 필요한 contact가 사라졌을 수 있다.',
+        conf:   'F의 위치가 ring torsion/preferred conformation을 바꿔 bioactive conformation 도달이 어려워졌을 수 있다.',
+        water:  'para-F가 water network의 일부를 치환/안정화했고 meta-F는 그렇지 못했을 수 있다.',
+        pka:    'F의 위치에 따라 인접 기능기의 pKa가 달라져 ionization state/H-bond strength가 변했을 수 있다.'
+      };
+      svgEl('line', { x1:40, y1:190, x2:320, y2:190, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+      svgEl('line', { x1:40, y1:20, x2:40, y2:190, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+      svgEl('text', { x:180, y:212, 'text-anchor':'middle' }, svg).textContent = '2D structural similarity →';
+      svgEl('text', { x:12, y:105, transform:'rotate(-90 12 105)', 'text-anchor':'middle' }, svg).textContent = 'Activity →';
+      svgEl('path', { d:'M45 150 C 100 140, 150 130, 215 100 L 262 96', fill:'none', stroke:'#94a3b8', 'stroke-width':2 }, svg);
+      svgEl('line', { x1:262, y1:96, x2:262, y2:165, stroke:'#dc2626', 'stroke-width':2, 'stroke-dasharray':'4 3' }, svg);
+      svgEl('circle', { cx:255, cy:96, r:8, fill:'#15803d' }, svg);
+      svgEl('circle', { cx:268, cy:165, r:8, fill:'#dc2626' }, svg);
+      svgEl('text', { x:200, y:84 }, svg).textContent = 'para-F · 20 nM';
+      svgEl('text', { x:200, y:185 }, svg).textContent = 'meta-F · 5 µM';
+      svgEl('text', { x:284, y:135 }, svg).textContent = '250×';
+      var hl = svgEl('rect', { x:238, y:76, width:46, height:104, rx:10, fill:'none', stroke:'#5b3fd4', 'stroke-width':2, 'stroke-dasharray':'5 4', opacity:0 }, svg);
+
+      wrap.querySelector('[data-inspect]').addEventListener('click', function() {
+        hl.setAttribute('opacity', 1);
+        fb.textContent = '차이는 F 위치 하나(para → meta). Similarity는 높지만 activity는 불연속이다. 아래 가설 카드를 탭해 가능한 원인을 보세요.';
+      });
+      wrap.querySelectorAll('.sr-cliff-card').forEach(function(c) {
+        c.addEventListener('click', function() {
+          wrap.querySelectorAll('.sr-cliff-card').forEach(function(x){ x.classList.toggle('active', x === c); });
+          fb.textContent = W[c.dataset.why];
+        });
+      });
+      fb.textContent = '“Inspect difference”를 눌러 보세요.';
+    });
+  }
+
+  /* V7 – Flat SAR */
+  function initSrFlat() {
+    document.querySelectorAll('[data-sr-flat]').forEach(function(wrap) {
+      var msg = wrap.querySelector('.sr-flat-msg');
+      var use = wrap.querySelector('.sr-flat-use');
+      var fb = wrap.querySelector('.sr-flat-fb');
+      var U = {
+        sol: 'Solubilizing group (예: polar/ionizable group)을 붙여 potency 손실 없이 solubility를 개선할 수 있다. 단 permeability와 PPB 변화는 확인한다.',
+        met: 'Metabolic soft spot이 이 위치 근처라면 F, 작은 blocking group으로 clearance를 낮출 수 있다. (metabolic switching 주의)',
+        lnk: 'Solvent-exposed라면 linker attachment 위치로 적합하다 — PROTAC, conjugate, probe 설계의 출발점.'
+      };
+      wrap.querySelector('[data-flat]').addEventListener('click', function() {
+        msg.innerHTML = '<b>Property handle discovered.</b> 이 위치는 potency에 거의 영향이 없다 — ADME를 조절할 수 있는 자유도.';
+        msg.classList.add('on');
+        use.classList.add('show');
+      });
+      wrap.querySelectorAll('[data-use]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          wrap.querySelectorAll('[data-use]').forEach(function(x){ x.classList.toggle('active', x === b); });
+          fb.textContent = U[b.dataset.use];
+        });
+      });
+    });
+  }
+
+  /* V8 – SAR zones */
+  function initSrZones() {
+    document.querySelectorAll('[data-sr-zones]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.sr-zones-svg');
+      var fb = wrap.querySelector('.sr-zones-fb');
+      var Z = {
+        anchor:  { c:'#2563eb', x:102, y:42, w:96, h:108, name:'Anchor (hinge-binding core)', msg: '수정하면 potency가 무너질 가능성이 큰 영역 (modification tolerance 낮음). Core를 바꾸는 것은 scaffold hopping 수준의 결정이다.' },
+        pocket:  { c:'#0d8a7a', x:208, y:30, w:110, h:84, name:'Pocket explorer (aniline region)', msg: 'Hydrophobic/selectivity pocket 방향. Moderate tolerance — potency와 selectivity를 조절하지만 logD 증가(LipE)를 함께 본다.' },
+        solvent: { c:'#c2410c', x:8,   y:96, w:90,  h:80, name:'Solvent-facing handle', msg: 'Tolerance가 높은 영역. Solubility, permeability, PK를 조절하는 property handle로 사용한다.' }
+      };
+      svgEl('polygon', { points: srHex(130, 96, 26, 0), fill:'#f8fafc', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('polygon', { points: srHex(175, 96, 26, 0), fill:'#f8fafc', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('line', { x1:188, y1:73, x2:220, y2:60, stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('text', { x:216, y:56 }, svg).textContent = 'NH';
+      svgEl('line', { x1:236, y1:58, x2:252, y2:58, stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('polygon', { points: srHex(278, 58, 24, 30), fill:'#f8fafc', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('polyline', { points:'108,110 80,130 56,128 34,150', fill:'none', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('text', { x:24, y:166 }, svg).textContent = 'R (solvent)';
+
+      Object.keys(Z).forEach(function(k) {
+        var z = Z[k];
+        var g = svgEl('g', { style:'cursor:pointer' }, svg);
+        svgEl('rect', { x:z.x, y:z.y, width:z.w, height:z.h, rx:14, fill:z.c, 'fill-opacity':.12, stroke:z.c, 'stroke-width':2, 'stroke-dasharray':'5 4' }, g);
+        g.addEventListener('click', function() {
+          fb.innerHTML = '<b>' + z.name + '</b> — What happens if modified? ' + z.msg;
+        });
+      });
+      fb.textContent = '영역을 탭하세요: anchor / pocket / solvent-facing.';
+    });
+  }
+
+  /* V9 – potency vs LipE overlay */
+  function initSrLipe() {
+    document.querySelectorAll('[data-sr-lipe]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.sr-lipe-svg');
+      var info = wrap.querySelector('.sr-lipe-info');
+      var pts = [
+        { id:'A', r:'H', nm:800, ld:1.5 }, { id:'B', r:'CH₃', nm:180, ld:2.0 }, { id:'C', r:'Cl', nm:70, ld:2.7 },
+        { id:'D', r:'OMe', nm:120, ld:2.1 }, { id:'E', r:'OH', nm:950, ld:1.2 }, { id:'F', r:'Phenyl', nm:8, ld:4.8 }
+      ];
+      function X(v){ return 40 + (v - 0.5) / 5.5 * 280; }
+      function Y(v){ return 230 - (v - 5.5) / 3 * 210; }
+      svgEl('line', { x1:40, y1:230, x2:320, y2:230, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+      svgEl('line', { x1:40, y1:20, x2:40, y2:230, stroke:'#c2cede', 'stroke-width':1.5 }, svg);
+      svgEl('text', { x:180, y:252, 'text-anchor':'middle' }, svg).textContent = 'logD →';
+      svgEl('text', { x:12, y:125, transform:'rotate(-90 12 125)', 'text-anchor':'middle' }, svg).textContent = 'pIC50 →';
+      [3, 4, 5].forEach(function(k) {
+        var x1 = 0.5, x2 = 5.5;
+        var y1 = x1 + k, y2 = x2 + k;
+        var ya = Math.max(5.5, y1), xa = ya - k;
+        var yb = Math.min(8.5, y2), xb = yb - k;
+        svgEl('line', { x1:X(xa), y1:Y(ya), x2:X(xb), y2:Y(yb), stroke:'#94a3b8', 'stroke-width':1.2, 'stroke-dasharray':'4 4' }, svg);
+        svgEl('text', { x:X(xb) + 3, y:Y(yb) + 12 }, svg).textContent = 'LipE ' + k;
+      });
+      pts.forEach(function(p) {
+        p.p = lePfromNM(p.nm); p.lipe = p.p - p.ld;
+        var g = svgEl('g', { style:'cursor:pointer' }, svg);
+        svgEl('circle', { cx:X(p.ld), cy:Y(p.p), r:12, fill:'#5b3fd4', 'fill-opacity':.22, stroke:'#5b3fd4', 'stroke-width':2 }, g);
+        svgEl('text', { x:X(p.ld), y:Y(p.p) + 4, 'text-anchor':'middle', style:'fill:#3d28a8' }, g).textContent = p.id;
+        g.addEventListener('click', function() {
+          info.innerHTML = '<div class="le-three-c"><span>Compound ' + p.id + ' (R = ' + p.r + ')</span><b>' + leFmtNM(p.nm) + '</b></div>' +
+            '<div class="le-three-c"><span>logD</span><b>' + p.ld.toFixed(1) + '</b></div>' +
+            '<div class="le-three-c"><span>LipE</span><b>' + p.lipe.toFixed(1) + '</b></div>';
+        });
+      });
+    });
+  }
+
+  /* V5 – biochemical vs cellular split */
+  function initSrSplit() {
+    document.querySelectorAll('[data-sr-split]').forEach(function(wrap) {
+      var box = wrap.querySelector('.sr-split');
+      var fb = wrap.querySelector('.sr-split-fb');
+      var cs = [
+        { id:'A', bio:20, cell:3000, pka:9.8, ld:1.6, perm:'low' },
+        { id:'B', bio:30, cell:500,  pka:8.9, ld:2.0, perm:'medium' },
+        { id:'C', bio:60, cell:120,  pka:7.8, ld:2.4, perm:'high' }
+      ];
+      function w(nm) { return Math.max(4, (lePfromNM(nm) - 5) / 4 * 100); }
+      cs.forEach(function(c) {
+        var el = document.createElement('button');
+        el.className = 'sr-split-row';
+        el.innerHTML = '<b>' + c.id + '</b><div class="sr-split-bars">' +
+          '<div class="sr-bar"><i class="bio" style="width:' + w(c.bio) + '%"></i><span>Biochem ' + leFmtNM(c.bio) + '</span></div>' +
+          '<div class="sr-bar"><i class="cell" style="width:' + w(c.cell) + '%"></i><span>Cell ' + leFmtNM(c.cell) + '</span></div></div>';
+        el.addEventListener('click', function() {
+          box.querySelectorAll('.sr-split-row').forEach(function(x){ x.classList.remove('sel'); });
+          el.classList.add('sel');
+          var gap = Math.round(c.cell / c.bio);
+          fb.innerHTML = '<b>Compound ' + c.id + '</b> — cell/biochem gap <b>' + gap + '×</b> · amine pKa ' + c.pka + ' · logD ' + c.ld + ' · permeability ' + c.perm +
+            '. ' + (gap > 50 ? 'Gap이 크다 → 낮은 permeability/exposure 가설.' : (gap > 5 ? 'Gap이 줄어든다 → neutral fraction 증가와 함께 exposure 개선.' : 'Gap이 거의 없다 → cell에서 biochemical potency가 잘 번역된다.'));
+        });
+        box.appendChild(el);
+      });
+    });
+  }
+
+  /* V4 – competing hypotheses */
+  function initSrHyp() {
+    document.querySelectorAll('[data-sr-hyp]').forEach(function(wrap) {
+      var box = wrap.querySelector('.sr-hyp');
+      var fb = wrap.querySelector('.sr-hyp-fb');
+      var cands = [
+        { n:'F',   ans:'E', why:'크기는 작지만 electron-withdrawing effect가 크다 → electronic 가설을 분리해서 시험한다.' },
+        { n:'CH₃', ans:'S', why:'Cl과 비슷한 hydrophobic volume을 주지만 electron-withdrawing하지 않다 → steric/hydrophobic 가설을 시험한다.' },
+        { n:'Br',  ans:'S', why:'Cl보다 크고 polarizable하다 → size 의존성(steric/hydrophobic)을 확장해 시험한다.' }
+      ];
+      var sel = {};
+      cands.forEach(function(c) {
+        var row = document.createElement('div');
+        row.className = 'sr-hyp-row';
+        row.innerHTML = '<b>' + c.n + '</b><div class="le-btnrow" style="margin:0;"><button class="bi-tab" data-v="S">Hydrophobic / steric</button><button class="bi-tab" data-v="E">Electronic</button></div>';
+        row.querySelectorAll('.bi-tab').forEach(function(b) {
+          b.addEventListener('click', function() {
+            sel[c.n] = b.dataset.v;
+            row.querySelectorAll('.bi-tab').forEach(function(x){ x.classList.toggle('active', x === b); });
+          });
+        });
+        box.appendChild(row);
+      });
+      wrap.querySelector('[data-check]').addEventListener('click', function() {
+        var ok = 0, txt = [];
+        cands.forEach(function(c) {
+          var good = sel[c.n] === c.ans;
+          if (good) ok++;
+          txt.push((good ? '✓ ' : (sel[c.n] ? '✗ ' : '– ')) + c.n + ': ' + c.why);
+        });
+        fb.innerHTML = '<b>' + ok + ' / ' + cands.length + '</b><br>' + txt.join('<br>');
+        fb.className = 'le-fb sr-hyp-fb' + (ok === cands.length ? ' ok' : '');
+      });
+    });
+  }
+
+  /* V11 – AI activity cliff */
+  function initSrAiCliff() {
+    document.querySelectorAll('[data-sr-aicliff]').forEach(function(wrap) {
+      var why = wrap.querySelector('.sr-ai-why');
+      wrap.querySelector('[data-why]').addEventListener('click', function(){ why.classList.toggle('show'); });
+    });
+  }
+
+  /* V10 – hypothesis tree */
+  function initSrTree() {
+    document.querySelectorAll('[data-sr-tree]').forEach(function(wrap) {
+      var box = wrap.querySelector('.sr-tree-branches');
+      var fb = wrap.querySelector('.sr-tree-fb');
+      var B = [
+        { h:'Hypothesis 1 · Hydrophobic cavity', a:'CH₃ / Br', msg:'Cl과 비슷한 hydrophobic volume을 가진 CH₃(electronics 다름), 더 큰 Br(size 의존성)로 cavity filling 가설을 시험한다. potency 증가가 logD 증가를 따라가는지 LipE로 확인.' },
+        { h:'Hypothesis 2 · Electronics', a:'F / CN', msg:'F, CN은 크기는 작지만 electron-withdrawing effect가 크다. 이들이 Cl처럼 potency를 올리면 electronic 가설을, 올리지 못하면 steric/hydrophobic 가설을 지지한다.' },
+        { h:'Hypothesis 3 · Conformational effect', a:'Constrained analogue', msg:'Substituent가 ring/linker의 preferred conformation을 바꿨다면, 같은 위치에 ortho-methyl이나 ring-constrained analogue를 넣어 conformational bias를 직접 시험한다 (4강).' }
+      ];
+      B.forEach(function(b) {
+        var el = document.createElement('button');
+        el.className = 'sr-tree-b';
+        el.innerHTML = '<b>' + b.h + '</b><span>→ ' + b.a + '</span>';
+        el.addEventListener('click', function() {
+          box.querySelectorAll('.sr-tree-b').forEach(function(x){ x.classList.toggle('active', x === el); });
+          fb.textContent = b.msg;
+        });
+        box.appendChild(el);
+      });
+      fb.textContent = 'Branch를 탭하세요.';
+    });
+  }
+
+  /* V12 – next compound challenge */
+  function initSrNext() {
+    document.querySelectorAll('[data-sr-next]').forEach(function(wrap) {
+      var goals = wrap.querySelectorAll('[data-goal]');
+      var box = wrap.querySelector('.sr-next-cands');
+      var det = wrap.querySelector('.sr-next-detail');
+      var C = [
+        { n:'R = F', hyp:'Cl 효과가 steric/hydrophobic인지 electronic인지 구분한다 (mechanistic discriminator).',
+          move:'Potency는 중간, logD 증가 작음 → LipE 유지 가능.', risk:'Potency 개선이 작아 보일 수 있다. 결과 해석에 steric 가설과 비교가 필요하다.',
+          alt:'CH₃는 같은 질문의 반대편(hydrophobic only)을 시험한다.', s:{ mech:3, pot:1, adme:2, bal:3 } },
+        { n:'R = cyclopropyl', hyp:'Et와 비슷한 부피에서 geometry가 다를 때 steric/shape 가설이 유지되는지 시험한다.',
+          move:'Potency 개선 가능, logD는 Et보다 약간 낮거나 비슷.', risk:'Cavity 형태가 맞지 않으면 i-Pr처럼 clash가 날 수 있다.',
+          alt:'Br은 더 큰 halogen으로 size 한계를 확인한다.', s:{ mech:3, pot:2, adme:1, bal:2 } },
+        { n:'R = 3-pyridyl', hyp:'Polar heteroaryl이 hydrophobic pocket과 양립하는지, logD를 낮추면서 potency를 유지할 수 있는지 시험한다.',
+          move:'logD 감소, solubility 개선 가능.', risk:'Buried N의 desolvation penalty로 potency 큰 손실 가능 (6강).',
+          alt:'CN은 이미 낮은 logD 영역에서 좋은 profile을 보여 안전한 대안이다.', s:{ mech:1, pot:1, adme:3, bal:2 } },
+        { n:'R = Br', hyp:'Cl보다 큰 hydrophobic group에서 potency가 더 오르는지 cavity 크기를 확장해 본다.',
+          move:'Potency ↑ 가능, logD ↑↑ (Cl보다 더 높음).', risk:'Lipophilic potency trap, solubility/clearance 악화.',
+          alt:'Et는 carbon-based 대안으로 비슷한 질문을 던진다.', s:{ mech:2, pot:3, adme:1, bal:1 } }
+      ];
+      var goal = 'mech', selected = -1;
+      var names = { mech:'Mechanism learning', pot:'Potency', adme:'ADME', bal:'Balanced lead' };
+
+      function stars(n) { return '★★★'.slice(0, n) + '☆☆☆'.slice(0, 3 - n); }
+      function render() {
+        goals.forEach(function(g){ g.classList.toggle('active', g.dataset.goal === goal); });
+        box.innerHTML = '';
+        C.forEach(function(c, i) {
+          var b = document.createElement('button');
+          b.className = 'sr-next-c' + (i === selected ? ' sel' : '');
+          b.innerHTML = '<b>' + c.n + '</b>' + (selected >= 0 ? '<span class="sr-star">' + stars(c.s[goal]) + '</span>' : '<span class="sr-star">?</span>');
+          b.addEventListener('click', function(){ selected = i; render(); });
+          box.appendChild(b);
+        });
+        if (selected < 0) { det.innerHTML = '<div class="le-fb">후보를 하나 선택하세요. 선택하면 해설이 공개됩니다.</div>'; return; }
+        var c = C[selected];
+        det.innerHTML = '<div class="sr-next-grid">' +
+          '<div><b>Hypothesis tested</b>' + c.hyp + '</div>' +
+          '<div><b>Expected property movement</b>' + c.move + '</div>' +
+          '<div><b>Risk</b>' + c.risk + '</div>' +
+          '<div><b>Alternative</b>' + c.alt + '</div></div>' +
+          '<div class="le-fb">목표가 “' + names[goal] + '”일 때 ' + c.n + '의 적합도: <b>' + stars(c.s[goal]) + '</b>. 정답은 하나로 고정되지 않고 목표에 따라 달라진다.</div>';
+      }
+      goals.forEach(function(g){ g.addEventListener('click', function(){ goal = g.dataset.goal; render(); }); });
+      render();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initSidebar();
     initScrollSpy();
@@ -3290,6 +3700,19 @@
     initLeHack();
     initLePareto();
     initLeAudit();
+
+    initSrDetective();
+    initSrMmp();
+    initSrSteric();
+    initSrCliff();
+    initSrFlat();
+    initSrZones();
+    initSrLipe();
+    initSrSplit();
+    initSrHyp();
+    initSrAiCliff();
+    initSrTree();
+    initSrNext();
 
     initHub();
   });

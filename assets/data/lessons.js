@@ -74,7 +74,7 @@ window.AIDD_TRACKS = [
         title: "SAR을 읽는 법",
         desc: "SAR table에서 신호와 noise를 구분하기. Matched molecular pair, activity cliff, additivity로 다음 analog를 결정합니다.",
         tags: ["SAR", "MMP", "Activity cliff", "Additivity"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 9,

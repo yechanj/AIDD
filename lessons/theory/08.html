@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L08 · SAR을 읽는 법 — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L08 · SAR을 읽는 법</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L08</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Reading SAR</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> SAR이란?</a></li>
+          <li><a href="#s03"><span class="num">03</span> SAR table 읽는 순서</a></li>
+          <li><a href="#s04"><span class="num">04</span> Matched Molecular Pair</a></li>
+          <li><a href="#s05"><span class="num">05</span> 원인을 구분하기</a></li>
+          <li><a href="#s06"><span class="num">06</span> Activity Cliff</a></li>
+          <li><a href="#s07"><span class="num">07</span> Flat SAR</a></li>
+          <li><a href="#s08"><span class="num">08</span> SAR의 세 층</a></li>
+          <li><a href="#s09"><span class="num">09</span> Series A · Hydrophobic</a></li>
+          <li><a href="#s10"><span class="num">10</span> Series B · Polar</a></li>
+          <li><a href="#s11"><span class="num">11</span> Series C · Heteroaryl</a></li>
+          <li><a href="#s12"><span class="num">12</span> Real Drug — EGFR</a></li>
+          <li><a href="#s13"><span class="num">13</span> SAR과 LE/LipE</a></li>
+          <li><a href="#s14"><span class="num">14</span> SAR과 ADME</a></li>
+          <li><a href="#s15"><span class="num">15</span> Assay Level 분리</a></li>
+          <li><a href="#s16"><span class="num">16</span> 가설 검증으로 읽기</a></li>
+          <li><a href="#s17"><span class="num">17</span> AI Connection</a></li>
+          <li><a href="#s18"><span class="num">18</span> Failure Case</a></li>
+          <li><a href="#s19"><span class="num">19</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 08</div>
+          <h1>SAR을 읽는 법</h1>
+          <p>"어떤 compound가 더 potent한가?"가 아니라 "왜 그런 SAR이 나왔고 다음 molecule은 무엇을 만들 것인가?"</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — 다음 compound 하나만 만들 수 있다면?</h2>
+
+          <p>같은 core scaffold를 가진 series가 있다. R group만 바꿨다.</p>
+
+          <div class="sr-tbl" style="--cols:1fr 1fr 1.4fr 1fr 1.2fr;">
+            <div class="sr-tr sr-tr--h"><span>Cpd</span><span>R</span><span>Biochem IC50</span><span>logD7.4</span><span>Permeability</span></div>
+            <div class="sr-tr"><b>A</b><span>H</span><span>800 nM</span><span>1.5</span><span>good</span></div>
+            <div class="sr-tr"><b>B</b><span>CH₃</span><span>180 nM</span><span>2.0</span><span>good</span></div>
+            <div class="sr-tr"><b>C</b><span>Cl</span><span>70 nM</span><span>2.7</span><span>good</span></div>
+            <div class="sr-tr"><b>D</b><span>OMe</span><span>120 nM</span><span>2.1</span><span>moderate</span></div>
+            <div class="sr-tr"><b>E</b><span>OH</span><span>950 nM</span><span>1.2</span><span>poor</span></div>
+            <div class="sr-tr"><b>F</b><span>Phenyl</span><span>8 nM</span><span>4.8</span><span>good</span></div>
+          </div>
+
+          <p>가장 potent한 compound는 F다. 그렇다면 F가 가장 좋은 molecule일까? <b>아직 모른다.</b> F는 A보다 약 100배 potent하지만 logD도 크게 증가했다. E는 OH를 넣었는데 potency가 오히려 악화됐다. B와 C에서는 hydrophobic substituent가 potency를 개선했다. 이 table에는 이미 여러 가설이 숨어 있다.</p>
+
+          <ul class="clean">
+            <li>R 위치에 hydrophobic pocket이 있는가?</li>
+            <li>OH는 unsatisfied polar group을 만드는가?</li>
+            <li>F의 potency는 단순 hydrophobicity로 산 것인가?</li>
+            <li>C의 Cl은 cavity filling인가, electronic effect인가?</li>
+            <li>OMe의 oxygen은 H-bond를 만드는가, 아니면 tolerance만 되는가?</li>
+          </ul>
+
+          <div class="oneline">SAR은 compound 순위를 외우는 표가 아니라, structure modification으로 binding과 property에 대한 가설을 업데이트하는 과정이다.</div>
+
+          <!-- V1 -->
+          <div class="viz" data-sr-detective>
+            <div class="viz__title">SAR Table Detective</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">처음엔 IC50만 보입니다. 정보를 하나씩 추가하면서 "best compound" 판단이 어떻게 바뀌는지 보세요.</p>
+            <div class="sr-det">
+              <div class="sr-det-btns">
+                <button class="bi-btn" data-add="logd">+ Show logD</button>
+                <button class="bi-btn" data-add="perm">+ Show permeability</button>
+                <button class="bi-btn" data-add="stab">+ Show metabolic stability</button>
+                <button class="bi-btn bi-btn--ghost" data-reset>Reset</button>
+              </div>
+              <div class="sr-det-table"></div>
+              <div class="le-fb sr-det-fb"></div>
+            </div>
+            <div class="bi-fine">* 대사 안정성 값은 개념 학습용 가상 데이터입니다.</div>
+            <div class="viz__msg">More data can change the interpretation of the same SAR.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> SAR은 무엇인가?</h2>
+
+          <p>SAR = <b>Structure–Activity Relationship</b>. Molecule의 구조를 바꿨을 때 biological activity가 어떻게 변하는지 보는 것이다. 하지만 실제 신약개발에서는 activity만 보면 부족하다. IC50 5 nM인 B가 solubility 불량, clearance 높음, hERG risk 높음이라면 100 nM인 A보다 좋은 lead가 아닐 수 있다.</p>
+
+          <div class="sr-chain">
+            <span>Structure</span><i>→</i><span>Activity</span><i>→</i><span>Property</span><i>→</i><span>PK</span>
+          </div>
+
+          <p>따라서 더 넓게는 <b>Structure–Property–Activity Relationship</b>으로 생각하는 것이 유용하다.</p>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> SAR table을 읽는 기본 순서</h2>
+
+          <p>가장 먼저 할 일은 potency 순위를 보는 것이 아니다. <b>어디가 동일하고 어디가 다른가?</b>를 본다.</p>
+
+          <div style="display:grid;gap:8px;margin:14px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>1. 무엇이 고정되어 있는가?</div><p>Core scaffold를 고정하고 variable region을 찾는다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>2. 무엇이 변했는가?</div><p>R1만 변경됐다면 R1 SAR을 비교하기 좋다. Molecule 전체가 크게 다르면 어떤 change가 결과를 만들었는지 해석하기 어렵다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>3. Activity가 얼마나 변했는가?</div><p>어떤 assay인지 반드시 명시한다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>4. Physicochemical property도 변했는가?</div><p>pKa, logD, solubility, permeability.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>5. 가능한 mechanism은?</div><p>Steric, electronic, pKa, conformation, desolvation …</p></div>
+            <div class="card card--ai" style="margin:0;"><div class="card__label"><span class="dot"></span>6. 이 가설을 구분할 다음 analogue는?</div><p>Potency 최대화가 아니라 가설 구분이 목적이다.</p></div>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> Matched Molecular Pair</h2>
+
+          <p>두 molecule이 거의 동일하고 하나의 작은 transformation만 다르면 matched molecular pair(MMP) 관점에서 볼 수 있다. H → CH₃, phenyl → pyridyl, OH → OMe, NH₂ → NHAc 같은 pair에서 modification effect를 상대적으로 깨끗하게 비교할 수 있다.</p>
+
+          <!-- V2 -->
+          <div class="viz" data-sr-mmp>
+            <div class="viz__title">Matched Molecular Pair Viewer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Pair를 넘겨 보세요. 변하지 않은 부분은 흐리게, 바뀐 부분만 강조됩니다. (가상 데이터)</p>
+            <div class="sr-mmp">
+              <div class="sr-mmp-mol"><span class="fix">Core–linker–aryl</span><span class="sr-mmp-r sr-mmp-r-a"></span><i>→</i><span class="fix">Core–linker–aryl</span><span class="sr-mmp-r sr-mmp-r-b"></span></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>ΔpIC50</span><b class="mm-p">—</b></div>
+                <div class="le-three-c"><span>ΔlogD</span><b class="mm-l">—</b></div>
+                <div class="le-three-c"><span>Δ solubility</span><b class="mm-s">—</b></div>
+              </div>
+              <div class="le-btnrow" style="margin-top:12px;justify-content:center;">
+                <button class="bi-btn bi-btn--ghost" data-prev>◀</button>
+                <span class="sr-mmp-count"></span>
+                <button class="bi-btn bi-btn--ghost" data-next>▶</button>
+              </div>
+              <div class="le-fb sr-mmp-fb"></div>
+            </div>
+            <div class="viz__msg">Compare the smallest possible structural perturbation first.</div>
+          </div>
+
+          <h3>하지만 인과관계로 단정하면 안 된다</h3>
+          <p>H(1 µM) → CH₃(50 nM) 결과만 보면 "methyl이 binding을 좋게 했다"고 생각하기 쉽다. 하지만 가능한 mechanism은 여러 개다: hydrophobic contact, cavity filling, water displacement, conformational bias, logD 증가, cellular exposure 증가. MMP는 좋은 experiment지만 mechanism을 자동으로 알려주지는 않는다. 그리고 <b>한 pair의 결과를 일반 법칙으로 만들지 않는다.</b></p>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> SAR에서 구분해야 하는 원인들</h2>
+
+          <p>같은 potency improvement라도 원인이 다를 수 있다.</p>
+          <div class="bi-chips-static">
+            <span>direct interaction</span><span>steric filling</span><span>electronics</span><span>pKa / ionization</span><span>conformation</span><span>desolvation</span><span>water displacement</span><span>lipophilicity</span><span>permeability</span><span>metabolism</span>
+          </div>
+
+          <h3>① Sterics</h3>
+          <p>Substituent size를 H → CH₃ → Et → i-Pr로 키웠을 때 IC50가 1 µM → 200 nM → 60 nM → 2 µM이라면, 해당 위치에 어느 정도 크기의 cavity가 있지만 i-Pr는 너무 크다는 해석이 가능하다. 즉 "Et가 제일 potent하다"가 아니라 <b>pocket의 steric tolerance를 mapping했다</b>고 생각한다. 다음 analogue로 cyclopropyl을 시험하면 비슷한 hydrophobic volume에서 geometry가 다르므로 size, shape, conformational effect를 더 분리할 수 있다.</p>
+
+          <!-- V3 -->
+          <div class="viz" data-sr-steric>
+            <div class="viz__title">Steric Pocket Scanner</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Substituent를 선택해 cavity에 맞춰 보세요.</p>
+            <div class="sr-steric">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-r="H">H</button>
+                <button class="bi-tab" data-r="Me">CH₃</button>
+                <button class="bi-tab" data-r="Et">Et</button>
+                <button class="bi-tab" data-r="iPr">i-Pr</button>
+              </div>
+              <svg class="sr-steric-svg" viewBox="0 0 320 170" role="img" aria-label="Steric pocket scanner"></svg>
+              <div class="le-three">
+                <div class="le-three-c"><span>IC50</span><b class="st-ic">—</b></div>
+                <div class="le-three-c"><span>Fit</span><b class="st-fit">—</b></div>
+              </div>
+              <div class="le-fb sr-steric-fb"></div>
+            </div>
+            <div class="viz__msg">SAR can map pocket volume.</div>
+          </div>
+
+          <h3>② Electronics</h3>
+          <p>para-CH₃, F, CN, NO₂처럼 substituent를 바꾸면 크기뿐 아니라 electron distribution이 변해 neighboring pKa, H-bond acceptor strength, π interaction, metabolic oxidation이 달라질 수 있다. Basic amine 옆 substituent가 electron-withdrawing해질수록 cellular activity가 좋아진다면, electron withdrawal → amine basicity 감소 → neutral fraction 증가 → permeability 증가 → cellular activity 증가라는 가설을 세울 수 있다. 이 경우 개선은 target binding 때문이 아닐 수도 있다.</p>
+
+          <h3>③ H-bond SAR</h3>
+          <p>R = H에서 OH로 바꿔 새 H-bond을 기대했는데 potency가 떨어졌다면 2강·5강을 다시 적용한다: partner 없음, poor geometry, desolvation penalty, ligand orientation 변화, permeability 감소. 이때 OH와 OMe의 비교가 좋은 clue를 준다. OH(HBD + HBA)가 inactive이고 OMe(HBA only)가 active라면 OH donor가 필요하지 않거나, OH의 strong solvation이 불리하거나, OMe의 methyl이 hydrophobic contact를 만들었을 수 있다. OH와 OMe는 donor, size, lipophilicity가 모두 다르므로 F, CN, CH₂OH 같은 analogue를 추가해 변수를 분리한다. 좋은 SAR design은 <b>한 변수를 최대한 분리하는 방향</b>으로 간다.</p>
+
+          <h3>④ pKa SAR</h3>
+          <p>Substituent를 바꾸면서 amine pKa가 9.8 → 8.9 → 7.8로 감소하고 biochemical potency는 거의 동일한데 cell potency만 점점 좋아진다면, pKa 감소 → neutral fraction 증가 → passive permeability 증가 → intracellular exposure 증가를 먼저 의심한다. "substituent가 protein에 더 잘 붙었다"는 해석은 틀릴 수 있다.</p>
+
+          <h3>⑤ Conformational SAR</h3>
+          <p>Linker에 methyl을 넣었더니 potency가 50배 좋아졌는데 methyl이 protein과 직접 접촉하지 않는다면 4강의 conformational bias를 의심한다. Methyl을 여러 위치에 붙여(position 1 ↑, position 2 변화 없음, position 3 ↓↓) 보면 protein contact뿐 아니라 ligand torsion을 mapping할 수 있다. Methyl은 <b>conformational probe</b>로도 쓸 수 있다.</p>
+
+          <h3>⑥ Lipophilicity SAR</h3>
+          <p>H → CH₃ → Et → phenyl로 potency가 계속 오르고 logD도 거의 선형으로 오른다면 의심한다. 7강의 lipophilic potency trap이다. LipE가 낮아지면 target-specific interaction보다 hydrophobicity로 potency를 사고 있을 가능성이 있으므로 selectivity, solubility, PPB, microsomal stability를 확인한다.</p>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Activity Cliff — 거의 같은데 activity가 무너진다</h2>
+
+          <p>Compound A(para-F)는 IC50 20 nM, Compound B(meta-F)는 5 µM이다. 구조 차이는 매우 작은데 activity는 250배 차이다. 이를 <b>activity cliff</b>라고 부른다.</p>
+
+          <p>Smooth SAR에서는 구조를 조금 바꾸면 activity도 조금 변한다. Activity cliff는 특정 threshold가 있음을 알려준다: critical H-bond geometry, steric clash, conformational switch, protein state, water network, pKa shift. 즉 <b>귀찮은 noise가 아니라 매우 가치 있는 정보</b>일 수 있다.</p>
+
+          <!-- V6 -->
+          <div class="viz" data-sr-cliff>
+            <div class="viz__title">Activity Cliff Map</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">구조 유사도는 높은데 activity가 급락하는 두 점입니다. (개념도)</p>
+            <div class="sr-cliff">
+              <svg class="sr-cliff-svg" viewBox="0 0 340 220" role="img" aria-label="Activity cliff"></svg>
+              <button class="bi-btn" data-inspect>Inspect difference</button>
+              <div class="sr-cliff-cards">
+                <button class="sr-cliff-card" data-why="steric">steric</button>
+                <button class="sr-cliff-card" data-why="conf">conformation</button>
+                <button class="sr-cliff-card" data-why="water">water</button>
+                <button class="sr-cliff-card" data-why="pka">pKa</button>
+              </div>
+              <div class="le-fb sr-cliff-fb"></div>
+            </div>
+            <div class="viz__msg">Small structure change can produce discontinuous biology.</div>
+          </div>
+
+          <h3>AI에게도 어렵다</h3>
+          <p>2D similarity가 매우 높은 두 molecule의 activity가 크게 다르면 ML model에게 어려운 sample이 된다. Global similarity 위주로 학습한 모델은 A ≈ B라고 보고 비슷한 prediction을 할 수 있다. 실제 pocket에서는 1 Å 차이나 torsion change가 매우 중요할 수 있다.</p>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> Flat SAR — 바꿔도 activity가 안 변한다</h2>
+
+          <p>H(100 nM), F(90 nM), CH₃(110 nM), OMe(120 nM). 거의 차이가 없다. 이것도 중요한 결과다. 가능한 의미는 세 가지다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Solvent-exposed</div><p>Substituent가 target과 직접 interaction하지 않는다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Tolerant pocket</div><p>여러 substituent를 수용한다.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Property handle</div><p>Affinity보다 ADME를 조절하기 좋은 위치.</p></div>
+          </div>
+
+          <p>특히 세 번째가 중요하다. Potency에 거의 영향이 없는 position은 solubility 개선, permeability 조절, metabolic blocking, linker attachment에 쓸 수 있다. Flat SAR는 실패가 아니라 <b>property-engineering handle</b>을 찾은 것일 수 있다.</p>
+
+          <!-- V7 -->
+          <div class="viz" data-sr-flat>
+            <div class="viz__title">Flat SAR as Opportunity</div>
+            <div class="sr-flat">
+              <div class="sr-flat-row"><span>H</span><b>100 nM</b></div>
+              <div class="sr-flat-row"><span>F</span><b>90 nM</b></div>
+              <div class="sr-flat-row"><span>CH₃</span><b>110 nM</b></div>
+              <div class="sr-flat-row"><span>OMe</span><b>120 nM</b></div>
+              <div class="sr-flat-msg">Nothing happened? <button class="bi-btn" data-flat>Tap</button></div>
+              <div class="sr-flat-use">
+                <div class="sr-flat-q">이 위치를 어떻게 활용할까?</div>
+                <div class="le-btnrow">
+                  <button class="bi-tab" data-use="sol">solubilizing group</button>
+                  <button class="bi-tab" data-use="met">metabolic block</button>
+                  <button class="bi-tab" data-use="lnk">linker</button>
+                </div>
+                <div class="le-fb sr-flat-fb"></div>
+              </div>
+            </div>
+            <div class="viz__msg">Flat potency SAR can reveal a region available for property engineering.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> SAR의 세 가지 층</h2>
+
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Layer 1 · Binding SAR</div><p>Protein interaction. Steric, H-bond, hydrophobic, conformation.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Layer 2 · Physicochemical SAR</div><p>pKa, logD, solubility, permeability.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Layer 3 · Biological SAR</div><p>Biochemical → cellular → in vivo.</p></div>
+          </div>
+          <p>같은 structural change가 세 층에서 서로 다른 방향으로 움직일 수 있다. 어느 층에서 SAR이 깨지는지를 봐야 한다.</p>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> Example Series A — Hydrophobic pocket scan</h2>
+
+          <p>H → CH₃ → Et → i-Pr → phenyl. Potency 상승과 logD 상승을 동시에 본다.</p>
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>질문</div>
+            <p>이것은 <b>cavity filling</b>인가, <b>lipophilic potency trap</b>인가? Potency가 오르는 만큼 logD도 선형으로 오른다면 후자를 의심하고, 크기를 늘렸는데 potency만 선택적으로 오르거나(Et까지) 한계(i-Pr)가 보이면 전자의 근거가 된다. LipE로 두 가지를 구분하자.</p>
+          </div>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Example Series B — Polar group scan</h2>
+
+          <p>H → OH → OMe → NH₂ → CN. HBD/HBA, desolvation, pKa, permeability를 연결해서 읽는다.</p>
+          <div class="bi-grid2">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>OH / NH₂</div><p>HBD 추가. Partner가 없으면 desolvation penalty. NH₂는 protonation까지 고려.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>OMe / CN</div><p>HBA only(또는 weak HBA). OMe는 hydrophobic contact와 metabolism, CN은 작고 linear하며 logD 비용이 낮다.</p></div>
+          </div>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Example Series C — Heteroaryl scan</h2>
+
+          <p>Phenyl → 2-pyridyl → 3-pyridyl → 4-pyridyl. Ring N 위치 변화만으로 potency가 크게 달라질 수 있다. 6강의 heteroatom scan이다.</p>
+          <div class="sr-tbl" style="--cols:1.4fr 1fr 1fr;">
+            <div class="sr-tr sr-tr--h"><span>Ring</span><span>IC50</span><span>해석 단서</span></div>
+            <div class="sr-tr"><b>Phenyl</b><span>60 nM</span><span>기준</span></div>
+            <div class="sr-tr"><b>2-pyridyl</b><span>1.2 µM</span><span>N 방향 어긋남?</span></div>
+            <div class="sr-tr"><b>3-pyridyl</b><span>15 nM</span><span>H-bond 가능?</span></div>
+            <div class="sr-tr"><b>4-pyridyl</b><span>3 µM</span><span>buried N?</span></div>
+          </div>
+          <div class="bi-fine">* 개념 학습용 가상 데이터. 위치별 차이는 H-bond geometry, desolvation, dipole로 설명될 수 있으나 구조 정보 없이 단정하지 않는다.</div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Real Drug Example — EGFR 4-anilinoquinazoline</h2>
+
+          <p>Gefitinib이나 erlotinib 같은 초기 EGFR inhibitor에서는 4-anilinoquinazoline 계열 scaffold가 대표적이다. Conceptual하게 세 영역으로 나눌 수 있다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Quinazoline core</div><p>Hinge region과 interaction하는 anchor.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Aniline region</div><p>Hydrophobic pocket 방향으로 확장.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Solvent-facing substituent</div><p>Physicochemical property와 exposure를 조절.</p></div>
+          </div>
+
+          <p>이 사례에서 배울 것은 약물 이름이 아니다. 핵심은 <b>어떤 region을 바꾸면 target recognition이 깨지고, 어떤 region은 비교적 자유롭게 property optimization에 쓸 수 있는가</b>를 찾는 것이다. Molecule을 하나의 덩어리가 아니라 <b>functional SAR zones</b>로 나눈다.</p>
+
+          <!-- V8 -->
+          <div class="viz" data-sr-zones>
+            <div class="viz__title">Functional SAR Zones</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Generic 4-anilinoquinazoline-like scaffold입니다. 영역을 탭하세요. (개념도)</p>
+            <div class="sr-zones">
+              <svg class="sr-zones-svg" viewBox="0 0 340 190" role="img" aria-label="SAR zones"></svg>
+              <div class="le-fb sr-zones-fb"></div>
+            </div>
+            <div class="viz__msg">Different parts of a molecule have different optimization freedom.</div>
+          </div>
+
+          <h3>SAR map = hypothesis map</h3>
+          <p>Scaffold에 label을 붙인다: Zone A(essential anchor, tolerance 낮음), Zone B(selectivity pocket, moderate), Zone C(solvent exposed, high), Zone D(metabolic soft spot, 최적화 필요). Zone A modification → potency collapse: anchor likely critical. Zone C → potency flat: property handle. Zone B hydrophobic growth → potency ↑ + logD ↑: pocket filling 가능성이지만 lipophilic efficiency concern. SAR은 potency map이 아니라 <b>hypothesis map</b>이다.</p>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> SAR과 LE/LipE</h2>
+
+          <p>Potency improvement를 볼 때 얼마나 커졌나, logD가 얼마나 올랐나, efficiency가 좋아졌나를 함께 본다. 7강의 연결이다.</p>
+
+          <!-- V9 -->
+          <div class="viz" data-sr-lipe>
+            <div class="viz__title">Potency vs LipE Overlay</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">오프닝 case의 series를 logD–pIC50 평면에 그렸습니다. 점을 탭하세요.</p>
+            <svg class="sr-lipe-svg" viewBox="0 0 340 260" role="img" aria-label="logD vs pIC50"></svg>
+            <div class="le-three sr-lipe-info"></div>
+            <div class="le-fb sr-lipe-fb">점선은 LipE가 같은 선(개념)입니다. 선 위쪽일수록 lipophilicity 대비 potency가 효율적입니다.</div>
+            <div class="viz__msg">Not every upward potency move is an efficient move.</div>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> SAR과 ADME</h2>
+
+          <p>Potency SAR과 ADME SAR이 서로 반대로 움직일 수 있다. 예: Cl 추가 → potency ↑ → logD ↑ → solubility ↓ → microsomal stability ↓. 이 경우 어떻게 판단할까?</p>
+
+          <div class="sr-tbl" style="--cols:.8fr 1fr 1fr 1.2fr;">
+            <div class="sr-tr sr-tr--h"><span>R</span><span>IC50</span><span>Solubility</span><span>Microsomal stab.</span></div>
+            <div class="sr-tr"><b>H</b><span>500 nM</span><span>high</span><span>medium</span></div>
+            <div class="sr-tr"><b>CH₃</b><span>100 nM</span><span>medium</span><span>medium</span></div>
+            <div class="sr-tr"><b>Cl</b><span>40 nM</span><span>low</span><span>poor</span></div>
+            <div class="sr-tr"><b>CN</b><span>120 nM</span><span>medium</span><span>good</span></div>
+          </div>
+
+          <p>Potency만 보면 Cl. 하지만 CN은 조금 덜 potent하면서 solubility와 metabolic stability가 더 좋다. 그렇다면 CN이 더 좋은 lead일 수 있다. 실제 lead optimization에서는 SAR과 <b>Property–Activity Relationship</b>을 함께 본다. 어떤 structural change가 activity와 property를 각각 어떻게 움직였는가?</p>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> Assay Level을 분리해서 SAR 읽기</h2>
+
+          <p>binding affinity, biochemical IC50, cellular IC50, target engagement, phenotype를 섞지 않는다. Biochemical SAR과 cellular SAR이 다르면 <b>그 차이 자체가 정보</b>다.</p>
+
+          <div class="sr-tbl" style="--cols:.8fr 1fr 1fr 1fr;">
+            <div class="sr-tr sr-tr--h"><span>Cpd</span><span>EWG strength</span><span>Biochem</span><span>Cell</span></div>
+            <div class="sr-tr"><b>A</b><span>low</span><span>20 nM</span><span>3 µM</span></div>
+            <div class="sr-tr"><b>B</b><span>medium</span><span>30 nM</span><span>500 nM</span></div>
+            <div class="sr-tr"><b>C</b><span>high</span><span>60 nM</span><span>120 nM</span></div>
+          </div>
+          <p>Biochemical potency는 조금 나빠지는데 cellular potency는 크게 좋아진다. Target binding이 좋아진 것이 아니라 <b>cell exposure가 개선된 것</b>일 수 있다. "A가 가장 potent하다"고 말하려면 binding인지 enzyme인지 cell인지 phenotype인지 명확히 해야 한다.</p>
+
+          <!-- V5 -->
+          <div class="viz" data-sr-split>
+            <div class="viz__title">Biochemical vs Cellular SAR Split</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Compound를 탭해 property를 확인하세요. 막대가 길수록 potent합니다. (log scale, 가상 데이터)</p>
+            <div class="sr-split"></div>
+            <div class="le-fb sr-split-fb">Compound를 선택하세요.</div>
+            <div class="viz__msg">The gap between assay levels is itself mechanistic data.</div>
+          </div>
+
+          <h3>Binding SAR ≠ Cell SAR</h3>
+          <p>A는 Kd 5 nM / Cell IC50 5 µM, B는 Kd 30 nM / Cell IC50 100 nM이다. Binding은 A가 낫고 cell은 B가 훨씬 낫다. "SAR이 이상하다"가 아니라 두 compound 사이에 permeability, efflux, intracellular distribution 차이가 있다는 단서다. 이것이 <b>translational SAR</b>이다: Structure → Binding → Property → Cell exposure → Activity 전체를 연결한다.</p>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> SAR을 가설 검증으로 읽기</h2>
+
+          <div class="sr-chain">
+            <span>Observation</span><i>→</i><span>Hypothesis</span><i>→</i><span>Discriminating analogue</span><i>→</i><span>Experiment</span><i>→</i><span>Interpretation</span><i>→</i><span>Next design</span>
+          </div>
+
+          <h3>다음 compound를 고르는 기준</h3>
+          <p>다음 analogue는 "가장 potent할 것 같은 molecule"이어야 하는가? 아니다. 더 좋은 기준은 <b>현재 가장 중요한 uncertainty를 가장 잘 줄이는 molecule</b>이다.</p>
+
+          <p>예: Hypothesis A는 "Cl이 hydrophobic cavity를 채워 potency를 올린다", Hypothesis B는 "Cl이 electronic effect로 neighboring ring interaction을 바꾼다"이다. CH₃는 비슷한 hydrophobic effect를 주지만 electronics가 다르고, F는 sterically 작지만 electronic effect가 크다. Cl / CH₃ / F 비교로 두 hypothesis를 어느 정도 분리할 수 있다.</p>
+
+          <div class="bi-grid2">
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>나쁜 방식</div><p>Potent해 보이는 substituent를 계속 붙인다.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>좋은 방식</div><p>각 analogue가 하나의 질문에 답하도록 설계한다: size? charge? HBD? pKa? conformation?</p></div>
+          </div>
+
+          <!-- V4 -->
+          <div class="viz" data-sr-hyp>
+            <div class="viz__title">Electronic vs Steric Experiment</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Cl analogue가 H보다 훨씬 potent합니다. 각 analogue가 어느 가설을 시험하는지 표시하세요.</p>
+            <div class="sr-hyp"></div>
+            <button class="bi-btn" data-check>Check</button>
+            <div class="le-fb sr-hyp-fb"></div>
+            <div class="viz__msg">Choose analogues that separate competing explanations.</div>
+          </div>
+        </section>
+
+        <!-- S17 -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> AI Drug Discovery Connection</h2>
+
+          <p>QSAR model은 이름 그대로 SAR을 학습한다. 하지만 학습하는 것은 <b>historical dataset의 SAR pattern</b>이며 반드시 binding mechanism 자체는 아니다.</p>
+
+          <h3>Local SAR vs Global model</h3>
+          <p>특정 scaffold series 안에서는 para-Cl → potency 증가 패턴을 모델이 잘 배운다. 하지만 완전히 새로운 scaffold에서 같은 효과가 있다는 보장은 없다. Cl의 3D 위치와 pocket context가 달라지기 때문이다. Series A에서 phenyl → pyridyl로 potency가 오르고 Series B에서 ↓↓↓일 수 있다. Medicinal chemistry rule은 거의 항상 context dependent다.</p>
+
+          <h3>MMP + ML</h3>
+          <p>Matched molecular pair data는 AI와 궁합이 좋다. H → Cl 같은 transformation의 ΔpIC50, ΔlogD, Δclearance distribution을 여러 series에서 학습하면 새로운 compound의 expected change를 제안할 수 있다. 하지만 평균 +0.6 log unit이라고 "Cl이 potency를 4배 올린다"는 법칙이 아니다. <b>MMP는 prior expectation을 주고, structure는 project-specific interpretation을 준다.</b></p>
+
+          <h3>Activity cliff와 ML</h3>
+          <p>Tanimoto similarity 0.9 이상인데 activity가 1000배 다른 pair는 fingerprint-similarity 기반 모델에게 어렵다. 이런 모델은 smooth relationship을 기대하기 때문이다. 그런데 medicinal chemist는 "methyl 하나로 왜 100배 변했지?"를 파고든다. 높은 overall R²만 보고 모델이 medicinal chemistry를 잘한다고 판단하면 안 된다.</p>
+
+          <!-- V11 -->
+          <div class="viz" data-sr-aicliff>
+            <div class="viz__title">AI Activity Cliff Failure</div>
+            <div class="sr-ai">
+              <div class="sr-ai-grid">
+                <div class="sr-ai-c"><h6>Compound X</h6><div>AI 예측 <b>50 nM</b></div><div>실험 <b class="exp">20 nM</b></div></div>
+                <div class="sr-ai-c"><h6>Compound Y</h6><div>AI 예측 <b>60 nM</b></div><div>실험 <b class="exp bad">6 µM</b></div></div>
+              </div>
+              <div class="sr-ai-note">X와 Y는 methyl 하나만 다릅니다 (Tanimoto &gt; 0.9).</div>
+              <button class="bi-btn" data-why>Why did AI smooth the cliff?</button>
+              <ul class="clean sr-ai-why">
+                <li>높은 structural similarity → 비슷한 값으로 예측</li>
+                <li>Training set에 cliff 예시가 적음</li>
+                <li>Protein context를 보지 않음</li>
+                <li>3D geometry 변화에 둔감함</li>
+              </ul>
+            </div>
+            <div class="viz__msg">Good average prediction can still miss medicinally important local discontinuities.</div>
+          </div>
+
+          <h3>Model shortcut과 SAR audit</h3>
+          <p>Training set에서 potent compound가 대체로 더 크고 aromatic하고 lipophilic했다면, 모델은 "aromatic ring 추가 = active"라는 shortcut을 배울 수 있다. AI가 top compound를 추천하면 SAR audit을 한다: ① 기존 series 대비 어떤 structural change인가, ② 그 change가 historical SAR와 일치하는가, ③ potency gain이 logD/MW 증가로 설명되지 않는가, ④ activity cliff 영역인가, ⑤ 모델이 extrapolation하고 있는가.</p>
+        </section>
+
+        <!-- S18 -->
+        <section id="s18" class="section">
+          <h2><span class="sec-no">18</span> Failure Case — AI가 para-Cl을 추천했다</h2>
+
+          <p>Training dataset에서 para-Cl analogue가 반복적으로 active했다. AI는 새로운 scaffold에서도 para-Cl analogue를 top rank했다. 실험 결과 potency 개선은 없었고 solubility만 악화됐다. 왜?</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>What the model missed</div>
+            <p>기존 scaffold에서는 para-position이 hydrophobic pocket을 향했다. 새 scaffold에서는 같은 para-Cl이 solvent-exposed였다. 2D transformation은 같지만 3D context가 달랐다. AI는 <b>transformation pattern</b>을 학습했지만 <b>binding geometry</b>를 놓쳤다.</p>
+          </div>
+
+          <h3>SAR을 말하는 법</h3>
+          <div class="bi-grid2">
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>하지 말아야 할 말</div><p>"Cl이 좋다." "OH가 나쁘다." "Pyridine이 solubility를 올린다." — 일반법칙처럼 말하지 않는다.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>좋은 표현</div><p>"이 series의 이 위치에서는 Cl substitution이 potency 개선과 연관되며, cavity filling 또는 hydrophobic interaction이 가능한 가설이다."</p></div>
+          </div>
+          <p>Scientist의 언어는 확률적이다: <i>suggests, consistent with, may indicate, hypothesis, needs confirmation</i>. <i>proves, always, definitely</i>는 쓰지 않는다. Drug discovery data는 대부분 여러 mechanism이 동시에 존재하기 때문이다.</p>
+        </section>
+
+        <!-- S19 -->
+        <section id="s19" class="section">
+          <h2><span class="sec-no">19</span> Scientist's Thinking — 실제 SAR table 분석</h2>
+
+          <div class="sr-tbl" style="--cols:.7fr .8fr 1.1fr 1.1fr .9fr;">
+            <div class="sr-tr sr-tr--h"><span>Cpd</span><span>R</span><span>Biochem</span><span>Cell</span><span>logD</span></div>
+            <div class="sr-tr"><b>A</b><span>H</span><span>300 nM</span><span>1.5 µM</span><span>1.8</span></div>
+            <div class="sr-tr"><b>B</b><span>CH₃</span><span>80 nM</span><span>300 nM</span><span>2.3</span></div>
+            <div class="sr-tr"><b>C</b><span>Cl</span><span>25 nM</span><span>150 nM</span><span>3.0</span></div>
+            <div class="sr-tr"><b>D</b><span>OH</span><span>500 nM</span><span>6 µM</span><span>1.3</span></div>
+            <div class="sr-tr"><b>E</b><span>OMe</span><span>90 nM</span><span>700 nM</span><span>2.0</span></div>
+            <div class="sr-tr"><b>F</b><span>CN</span><span>70 nM</span><span>180 nM</span><span>1.7</span></div>
+          </div>
+
+          <div style="display:grid;gap:8px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 1 — Hydrophobicity trend</div><p>A → B → C에서 potency와 logD가 함께 증가한다. Hydrophobic pocket 가능성이 있지만 lipophilic potency trap 가능성도 있다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 2 — OH 결과</div><p>D는 potency가 크게 악화됐다. Buried polar group, poor desolvation compensation, geometry mismatch 가능성. Cell activity가 더 크게 나빠졌으므로 permeability 문제가 추가됐을 수 있다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 3 — OMe</div><p>E의 biochemical potency는 B와 비슷하지만 cell potency가 상대적으로 나쁘다. Permeability, metabolism, intracellular exposure 차이를 본다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 4 — CN</div><p>F는 Cl보다 biochemical potency가 조금 낮지만 logD가 훨씬 낮고(1.7 vs 3.0) cell translation이 좋다. 7강의 LipE 관점에서 매우 매력적이다. (LipE: C 7.6 − 3.0 = 4.6, F 7.15 − 1.7 = 5.5)</p></div>
+          </div>
+
+          <!-- V10 -->
+          <div class="viz" data-sr-tree>
+            <div class="viz__title">SAR Hypothesis Tree</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Observation: <b>Cl ≫ H</b> potency. 가설 branch를 탭해 구분용 analogue를 확인하세요.</p>
+            <div class="sr-tree">
+              <div class="sr-tree-root">Cl ≫ H</div>
+              <div class="sr-tree-branches"></div>
+              <div class="le-fb sr-tree-fb"></div>
+            </div>
+            <div class="viz__msg">SAR should generate testable branching hypotheses.</div>
+          </div>
+
+          <h3>다음 compound 하나만 만들 수 있다면?</h3>
+          <p>R = F는 sterically 작고, electron withdrawing하고, hydrophobic contribution이 modest하다. Cl 효과가 steric/hydrophobic인지 electronic인지 구분하는 데 도움이 되는 <b>mechanistic discriminator</b>다. Cyclopropyl은 carbon-based hydrophobic group이고 Cl과 비슷한 공간을 차지할 수 있어 steric hypothesis를 시험한다. 가장 좋은 next compound는 목표(mechanism understanding / cell potency 최대화 / PK 개선)에 따라 달라진다. 즉 analogue design에도 목적함수가 필요하다.</p>
+
+          <!-- V12 -->
+          <div class="viz" data-sr-next>
+            <div class="viz__title">Next Compound Challenge</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">8-compound SAR table을 보고 <b>하나만</b> 합성할 수 있다면 무엇을 만들겠습니까?</p>
+            <div class="sr-tbl" style="--cols:.6fr .8fr 1fr 1fr .8fr;">
+              <div class="sr-tr sr-tr--h"><span>Cpd</span><span>R</span><span>Biochem</span><span>Cell</span><span>logD</span></div>
+              <div class="sr-tr"><b>A</b><span>H</span><span>300 nM</span><span>1.5 µM</span><span>1.8</span></div>
+              <div class="sr-tr"><b>B</b><span>CH₃</span><span>80 nM</span><span>300 nM</span><span>2.3</span></div>
+              <div class="sr-tr"><b>C</b><span>Cl</span><span>25 nM</span><span>150 nM</span><span>3.0</span></div>
+              <div class="sr-tr"><b>D</b><span>OH</span><span>500 nM</span><span>6 µM</span><span>1.3</span></div>
+              <div class="sr-tr"><b>E</b><span>OMe</span><span>90 nM</span><span>700 nM</span><span>2.0</span></div>
+              <div class="sr-tr"><b>F</b><span>CN</span><span>70 nM</span><span>180 nM</span><span>1.7</span></div>
+              <div class="sr-tr"><b>G</b><span>Et</span><span>45 nM</span><span>260 nM</span><span>2.8</span></div>
+              <div class="sr-tr"><b>H</b><span>i-Pr</span><span>900 nM</span><span>4 µM</span><span>3.2</span></div>
+            </div>
+            <div class="sr-next">
+              <div class="sr-next-goal">
+                <span>프로젝트 목표:</span>
+                <button class="bi-tab" data-goal="mech">Mechanism learning</button>
+                <button class="bi-tab" data-goal="pot">Potency</button>
+                <button class="bi-tab" data-goal="adme">ADME</button>
+                <button class="bi-tab" data-goal="bal">Balanced lead</button>
+              </div>
+              <div class="sr-next-cands"></div>
+              <div class="sr-next-detail"></div>
+            </div>
+            <div class="viz__msg">The best next compound depends on the question you need answered.</div>
+          </div>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>Part 1 통합</div>
+            <p>1강 binding free energy → 2강 H-bond/ionic/π/hydrophobic → 3강 pKa/logD → 4강 stereochemistry/conformation → 5강 functional group → 6강 bioisostere → 7강 LE/LipE → 8강: <b>이 모든 것을 실제 structure series를 읽는 데 통합한다.</b></p>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>8강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>SAR은 compound ranking이 아니라 structure modification을 이용한 hypothesis testing이다.</b>
+              <span>SAR is not ranking. It is hypothesis testing.</span>
+            </li>
+            <li>
+              <b>같은 potency 변화도 steric, electronic, pKa, conformation, desolvation, lipophilicity 등 전혀 다른 원인으로 발생할 수 있다.</b>
+              <span>Matched pair first, 그러나 인과관계로 단정하지 않는다.</span>
+            </li>
+            <li>
+              <b>Biochemical SAR와 cellular SAR이 다르면 그것은 오류가 아니라 exposure와 biology에 대한 중요한 정보다.</b>
+              <span>The gap between assay levels is information.</span>
+            </li>
+            <li>
+              <b>Activity cliff와 flat SAR 모두 중요한 정보다. Cliff는 critical feature를, flat SAR는 property-engineering handle을 알려줄 수 있다.</b>
+              <span>Activity cliff is information. Flat SAR is information.</span>
+            </li>
+            <li>
+              <b>가장 좋은 다음 analogue는 가장 potent할 것 같은 molecule이 아니라, 현재 가장 중요한 가설을 가장 잘 검증하는 molecule일 수 있다.</b>
+              <span>The best next molecule is often the most informative one.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>SAR table을 보면 이 순서로 읽는다</div>
+          <p><b>1.</b> 무엇을 바꿨나? → <b>2.</b> 어느 assay에서 얼마나 변했나? → <b>3.</b> pKa / logD / property도 변했나? → <b>4.</b> Steric / electronic / conformational / solvation 중 무엇이 가능한가? → <b>5.</b> LE/LipE는 좋아졌나? → <b>6.</b> 다음 compound로 어떤 hypothesis를 검증할까?</p>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>H → CH₃ → Et → i-Pr의 IC50가 1 µM → 200 nM → 60 nM → 3 µM이다. 가장 가능성 높은 structural interpretation은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              해당 위치에 hydrophobic/steric cavity가 있으며 Et까지는 favorable하게 수용하지만 i-Pr는 steric limit를 넘었을 가능성이 있다.
+              <div class="exp">다음 analogue로 cyclopropyl 등을 사용해 size와 shape 가설을 더 확인할 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>A: biochemical 10 nM, cell 5 µM. B: biochemical 40 nM, cell 150 nM. 어떤 conclusion이 적절한가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              A가 target level에서는 더 potent하지만 B가 cellular exposure 또는 target engagement 측면에서 훨씬 유리할 가능성이 있다.
+              <div class="exp">pKa, logD, permeability, efflux 등을 확인하고 싶다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Phenyl → pyridyl 후 potency가 100배 감소했다. "Pyridine은 이 target에 나쁘다"고 결론내려도 되는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다. 이 series의 해당 위치에서 pyridyl N 도입이 불리했다고 말하는 것이 더 정확하다.
+              <div class="exp">가능한 원인: buried polar N, desolvation, geometry 변화, electronic effect, pKa 변화 등.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>A → B에서 phenyl ring을 하나 추가했다. Potency 30배 증가, logD 2.0 → 5.2. 어떻게 평가할까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Raw potency는 개선됐지만 lipophilicity cost가 매우 크다.
+              <div class="exp">LipE, solubility, PPB, metabolism, selectivity를 확인해야 한다. 단순 medicinal chemistry 성공으로 보기는 어렵다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>AI model은 compound X와 Y를 거의 같은 potency로 예측했다. 두 molecule은 methyl 하나만 다르다. 실험에서는 300배 차이가 났다. 어떤 현상을 의심하는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Activity cliff다.
+              <div class="exp">Methyl이 critical cavity filling, conformational bias, water displacement, steric switch 등을 만들었을 수 있다. 2D similarity가 높아도 3D interaction landscape가 크게 달라질 수 있다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>Part 1 — Medicinal Chemistry 완료 · 다음 강의 예고</h3>
+          <div class="big">9강 · Solubility</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 12px;">여기까지가 Part 1이다. 이제부터는 molecule 자체의 chemistry에서 한 단계 바깥으로 나간다. 녹지 않으면? 막을 통과하지 못하면? 혈중 protein에 대부분 붙어 있으면? CYP가 바로 대사해버리면? Target affinity가 아무리 좋아도 실제 drug가 될 수 없다.</p>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:0 0 16px;">다음 질문: <b>Docking도 좋고 biochemical potency도 5 nM인데, compound concentration을 올리자 이상한 결과가 나온다. 알고 보니 제대로 녹아 있지도 않았다.</b> thermodynamic vs kinetic solubility, pH–solubility, crystal lattice, precipitation, assay artifact를 연결하고, "AI가 predicted potency 높은 insoluble molecule을 추천했다면 그 prediction은 어떤 의미인가?"를 다룬다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="07.html">◀ 7강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="09.html" aria-disabled="true">▶ 9강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>
