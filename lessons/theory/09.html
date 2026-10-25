@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L09 · Solubility — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L09 · Solubility</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L09</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Solubility</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> Solubility란?</a></li>
+          <li><a href="#s03"><span class="num">03</span> Thermodynamic vs Kinetic</a></li>
+          <li><a href="#s04"><span class="num">04</span> Intrinsic Solubility</a></li>
+          <li><a href="#s05"><span class="num">05</span> Lattice vs Solvation</a></li>
+          <li><a href="#s06"><span class="num">06</span> pKa–pH–Solubility</a></li>
+          <li><a href="#s07"><span class="num">07</span> pH–Solubility 식</a></li>
+          <li><a href="#s08"><span class="num">08</span> Lipophilicity</a></li>
+          <li><a href="#s09"><span class="num">09</span> Greasy + Crystalline</a></li>
+          <li><a href="#s10"><span class="num">10</span> Crystal Packing</a></li>
+          <li><a href="#s11"><span class="num">11</span> Polar한데 안 녹는 이유</a></li>
+          <li><a href="#s12"><span class="num">12</span> Amorphous vs Crystalline</a></li>
+          <li><a href="#s13"><span class="num">13</span> Salt Formation</a></li>
+          <li><a href="#s14"><span class="num">14</span> Precipitation</a></li>
+          <li><a href="#s15"><span class="num">15</span> Aggregation</a></li>
+          <li><a href="#s16"><span class="num">16</span> Real Drug — Kinase inhibitor</a></li>
+          <li><a href="#s17"><span class="num">17</span> 개선 전략</a></li>
+          <li><a href="#s18"><span class="num">18</span> Solubility vs Permeability</a></li>
+          <li><a href="#s19"><span class="num">19</span> AI Connection</a></li>
+          <li><a href="#s20"><span class="num">20</span> Failure Case</a></li>
+          <li><a href="#s21"><span class="num">21</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 09 &nbsp;·&nbsp; Part 2</div>
+          <h1>Solubility</h1>
+          <p>Potency가 아무리 좋아도 molecule이 녹지 않으면 무슨 의미가 있을까?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — IC50 = 8 nM. 정말 8 nM일까?</h2>
+
+          <p>Virtual screening에서 아주 좋은 compound를 찾았다. Docking score도 좋았고 enzyme assay에서도 <b>IC50 = 8 nM</b>이 나왔다. 팀은 흥분했다. 그런데 이상한 점이 생겼다. 다른 날 assay를 반복하면 8 nM, 25 nM, 70 nM처럼 값이 크게 흔들렸다. 농도를 더 높여 dose–response curve를 확인하자 high-concentration region에서 curve shape도 이상했다.</p>
+
+          <p>문제는 target이 아니었다. <b>compound</b>였다. 실제로 aqueous assay buffer에서 compound가 완전히 녹아 있지 않았다.</p>
+
+          <ul class="clean">
+            <li>Nominal concentration과 실제 dissolved concentration은 같은가?</li>
+            <li>pKa가 solubility를 어떻게 바꾸는가?</li>
+            <li>Lipophilicity가 높으면 왜 잘 안 녹는가?</li>
+            <li>Crystal packing이 왜 중요할까? Amorphous form은 왜 더 잘 녹을 수 있을까?</li>
+          </ul>
+
+          <div class="oneline">Solubility는 molecule–water interaction만의 문제가 아니다. 분자를 crystal lattice에서 꺼내는 비용과 solution에서 안정화하는 이득의 균형이다.</div>
+
+          <!-- V1 -->
+          <div class="viz" data-sl-added>
+            <div class="viz__title">"Added vs Dissolved" — Assay Well</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Added concentration을 올려 보세요. Solubility limit를 넘으면 dissolved concentration은 plateau가 됩니다.</p>
+            <div class="sl-well">
+              <div class="le-slider"><label>Added (nominal): <b class="ad-a">10 µM</b></label><input type="range" class="ad-a-in" min="0.5" max="30" step="0.5" value="10" /></div>
+              <div class="le-slider"><label>Solubility limit: <b class="ad-l">2 µM</b></label><input type="range" class="ad-l-in" min="0.5" max="30" step="0.5" value="2" /></div>
+              <div class="sl-well-vis">
+                <div class="sl-well-cup"><div class="sl-pp"></div><div class="sl-diss"></div></div>
+                <div class="sl-well-legend">
+                  <div><i class="c-diss"></i>Dissolved <b class="ad-d">—</b></div>
+                  <div><i class="c-pp"></i>Precipitate / aggregate <b class="ad-p">—</b></div>
+                </div>
+              </div>
+              <div class="le-fb ad-fb"></div>
+            </div>
+            <div class="viz__msg">Nominal concentration is not always dissolved concentration.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> Solubility란 무엇인가?</h2>
+
+          <p>Solubility는 특정 조건에서 compound가 solution에 <b>dissolved state</b>로 존재할 수 있는 최대 농도다. 따라서 total added amount와 dissolved amount를 구분해야 한다. 그리고 반드시 조건을 같이 봐야 한다.</p>
+          <div class="bi-chips-static">
+            <span>pH</span><span>temperature</span><span>buffer</span><span>ionic strength</span><span>crystal form</span><span>salt form</span>
+          </div>
+          <p>"Solubility = 50 µM"만으로는 정보가 부족할 수 있다. 어떤 pH, 어떤 방법, 어떤 solid form인지가 함께 필요하다.</p>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Thermodynamic vs Kinetic Solubility</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Thermodynamic solubility</h5>
+              <p>고체와 solution이 충분한 시간 동안 <b>평형</b>에 도달했을 때의 dissolved concentration. 가장 엄밀한 의미의 solubility.</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>Kinetic solubility</h5>
+              <p>DMSO stock을 aqueous buffer에 희석했을 때 일정 시간 동안 <b>겉보기로 유지</b>되는 용해량. Discovery assay에서 자주 측정된다.</p>
+            </div>
+          </div>
+
+          <p>DMSO에서 aqueous buffer로 빠르게 옮기면 compound가 일시적으로 <b>supersaturated state</b>에 있을 수 있다. 평형 solubility보다 높은 농도로 잠깐 존재하다가 nucleation → crystal growth → precipitation이 일어난다. 따라서 assay 시간에 따라 dissolved concentration이 변할 수 있고, 이것이 assay reproducibility를 망칠 수 있다. 시작 직후엔 mostly dissolved, 30분 후 precipitation 시작, 2시간 후 더 많이 precipitated — incubation time이 달라지면 apparent activity도 달라질 수 있다. 즉 solubility는 단순 formulation 문제가 아니라 <b>experimental interpretation 문제</b>다.</p>
+
+          <!-- V3 -->
+          <div class="viz" data-sl-time>
+            <div class="viz__title">Thermodynamic vs Kinetic Solubility Timeline</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">시간 slider를 움직여 DMSO 희석 후 dissolved concentration 변화를 보세요. (개념 모델)</p>
+            <svg class="sl-time-svg" viewBox="0 0 340 220" role="img" aria-label="Kinetic vs thermodynamic solubility timeline"></svg>
+            <div class="le-slider"><label>Time: <b class="tm-t">0 min</b></label><input type="range" class="tm-in" min="0" max="120" step="1" value="0" /></div>
+            <div class="le-fb tm-fb"></div>
+            <div class="viz__msg">Kinetic solubility can temporarily exceed equilibrium solubility.</div>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> Intrinsic Solubility (S₀)</h2>
+
+          <p>Ionizable compound에서는 <b>neutral species 자체의 solubility</b>를 intrinsic solubility, <b>S₀</b>라고 한다. 3강에서 배웠듯 ionizable drug는 pH에 따라 charge state가 바뀌고, ionized form은 일반적으로 water에 더 잘 녹는다. 그래서 pH-dependent total solubility와 S₀를 구분해야 한다.</p>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> Solubility를 결정하는 두 가지 큰 힘</h2>
+
+          <p>고체 compound가 물에 녹는 과정을 두 단계로 생각해 보자.</p>
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Step 1 · Crystal lattice에서 빠져나오기</h5><p>강한 crystal packing → 불리</p></div>
+            <div class="panel panel--b"><h5>Step 2 · Solution에서 안정화되기</h5><p>Polar/ionized species → 유리</p></div>
+          </div>
+          <div class="oneline">Crystal lattice penalty vs Solvation gain</div>
+
+          <p>초보적으로 "polar = 잘 녹음, lipophilic = 안 녹음"이라고 생각하기 쉽지만 부족하다. 매우 polar한 molecule도 crystal 안에서 strong H-bond network, ionic network, tight packing을 형성하면 잘 안 녹을 수 있다. Solubility는 <b>molecule–water interaction</b>과 <b>molecule–molecule interaction</b>의 경쟁이다.</p>
+
+          <p>4강의 conformation도 여기 다시 등장한다. Flat하고 rigid한 molecule은 binding geometry와 낮은 conformational entropy penalty 측면에서 유리하지만 crystal packing도 잘 되어 solubility가 떨어질 수 있다. <b>Rigidity ↑는 binding에는 좋고 solubility에는 나쁠 수 있다.</b></p>
+
+          <!-- V2 -->
+          <div class="viz" data-sl-balance>
+            <div class="viz__title">Crystal-to-Solution Energy Balance</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Lattice 강도와 solvation 강도를 조절해 보세요. (개념 학습용)</p>
+            <div class="sl-bal">
+              <div class="le-slider"><label>Crystal lattice strength: <b class="bl-a">5</b></label><input type="range" class="bl-a-in" min="0" max="10" step="1" value="5" /></div>
+              <div class="le-slider"><label>Solvation (polarity / ionization): <b class="bl-b">5</b></label><input type="range" class="bl-b-in" min="0" max="10" step="1" value="5" /></div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>Lattice escape cost</span><div class="sl-track"><i class="bl-ma"></i></div></div>
+                <div class="sl-meter"><span>Solvation benefit</span><div class="sl-track"><i class="bl-mb"></i></div></div>
+                <div class="sl-meter"><span>Net → solubility tendency</span><div class="sl-track"><i class="bl-mn"></i></div></div>
+              </div>
+              <div class="le-fb bl-fb"></div>
+            </div>
+            <div class="viz__msg">Dissolution requires both escaping the solid and surviving in water.</div>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> pKa–pH–Solubility Relationship</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Weak acid · HA ⇌ H⁺ + A⁻</h5>
+              <p>pH ↑ → A⁻ 비율 ↑ → apparent solubility ↑</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>Weak base · BH⁺ ⇌ B + H⁺</h5>
+              <p>pH ↓ → BH⁺ 비율 ↑ → apparent solubility ↑</p>
+            </div>
+          </div>
+
+          <p>예: pKa 8.5의 weak base가 pH 7.4 buffer에서 상당한 fraction이 protonated되어 있어 water solubility가 괜찮다고 하자. assay pH를 9로 올리면 neutral fraction이 증가해 precipitation이 더 쉽게 일어난다. 그래서 <b>assay pH는 potency에도 영향</b>을 줄 수 있다 — target protein state, ligand protonation, binding interaction뿐 아니라 ligand solubility도 변하기 때문이다.</p>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> General pH–Solubility Equation</h2>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Monoprotic compound</div>
+            <p><b>약산:</b> S = S₀ (1 + 10<sup>pH − pKa</sup>)<br><b>약염기:</b> S = S₀ (1 + 10<sup>pKa − pH</sup>)</p>
+          </div>
+          <p>식을 외우는 것보다 의미가 중요하다. Weak acid에서 pH가 pKa보다 충분히 높아지면 ionized population이 늘어 total dissolved concentration이 커진다. Weak base는 반대다. <b>pKa와 pH가 solubility를 움직인다.</b> (단, 실제로는 salt solubility product 등 한계가 있어 무한정 증가하지는 않는다.)</p>
+
+          <!-- V4 -->
+          <div class="viz" data-sl-ph>
+            <div class="viz__title">pH–Solubility Explorer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">산/염기를 고르고 pKa와 S₀를 조절해 보세요. (y축은 log scale)</p>
+            <div class="sl-ph">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-type="acid">Weak acid</button>
+                <button class="bi-tab" data-type="base">Weak base</button>
+              </div>
+              <svg class="sl-ph-svg" viewBox="0 0 340 230" role="img" aria-label="pH solubility profile"></svg>
+              <div class="le-slider"><label>pKa: <b class="ph-k">5.0</b></label><input type="range" class="ph-k-in" min="2" max="11" step="0.1" value="5" /></div>
+              <div class="le-slider"><label>S₀ (intrinsic): <b class="ph-s">1 µM</b></label><input type="range" class="ph-s-in" min="-1" max="2" step="0.1" value="0" /></div>
+              <div class="le-fb ph-fb"></div>
+            </div>
+            <div class="viz__msg">Ionization can multiply apparent solubility above intrinsic solubility.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> Lipophilicity와 Solubility</h2>
+
+          <p>Lipophilic molecule은 water보다 hydrophobic environment를 선호한다. 일반적으로 logP/logD ↑ → water solvation ↓ → aqueous solubility ↓ 가능이다. 하지만 이 관계도 완벽하지 않다. <b>Crystal lattice</b> 때문이다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Compound A</h5><p>logP 4 · melting point 낮음</p></div>
+            <div class="panel panel--b"><h5>Compound B</h5><p>logP 3 · melting point 매우 높음</p></div>
+          </div>
+          <p>logP만 보면 B가 더 잘 녹을 것 같지만, B가 매우 안정한 crystal을 만들면 오히려 더 안 녹을 수 있다. <b>Solubility ≠ lipophilicity alone.</b></p>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> General Solubility Equation의 직관</h2>
+
+          <p>전통적으로 solubility와 logP, melting point 사이의 관계를 이용한 empirical model들이 사용되어 왔다. 정확한 식보다 직관이 중요하다.</p>
+          <div class="bi-grid2">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Lipophilicity 높음</div><p>Water solvation 불리.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Melting point 높음</div><p>Crystal lattice 탈출 불리.</p></div>
+          </div>
+          <div class="oneline">Greasy + high-melting crystalline = poor-solubility risk</div>
+
+          <!-- V5 -->
+          <div class="viz" data-sl-matrix>
+            <div class="viz__title">Greasy vs Crystalline 2×2 Matrix</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">사분면을 탭해 보세요.</p>
+            <div class="sl-mx">
+              <div class="sl-mx-y">Crystal lattice ↑</div>
+              <div class="sl-mx-grid">
+                <button class="sl-mx-q" data-q="lg"><b>Low lipophilicity<br>+ strong lattice</b><span>의외로 poor 가능</span></button>
+                <button class="sl-mx-q sl-mx-q--bad" data-q="hh"><b>High lipophilicity<br>+ strong lattice</b><span>최고 위험</span></button>
+                <button class="sl-mx-q sl-mx-q--good" data-q="ll"><b>Low lipophilicity<br>+ weak lattice</b><span>최고 solubility 경향</span></button>
+                <button class="sl-mx-q" data-q="hl"><b>High lipophilicity<br>+ weak lattice</b><span>mixed</span></button>
+              </div>
+              <div class="sl-mx-x">Lipophilicity →</div>
+            </div>
+            <div class="le-fb sl-mx-fb">Solubility has a solution axis and a solid-state axis.</div>
+            <div class="viz__msg">Solubility has a solution axis and a solid-state axis.</div>
+          </div>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Crystal Packing</h2>
+
+          <p>다음 요소들이 crystal lattice를 안정화한다.</p>
+          <div class="bi-chips-static">
+            <span>flat aromatic molecule</span><span>symmetry</span><span>planarity</span><span>π–π stacking</span><span>strong H-bond network</span>
+          </div>
+          <p>Flat aromatic molecule(multiple phenyl, fused aromatic, planar heteroaromatic core)은 target pocket에 잘 맞고 potency가 좋아도 crystal packing이 너무 강해서 solubility가 낮을 수 있다. Symmetric molecule도 규칙적으로 packing하기 쉬워서, medicinal chemist가 의도적으로 methyl 추가, heteroatom 위치 변경, stereocenter 도입, nonplanarity 도입으로 symmetry를 깨는 경우가 있다. 목적은 target interaction뿐 아니라 <b>solid-state packing disruption</b>이다.</p>
+
+          <!-- V6 -->
+          <div class="viz" data-sl-pack>
+            <div class="viz__title">Planar Packing Animation</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Flat 분자는 카드처럼 촘촘히 쌓입니다. sp³ center를 넣어 보세요.</p>
+            <svg class="sl-pack-svg" viewBox="0 0 340 190" role="img" aria-label="Crystal packing"></svg>
+            <button class="bi-btn" data-sp3>Add sp³ center</button>
+            <div class="le-fb sl-pack-fb"></div>
+            <div class="viz__msg">Small 3D changes can disrupt packing without dramatically changing polarity.</div>
+          </div>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> "Polar한데도 안 녹는" 이유</h2>
+
+          <p>Compound가 안 녹는다. 가장 쉬운 생각은 "OH 하나 붙이자"이다. 정말 해결될까? 가능하지만 보장되지 않는다. OH는 water interaction을 늘리지만 동시에 crystal 안에서 strong intermolecular H-bond를 만들 수 있다. 그 결과 crystal lattice가 더 안정해질 수도 있다. 분자끼리 서로 강하게 H-bond해서 crystal이 안정하면 water와 interaction할 기회가 줄어든다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>High polarity ≠ high solubility</div>
+            <p>OH 추가 후 logP ↓인데 solubility도 ↓가 나올 수 있다. Solution property만 보고 solid-state property를 무시하면 안 된다.</p>
+          </div>
+
+          <!-- V7 -->
+          <div class="viz" data-sl-polar>
+            <div class="viz__title">Polar Yet Insoluble</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Compound A에 OH를 추가해 두 효과를 저울에 올려 보세요. (개념 학습용)</p>
+            <div class="sl-polar">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-c="A">A · no OH</button>
+                <button class="bi-tab" data-c="B">B · + OH</button>
+              </div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>Hydration benefit (water side)</span><div class="sl-track"><i class="po-h"></i></div></div>
+                <div class="sl-meter"><span>Crystal lattice penalty (solid side)</span><div class="sl-track"><i class="po-c"></i></div></div>
+                <div class="sl-meter"><span>Net solubility tendency</span><div class="sl-track"><i class="po-n"></i></div></div>
+              </div>
+              <div class="le-fb po-fb"></div>
+            </div>
+            <div class="viz__msg">More polarity can strengthen both hydration and crystal packing.</div>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Amorphous vs Crystalline</h2>
+
+          <p>Crystalline solid는 규칙적인 lattice를 가진다. Amorphous solid는 장거리 규칙성이 부족한 <b>higher-energy state</b>다. 일반적으로 crystal lattice를 깨는 비용이 적어 apparent solubility나 dissolution이 증가할 수 있다. 하지만 thermodynamically 불안정해서 시간이 지나면 amorphous → crystalline으로 변할 수 있다(recrystallization). Solubility gain과 physical stability 사이 trade-off이며 formulation science로 이어진다.</p>
+
+          <div class="card card--bio">
+            <div class="card__label"><span class="dot"></span>Polymorphism</div>
+            <p>같은 molecule도 여러 crystal form(polymorph)을 만들 수 있고, 각각 lattice packing, melting point, solubility, dissolution rate가 다를 수 있다. <b>같은 chemical structure라고 항상 같은 solubility를 갖는 것이 아니다.</b> AI가 molecular graph만으로 solubility를 예측할 때의 중요한 한계다.</p>
+          </div>
+
+          <!-- V8 -->
+          <div class="viz" data-sl-amorph>
+            <div class="viz__title">Crystal / Amorphous Toggle</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">물에 넣은 뒤 시간에 따른 dissolved concentration (개념도)</p>
+            <svg class="sl-am-svg" viewBox="0 0 340 200" role="img" aria-label="Amorphous vs crystalline dissolution"></svg>
+            <div class="le-btnrow" style="margin-top:8px;">
+              <button class="bi-tab" data-f="cry">Crystalline</button>
+              <button class="bi-tab" data-f="amo">Amorphous</button>
+              <button class="bi-tab" data-f="both">Both</button>
+            </div>
+            <div class="le-fb am-fb"></div>
+            <div class="viz__msg">Higher solubility can come at the cost of physical stability.</div>
+          </div>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Salt Formation</h2>
+
+          <p>Ionizable compound에서 흔한 전략이다. Basic drug의 free base → hydrochloride salt, acidic drug의 free acid → sodium/potassium salt. Salt formation은 dissolution, solubility, manufacturability를 개선할 수 있다.</p>
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Salt가 molecule 자체를 바꾸는 것은 아니다</div>
+            <p>Amine hydrochloride를 복용해도 physiological environment에서 drug는 pH에 따라 여러 protonation state로 평형을 이룬다. Salt form은 <b>solid form / formulation strategy</b>이지 molecule의 intrinsic pKa를 바꾸는 것이 아니다.</p>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Precipitation — DMSO Dilution</h2>
+
+          <p>Virtual screening hit는 대부분 DMSO stock으로 준비한다. 20 mM DMSO stock을 aqueous buffer로 1:1000 희석하면 최종 20 µM이다. 하지만 compound aqueous solubility가 3 µM이면 20 µM가 실제 dissolved concentration이 아니다. 더 까다로운 경우는 <b>delayed precipitation</b>이다. 희석 직후에는 투명해서 "잘 녹았다"고 생각하지만 20분 뒤 눈에 안 보이는 microscopic precipitate가 생긴다. 그래서 kinetic solubility measurement가 중요하다. 그리고 DMSO solubility와 aqueous solubility는 완전히 다른 문제다.</p>
+
+          <!-- V9 -->
+          <div class="viz" data-sl-dmso>
+            <div class="viz__title">DMSO Dilution Simulator</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Stock = 10 mM DMSO. 희석 배수, 용해도 한계, incubation time을 조절하세요. (개념 모델)</p>
+            <div class="sl-dm">
+              <div class="le-slider"><label>Dilution: 1 : <b class="dm-d">500</b></label><input type="range" class="dm-d-in" min="100" max="2000" step="50" value="500" /></div>
+              <div class="le-slider"><label>Aqueous solubility limit: <b class="dm-l">5 µM</b></label><input type="range" class="dm-l-in" min="0.5" max="50" step="0.5" value="5" /></div>
+              <div class="le-slider"><label>Incubation: <b class="dm-t">0 min</b></label><input type="range" class="dm-t-in" min="0" max="120" step="1" value="0" /></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>Final nominal</span><b class="dm-n">—</b></div>
+                <div class="le-three-c"><span>Dissolved now</span><b class="dm-c">—</b></div>
+                <div class="le-three-c"><span>State</span><b class="dm-s">—</b></div>
+              </div>
+              <div class="le-fb dm-fb"></div>
+            </div>
+            <div class="viz__msg">Assay preparation can create transient non-equilibrium states.</div>
+          </div>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> Aggregation과 False Activity</h2>
+
+          <p>매우 hydrophobic한 compound는 aqueous solution에서 작은 <b>colloidal aggregate</b>를 형성할 수 있다. 이 aggregate가 enzyme surface에 nonspecifically 붙어서 function을 억제하면 <b>false-positive inhibition</b>처럼 보인다. 가능한 clue는 steep dose–response, assay condition dependence, detergent 추가 시 activity 감소, multiple unrelated enzymes 억제, poor reproducibility 등이다. 즉 high potency hit가 반드시 target-specific binder는 아니다.</p>
+
+          <!-- V10 -->
+          <div class="viz" data-sl-aggr>
+            <div class="viz__title">Aggregation False Positive</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Detergent를 추가하면 어떤 일이 일어나는지 비교하세요. (개념도)</p>
+            <div class="sl-ag">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-det="0">No detergent</button>
+                <button class="bi-tab" data-det="1">+ Detergent</button>
+              </div>
+              <div class="sl-ag-grid">
+                <div class="sl-ag-card"><h6>True inhibitor</h6><div class="sl-ag-pic">● → [ active site ]</div><div class="sl-track"><i class="ag-t"></i></div><b class="ag-tv">—</b></div>
+                <div class="sl-ag-card"><h6>Aggregator</h6><div class="sl-ag-pic ag-pic">◍◍◍ ▒ enzyme</div><div class="sl-track"><i class="ag-a bad"></i></div><b class="ag-av">—</b></div>
+              </div>
+              <div class="le-fb ag-fb"></div>
+            </div>
+            <div class="viz__msg">Not every inhibition signal is molecular recognition.</div>
+          </div>
+
+          <h3>AI virtual screening과 연결</h3>
+          <p>AI가 compound X를 predicted active probability 0.98로 추천했고 docking score도 좋다. 실험에서도 처음에는 inhibition이 강하다. 그런데 compound가 insoluble하고 aggregate를 만든다면 AI가 맞춘 것이 아니다. 모델이 예측하려던 것은 target-specific molecular recognition이었을 텐데 실험 signal은 nonspecific physicochemical artifact일 수 있다. Dataset의 "active" label이 target-specific binding인지 aggregation artifact인지 모를 수 있고, 이런 contaminated label은 AI를 잘못 학습시킨다(25강).</p>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> Real Drug Example — Kinase inhibitor-like case</h2>
+
+          <p>특정 숫자 암기보다 개념을 보자. Gefitinib 같은 kinase inhibitor-like 분자는 <b>flat aromatic heterocycle</b> core(hinge binding)와 lipophilic substituent(hydrophobic pocket)를 가진다. 이 특징은 kinase potency에는 유리하지만 solubility에는 불리할 수 있다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Flat heteroaromatic core</div><p>Hinge binding과 낮은 entropy penalty. 그러나 crystal packing 강화.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Lipophilic substituent</div><p>Hydrophobic pocket potency ↑. logD ↑, solubility ↓.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Solvent-facing basic group</div><p>8강의 property handle. Ionizable group으로 pH-dependent solubility 개선.</p></div>
+          </div>
+          <p>이 계열은 potency–solubility–formulation trade-off를 보여 주는 conceptual 사례다. 8강에서 본 solvent-facing region이 solubilizing group을 붙이는 자리로 쓰이는 이유다. 단, ionizable group은 permeability, hERG, distribution을 바꿀 수 있다(3강의 trade-off).</p>
+        </section>
+
+        <!-- S17 -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> Medicinal Chemistry Strategy to Improve Solubility</h2>
+
+          <div style="display:grid;gap:8px;margin:14px 0;">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>전략 1 — Lipophilicity 낮추기</div><p>phenyl → pyridyl, Cl → F, alkyl chain 단축. 단, potency 손실 가능.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>전략 2 — Ionizable group 조정</div><p>Basic amine 같은 ionizable center 도입으로 pH-dependent solubility ↑. permeability, off-target, hERG, distribution 변화 주의.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>전략 3 — Crystal packing 깨기</div><p>planarity 감소, stereocenter 도입, symmetry 깨기, sp³ character 증가. logP를 크게 바꾸지 않고도 solubility를 개선할 수 있는 매우 중요한 전략.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>전략 4 — Bioisostere</div><p>6강 적용: phenyl → heteroaryl, amide → heterocycle로 lipophilicity, polarity, crystal packing을 동시에 바꾼다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>전략 5 — Salt / Formulation</div><p>Salt, amorphous formulation, solid dispersion, particle engineering. 그러나 early discovery에서 molecule 자체의 poor solubility가 너무 심하면 candidate quality가 떨어진다.</p></div>
+          </div>
+          <p>"Escape from flatland"처럼 sp³ character를 늘리는 전략이 자주 논의되지만, sp³ ↑ = 항상 better는 아니다. 핵심은 packing, conformation, target complementarity를 함께 보는 것이다.</p>
+
+          <!-- V11 -->
+          <div class="viz" data-sl-lab>
+            <div class="viz__title">Solubility Optimization Lab</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Poorly soluble lead에 modification을 적용해 보세요. (개념 지표, 중복 선택 가능)</p>
+            <div class="sl-lab">
+              <div class="sl-lab-btns">
+                <button class="bi-tab" data-m="pyr">Phenyl → pyridyl</button>
+                <button class="bi-tab" data-m="clf">Cl → F</button>
+                <button class="bi-tab" data-m="amine">Add amine</button>
+                <button class="bi-tab" data-m="sp3">Add sp³ center</button>
+                <button class="bi-tab" data-m="sym">Break symmetry</button>
+              </div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>logD</span><div class="sl-track"><i class="lb-logd"></i></div><b class="lb-logd-v"></b></div>
+                <div class="sl-meter"><span>Ionization</span><div class="sl-track"><i class="lb-ion"></i></div></div>
+                <div class="sl-meter"><span>Packing risk</span><div class="sl-track"><i class="lb-pack bad"></i></div></div>
+                <div class="sl-meter"><span>Solubility tendency</span><div class="sl-track"><i class="lb-sol"></i></div></div>
+                <div class="sl-meter"><span>Permeability risk</span><div class="sl-track"><i class="lb-perm bad"></i></div></div>
+              </div>
+              <div class="le-fb lb-fb"></div>
+            </div>
+            <div class="viz__msg">There are multiple ways to improve solubility, and each changes other properties.</div>
+          </div>
+        </section>
+
+        <!-- S18 -->
+        <section id="s18" class="section">
+          <h2><span class="sec-no">18</span> Solubility vs Permeability Trade-off</h2>
+
+          <p>Compound A는 neutral and lipophilic해서 permeability는 excellent하지만 solubility가 terrible하다. Compound B는 ionized and polar해서 solubility는 excellent하지만 permeability가 poor하다. 우리는 둘 사이 balance를 찾는다. Part 2 전체를 관통하는 trade-off이며 다음 10강 Permeability로 이어진다.</p>
+
+          <h3>Dissolution vs Solubility, 그리고 흡수</h3>
+          <p>Solubility는 최종적으로 얼마나 많이 녹을 수 있는가, dissolution rate는 얼마나 빨리 녹는가이다. Thermodynamic solubility가 충분해도 dissolution이 매우 느리면 absorption에 문제가 생길 수 있다. 반대로 kinetic supersaturation이 absorption에 도움이 되는 경우도 있다. 약물이 GI tract에서 흡수되려면 solution 상태로 존재해야 membrane에 접근할 수 있다.</p>
+          <div class="sr-chain"><span>Solid drug</span><i>→</i><span>Dissolution</span><i>→</i><span>Dissolved molecule</span><i>→</i><span>Permeation</span><i>→</i><span>Blood</span></div>
+          <p>따라서 absorption은 흔히 <b>Solubility × Permeability</b> 문제로 본다. 이 두 축으로 약물을 분류하는 framework가 <b>BCS</b>(Biopharmaceutics Classification System)다. 지금은 이름만 기억해도 충분하다.</p>
+
+          <!-- V12 -->
+          <div class="viz" data-sl-sp>
+            <div class="viz__title">Solubility vs Permeability Balance</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">내 compound의 logD와 ionization 정도를 바꿔 우상단 영역을 찾아 보세요. (개념 모델)</p>
+            <svg class="sl-sp-svg" viewBox="0 0 340 250" role="img" aria-label="Solubility vs permeability"></svg>
+            <div class="le-slider"><label>logD: <b class="sp-l">2.5</b></label><input type="range" class="sp-l-in" min="0" max="6" step="0.1" value="2.5" /></div>
+            <div class="le-slider"><label>Ionized fraction at gut pH: <b class="sp-i">30%</b></label><input type="range" class="sp-i-in" min="0" max="100" step="5" value="30" /></div>
+            <div class="le-fb sp-fb"></div>
+            <div class="viz__msg">Oral exposure often requires balancing dissolution and membrane crossing.</div>
+          </div>
+        </section>
+
+        <!-- S19 -->
+        <section id="s19" class="section">
+          <h2><span class="sec-no">19</span> AI Drug Discovery Connection</h2>
+
+          <h3>Solubility prediction은 왜 어려운가?</h3>
+          <p>2D GNN에 molecular graph를 넣으면 모델은 atom, bond, substructure를 본다. 하지만 thermodynamic solubility는 crystal form, polymorph, melting point, lattice packing에도 영향을 받는다. 이 정보는 2D graph에 직접 들어 있지 않다. 같은 molecular graph인데 Polymorph A와 B의 solubility가 다를 수 있고, 모델은 둘을 구별할 수 없다.</p>
+
+          <h3>Label과 metadata 문제</h3>
+          <p>Dataset A는 kinetic, B는 thermodynamic, C는 pH 2, D는 pH 7.4 solubility이다. 이를 모두 "solubility" 하나로 합치면 label noise가 생긴다. Ionizable compound는 pKa와 pH가 중요한데 dataset에 pH 정보가 없으면 같은 structure에 high/low 두 label이 존재할 수 있다. 이는 model failure가 아니라 <b>dataset definition failure</b>일 수 있다.</p>
+
+          <!-- V13 -->
+          <div class="viz" data-sl-blind>
+            <div class="viz__title">AI Solubility Blind Spots</div>
+            <div class="sl-bl">
+              <div class="sl-bl-in">
+                <div class="sl-bl-box"><b>AI input</b><div>2D molecular graph</div></div>
+                <span>→</span>
+                <div class="sl-bl-box"><b>Prediction</b><div>logS = −4.2 ?</div></div>
+              </div>
+              <button class="bi-btn" data-show>Show missing context</button>
+              <div class="sl-bl-hidden">
+                <div>pH</div><div>crystal form</div><div>polymorph</div><div>salt form</div><div>kinetic vs thermodynamic assay</div>
+              </div>
+              <div class="le-fb bl2-fb"></div>
+            </div>
+            <div class="viz__msg">Molecular graph alone does not fully define measured solubility.</div>
+          </div>
+
+          <h3>Predicted solubility를 읽는 법</h3>
+          <div class="bi-grid2">
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>잘못된 해석</div><p>"Predicted solubility = 150 µM이므로 잘 녹는다."</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>더 좋은 해석</div><p>"사용한 model의 training domain과 endpoint 정의하에서 이 structure는 상대적으로 higher-solubility region으로 예측된다." 그리고 assay pH, salt form, solid form, method를 확인한다.</p></div>
+          </div>
+        </section>
+
+        <!-- S20 -->
+        <section id="s20" class="section">
+          <h2><span class="sec-no">20</span> Failure Case — AI top hit가 재현되지 않는다</h2>
+
+          <p>AI ranking top 1 compound의 predicted potency는 5 nM. First enzyme assay는 apparent IC50 20 nM. Repeat는 70 nM. 다른 lab에서는 inactive. 무슨 일이 있었을까?</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Investigation</div>
+            <p>Assay concentration range는 0.1 nM–30 µM인데 measured kinetic solubility는 <b>1.5 µM</b>이었다. Curve의 상당한 부분에서 nominal concentration과 actual dissolved concentration이 달랐다. 추가로 detergent를 넣으니 inhibition이 크게 감소했다.</p>
+          </div>
+
+          <p><b>Interpretation:</b> precipitation, colloidal aggregation, nonspecific inhibition 가능성이 크다. 초기 hit가 target-specific high-affinity inhibitor라는 결론은 약해진다.</p>
+          <p><b>What did the AI miss?</b> 모델이 구조에서 target binding propensity를 예측했더라도 objective가 solubility, aggregation, solid state를 포함하지 않았다면 이것을 놓치는 것은 이상하지 않다. <b>잘못된 질문을 AI에게 하고 있었다.</b></p>
+        </section>
+
+        <!-- S21 -->
+        <section id="s21" class="section">
+          <h2><span class="sec-no">21</span> Scientist's Thinking — Potent한데 cell activity가 이상하다</h2>
+
+          <p>Observation: Biochemical IC50 30 nM, Cellular IC50 &gt; 10 µM. 3강에서는 permeability를 의심했다. 하지만 그 전에 하나 더 물어야 한다: <b>compound가 cell assay medium에서 충분히 dissolved 상태인가?</b></p>
+
+          <div style="display:grid;gap:8px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 1 — Solubility check</div><p>Kinetic solubility, thermodynamic solubility, assay medium solubility, pH dependence.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 2 — Precipitation / aggregation</div><p>Turbidity, nephelometry, particle detection, detergent sensitivity.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 3 — Structure hypothesis</div><p>logD 너무 높음? Aromatic ring 많음? Planar? Symmetric? Strong intermolecular H-bond?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 4 — Analogue design</div><p>phenyl → pyridyl, Cl → F, aromatic ring 제거, sp³ 추가, symmetry break, pKa tuning — 각 design이 potency에 미칠 영향도 동시에 예측.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 5 — 다시 assay</div><p>Potency, solubility, permeability를 모두 측정. Part 2의 핵심 패턴: 하나의 property를 단독으로 최적화하지 않는다.</p></div>
+          </div>
+
+          <!-- V14 -->
+          <div class="viz" data-sl-flow>
+            <div class="viz__title">Scientist's Troubleshooting Flow</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 단계를 탭해 다음 판단을 확인하세요.</p>
+            <div class="sl-flow">
+              <button class="sl-fl-step" data-s="0"><b>Observation</b><span>Potent but inconsistent assay</span></button>
+              <i>↓</i>
+              <button class="sl-fl-step" data-s="1"><b>Check solubility</b><span>Is assay concentration &gt; solubility?</span></button>
+              <i>↓</i>
+              <div class="sl-fl-br">
+                <button class="sl-fl-step" data-s="2"><b>Yes</b><span>Precipitation / aggregation 확인</span></button>
+                <button class="sl-fl-step" data-s="3"><b>No</b><span>Permeability, 다른 원인으로</span></button>
+              </div>
+              <i>↓</i>
+              <button class="sl-fl-step" data-s="4"><b>Fix</b><span>Buffer/pH 변경 or analogue design</span></button>
+              <i>↓</i>
+              <button class="sl-fl-step" data-s="5"><b>Retest potency</b><span>Property panel과 함께</span></button>
+              <div class="le-fb sl-fl-fb"></div>
+            </div>
+            <div class="viz__msg">Before explaining biology, verify that the molecule physically exists in solution.</div>
+          </div>
+
+          <h3>Solubility SAR 읽기</h3>
+          <div class="sr-tbl" style="--cols:1fr 1fr 1.4fr;">
+            <div class="sr-tr sr-tr--h"><span>Cpd</span><span>logD</span><span>Kinetic solubility</span></div>
+            <div class="sr-tr"><b>A</b><span>1.8</span><span>180 µM</span></div>
+            <div class="sr-tr"><b>B</b><span>2.5</span><span>80 µM</span></div>
+            <div class="sr-tr"><b>C</b><span>3.4</span><span>15 µM</span></div>
+            <div class="sr-tr"><b>D</b><span>4.7</span><span>&lt; 1 µM</span></div>
+            <div class="sr-tr"><b>E</b><span>2.0</span><span>2 µM ← outlier</span></div>
+          </div>
+          <p>A→D는 lipophilicity-driven solubility loss 패턴이다. 그런데 E(logD 2.0, solubility 2 µM)는 logD만으로 설명할 수 없다. High melting point, strong lattice, planar packing, polymorph 가능성이 있다. 이 outlier가 오히려 valuable information이다.</p>
+
+          <div class="card card--bio">
+            <div class="card__label"><span class="dot"></span>Molecule-level vs Solid-state problem</div>
+            <p><b>Molecular component:</b> logP/logD, pKa, HBD/HBA, polarity. <b>Solid-state component:</b> crystal lattice, melting point, polymorphism, packing, amorphous state. 둘을 동시에 봐야 한다. 새 molecule을 보면 solution side(pKa, logD, ionization), solid side(flat? aromatic ring 많음? symmetry? intermolecular H-bond?), assay side(pH, DMSO concentration, incubation time, precipitation 가능성)를 묻는다.</p>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>9강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Solubility는 molecule이 water를 얼마나 좋아하는가뿐 아니라 crystal lattice에서 얼마나 쉽게 빠져나오는가에 의해 결정된다.</b>
+              <span>Solubility = solvation vs crystal lattice.</span>
+            </li>
+            <li>
+              <b>Ionizable compound에서는 pKa와 pH가 apparent solubility를 크게 바꾼다.</b>
+              <span>pH can change solubility dramatically.</span>
+            </li>
+            <li>
+              <b>logP/logD가 높을수록 solubility가 나빠질 수 있지만 crystal packing과 melting point 때문에 큰 예외가 존재한다.</b>
+              <span>More polar does not always mean more soluble.</span>
+            </li>
+            <li>
+              <b>Poor solubility는 potency assay, cellular assay, PK를 모두 왜곡할 수 있으며 precipitation과 aggregation은 false activity를 만들 수도 있다.</b>
+              <span>Added concentration ≠ dissolved concentration.</span>
+            </li>
+            <li>
+              <b>AI solubility prediction은 pH, kinetic/thermodynamic endpoint, crystal form 같은 정보를 보지 못하면 근본적 한계를 가진다.</b>
+              <span>Before trusting potency, make sure the compound is actually dissolved.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>Solubility를 보면 네 가지 층을 본다</div>
+          <p><b>Molecule–water interaction</b> → <b>pKa / ionization</b> → <b>Crystal lattice / solid state</b> → <b>Assay condition</b></p>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Compound A: logD 2.0, solubility 5 µM. Compound B: logD 3.5, solubility 30 µM. 이 결과가 불가능한가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다. Solubility는 lipophilicity만으로 결정되지 않는다.
+              <div class="exp">A가 높은 melting point, strong crystal packing, planarity, intermolecular H-bond를 가진다면 logD가 낮아도 solubility가 더 낮을 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Weak base의 pKa가 9다. pH 6과 pH 9 중 어느 쪽에서 apparent solubility가 일반적으로 높을 가능성이 큰가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              pH 6.
+              <div class="exp">낮은 pH에서 protonated BH⁺ fraction이 증가해 aqueous solvation이 좋아질 가능성이 있기 때문이다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Compound를 DMSO에서 20 mM까지 잘 녹였다. Assay buffer에서도 20 µM까지 문제없이 녹는다고 볼 수 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다. DMSO solubility와 aqueous solubility는 완전히 다른 문제다.
+              <div class="exp">희석 후 supersaturation과 delayed precipitation도 가능하다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>OH를 하나 추가했더니 logD는 감소했지만 solubility도 감소했다. 가능한 이유는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              새 OH가 intermolecular H-bond network를 강화해 crystal lattice를 더 안정화했을 수 있다.
+              <div class="exp">Solution-side polarity 개선보다 solid-state penalty가 더 커졌을 가능성이 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>AI가 매우 potent한 compound를 추천했다. 실험에서는 여러 unrelated enzyme을 모두 억제했고 detergent를 넣자 activity가 크게 감소했다. 무엇을 의심할까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Colloidal aggregation에 의한 nonspecific inhibition을 의심할 수 있다.
+              <div class="exp">Apparent activity가 target-specific affinity를 반영하지 않을 수 있다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">10강 · Permeability</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">Compound A는 solubility도 충분하고 biochemical IC50도 5 nM인데, cell assay에서는 거의 활성이 없다. 왜 세포 안으로 못 들어가는가? Passive diffusion, membrane partitioning, ionization, polar surface area, HBD, flexibility, intramolecular H-bond, PAMPA, Caco-2, efflux를 연결하고, <b>"좋은 solubility와 좋은 permeability를 동시에 얻으려면 어떤 구조를 만들어야 하는가?"</b>를 다룬다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="08.html">◀ 8강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="10.html">▶ 10강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

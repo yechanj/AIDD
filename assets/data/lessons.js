@@ -82,7 +82,7 @@ window.AIDD_TRACKS = [
         title: "Solubility",
         desc: "Kinetic vs thermodynamic solubility, crystal packing, pH-dependent solubility. Assay 결과와 oral absorption을 망치는 첫 번째 원인.",
         tags: ["Solubility", "Kinetic", "Thermodynamic", "Crystal packing"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 10,
@@ -90,7 +90,7 @@ window.AIDD_TRACKS = [
         title: "Permeability",
         desc: "Passive diffusion과 efflux. PAMPA, Caco-2, MDCK 데이터를 읽는 법과 TPSA·HBD의 영향.",
         tags: ["Permeability", "PAMPA", "Caco-2", "Efflux", "TPSA"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 11,
@@ -98,7 +98,7 @@ window.AIDD_TRACKS = [
         title: "Plasma protein binding",
         desc: "Fraction unbound와 free drug hypothesis. PPB가 높으면 정말 나쁜가?",
         tags: ["PPB", "fu", "Free drug", "Albumin"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 12,

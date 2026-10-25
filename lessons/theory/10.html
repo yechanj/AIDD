@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L10 · Permeability — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L10 · Permeability</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L10</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Permeability</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> Permeability란?</a></li>
+          <li><a href="#s03"><span class="num">03</span> Cell membrane</a></li>
+          <li><a href="#s04"><span class="num">04</span> Passive Diffusion</a></li>
+          <li><a href="#s05"><span class="num">05</span> Ionization</a></li>
+          <li><a href="#s06"><span class="num">06</span> pKa–pH–Permeability</a></li>
+          <li><a href="#s07"><span class="num">07</span> Lipophilicity</a></li>
+          <li><a href="#s08"><span class="num">08</span> HBD / HBA</a></li>
+          <li><a href="#s09"><span class="num">09</span> TPSA</a></li>
+          <li><a href="#s10"><span class="num">10</span> Molecular Size</a></li>
+          <li><a href="#s11"><span class="num">11</span> Conformation &amp; IMHB</a></li>
+          <li><a href="#s12"><span class="num">12</span> PAMPA</a></li>
+          <li><a href="#s13"><span class="num">13</span> Caco-2</a></li>
+          <li><a href="#s14"><span class="num">14</span> Efflux Transporter</a></li>
+          <li><a href="#s15"><span class="num">15</span> PAMPA vs Caco-2</a></li>
+          <li><a href="#s16"><span class="num">16</span> BBB · Lorlatinib</a></li>
+          <li><a href="#s17"><span class="num">17</span> Solubility vs Permeability</a></li>
+          <li><a href="#s18"><span class="num">18</span> Medicinal Chem 전략</a></li>
+          <li><a href="#s19"><span class="num">19</span> AI Connection</a></li>
+          <li><a href="#s20"><span class="num">20</span> Failure Case</a></li>
+          <li><a href="#s21"><span class="num">21</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 10 &nbsp;·&nbsp; Part 2</div>
+          <h1>Permeability</h1>
+          <p>잘 녹는 molecule이 왜 세포 안에는 못 들어갈까?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — Target에는 5 nM인데 세포에서는 왜 안 듣지?</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Compound A</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>Biochemical IC50 = 5 nM</li>
+                <li>Aqueous solubility 충분</li>
+                <li><b>Cell IC50 &gt; 10 µM</b></li>
+              </ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>Compound B</h5>
+              <ul class="clean" style="font-size:13px;margin:0;">
+                <li>Biochemical IC50 = 30 nM</li>
+                <li><b>Cell IC50 = 150 nM</b></li>
+              </ul>
+            </div>
+          </div>
+
+          <p>Target binding만 보면 A가 훨씬 좋다. 하지만 cell에서는 B가 압도적으로 낫다. 이때 처음부터 "A의 binding assay가 잘못됐다"고 결론내리면 안 된다. <b>A가 target에 도달하지 못하고 있을 수 있기 때문이다.</b></p>
+
+          <ul class="clean">
+            <li>A가 membrane을 못 통과하는가? 너무 ionized되어 있는가?</li>
+            <li>HBD가 너무 많은가? Efflux transporter가 내보내는가?</li>
+            <li>Total cell concentration과 target-site concentration은 같은가?</li>
+          </ul>
+
+          <div class="oneline">Cellular activity는 binding affinity만으로 결정되지 않는다. Molecule이 membrane을 통과하고, 세포 안에 머물고, target compartment까지 도달해야 한다.</div>
+
+          <!-- V1 -->
+          <div class="viz" data-pm-open>
+            <div class="viz__title">Binding vs Cell Exposure</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">관점을 바꿔 두 compound를 비교해 보세요.</p>
+            <div class="pm-open">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-v="bind">Show binding only</button>
+                <button class="bi-tab" data-v="journey">Show whole cell journey</button>
+              </div>
+              <div class="pm-open-rows"></div>
+              <div class="le-fb pm-open-fb"></div>
+            </div>
+            <div class="viz__msg">The strongest binder is not necessarily the strongest cellular compound.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> Permeability란 무엇인가?</h2>
+
+          <p>Purified biochemical assay에서는 ligand와 protein을 같은 well에 넣어 둘이 직접 만난다. Cell assay에서는 다르다. Ligand는 extracellular medium → cell membrane → cytosol → target compartment를 통과해야 한다. 새로운 단계가 추가된다.</p>
+
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Passive diffusion</div><p>Molecule 자체의 physicochemical property로 membrane 통과.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>Transporter 유입</div><p>Transporter가 cell 안으로 운반.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>Efflux</div><p>Transporter가 cell 밖으로 배출.</p></div>
+          </div>
+          <p>관찰되는 cellular exposure는 이 세 가지의 결과이며, <b>apparent permeability</b>와 <b>intrinsic passive permeability</b>는 구분해야 한다.</p>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Cell membrane의 기본 구조</h2>
+
+          <p>Cell membrane은 phospholipid bilayer다. 바깥과 안쪽에는 polar head group, 중앙에는 hydrophobic lipid tail region이 있다. 물에서 안정한 molecule이 membrane core로 들어가려면 환경이 크게 바뀐다. 이 과정도 일종의 <b>desolvation 문제</b>다.</p>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> Passive Diffusion</h2>
+
+          <div class="sr-chain"><span>Aqueous → membrane surface</span><i>→</i><span>Membrane interior로 partition</span><i>→</i><span>반대편 aqueous phase</span></div>
+          <p>지나치게 hydrophilic하면 Step 2(partition)가 어렵고, 지나치게 lipophilic하면 membrane에 너무 머무르거나 aqueous phase로 다시 나오기 어려울 수도 있다.</p>
+
+          <!-- V2 -->
+          <div class="viz" data-pm-cross>
+            <div class="viz__title">Membrane Crossing</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Neutral / charged molecule을 선택하고 membrane을 건너게 해 보세요.</p>
+            <div class="pm-cross">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-ch="0">Neutral molecule</button>
+                <button class="bi-tab" data-ch="1">Charged molecule</button>
+              </div>
+              <svg class="pm-cross-svg" viewBox="0 0 320 240" role="img" aria-label="Membrane crossing"></svg>
+              <button class="bi-btn" data-run>Run ▶</button>
+              <div class="le-fb pm-cross-fb"></div>
+            </div>
+            <div class="viz__msg">Membrane crossing requires leaving water and entering a hydrophobic environment.</div>
+          </div>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> Ionization과 Permeability</h2>
+
+          <p>Charged molecule은 water에서 매우 안정하다. 주위에 강한 hydration shell이 있어서, 이 상태로 hydrophobic membrane core에 들어가는 것은 energetically 불리할 수 있다. 그래서 많은 small molecule에서 <b>neutral fraction</b>이 passive permeability에 매우 중요하다.</p>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Compound A · basic amine pKa 10</h5><p>pH 7.4에서 대부분 BH⁺ → positive charge.</p></div>
+            <div class="panel panel--b"><h5>Compound B · amine pKa 7.5</h5><p>pH 7.4에서 neutral population도 상당 → passive crossing에 유리.</p></div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>“Charged = permeability 0”은 과도한 단순화</div>
+            <p>실제 permeability에는 neutral fraction, lipophilicity, size, conformation, transporter, membrane composition이 모두 영향을 준다. 아주 작은 neutral fraction만 존재해도 equilibrium이 재조정되며 crossing이 가능할 수 있다. <b>Ionization은 permeability를 강하게 조절하지만 binary switch는 아니다.</b></p>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> pKa–pH–Permeability</h2>
+
+          <p>Weak base는 pKa가 높을수록 physiological pH에서 protonated fraction이 늘고, weak acid는 physiological pH에서 anionic fraction이 늘 수 있다. Extracellular와 intracellular pH가 다르면 protonation population도 달라진다. Neutral species가 membrane을 통과한 뒤 다른 compartment에서 protonated되면 accumulation(ion trapping, 3강)이 일어날 수 있다.</p>
+
+          <!-- V3 -->
+          <div class="viz" data-pm-pka>
+            <div class="viz__title">pKa / Neutral Fraction / Permeability</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">pH는 7.4로 고정되어 있고, weak base의 pKa를 바꿔 보세요. (개념 모델)</p>
+            <div class="pm-pka">
+              <div class="le-slider"><label>Weak base pKa: <b class="pk-v">9.0</b></label><input type="range" class="pk-in" min="5" max="11" step="0.1" value="9" /></div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>BH⁺ (charged) fraction</span><div class="sl-track"><i class="pk-c bad"></i></div><b class="pk-cv"></b></div>
+                <div class="sl-meter"><span>Neutral B fraction</span><div class="sl-track"><i class="pk-n"></i></div><b class="pk-nv"></b></div>
+                <div class="sl-meter"><span>Conceptual passive permeability</span><div class="sl-track"><i class="pk-p"></i></div></div>
+              </div>
+              <div class="le-fb pk-fb"></div>
+            </div>
+            <div class="viz__msg">pKa tuning can change exposure without changing the binding scaffold.</div>
+          </div>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> Lipophilicity — Optimal window</h2>
+
+          <p>Membrane core는 hydrophobic하므로 너무 hydrophilic한 molecule은 partition하기 어렵다. logD가 어느 정도 증가하면 passive permeability가 개선되는 경우가 많다. 하지만 무한히 증가하지 않는다. 너무 lipophilic하면 aqueous solubility ↓, nonspecific binding ↑, membrane retention ↑ 가능, PPB ↑, metabolism 변화, off-target interaction이 생긴다. <b>Optimal window</b>가 존재한다.</p>
+
+          <!-- V4 -->
+          <div class="viz" data-pm-logd>
+            <div class="viz__title">Lipophilicity Sweet Spot</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">logD를 바꿔 conceptual permeability 변화를 보세요.</p>
+            <svg class="pm-logd-svg" viewBox="0 0 340 210" role="img" aria-label="Lipophilicity sweet spot"></svg>
+            <div class="le-slider"><label>logD: <b class="lg-v">2.5</b></label><input type="range" class="lg-in" min="-1" max="7" step="0.1" value="2.5" /></div>
+            <div class="le-fb lg-fb"></div>
+            <div class="viz__msg">More lipophilic is not indefinitely more permeable.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> Hydrogen Bond Donor / Acceptor</h2>
+
+          <p>Hydrogen-bond donor(OH, NH)는 water와 강하게 상호작용한다. Membrane core로 들어가려면 이런 hydration interaction을 일부 포기해야 한다. 그래서 HBD가 많을수록 passive permeability가 낮아지는 경향이 있을 수 있다. HBA(carbonyl O, pyridine N, ether O)도 polar surface를 늘려 전체 polar burden에 기여한다. 역시 molecular context가 중요하다.</p>
+
+          <!-- V5 -->
+          <div class="viz" data-pm-hbd>
+            <div class="viz__title">HBD Removal Simulator</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Modification을 선택해 경향을 확인하세요. (개념 학습용)</p>
+            <div class="pm-hbd">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-m="base">Parent (OH + NH)</button>
+                <button class="bi-tab" data-m="ome">OH → OMe</button>
+                <button class="bi-tab" data-m="nme">NH → NMe</button>
+              </div>
+              <div class="le-three">
+                <div class="le-three-c"><span>HBD count</span><b class="hb-hbd">—</b></div>
+                <div class="le-three-c"><span>TPSA</span><b class="hb-tpsa">—</b></div>
+                <div class="le-three-c"><span>logD</span><b class="hb-logd">—</b></div>
+              </div>
+              <div class="le-three">
+                <div class="le-three-c"><span>Permeability</span><b class="hb-perm">—</b></div>
+                <div class="le-three-c"><span>Binding risk</span><b class="hb-risk">—</b></div>
+                <div class="le-three-c"><span>Solubility</span><b class="hb-sol">—</b></div>
+              </div>
+              <div class="le-fb hb-fb"></div>
+            </div>
+            <div class="viz__msg">Reducing hydrogen-bond donation can help permeability but may cost target interactions.</div>
+          </div>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> TPSA — Topological Polar Surface Area</h2>
+
+          <p>TPSA는 polar atom 기반으로 polar surface를 근사하는 descriptor다. Oral absorption, permeability, CNS penetration과 연관된 heuristic으로 자주 쓰인다. 중요한 것은 <b>TPSA threshold를 절대법칙으로 쓰지 않는 것</b>이다.</p>
+          <p>왜 같은 TPSA(80 Å²)인데 permeability가 다를까? A는 polar group이 모두 밖으로 노출되어 있고, B는 folded conformation에서 일부 polar group끼리 intramolecular H-bond를 만든다면 실제 exposed polarity가 다르다. 2D descriptor만으로 3D behavior를 완전히 설명할 수 없다.</p>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Molecular Size</h2>
+
+          <p>일반적으로 molecule이 커질수록 passive diffusion은 어려워질 수 있다: 더 큰 desolvation burden, 더 큰 membrane-crossing body, more polar groups, conformational complexity. 하지만 macrocycle처럼 큰 molecule도 특수한 conformation과 polarity masking으로 permeability를 얻는 경우가 있다.</p>
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>MW threshold도 법칙이 아니다</div>
+            <p>Lipinski Rule of Five 같은 heuristic은 유용하지만, MW가 특정 값 이상이면 permeability가 0이 되는 것은 아니다. Macrocycle, peptide-like drug, chameleonic molecule에는 예외가 많다. 중요한 것은 실제 molecular behavior다.</p>
+          </div>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Conformation과 Intramolecular H-bond</h2>
+
+          <p>Molecule이 solution에서 두 state를 취할 수 있다고 하자. <b>Open state</b>에서는 polar group이 exposed, <b>folded state</b>에서는 polar group이 internalized된다. Membrane environment에서는 folded state가 더 선호될 수 있고, 그러면 high polarity molecule도 예상보다 잘 투과한다.</p>
+
+          <p>Ligand 안의 OH ↔ carbonyl O가 <b>intramolecular H-bond(IMHB)</b>를 만들면 두 polar group이 외부 water와 interaction할 수 있는 정도가 줄어든다 — <b>effective polarity masking</b>. 4강의 <b>chameleonicity</b>와 연결된다.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>IMHB도 공짜가 아니다</div>
+            <p>Aqueous solubility 감소, target-binding에 필요한 donor/acceptor masking, 원치 않는 conformation 안정화가 생길 수 있다. IMHB를 만들었다고 자동으로 좋은 molecule이 되지 않는다.</p>
+          </div>
+
+          <!-- V6 -->
+          <div class="viz" data-pm-imhb>
+            <div class="viz__title">Intramolecular H-Bond Folding</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">환경을 바꿔 preferred conformation을 보세요. (개념도)</p>
+            <div class="pm-imhb">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-env="water">Water</button>
+                <button class="bi-tab" data-env="mem">Membrane-like</button>
+              </div>
+              <svg class="pm-imhb-svg" viewBox="0 0 320 170" role="img" aria-label="Open vs folded conformation"></svg>
+              <div class="sl-meter" style="grid-template-columns:150px 1fr;"><span>Exposed polar surface</span><div class="sl-track"><i class="im-bar bad"></i></div></div>
+              <div class="le-fb im-fb"></div>
+            </div>
+            <div class="viz__msg">Effective polarity can depend on conformation.</div>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> PAMPA</h2>
+
+          <p><b>Parallel Artificial Membrane Permeability Assay.</b> 인공 lipid membrane을 이용해 한쪽 chamber에서 다른 쪽으로 compound가 얼마나 이동하는지 본다. 핵심: <b>주로 passive permeability를 보는 assay</b>다.</p>
+          <div class="bi-grid2">
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>장점</div><p>비교적 빠르고 inexpensive, high throughput, transporter 영향이 없어 series의 passive permeability trend를 보기 좋다.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>한계</div><p>실제 cell membrane이 아니다. Transporter, metabolism, complex cell biology가 없다. PAMPA good ≠ cellular exposure good.</p></div>
+          </div>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Caco-2</h2>
+
+          <p>Caco-2는 human colorectal adenocarcinoma 유래 cell line을 monolayer로 배양해 intestinal epithelial barrier를 모델링하는 assay다. 실제 biological membrane과 transporter가 존재하므로 결과에는 passive diffusion, efflux, influx, cell binding이 영향을 줄 수 있다. Permeability는 <b>P<sub>app</sub></b>(apparent permeability coefficient)로 표현하며, 높은 P<sub>app</sub> = 해당 assay 조건에서 빠른 barrier crossing으로 이해하면 충분하다.</p>
+
+          <h3>Bidirectional Caco-2와 Efflux Ratio</h3>
+          <p>A → B(apical → basolateral)와 B → A를 모두 측정한다. B → A 이동이 훨씬 크면 efflux transporter 관여를 의심한다.</p>
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Efflux Ratio</div>
+            <p style="text-align:center;font-size:1.05em;">ER = P<sub>app</sub>(B→A) / P<sub>app</sub>(A→B)</p>
+            <p style="font-size:13px;color:var(--ink-soft);">ER이 높으면 active efflux 가능성. 단 threshold는 assay system에 따라 해석한다.</p>
+          </div>
+
+          <!-- V9 -->
+          <div class="viz" data-pm-bidir>
+            <div class="viz__title">Bidirectional Caco-2 Dashboard</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Transporter inhibitor를 추가해 방향성이 어떻게 변하는지 보세요. (가상 데이터)</p>
+            <div class="pm-bidir">
+              <div class="pm-arrow"><span>A → B</span><div class="sl-track"><i class="bd-ab"></i></div><b class="bd-abv"></b></div>
+              <div class="pm-arrow"><span>B → A</span><div class="sl-track"><i class="bd-ba bad"></i></div><b class="bd-bav"></b></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>Efflux ratio</span><b class="bd-er">—</b></div>
+                <div class="le-three-c"><span>Interpretation</span><b class="bd-int">—</b></div>
+              </div>
+              <button class="bi-btn" data-inh>Add P-gp inhibitor</button>
+              <div class="le-fb bd-fb"></div>
+            </div>
+            <div class="viz__msg">Directionality can reveal active efflux.</div>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Efflux Transporter — P-gp / BCRP</h2>
+
+          <p><b>P-gp(ABCB1)</b>는 대표적인 efflux transporter다. ATP를 사용해 다양한 compound를 cell 밖으로 배출하며 intestine, BBB, kidney, liver 등에 위치해 absorption과 tissue exposure에 큰 영향을 준다. <b>BCRP(ABCG2)</b>도 중요하고 P-gp와 substrate overlap이 있을 수 있어 CNS exposure나 intestinal absorption 평가에서 둘 다 중요하다.</p>
+
+          <!-- V8 -->
+          <div class="viz" data-pm-efflux>
+            <div class="viz__title">Efflux Pump Animation</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Efflux를 켜고 꺼서 intracellular concentration을 비교하세요.</p>
+            <div class="pm-ef">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-ef="1">Efflux ON</button>
+                <button class="bi-tab" data-ef="0">Efflux OFF</button>
+              </div>
+              <svg class="pm-ef-svg" viewBox="0 0 320 190" role="img" aria-label="Efflux pump"></svg>
+              <div class="sl-meter" style="grid-template-columns:170px 1fr;"><span>Intracellular concentration</span><div class="sl-track"><i class="ef-bar"></i></div></div>
+              <div class="le-fb ef-fb"></div>
+            </div>
+            <div class="viz__msg">A molecule can cross the membrane and still fail to accumulate.</div>
+          </div>
+
+          <h3>Intrinsic passive vs Net cellular permeability</h3>
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Intrinsic passive permeability poor</h5><p>Molecule 자체가 membrane을 잘 못 건넘.</p></div>
+            <div class="panel panel--b"><h5>Net cellular permeability poor</h5><p>들어가지만 efflux로 빠르게 나감.</p></div>
+          </div>
+          <p>“permeability poor”라는 말 하나로 묶으면 안 된다. Medicinal chemistry 전략이 다르다. Efflux substrate 최적화는 단일 rule이 없다 — HBD 감소, exposed polarity 조절, basicity 조절, 3D shape 변화, conformational restriction, transporter-recognized motif 제거 등을 시도하지만 P-gp recognition은 복잡해 단순 structural alert 하나로 설명하기 어렵다.</p>
+
+          <h3>Target까지 들어갔다고 끝이 아니다</h3>
+          <p>세포 안에는 cytosol, lysosome, mitochondria, nucleus 같은 compartment가 있다. Target이 nucleus에 있는데 compound가 lysosome에 trapping된다면 total cell concentration은 높아도 functional target exposure는 낮을 수 있다. <b>Total concentration ≠ target-site concentration</b> — 14강 tissue distribution에서 더 깊게 다룬다.</p>
+
+          <!-- V12 -->
+          <div class="viz" data-pm-funnel>
+            <div class="viz__title">Cellular Exposure Funnel</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 단계를 탭하면 관련 assay가 표시됩니다.</p>
+            <div class="pm-fun"></div>
+            <div class="le-fb pm-fun-fb">단계를 탭하세요.</div>
+            <div class="viz__msg">Nominal extracellular dose is far upstream from target engagement.</div>
+          </div>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> PAMPA vs Caco-2 비교</h2>
+
+          <p>PAMPA good + Caco-2 poor라면 efflux 가능성을 생각하고, Caco-2 bidirectional assay로 확인한다. PAMPA에는 transporter가 없으므로 passive diffusion은 좋지만, Caco-2에서 reverse transport가 강하다면 <b>efflux transporter substrate</b>일 수 있다.</p>
+
+          <!-- V7 -->
+          <div class="viz" data-pm-assay>
+            <div class="viz__title">PAMPA vs Caco-2</div>
+            <div class="pm-assay">
+              <div class="twopanel">
+                <div class="panel panel--a"><h5>PAMPA</h5><ul class="clean" style="font-size:13px;margin:0;"><li>Artificial membrane</li><li>Passive diffusion</li><li>No transporter</li></ul></div>
+                <div class="panel panel--b"><h5>Caco-2</h5><ul class="clean" style="font-size:13px;margin:0;"><li>Living cell monolayer</li><li>Passive + transporter</li><li>Bidirectional assay</li></ul></div>
+              </div>
+              <div class="pm-assay-q">같은 molecule: <b>PAMPA high · Caco-2 (A→B) low</b>. 가장 가능성 높은 이유는?</div>
+              <div class="le-btnrow">
+                <button class="bi-tab" data-a="pass">poor passive diffusion</button>
+                <button class="bi-tab" data-a="eff">efflux</button>
+                <button class="bi-tab" data-a="sol">insolubility</button>
+              </div>
+              <div class="le-fb pm-assay-fb"></div>
+            </div>
+            <div class="viz__msg">“Permeability assay” is not one universal endpoint.</div>
+          </div>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> Blood–Brain Barrier · Real Drug Example — Lorlatinib</h2>
+
+          <p>BBB는 tight junction을 가진 특수한 endothelial barrier이고 P-gp, BCRP 같은 efflux transporter가 중요하다. CNS exposure에는 <b>passive permeability + low efflux</b>가 모두 필요하다. 너무 lipophilic하면 PPB ↑, nonspecific tissue binding ↑, solubility ↓, efflux recognition이 문제가 될 수 있고, highly basic molecule은 lysosomal trapping을 일으킬 수 있다. CNS penetration은 multi-parameter problem이다.</p>
+
+          <p>4강에서 본 lorlatinib의 macrocyclic restriction은 단순 potency를 위한 것이 아니다. CNS drug에서는 passive permeability, exposed polarity, P-gp efflux가 매우 중요하다 — <b>3D conformation 자체가 DMPK property</b>다. 핵심은 BBB penetration을 단순히 “lipophilic하게 만들기”로 해결하지 않았다는 것이다.</p>
+
+          <!-- V11 -->
+          <div class="viz" data-pm-lorla>
+            <div class="viz__title">Lorlatinib CNS Design Story</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Macrocycle을 열었을 때와 비교해 보세요. (개념도, 실제 구조 아님)</p>
+            <div class="pm-lo">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-st="closed">Macrocycle (closed)</button>
+                <button class="bi-tab" data-st="open">Open macrocycle</button>
+              </div>
+              <svg class="pm-lo-svg" viewBox="0 0 320 180" role="img" aria-label="Macrocycle schematic"></svg>
+              <div class="pm-lo-callouts">
+                <div class="pm-co" data-k="conf"><b>Conformational restriction</b><span></span></div>
+                <div class="pm-co" data-k="pol"><b>Exposed polarity control</b><span></span></div>
+                <div class="pm-co" data-k="perm"><b>Passive permeability</b><span></span></div>
+                <div class="pm-co" data-k="eff"><b>Efflux optimization</b><span></span></div>
+              </div>
+            </div>
+            <div class="viz__msg">CNS penetration is a 3D property optimization problem, not simply a logP problem.</div>
+          </div>
+        </section>
+
+        <!-- S17 -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> Solubility vs Permeability</h2>
+
+          <p>9강에서 solubility를 높이려고 polarity와 ionization을 높이면 permeability가 떨어질 수 있다. 반대로 permeability를 높이려고 lipophilicity를 올리고 HBD를 줄이면 solubility가 나빠질 수 있다. 둘 다 최대화하는 것이 아니라 <b>적절한 균형</b>을 찾는다. 예: Compound A는 solubility 200 µM / PAMPA poor, Compound B는 solubility 1 µM / PAMPA excellent — 둘 다 oral drug로 문제다. 양쪽 관계 모두 단순 선형이 아니다.</p>
+
+          <!-- V10 -->
+          <div class="viz" data-pm-matrix>
+            <div class="viz__title">Solubility × Permeability Matrix</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Modification을 적용해 lead의 위치가 어떻게 이동하는지 보세요. (개념 모델)</p>
+            <svg class="pm-mx-svg" viewBox="0 0 340 260" role="img" aria-label="Solubility x permeability"></svg>
+            <div class="le-btnrow">
+              <button class="bi-tab" data-m="amine">Add amine</button>
+              <button class="bi-tab" data-m="hbd">Remove HBD</button>
+              <button class="bi-tab" data-m="ph">Add phenyl</button>
+              <button class="bi-tab" data-m="het">Add heteroatom</button>
+              <button class="bi-btn bi-btn--ghost" data-reset>Reset</button>
+            </div>
+            <div class="le-fb pm-mx-fb"></div>
+            <div class="viz__msg">Exposure requires balancing both sides.</div>
+          </div>
+        </section>
+
+        <!-- S18 -->
+        <section id="s18" class="section">
+          <h2><span class="sec-no">18</span> Medicinal Chemistry Strategies</h2>
+
+          <div style="display:grid;gap:8px;margin:14px 0;">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>① pKa tuning</div><p>Strong basic amine(pKa 10.5)에 nearby electron-withdrawing group을 넣어 pKa를 8.0 정도로 낮추면 neutral fraction ↑ → passive permeability ↑ 가능. 대신 target salt bridge가 약해질 수 있다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>② HBD 제거/마스킹</div><p>OH → OMe, NH → N-methyl. Critical target H-bond 손실과 solubility 저하를 확인한다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>③ Exposed polarity 줄이기</div><p>Heteroatom 제거뿐 아니라 IMHB, conformational folding, steric shielding으로 polar group을 가린다. Larger molecule에서 특히 중요.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>④ Lipophilicity tuning</div><p>logD가 너무 낮으면 작은 hydrophobic substituent로 올리되, 7강의 LipE를 확인해 지나치게 greasy해지지 않게 한다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>⑤ Prodrug</div><p>Critical acid 때문에 permeability가 낮다면 carboxylate → ester prodrug처럼 charge를 일시적으로 mask. 흡수 후 hydrolysis. Formulation/clinical strategy까지 확장되는 접근.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>⑥ Efflux avoidance</div><p>Shape, polarity, basicity series를 만들고 efflux SAR을 직접 확인한다.</p></div>
+          </div>
+        </section>
+
+        <!-- S19 -->
+        <section id="s19" class="section">
+          <h2><span class="sec-no">19</span> AI Drug Discovery Connection</h2>
+
+          <h3>“Permeability model”의 label은 무엇인가?</h3>
+          <p>Training label이 PAMPA인지, Caco-2인지, MDCK인지, BBB인지, cellular uptake인지에 따라 endpoint가 다르다. Compound X가 passive permeability excellent이지만 P-gp substrate라면 PAMPA는 high, Caco-2 A→B는 low다. 이 둘을 하나의 “low/high permeability” label로 섞으면 모델이 contradictory data를 보게 된다. Cell line, pH, direction, transporter expression, incubation time, concentration 같은 metadata도 필요하다.</p>
+
+          <h3>2D GNN과 3D model의 한계</h3>
+          <p>Molecular graph에서 heteroatom, charge, ring, size, HBD/HBA pattern 등 permeability와 상관된 feature를 배울 수 있다. 하지만 actual conformation, IMHB, environment-dependent folding, transporter-specific interaction은 제한적이다. 3D model이 일부 개선하더라도 어떤 conformer를 쓰는지가 중요하다. 물에서 open이고 membrane에서 folded라면 single structure로 설명하기 어렵다. 다시 <b>Molecule = ensemble</b>이다.</p>
+
+          <!-- V13 -->
+          <div class="viz" data-pm-endpoint>
+            <div class="viz__title">AI Endpoint Mismatch</div>
+            <div class="pm-ep">
+              <div class="pm-ep-box"><b>AI model</b><div>Predicts PAMPA</div><div class="pm-ep-out">Output: High ✓</div></div>
+              <button class="bi-btn" data-interp>해석: “Cell exposure is high”</button>
+              <div class="pm-ep-warn">
+                <b>⚠ Endpoint가 다르다</b>
+                <div class="pm-ep-miss"><span>Efflux</span><span>Metabolism</span><span>Sequestration</span><span>Target compartment</span></div>
+              </div>
+            </div>
+            <div class="viz__msg">Correct prediction of the wrong endpoint can still lead to the wrong decision.</div>
+          </div>
+
+          <p>“이 compound는 permeability가 좋다”보다 “PAMPA passive permeability가 높다” 또는 “Caco-2 net A→B permeability는 낮으며 high efflux ratio가 관찰된다”가 정확하다. 이것이 scientist의 언어다.</p>
+        </section>
+
+        <!-- S20 -->
+        <section id="s20" class="section">
+          <h2><span class="sec-no">20</span> Failure Case — 가장 potent한 AI hit가 cell에서 죽었다</h2>
+
+          <p>Compound A: predicted binding excellent, biochemical IC50 4 nM, solubility 100 µM. 그런데 Cell IC50 &gt; 10 µM이었다. Investigation 결과 pKa 10.2, PAMPA low, Caco-2 very low, high efflux ratio.</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>What happened?</div>
+            <p>A는 거의 항상 protonated되어 passive permeability가 낮고, 들어간 일부도 transporter가 배출했을 가능성이 있다. Target affinity는 훌륭했지만 <b>target exposure</b>가 부족했다.</p>
+          </div>
+
+          <p><b>What did the model miss?</b> Binding model은 protein–ligand interaction만 봤다. 하지만 cellular activity는 Binding × Permeability × Efflux × Intracellular distribution의 결과다. 모델의 prediction 자체보다 <b>prediction endpoint를 잘못 해석한 것</b>이 문제다.</p>
+        </section>
+
+        <!-- S21 -->
+        <section id="s21" class="section">
+          <h2><span class="sec-no">21</span> Scientist's Thinking — Biochemical vs Cell gap</h2>
+
+          <p>Observation: Biochemical IC50 = 20 nM, Cell IC50 = 5 µM. gap을 한 가지 원인으로 추측하지 말고 분해한다.</p>
+
+          <div style="display:grid;gap:8px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 1 — Solubility</div><p>충분한가? (9강)</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 2 — Passive permeability</div><p>PAMPA 또는 transporter-poor system. Low라면 physicochemical 문제: pKa, logD, TPSA, HBD, size 확인.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 3 — Efflux</div><p>Passive permeability가 good이면 bidirectional Caco-2. A→B low, B→A high → efflux 의심.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 4 — Intracellular concentration</div><p>LC-MS로 cell-associated concentration을 측정하되, total만으로는 부족할 수 있다. Free intracellular concentration이나 target engagement assay가 필요할 수 있다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 5 — Target engagement</div><p>CETSA, NanoBRET 계열, occupancy assay (18강).</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 6 — Analogue design</div><p>High basicity → pKa ↓ analogue, HBD burden → HBD masking/removal, efflux → shape/polarity/basicity series와 efflux SAR.</p></div>
+          </div>
+
+          <!-- V14 -->
+          <div class="viz" data-pm-flow>
+            <div class="viz__title">Scientist's Troubleshooting Flow</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Biochemical active / Cell inactive에서 시작합니다. 각 질문에 Yes / No로 답하세요.</p>
+            <div class="pm-flow">
+              <div class="pm-flow-path"></div>
+              <div class="pm-flow-q"></div>
+              <div class="le-btnrow pm-flow-btns">
+                <button class="bi-btn" data-a="y">Yes</button>
+                <button class="bi-btn bi-btn--ghost" data-a="n">No</button>
+                <button class="bi-btn bi-btn--ghost" data-restart>Restart</button>
+              </div>
+              <div class="le-fb pm-flow-fb"></div>
+            </div>
+            <div class="viz__msg">Decompose the biochemical-to-cell gap instead of guessing one cause.</div>
+          </div>
+
+          <h3>Permeability SAR와 Cell SAR 겹치기</h3>
+          <div class="sr-tbl" style="--cols:.6fr .7fr .9fr .8fr;">
+            <div class="sr-tr sr-tr--h"><span>Cpd</span><span>pKa</span><span>logD7.4</span><span>PAMPA</span></div>
+            <div class="sr-tr"><b>A</b><span>10.2</span><span>0.5</span><span>poor</span></div>
+            <div class="sr-tr"><b>B</b><span>9.0</span><span>1.2</span><span>low</span></div>
+            <div class="sr-tr"><b>C</b><span>7.8</span><span>2.0</span><span>good</span></div>
+            <div class="sr-tr"><b>D</b><span>6.5</span><span>3.2</span><span>good</span></div>
+          </div>
+          <p>C가 balance point일 수 있다. D는 permeability가 더 좋아지지 않으면서 lipophilicity cost만 증가할 수 있다.</p>
+
+          <div class="sr-tbl" style="--cols:.6fr 1fr .8fr 1fr;">
+            <div class="sr-tr sr-tr--h"><span>Cpd</span><span>Biochem IC50</span><span>PAMPA</span><span>Cell IC50</span></div>
+            <div class="sr-tr"><b>A</b><span>5 nM</span><span>poor</span><span>5 µM</span></div>
+            <div class="sr-tr"><b>B</b><span>10 nM</span><span>low</span><span>800 nM</span></div>
+            <div class="sr-tr"><b>C</b><span>25 nM</span><span>good</span><span>100 nM</span></div>
+            <div class="sr-tr"><b>D</b><span>80 nM</span><span>good</span><span>250 nM</span></div>
+          </div>
+          <p>가장 강한 binder는 A, 가장 좋은 cellular compound는 C다. 이것이 translational medicinal chemistry다. 회의에서 “A가 더 potent합니다”라고만 말하면 부족하다 — <b>어떤 assay layer인지 반드시 붙인다.</b></p>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>10강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Permeability는 molecule이 membrane을 통과해 target까지 도달하기 위한 핵심 조건이며, binding affinity와 독립적인 failure point가 될 수 있다.</b>
+              <span>Binding is not exposure.</span>
+            </li>
+            <li>
+              <b>Ionization, lipophilicity, HBD/HBA, polar surface, size와 conformation이 passive permeability를 함께 결정한다.</b>
+              <span>Neutral fraction matters.</span>
+            </li>
+            <li>
+              <b>PAMPA는 주로 passive permeability를, Caco-2는 transporter 영향을 포함한 net permeability를 볼 수 있으므로 같은 “permeability”로 취급하면 안 된다.</b>
+              <span>PAMPA ≠ Caco-2.</span>
+            </li>
+            <li>
+              <b>Passive permeability가 좋아도 P-gp/BCRP efflux 때문에 cellular 또는 CNS exposure가 낮을 수 있다.</b>
+              <span>Passive permeability ≠ net cellular accumulation.</span>
+            </li>
+            <li>
+              <b>AI의 binding prediction이 맞아도 cell activity는 틀릴 수 있다. 중요한 것은 prediction endpoint와 target exposure를 구분하는 것이다.</b>
+              <span>Cell potency requires target exposure.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>Cell activity가 나쁘면 이렇게 내려간다</div>
+          <p>잘 녹았나? → 막을 통과하나? → Efflux되지 않나? → 세포 안에 충분히 남나? → Target compartment에 가나? → 실제로 target에 결합하나?</p>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Compound A: solubility good, biochemical IC50 = 10 nM, cell IC50 &gt; 5 µM, pKa = 10.5. 가장 먼저 확인하고 싶은 것은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Passive permeability다.
+              <div class="exp">높은 pKa의 basic compound라 physiological pH에서 대부분 protonated되어 있을 가능성이 있고, 이로 인해 passive membrane crossing이 낮을 수 있다. PAMPA 또는 적절한 permeability assay를 확인한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Compound B: PAMPA = high, Caco-2 A→B = low, Caco-2 B→A = high. 가장 가능성 높은 설명은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Active efflux 가능성이다.
+              <div class="exp">Passive permeability 자체는 좋은데 cell system에서 reverse transport가 강하기 때문이다. P-gp/BCRP inhibitor를 이용한 follow-up 또는 transporter assay를 고려할 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>OH를 OMe로 바꿨더니 permeability가 개선됐다. 가능한 이유는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              HBD 제거, exposed polarity 감소, lipophilicity 증가 등이 가능하다.
+              <div class="exp">다만 target에서 OH donor interaction이 중요했다면 potency가 떨어질 수 있으므로 biochemical activity도 함께 확인해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>두 molecule의 MW와 TPSA가 거의 동일한데 B의 permeability가 훨씬 높다. 가능한 이유는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              B가 intramolecular H-bond나 folded conformation을 통해 polar surface를 내부에 숨길 수 있을 가능성이 있다.
+              <div class="exp">2D TPSA가 같아도 실제 exposed polarity는 달라질 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>AI model이 compound X의 PAMPA를 정확히 high로 예측했다. 하지만 cell assay에서는 inactive였다. AI가 실패했다고 단정할 수 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">AI가 예측한 endpoint가 passive permeability라면 prediction은 맞았을 수 있다. 실제 cellular inactivity는 efflux, intracellular sequestration, metabolism, target engagement 부족 때문일 수 있다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">11강 · Plasma Protein Binding</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">혈중 total drug concentration은 충분한데 왜 pharmacological effect가 약할까? Free vs bound drug, albumin, α1-acid glycoprotein, fu,p, nonspecific hydrophobic binding, PPB와 logD, PPB와 clearance/Vd의 관계를 연결하고, <b>“PPB가 높으면 무조건 나쁜 약이다”</b>가 왜 틀린지 다룬다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="09.html">◀ 9강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="11.html">▶ 11강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>
