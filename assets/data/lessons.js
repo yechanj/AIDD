@@ -106,7 +106,7 @@ window.AIDD_TRACKS = [
         title: "Metabolism / CYP",
         desc: "CYP450 산화, phase II conjugation, metabolic soft spot. CYP inhibition과 DDI.",
         tags: ["CYP450", "Soft spot", "Phase II", "DDI"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 13,
@@ -114,7 +114,7 @@ window.AIDD_TRACKS = [
         title: "Clearance와 half-life",
         desc: "CL, Vd, t½의 관계. Hepatic extraction과 in vitro–in vivo extrapolation.",
         tags: ["Clearance", "Half-life", "Vd", "IVIVE"],
-        status: "soon"
+        status: "ready"
       },
       {
         no: 14,

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L12 · Metabolism &amp; CYP450 — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L12 · Metabolism &amp; CYP450</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L12</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Metabolism &amp; CYP450</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> 왜 대사가 일어나는가</a></li>
+          <li><a href="#s03"><span class="num">03</span> Phase I / Phase II</a></li>
+          <li><a href="#s04"><span class="num">04</span> CYP450</a></li>
+          <li><a href="#s05"><span class="num">05</span> Active Site Orientation</a></li>
+          <li><a href="#s06"><span class="num">06</span> Metabolic Soft Spot</a></li>
+          <li><a href="#s07"><span class="num">07</span> Benzylic Oxidation</a></li>
+          <li><a href="#s08"><span class="num">08</span> N-Dealkylation</a></li>
+          <li><a href="#s09"><span class="num">09</span> O-Dealkylation</a></li>
+          <li><a href="#s10"><span class="num">10</span> Aromatic · Aliphatic</a></li>
+          <li><a href="#s11"><span class="num">11</span> Non-CYP · Hydrolysis</a></li>
+          <li><a href="#s12"><span class="num">12</span> Phase II</a></li>
+          <li><a href="#s13"><span class="num">13</span> Microsomal Stability · CLint</a></li>
+          <li><a href="#s14"><span class="num">14</span> Microsome vs Hepatocyte</a></li>
+          <li><a href="#s15"><span class="num">15</span> Metabolite ID</a></li>
+          <li><a href="#s16"><span class="num">16</span> Active · Reactive Metabolite</a></li>
+          <li><a href="#s17"><span class="num">17</span> Metabolic Blocking</a></li>
+          <li><a href="#s18"><span class="num">18</span> Metabolic Switching</a></li>
+          <li><a href="#s19"><span class="num">19</span> CYP Inhibition · Induction</a></li>
+          <li><a href="#s20"><span class="num">20</span> DDI</a></li>
+          <li><a href="#s21"><span class="num">21</span> AI Connection</a></li>
+          <li><a href="#s22"><span class="num">22</span> Failure Case</a></li>
+          <li><a href="#s23"><span class="num">23</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 12 &nbsp;·&nbsp; Part 2</div>
+          <h1>Metabolism &amp; CYP450</h1>
+          <p>Potency도 좋고 잘 흡수되는데, 왜 혈중에서 너무 빨리 사라질까?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — 모든 것이 좋아 보이는데 너무 빨리 사라진다</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Compound A — 좋은 점</h5>
+              <ul class="clean" style="font-size:13px;margin:0;"><li>Biochemical IC50 = 8 nM</li><li>Cell IC50 = 70 nM</li><li>Solubility acceptable, permeability good</li><li>PPB도 특별히 문제 없음</li></ul>
+            </div>
+            <div class="panel panel--b">
+              <h5>문제</h5>
+              <ul class="clean" style="font-size:13px;margin:0;"><li>Human liver microsome에서 빠르게 감소</li><li>30분이 지나기도 전에 parent의 상당 부분이 사라짐</li></ul>
+            </div>
+          </div>
+
+          <p>Target에 잘 붙는 것과 body 안에서 오래 살아남는 것은 다른 문제다. 이번에는 molecule의 <b>metabolic stability</b>를 본다.</p>
+          <ul class="clean">
+            <li>Molecule의 어디가 대사되는가? CYP가 어떤 구조를 선호하는가?</li>
+            <li>Soft spot을 막으면 정말 clearance가 좋아지는가?</li>
+            <li>Metabolite가 active하거나 toxic할 수도 있는가?</li>
+          </ul>
+
+          <div class="oneline">Metabolism은 molecule을 단순히 제거하는 과정이 아니라, 구조를 바꾸어 새로운 chemical entity를 만드는 과정이다.</div>
+
+          <!-- V1 -->
+          <div class="viz" data-mt-time>
+            <div class="viz__title">Parent Disappearance Timeline</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Microsome incubation 시간을 늘려 보세요. (개념 모델: t½ ≈ 15 min)</p>
+            <div class="mt-time">
+              <div class="le-slider"><label>Time: <b class="tm2-t">0 min</b></label><input type="range" class="tm2-in" min="0" max="60" step="1" value="0" /></div>
+              <div class="mt-bars">
+                <div class="sl-meter"><span>Parent</span><div class="sl-track"><i class="tm2-p"></i></div><b class="tm2-pv"></b></div>
+                <div class="sl-meter"><span>M1 (oxidation)</span><div class="sl-track"><i class="tm2-m1 bad"></i></div></div>
+                <div class="sl-meter"><span>M2 (dealkylation)</span><div class="sl-track"><i class="tm2-m2 bad"></i></div></div>
+                <div class="sl-meter"><span>Other</span><div class="sl-track"><i class="tm2-m3 bad"></i></div></div>
+              </div>
+              <div class="le-fb tm2-fb"></div>
+            </div>
+            <div class="viz__msg">The parent molecule does not vanish; it is chemically transformed.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> Metabolism은 왜 일어날까?</h2>
+
+          <p>많은 drug는 membrane을 통과해야 하므로 어느 정도 lipophilic하다. 하지만 너무 lipophilic한 molecule은 body가 쉽게 제거하기 어렵다. 그래서 organism은 xenobiotic을 chemical transformation해서 더 polar하고 excretable한 형태로 바꾸려 한다.</p>
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Metabolism ≠ 항상 detoxification</div>
+            <p>Metabolite는 pharmacologically active할 수도, inactive할 수도, toxic하거나 reactive할 수도 있다.</p>
+          </div>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Phase I / Phase II</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Phase I</h5><p>Oxidation · reduction · hydrolysis. Drug discovery에서 가장 자주 보는 것은 oxidation이며, 그 중심에 CYP450이 있다.</p></div>
+            <div class="panel panel--b"><h5>Phase II</h5><p>Polar group을 붙이는 conjugation: glucuronidation, sulfation, acetylation, methylation, glutathione conjugation 등. 종종 excretion을 쉽게 한다.</p></div>
+          </div>
+
+          <!-- V2 -->
+          <div class="viz" data-mt-phase>
+            <div class="viz__title">Phase I / Phase II Map</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">경로를 선택해 보세요.</p>
+            <div class="mt-phase">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-r="seq">Parent → Phase I → Phase II</button>
+                <button class="bi-tab" data-r="direct">Parent → Phase II (direct)</button>
+              </div>
+              <div class="mt-ph-grid">
+                <div class="mt-ph-node" data-n="p1"><b>Phase I</b><span>Oxidation · Reduction · Hydrolysis</span></div>
+                <div class="mt-ph-node mt-ph-parent" data-n="par"><b>Parent drug</b></div>
+                <div class="mt-ph-node" data-n="p2"><b>Phase II</b><span>Glucuronidation · Sulfation · GSH</span></div>
+              </div>
+              <div class="le-fb mt-ph-fb"></div>
+            </div>
+            <div class="viz__msg">Phase I and Phase II are categories, not a mandatory sequence.</div>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> CYP450</h2>
+
+          <p>Cytochrome P450은 heme을 포함하는 oxidative enzyme family로, liver에서 특히 중요하지만 다른 조직에도 존재한다. 대표 isoform은 CYP3A4, 2D6, 2C9, 2C19, 1A2이며 broad substrate recognition을 보인다.</p>
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>CYP3A4</div><p>Drug metabolism에서 매우 중요. Broad substrate range, 비교적 large/flexible active site. Substrate인지 inhibitor인지 자주 확인.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>CYP2D6</div><p>많은 basic amine-containing drug와 관련. 하지만 “basic amine이 있으면 2D6 substrate”는 과도한 단순화 — 전체 shape와 interaction pattern이 중요.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>CYP2C9</div><p>여러 acidic 또는 lipophilic drug와 관련. 구조 하나만 보고 substrate 여부를 확정하지 않는다.</p></div>
+          </div>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> CYP metabolism을 두 단계로 생각하자</h2>
+
+          <div class="bi-grid2">
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>1. Active site에 들어가야 한다</div><p>Substrate recognition.</p></div>
+            <div class="card card--bio" style="margin:0;"><div class="card__label"><span class="dot"></span>2. 특정 atom이 heme center 근처에 위치</div><p>Geometry와 chemical reactivity.</p></div>
+          </div>
+          <p>따라서 metabolic soft spot은 단순히 가장 reactive한 atom이 아니다. 후보(benzylic carbon, tertiary amine 주변 carbon, methoxy methyl, exposed aromatic carbon, aliphatic carbon)가 있어도 실제 major metabolite는 enzyme binding orientation에 따라 달라질 수 있다.</p>
+
+          <!-- V3 -->
+          <div class="viz" data-mt-pose>
+            <div class="viz__title">CYP Active-Site Orientation</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">같은 molecule의 두 pose. Ligand를 회전해 heme에 가까운 atom을 바꿔 보세요. (개념도)</p>
+            <div class="mt-pose">
+              <svg class="mt-pose-svg" viewBox="0 0 320 220" role="img" aria-label="CYP active site orientation"></svg>
+              <button class="bi-btn" data-rot>Rotate ligand</button>
+              <div class="le-fb mt-pose-fb"></div>
+            </div>
+            <div class="viz__msg">Metabolism depends on both reactivity and orientation.</div>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Metabolic Soft Spot</h2>
+
+          <p>Medicinal chemist는 molecule을 보면 묻는다. “어디가 먼저 대사될 것인가?” 후보: benzylic CH₃, methoxy, tertiary amine, exposed aromatic ring. 하지만 soft spot prediction은 <b>확률적</b>이다. 반응성이 높아 보여도 active site에서 접근하지 못하면 대사가 적을 수 있고, chemistry상 평범한 carbon도 CYP orientation이 맞으면 major site가 될 수 있다. <b>chemical reactivity × enzyme accessibility</b>를 함께 본다.</p>
+
+          <!-- V4 -->
+          <div class="viz" data-mt-scan>
+            <div class="viz__title">Metabolic Soft Spot Scanner</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">표시된 위치를 탭하세요. (가상 molecule)</p>
+            <div class="mt-scan">
+              <svg class="mt-scan-svg" viewBox="0 0 340 200" role="img" aria-label="Soft spot scanner"></svg>
+              <div class="le-fb mt-scan-fb"></div>
+            </div>
+            <div class="viz__msg">Read a structure for metabolic liabilities as well as target interactions.</div>
+          </div>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> Benzylic Oxidation</h2>
+
+          <p>Ar–CH₃ 같은 benzylic position은 흔한 oxidative soft spot이다. Ar–CH₃ → Ar–CH₂OH → Ar–CHO → Ar–COOH처럼 연속 oxidation도 가능하다(실제 pathway는 molecule과 enzyme에 따라 다르다). Benzylic radical/intermediate가 aromatic ring에 의해 어느 정도 안정화될 수 있어서 benzylic C–H는 자주 확인하는 soft spot이다.</p>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> N-Dealkylation</h2>
+
+          <p>Tertiary amine R₃N에서 CYP oxidation으로 alkyl group 하나가 제거되어 secondary amine이 될 수 있다. Parent와 metabolite는 HBD, pKa, polarity, potency가 달라질 수 있다. 따라서 metabolite는 단순히 “parent보다 작은 molecule”이 아니라 <b>새로운 pharmacology</b>를 가질 수 있다.</p>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> O-Dealkylation</h2>
+
+          <p>Ar–O–CH₃ methoxy는 CYP-mediated oxidation 후 Ar–OH phenol로 바뀔 수 있다. 5강의 OMe → OH 변환이 body 안에서 실제로 일어나는 것이다. HBD가 없던 parent가 HBD를 갖게 되고 polarity가 증가하며 Phase II conjugation의 substrate가 될 수 있다. 한 번의 metabolism이 다음 metabolism pathway를 열 수 있다.</p>
+
+          <!-- V5 -->
+          <div class="viz" data-mt-odealk>
+            <div class="viz__title">O-Dealkylation</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">대사 전/후를 전환해 비교하세요.</p>
+            <div class="mt-od">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-s="par">Parent · Ar–O–CH₃</button>
+                <button class="bi-tab" data-s="met">Metabolite · Ar–OH</button>
+              </div>
+              <div class="mt-od-eq">Ar–O–CH₃ <i>→ CYP →</i> Ar–OH</div>
+              <div class="le-three">
+                <div class="le-three-c"><span>HBD</span><b class="od-hbd">—</b></div>
+                <div class="le-three-c"><span>Polarity</span><b class="od-pol">—</b></div>
+                <div class="le-three-c"><span>Phase II liability</span><b class="od-p2">—</b></div>
+              </div>
+              <div class="le-fb od-fb"></div>
+            </div>
+            <div class="viz__msg">A metabolic reaction can create a new functional group and new pharmacology.</div>
+          </div>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Aromatic Hydroxylation · Aliphatic Oxidation</h2>
+
+          <p><b>Aromatic hydroxylation:</b> OH가 도입되어 polarity 증가, HBD/HBA 변화, activity 변화, Phase II conjugation 가능. Aromatic ring은 binding용 hydrophobic surface이면서 동시에 metabolic liability가 될 수 있다. <b>Aliphatic oxidation:</b> methyl → alcohol, secondary carbon → ketone 관련 metabolite. 어느 site가 선택되는지는 accessibility와 enzyme orientation에 크게 의존한다.</p>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> CYP만 보면 안 된다 — Hydrolysis와 non-CYP</h2>
+
+          <p>Drug metabolism에는 esterase, amidase, aldehyde oxidase, monoamine oxidase, UGT 등 CYP 외의 enzyme도 있다. 그래서 “microsomal instability = CYP 문제”라고 자동 결론내리면 안 된다.</p>
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Ester hydrolysis</h5><p>R–COOR은 esterase에 의해 쉽게 acid + alcohol로. Metabolic liability이자 prodrug strategy.</p></div>
+            <div class="panel panel--b"><h5>Amide hydrolysis</h5><p>일반적으로 ester보다 안정. ester → amide는 stability 개선 전략이지만 polarity, HBD/HBA, conformation을 바꾼다.</p></div>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Phase II — Glucuronidation · Sulfation · GSH</h2>
+
+          <div class="bi-grid3">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Glucuronidation</div><p>UGT가 OH, phenol, carboxylic acid, amine 등에 glucuronic acid를 결합해 훨씬 polar하게 만든다. 5강의 phenol/acid와 연결.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Sulfation</div><p>Phenol/alcohol에 sulfate. 매우 polar한 metabolite를 만들어 excretion 방향으로 가기 쉽다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Glutathione conjugation</div><p>Electrophilic reactive metabolite를 포착 — detoxification일 수 있지만 reactive intermediate가 존재했다는 clue.</p></div>
+          </div>
+          <p>그래서 OH는 binding에 유리한데 PK에서는 불리할 수 있다. 다시 trade-off다.</p>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Microsomal Stability · Half-life · CLint</h2>
+
+          <p>Liver microsome에는 ER-derived membrane fraction과 metabolic enzyme들이 포함된다. Compound를 넣고 시간에 따라 parent 감소를 측정한다(예: 0 min 100% → 10 min 70% → 20 min 45% → 30 min 25%). 빠르게 감소하면 metabolic stability가 낮다.</p>
+          <div class="bi-grid2">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>In vitro half-life</div><p>Disappearance curve에서 추정. 짧을수록 빠르게 대사. <b>In vivo plasma half-life와 같지 않다</b> — 매우 중요한 구분.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Intrinsic clearance (CLint)</div><p>Liver enzyme system이 자유롭게 접근 가능한 compound를 얼마나 빠르게 처리하는가. 13강에서 hepatic clearance와 연결.</p></div>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Microsome vs Hepatocyte</h2>
+
+          <p>Microsome은 metabolic enzyme(CYP/UGT 중심)을 보기에 좋지만 intact cell이 아니라 cellular uptake, 일부 cytosolic enzyme, transporter, complete cofactor context가 부족하다. Hepatocyte는 intact liver cell이라 broader metabolism, uptake, efflux, multiple enzyme system을 반영한다. Microsome에서 안정한데 hepatocyte에서 빨리 사라지면 non-CYP metabolism, transporter-mediated uptake, cytosolic metabolism 가능성이 있고, 이 discrepancy 자체가 mechanistic clue다.</p>
+
+          <!-- V6 -->
+          <div class="viz" data-mt-assay>
+            <div class="viz__title">Microsome vs Hepatocyte</div>
+            <div class="mt-assay">
+              <div class="twopanel">
+                <div class="panel panel--a"><h5>Microsome</h5><ul class="clean" style="font-size:13px;margin:0;"><li>ER-derived enzymes</li><li>Fast / high throughput</li><li>Limited cellular context</li></ul></div>
+                <div class="panel panel--b"><h5>Hepatocyte</h5><ul class="clean" style="font-size:13px;margin:0;"><li>Intact cell</li><li>Broader enzymes</li><li>Transporters possible</li></ul></div>
+              </div>
+              <div class="pm-assay-q">Scenario: <b>Microsome stable · Hepatocyte unstable</b>. 가장 plausible한 설명은?</div>
+              <div class="le-btnrow">
+                <button class="bi-tab" data-a="cyp">CYP3A4가 microsome에서 더 활성</button>
+                <button class="bi-tab" data-a="noncyp">Non-microsomal enzyme / uptake</button>
+                <button class="bi-tab" data-a="sol">Solubility artifact</button>
+              </div>
+              <div class="le-fb mt-assay-fb"></div>
+            </div>
+            <div class="viz__msg">Metabolic stability depends on the assay system.</div>
+          </div>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> Metabolite Identification</h2>
+
+          <p>Parent disappearance만 보면 부족하다. “무엇으로 바뀌었는가?”를 LC-MS 등으로 확인한다. M+16은 oxidation 가능성, M−14는 demethylation 가능성을 시사한다(정확한 구조 확인에는 추가 분석 필요). 이유: soft spot 규명, active metabolite 확인, reactive metabolite risk, human-specific metabolite, medicinal chemistry strategy.</p>
+
+          <!-- V7 -->
+          <div class="viz" data-mt-tree>
+            <div class="viz__title">Metabolite Tree</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Metabolite를 탭하세요. (가상 예시)</p>
+            <div class="mt-tree">
+              <div class="mt-tree-root">Parent</div>
+              <div class="mt-tree-row mt-tree-l1"></div>
+              <div class="mt-tree-row mt-tree-l2"></div>
+              <div class="le-fb mt-tree-fb"></div>
+            </div>
+            <div class="viz__msg">Metabolism is a network, not a single pathway.</div>
+          </div>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> Active Metabolite · Reactive Metabolite</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Active metabolite</h5><p>Metabolite가 target에 여전히 결합하거나 더 potent할 수 있다. Parent PK만으로 pharmacodynamic duration을 이해할 수 없는 경우가 있다. Prodrug는 이 원리를 의도적으로 이용한다 — metabolism은 drug design tool이 될 수도 있다.</p></div>
+            <div class="panel panel--b"><h5>Reactive metabolite</h5><p>Electrophilic intermediate가 protein nucleophile과 covalent reaction → protein adduct, cellular stress, idiosyncratic toxicity risk.</p></div>
+          </div>
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Structural alert ≠ 독성</div>
+            <p>Alert가 있으면 독성이라고 말하면 안 된다. 실제 risk는 metabolic rate, exposure, detoxification, target tissue, competing pathway에 달려 있다.</p>
+          </div>
+        </section>
+
+        <!-- S17 -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> Medicinal Chemistry — Metabolic Blocking</h2>
+
+          <div class="bi-grid2">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>H → F</div><p>C–H → C–F로 해당 site oxidation을 줄일 수 있지만 electronics, pKa, conformation, binding도 바뀌고 다른 위치로 metabolism이 이동할 수 있다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Steric shielding</div><p>Soft spot 주변 substituent로 enzyme 접근을 어렵게. 단 target pocket에서 clash 가능 — structure-based context에서 본다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Heteroaryl replacement</div><p>phenyl → pyridyl: oxidation pattern, logD, polarity, binding interaction이 모두 달라진다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Deuteration (맛보기)</div><p>C–H → C–D: bond cleavage가 rate-limiting이면 kinetic isotope effect로 속도 감소. 대체 pathway가 있으면 clearance는 크게 안 좋아질 수 있다.</p></div>
+          </div>
+
+          <!-- V8 -->
+          <div class="viz" data-mt-block>
+            <div class="viz__title">Metabolic Blocking Lab</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Benzylic H를 어떻게 막을까요? (개념 지표)</p>
+            <div class="mt-block">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-o="F">F</button>
+                <button class="bi-tab" data-o="Me">CH₃ shielding</button>
+                <button class="bi-tab" data-o="het">Heteroaryl</button>
+                <button class="bi-tab" data-o="D">D (deuterium)</button>
+              </div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>Potency risk</span><div class="sl-track"><i class="bk-pot bad"></i></div></div>
+                <div class="sl-meter"><span>logD change</span><div class="sl-track"><i class="bk-ld"></i></div></div>
+                <div class="sl-meter"><span>pKa / electronics change</span><div class="sl-track"><i class="bk-pk"></i></div></div>
+                <div class="sl-meter"><span>Metabolic stability tendency</span><div class="sl-track"><i class="bk-ms"></i></div></div>
+              </div>
+              <div class="le-fb bk-fb"></div>
+            </div>
+            <div class="viz__msg">Blocking metabolism always changes more than metabolism.</div>
+          </div>
+        </section>
+
+        <!-- S18 -->
+        <section id="s18" class="section">
+          <h2><span class="sec-no">18</span> Metabolic Switching</h2>
+
+          <p>가장 중요한 개념 중 하나다. Compound A에서 Site 1이 80%, Site 2가 20% 대사된다. Site 1을 F로 막으면 Compound B에서 Site 1은 거의 0%가 되지만 Site 2가 90%로 증가해 total clearance는 거의 동일하다. 나쁜 성공 기준은 “기존 metabolite가 줄었다”이고, 좋은 기준은 <b>전체 parent stability 또는 in vivo exposure가 개선되었다</b>이다.</p>
+
+          <!-- V9 -->
+          <div class="viz" data-mt-switch>
+            <div class="viz__title">Metabolic Switching</div>
+            <div class="mt-sw">
+              <div class="mt-sw-sites">
+                <div class="sl-meter"><span>Site 1 (benzylic)</span><div class="sl-track"><i class="sw-1 bad"></i></div><b class="sw-1v"></b></div>
+                <div class="sl-meter"><span>Site 2 (N-dealkyl.)</span><div class="sl-track"><i class="sw-2 bad"></i></div><b class="sw-2v"></b></div>
+                <div class="sl-meter"><span>Total disappearance</span><div class="sl-track"><i class="sw-t"></i></div><b class="sw-tv"></b></div>
+              </div>
+              <div class="le-btnrow">
+                <button class="bi-btn" data-block>Block Site 1 (→ F)</button>
+                <button class="bi-btn bi-btn--ghost" data-reset>Reset</button>
+              </div>
+              <div class="le-fb sw-fb"></div>
+            </div>
+            <div class="viz__msg">Remove one pathway and another may take over.</div>
+          </div>
+        </section>
+
+        <!-- S19 -->
+        <section id="s19" class="section">
+          <h2><span class="sec-no">19</span> CYP Inhibition · CYP Induction</h2>
+
+          <p>Drug는 substrate만 되는 것이 아니다. CYP enzyme에 결합해 다른 drug의 metabolism을 방해하면 다른 drug의 plasma concentration이 올라 drug–drug interaction risk가 생긴다.</p>
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Reversible inhibition</div><p>CYP active site와 reversible하게 경쟁. Compound가 없어지면 inhibition도 줄어든다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Time-dependent inhibition</div><p>Incubation 시간이 길수록 inhibition이 증가하는 pattern — mechanism-based inhibition 가능성.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>Mechanism-based</div><p>CYP가 compound를 처리하다 만든 reactive intermediate가 CYP 자체를 inactivate. 효과가 오래 지속되어 clinical DDI risk가 커질 수 있다.</p></div>
+          </div>
+          <p><b>CYP induction:</b> 어떤 drug는 CYP expression을 증가시켜 다른 drug가 더 빨리 대사되고 exposure가 감소할 수 있다. 또 Compound가 CYP3A4 substrate면서 inhibitor일 수도 있다 — 서로 배타적인 개념이 아니라 각 endpoint를 따로 측정한다. 즉 <b>metabolic stability</b>와 <b>DDI liability</b>는 다른 문제다.</p>
+
+          <!-- V10 -->
+          <div class="viz" data-mt-ddi>
+            <div class="viz__title">CYP DDI Dashboard</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Drug의 역할을 선택하세요. (개념 모델)</p>
+            <div class="mt-ddi">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-k="sub">Substrate</button>
+                <button class="bi-tab" data-k="inh">Inhibitor</button>
+                <button class="bi-tab" data-k="ind">Inducer</button>
+              </div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>CYP activity</span><div class="sl-track"><i class="dd-e"></i></div><b class="dd-ev"></b></div>
+                <div class="sl-meter"><span>Co-administered drug exposure</span><div class="sl-track"><i class="dd-x"></i></div><b class="dd-xv"></b></div>
+              </div>
+              <div class="le-fb dd-fb"></div>
+            </div>
+            <div class="viz__msg">Metabolic stability and DDI liability are different questions.</div>
+          </div>
+        </section>
+
+        <!-- S20 -->
+        <section id="s20" class="section">
+          <h2><span class="sec-no">20</span> Drug–Drug Interaction — Victim vs Perpetrator</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a"><h5>Victim</h5><p>다른 drug 때문에 <b>자신의</b> exposure가 변한다. 예: CYP inhibitor와 병용 → exposure ↑.</p></div>
+            <div class="panel panel--b"><h5>Perpetrator</h5><p><b>자신이</b> 다른 drug의 metabolism을 변화시킨다. 예: CYP inhibitor 또는 inducer.</p></div>
+          </div>
+          <p>좋은 candidate는 자기 자신이 너무 빨리 대사되지 않고, 주요 CYP를 강하게 방해하지 않고, reactive metabolite 위험도 낮아야 한다.</p>
+
+          <!-- V11 -->
+          <div class="viz" data-mt-vp>
+            <div class="viz__title">Victim vs Perpetrator</div>
+            <div class="mt-vp">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-m="inh">A inhibits the enzyme</button>
+                <button class="bi-tab" data-m="ind">A induces the enzyme</button>
+              </div>
+              <div class="mt-vp-roles">
+                <div class="mt-vp-r"><b>Drug A</b><span class="vp-a"></span></div>
+                <div class="mt-vp-r"><b>Drug B</b><span class="vp-b"></span></div>
+              </div>
+              <div class="sl-meter" style="grid-template-columns:150px 1fr auto;"><span>Drug B concentration</span><div class="sl-track"><i class="vp-bar"></i></div><b class="vp-v"></b></div>
+              <div class="le-fb vp-fb"></div>
+            </div>
+            <div class="viz__msg">Ask both “what happens to my drug?” and “what does my drug do to others?”</div>
+          </div>
+        </section>
+
+        <!-- S21 -->
+        <section id="s21" class="section">
+          <h2><span class="sec-no">21</span> AI Drug Discovery Connection</h2>
+
+          <p>GNN으로 microsomal half-life나 CLint를 예측할 수 있지만 label context가 중요하다. Human liver microsome, rat liver microsome, human hepatocyte를 모두 “metabolic stability”로 묶으면 안 된다. Species와 experimental system이 다르다. 그 외에도 CYP substrate/inhibition prediction, site-of-metabolism prediction, metabolite generation AI가 있다.</p>
+
+          <h3>Site-of-Metabolism prediction</h3>
+          <p>AI는 각 atom이 metabolic site일 probability를 예측한다(atom 12: 0.75 등). 하지만 0.75가 “실제 major metabolite가 반드시 여기서 생긴다”는 뜻은 아니다. 모델은 local atomic environment, electronic feature, training-set pattern을 학습하지만 실제 CYP binding pose도 중요하기 때문이다.</p>
+
+          <!-- V12 -->
+          <div class="viz" data-mt-som>
+            <div class="viz__title">AI Site-of-Metabolism Heatmap</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">원자 색이 진할수록 예측 probability가 높습니다. (가상)</p>
+            <div class="mt-som">
+              <svg class="mt-som-svg" viewBox="0 0 340 170" role="img" aria-label="Site of metabolism heatmap"></svg>
+              <button class="bi-btn" data-pose>Show CYP pose</button>
+              <div class="le-fb mt-som-fb"></div>
+            </div>
+            <div class="viz__msg">Local metabolic predictions become stronger when combined with structural context.</div>
+          </div>
+
+          <h3>Metabolite generation AI</h3>
+          <p>Parent에서 가능한 Phase I/II transformation(N-dealkylation, O-dealkylation, hydroxylation)을 생성하는 model은 metabolite ID 실험 전에 hypothesis를 우선순위화하는 데 유용하다. 하지만 soft spot이 여러 개면 1차 → 2차 → 3차 metabolite가 빠르게 늘어나는 combinatorial explosion이 생긴다. 이런 AI는 plausible pathway ranking을 돕는 도구이지 definitive metabolic map이 아니다.</p>
+        </section>
+
+        <!-- S22 -->
+        <section id="s22" class="section">
+          <h2><span class="sec-no">22</span> Failure Case — AI가 soft spot을 정확히 맞췄다</h2>
+
+          <p>Model은 para-CH₃ oxidation risk 0.9를 예측했고 실험에서도 major metabolite가 para-CH₂OH였다. 팀은 para-F analogue를 만들었고 Model은 stability improvement를 예측했다. 그런데 실제 microsomal stability는 거의 동일했다. 왜?</p>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>Investigation</div>
+            <p>Metabolite ID 결과, Parent A는 Site 1 oxidation이 major였다. F analogue는 Site 1이 막혔지만 <b>N-dealkylation이 새 major pathway</b>가 되었다. 즉 metabolic switching.</p>
+          </div>
+
+          <p>AI는 site-of-metabolism prediction은 맞췄다. 하지만 “Site 1을 막으면 overall clearance가 개선된다”는 더 큰 결론은 틀렸다. 이 둘은 다른 prediction task다.</p>
+
+          <!-- V13 -->
+          <div class="viz" data-mt-lg>
+            <div class="viz__title">Local vs Global AI Prediction</div>
+            <div class="mt-lg">
+              <div class="mt-lg-cols">
+                <div class="mt-lg-c ok"><h6>Local task</h6><p>Where is metabolism?</p><b>Model: correct ✓</b></div>
+                <div class="mt-lg-c bad"><h6>Global task</h6><p>Will clearance improve after blocking it?</p><b>Model: wrong ✗</b></div>
+              </div>
+              <button class="bi-btn" data-show>Show what's in between</button>
+              <div class="mt-lg-mid">
+                <span>Alternative pathways</span><span>PPB</span><span>Transporter</span><span>Renal clearance</span>
+              </div>
+            </div>
+            <div class="viz__msg">Correct local chemistry does not guarantee correct whole-body PK.</div>
+          </div>
+        </section>
+
+        <!-- S23 -->
+        <section id="s23" class="section">
+          <h2><span class="sec-no">23</span> Scientist's Thinking — Microsomal stability poor</h2>
+
+          <p>Observation: Human microsomal t½ 짧음. Step 1에서 parent disappearance를 확인한 뒤 아래 순서로 진행한다.</p>
+
+          <div style="display:grid;gap:8px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 2 — Metabolite ID</div><p>Major metabolite: M1 O-dealkylation, M2 benzylic oxidation. 어느 pathway가 dominant인가?</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 3 — Structural hypothesis</div><p>O-dealkylation이 major라면 methoxy가 soft spot. Design: OMe → F, CN, heterocycle, steric shielding. Target SAR을 함께 확인.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 4 — Matched analogues</div><p>OMe / F / CN / OEt 등을 potency, logD, microsomal stability, metabolite profile로 비교.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 5 — Hepatocyte</div><p>다른 metabolic pathway가 있는지 확인.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 6 — In vivo PK</div><p>In vitro stability 개선이 최종 PK를 보장하지 않는다. Hepatic blood flow, PPB, uptake, renal clearance가 개입한다 (13강).</p></div>
+          </div>
+
+          <!-- V14 -->
+          <div class="viz" data-mt-flow>
+            <div class="viz__title">Scientist's Metabolism Workflow</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 단계를 탭하면 그 실험이 답하는 질문이 표시됩니다.</p>
+            <div class="sl-flow mt-flow">
+              <button class="sl-fl-step" data-s="0"><b>Poor microsomal stability</b></button><i>↓</i>
+              <button class="sl-fl-step" data-s="1"><b>Parent disappearance confirmed</b></button><i>↓</i>
+              <button class="sl-fl-step" data-s="2"><b>Metabolite ID</b></button><i>↓</i>
+              <button class="sl-fl-step" data-s="3"><b>Major soft spot identified</b></button><i>↓</i>
+              <button class="sl-fl-step" data-s="4"><b>Design matched analogues</b></button><i>↓</i>
+              <button class="sl-fl-step" data-s="5"><b>Microsome retest</b></button><i>↓</i>
+              <button class="sl-fl-step" data-s="6"><b>Hepatocyte</b></button><i>↓</i>
+              <button class="sl-fl-step" data-s="7"><b>In vivo PK</b></button>
+              <div class="le-fb mt-flow-fb"></div>
+            </div>
+            <div class="viz__msg">Metabolism optimization is iterative hypothesis testing.</div>
+          </div>
+
+          <h3>Metabolic SAR</h3>
+          <div class="sr-tbl" style="--cols:.6fr 1fr 1fr 1fr;">
+            <div class="sr-tr sr-tr--h"><span>Cpd</span><span>Change</span><span>HLM t½</span><span>Cell IC50</span></div>
+            <div class="sr-tr"><b>A</b><span>OMe</span><span>8 min</span><span>40 nM</span></div>
+            <div class="sr-tr"><b>B</b><span>F</span><span>35 min</span><span>100 nM</span></div>
+            <div class="sr-tr"><b>C</b><span>CN</span><span>55 min</span><span>60 nM</span></div>
+            <div class="sr-tr"><b>D</b><span>OH</span><span>4 min</span><span>300 nM</span></div>
+          </div>
+          <p>C가 좋은 balance일 수 있다 — stability 개선이 크면서 potency loss가 비교적 작다. D의 OH는 Phase II conjugation, 추가 polarity, permeability 영향을 만들었을 수 있다. 5–8강(functional group, bioisostere, LipE, SAR)이 metabolism optimization에 다시 쓰인다: OMe soft spot → 어떤 bioisostere? → potency 유지? → logD 변화? → 새 soft spot? → SAR 업데이트.</p>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>12강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Drug metabolism은 molecule을 제거하는 과정이면서 동시에 새로운 metabolite를 만드는 chemical transformation이다.</b>
+              <span>Metabolism changes chemistry.</span>
+            </li>
+            <li>
+              <b>CYP metabolism에서 중요한 것은 local chemical reactivity뿐 아니라 enzyme binding orientation과 accessibility다.</b>
+              <span>Reactivity × accessibility.</span>
+            </li>
+            <li>
+              <b>Metabolic soft spot을 막았다고 전체 clearance가 반드시 좋아지는 것은 아니다. Metabolic switching을 항상 고려해야 한다.</b>
+              <span>Blocking one pathway can reveal another.</span>
+            </li>
+            <li>
+              <b>Metabolic stability, CYP inhibition, CYP induction, reactive metabolite liability는 서로 다른 endpoint다.</b>
+              <span>Metabolic stability ≠ CYP inhibition.</span>
+            </li>
+            <li>
+              <b>AI가 site of metabolism을 정확히 맞춰도 전체 in vivo PK를 자동으로 맞추는 것은 아니다. Local prediction과 global outcome을 구분해야 한다.</b>
+              <span>Local AI prediction ≠ global PK prediction.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>Metabolism 문제를 보면 이렇게 생각한다</div>
+          <p>얼마나 빨리 parent가 사라지는가? → 어떤 metabolite가 생기는가? → 어느 soft spot이 dominant한가? → 그 위치를 막으면 어디로 metabolism이 이동하는가? → 전체 stability가 실제로 좋아졌는가? → In vivo exposure도 개선됐는가?</p>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Compound A의 OMe를 F로 바꾸자 O-dealkylation metabolite가 사라졌다. 하지만 microsomal half-life는 그대로였다. 가장 먼저 무엇을 의심할까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Metabolic switching.
+              <div class="exp">기존 pathway가 막히면서 다른 위치의 oxidation이나 N-dealkylation 등이 새로운 major pathway가 되었을 수 있다. Metabolite ID를 다시 확인해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Human microsome에서는 안정하지만 human hepatocyte에서는 빠르게 사라진다. 가능한 이유는?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Microsome에서 충분히 반영되지 않는 non-microsomal enzyme, transporter-mediated uptake, broader cellular metabolism 등이 관여할 수 있다.
+              <div class="exp">Discrepancy 자체가 mechanistic clue다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Tertiary amine이 N-dealkylation을 받았다. Metabolite의 pharmacology가 parent와 반드시 같을까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">Secondary amine으로 바뀌면서 pKa, HBD/HBA, polarity, target interaction이 달라질 수 있다. Active metabolite 여부를 별도로 평가해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Compound가 CYP3A4 substrate다. 그렇다면 CYP3A4 inhibitor는 아닌가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              그렇게 말할 수 없다.
+              <div class="exp">Substrate와 inhibitor는 서로 배타적인 개념이 아니다. 같은 compound가 substrate이면서 inhibition도 일으킬 수 있으므로 각각 측정해야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>AI가 benzylic carbon을 major metabolic site로 정확히 예측했다. 그 위치를 막으면 in vivo half-life도 좋아질 것이라고 바로 결론내려도 되는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">Alternative metabolic pathway, PPB, hepatic extraction, transporter, renal clearance 등 여러 요소가 남아 있다. Site-of-metabolism prediction과 whole-body PK prediction은 다른 문제다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">13강 · Clearance &amp; Half-life</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">Microsomal stability는 좋아졌는데 왜 in vivo에서는 여전히 빨리 사라질까? Clearance, hepatic extraction, CLint, plasma protein binding, renal clearance, half-life, volume of distribution, well-stirred model의 직관, low/high extraction drug, concentration–time curve를 하나로 묶는다. 특히 11강의 <b>fu,p</b>와 12강의 <b>CLint</b>가 처음으로 하나의 PK equation 안에서 만난다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="11.html">◀ 11강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="13.html">▶ 13강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

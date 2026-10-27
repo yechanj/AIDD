@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L13 · Clearance &amp; Half-life — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">L13 · Clearance &amp; Half-life</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">L13</div>
+        <div class="sidebar__title">AIDD · Track A
+          <small>Clearance &amp; Half-life</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> Opening Case</a></li>
+          <li><a href="#s02"><span class="num">02</span> Clearance란?</a></li>
+          <li><a href="#s03"><span class="num">03</span> Half-life</a></li>
+          <li><a href="#s04"><span class="num">04</span> Hepatic Clearance</a></li>
+          <li><a href="#s05"><span class="num">05</span> Well-Stirred Model</a></li>
+          <li><a href="#s06"><span class="num">06</span> Low vs High Extraction</a></li>
+          <li><a href="#s07"><span class="num">07</span> fu × CLint</a></li>
+          <li><a href="#s08"><span class="num">08</span> Extraction Ratio · 생리</a></li>
+          <li><a href="#s09"><span class="num">09</span> Renal Clearance</a></li>
+          <li><a href="#s10"><span class="num">10</span> Urine pH · Reabsorption</a></li>
+          <li><a href="#s11"><span class="num">11</span> Bioavailability · First-pass</a></li>
+          <li><a href="#s12"><span class="num">12</span> Concentration–Time Curve</a></li>
+          <li><a href="#s13"><span class="num">13</span> Target Coverage</a></li>
+          <li><a href="#s14"><span class="num">14</span> Half-life의 함정</a></li>
+          <li><a href="#s15"><span class="num">15</span> Realistic PK · 전략</a></li>
+          <li><a href="#s16"><span class="num">16</span> AI Connection</a></li>
+          <li><a href="#s17"><span class="num">17</span> Failure Case</a></li>
+          <li><a href="#s18"><span class="num">18</span> Scientist's Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 요약</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 자기점검</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <header class="lesson-hero">
+          <div class="kicker">AIDD · Track A — Theory &nbsp;·&nbsp; Lecture 13 &nbsp;·&nbsp; Part 2</div>
+          <h1>Clearance &amp; Half-life</h1>
+          <p>Microsomal stability가 좋아졌는데 왜 in vivo에서는 여전히 빨리 사라질까?</p>
+        </header>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> Opening Case — Microsome은 좋아졌는데 왜 PK는 그대로지?</h2>
+
+          <p>Compound A의 Human liver microsome t½ = 8 min. Team은 주요 soft spot(benzylic CH₃ oxidation)을 찾아 수정해 Compound B를 만들었다. B의 HLM t½ = 45 min — 큰 개선이다. 팀은 "이제 in vivo half-life도 훨씬 길어질 것"이라 생각했다. 그런데 rat PK 결과는 A 1.4 h, B 1.7 h로 거의 차이가 없었다. 왜?</p>
+
+          <p>HLM stability가 알려주는 것은 주로 <b>liver metabolic enzyme system에서 molecule이 얼마나 빨리 처리되는가</b>다. In vivo plasma concentration의 감소에는 hepatic metabolism 외에 renal excretion, biliary excretion, transporter-mediated elimination이 관여한다. 즉 <b>CLint improvement ≠ systemic clearance improvement guaranteed</b>다.</p>
+
+          <div class="oneline">Clearance는 body가 drug를 제거하는 능력이고, half-life는 clearance와 distribution이 함께 만든 결과다.</div>
+
+          <!-- V1 -->
+          <div class="viz" data-cl-open>
+            <div class="viz__title">Microsome Success, PK Failure</div>
+            <div class="cl-open">
+              <div class="twopanel">
+                <div class="panel panel--a"><h5>Compound A</h5><p>HLM t½ = 8 min<br>Plasma t½ = 1.4 h</p></div>
+                <div class="panel panel--b"><h5>Compound B</h5><p>HLM t½ = 45 min<br>Plasma t½ = 1.7 h</p></div>
+              </div>
+              <div class="cl-open-q">Why didn't PK improve?</div>
+              <div class="le-btnrow">
+                <button class="bi-tab" data-h="flow">Hepatic flow</button>
+                <button class="bi-tab" data-h="renal">Renal clearance</button>
+                <button class="bi-tab" data-h="fu">fu change</button>
+                <button class="bi-tab" data-h="vd">Vd change</button>
+              </div>
+              <div class="le-fb cl-open-fb"></div>
+            </div>
+            <div class="viz__msg">In vitro metabolic stability and in vivo half-life are different endpoints.</div>
+          </div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> Clearance란 무엇인가?</h2>
+
+          <p>Clearance(CL)는 <b>단위 시간당 drug가 완전히 제거된 것으로 간주할 수 있는 plasma volume</b>이다(예: mL/min, L/h). CL = 10 L/h는 매시간 10 L의 plasma에서 drug가 완전히 제거된 것과 동등한 elimination capacity라는 뜻이며, 실제로 plasma를 버린다는 뜻은 아니다. “얼마의 drug가 제거됐나”가 아니라 “얼마의 volume이 제거됐다고 볼 수 있나”라는 개념이다.</p>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Elimination rate = CL × C</div>
+            <p>CL은 system property이고 C는 현재 concentration이다. 같은 clearance에서도 concentration이 높으면 시간당 제거되는 amount가 커진다.</p>
+          </div>
+
+          <!-- V2 -->
+          <div class="viz" data-cl-vol>
+            <div class="viz__title">Clearance as a “Volume Cleaned”</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">CL과 concentration을 바꿔 elimination rate를 확인하세요. (단위는 상대값)</p>
+            <div class="cl-vol">
+              <div class="le-slider"><label>CL: <b class="vl-cl">5</b> L/h</label><input type="range" class="vl-cl-in" min="1" max="20" step="1" value="5" /></div>
+              <div class="le-slider"><label>Plasma concentration C: <b class="vl-c">50</b> (relative)</label><input type="range" class="vl-c-in" min="10" max="100" step="5" value="50" /></div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>Volume cleaned / h</span><div class="sl-track"><i class="vl-b1"></i></div><b class="vl-v1"></b></div>
+                <div class="sl-meter"><span>Elimination rate = CL × C</span><div class="sl-track"><i class="vl-b2 bad"></i></div><b class="vl-v2"></b></div>
+              </div>
+              <div class="le-fb vl-fb"></div>
+            </div>
+            <div class="viz__msg">Clearance is a proportionality between concentration and elimination rate.</div>
+          </div>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> Total Clearance와 Half-life</h2>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Total clearance</div>
+            <p style="text-align:center;">CL<sub>total</sub> = CL<sub>H</sub> + CL<sub>R</sub> + CL<sub>other</sub></p>
+            <p style="font-size:13px;color:var(--ink-soft);">Hepatic metabolism, renal excretion, biliary excretion, 기타 pathway의 합.</p>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Half-life</div>
+            <p style="text-align:center;font-size:1.1em;">t<sub>½</sub> = 0.693 × V<sub>d</sub> / CL</p>
+            <p style="font-size:13px;color:var(--ink-soft);">Vd는 drug가 plasma에만 있는지 tissue로 넓게 퍼지는지 나타내는 apparent volume(14강에서 본격적으로). CL ↓ → t½ ↑, Vd ↑ → t½ ↑ 경향.</p>
+          </div>
+
+          <p>예: A(CL 5 L/h, Vd 10 L)와 B(CL 5 L/h, Vd 100 L)는 clearance가 같지만 B의 half-life가 훨씬 길 수 있다. 반대로 C(CL 1, Vd 5)와 D(CL 3, Vd 100)에서는 D가 clearance가 더 높음에도 Vd가 훨씬 커서 half-life가 더 길 수 있다. <b>Half-life ≠ clearance.</b></p>
+
+          <!-- V3 -->
+          <div class="viz" data-cl-t12>
+            <div class="viz__title">Half-life Equation Playground</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">t½ = 0.693 × Vd / CL — 두 lever를 움직여 보세요.</p>
+            <div class="cl-t12">
+              <div class="le-slider"><label>CL: <b class="t1-cl">5</b> L/h</label><input type="range" class="t1-cl-in" min="-0.3" max="2" step="0.02" value="0.7" /></div>
+              <div class="le-slider"><label>Vd: <b class="t1-vd">10</b> L</label><input type="range" class="t1-vd-in" min="0.7" max="2.7" step="0.02" value="1" /></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>t½</span><b class="t1-t">—</b></div>
+                <div class="le-three-c"><span>k = CL/Vd</span><b class="t1-k">—</b></div>
+              </div>
+              <div class="le-btnrow" style="margin-top:10px;">
+                <button class="bi-tab" data-p="A">A: CL 5 · Vd 10</button>
+                <button class="bi-tab" data-p="B">B: CL 5 · Vd 100</button>
+                <button class="bi-tab" data-p="D">D: CL 3 · Vd 100</button>
+              </div>
+              <div class="le-fb t1-fb"></div>
+            </div>
+            <div class="viz__msg">Half-life has two levers, not one.</div>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> Hepatic Clearance — 11강과 12강이 만난다</h2>
+
+          <p>11강의 <b>fraction unbound(fu)</b>와 12강의 <b>intrinsic clearance(CLint)</b>가 liver clearance에서 같이 작용한다. 여기에 세 번째 변수 <b>hepatic blood flow(Q<sub>H</sub>)</b>가 등장한다.</p>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> Well-Stirred Model 직관</h2>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>Well-stirred model</div>
+            <p style="text-align:center;">CL<sub>H</sub> = Q<sub>H</sub> · f<sub>u</sub> · CL<sub>int</sub> / (Q<sub>H</sub> + f<sub>u</sub> · CL<sub>int</sub>)</p>
+            <p style="font-size:13px;color:var(--ink-soft);">Q<sub>H</sub>: hepatic blood flow · f<sub>u</sub>: unbound fraction · CL<sub>int</sub>: liver의 intrinsic metabolic capacity.</p>
+          </div>
+          <p>식을 외울 필요는 없다. 핵심은 두 extreme이다. Metabolism capacity가 낮을 때는 enzyme capacity가 limiting이고, 매우 높을 때는 blood가 liver로 drug를 공급하는 속도가 limiting이다.</p>
+
+          <!-- V4 -->
+          <div class="viz" data-cl-ws>
+            <div class="viz__title">Well-Stirred Model Explorer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">preset을 고른 뒤 CLint를 10배 낮춰 보세요. (Q<sub>H</sub> = 20 mL/min/kg, 단순화)</p>
+            <div class="cl-ws">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-pre="low">Low extraction preset</button>
+                <button class="bi-tab" data-pre="high">High extraction preset</button>
+              </div>
+              <div class="le-slider"><label>fu: <b class="ws-fu">0.1</b></label><input type="range" class="ws-fu-in" min="-3" max="0" step="0.05" value="-1" /></div>
+              <div class="le-slider"><label>CL<sub>int</sub>: <b class="ws-ci">20</b> mL/min/kg</label><input type="range" class="ws-ci-in" min="-1" max="4" step="0.05" value="1.3" /></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>fu·CLint</span><b class="ws-p">—</b></div>
+                <div class="le-three-c"><span>CL<sub>H</sub></span><b class="ws-h">—</b></div>
+                <div class="le-three-c"><span>CLint ÷10 하면 CL<sub>H</sub></span><b class="ws-r">—</b></div>
+              </div>
+              <div class="le-fb ws-fb"></div>
+            </div>
+            <div class="viz__msg">The same CLint improvement can have very different in vivo consequences.</div>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Low-Extraction vs High-Extraction</h2>
+
+          <div class="twopanel" style="margin:16px 0;">
+            <div class="panel panel--a">
+              <h5>Low extraction · fu·CLint ≪ Q<sub>H</sub></h5>
+              <p>CL<sub>H</sub> ≈ fu·CLint. PPB와 intrinsic clearance에 민감. Soft spot blocking → CLint ↓ → CL ↓ → AUC ↑ → t½ ↑ 가능 — 12강에서 기대한 이상적 시나리오.</p>
+            </div>
+            <div class="panel panel--b">
+              <h5>High extraction · fu·CLint ≫ Q<sub>H</sub></h5>
+              <p>CL<sub>H</sub> ≈ Q<sub>H</sub>. Liver가 들어오는 대로 거의 제거 → <b>flow-limited clearance</b>. CLint가 여전히 blood flow보다 훨씬 큰 영역에서는 개선해도 기대만큼 변하지 않는다.</p>
+            </div>
+          </div>
+          <p>Opening Case로 돌아가면, A는 CLint가 매우 높고 B는 5배 개선됐지만 둘 다 여전히 high-extraction region이라면 A도 CL<sub>H</sub> ≈ Q<sub>H</sub>, B도 CL<sub>H</sub> ≈ Q<sub>H</sub>라서 in vivo hepatic clearance가 크게 달라지지 않는다. Microsomal stability는 enzyme-level, hepatic clearance는 enzyme + PPB + blood flow, systemic clearance는 hepatic + renal + other, half-life는 clearance + distribution — 한 단계씩 system complexity가 증가한다.</p>
+
+          <!-- V5 -->
+          <div class="viz" data-cl-flow>
+            <div class="viz__title">Flow-Limited Liver</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Liver로 들어오는 drug 10개 중 몇 개가 살아남는지 보세요. (fu = 1로 단순화, Q<sub>H</sub> = 20)</p>
+            <div class="cl-flow">
+              <div class="le-slider"><label>Enzyme capacity CL<sub>int</sub>: <b class="fl-ci">100</b></label><input type="range" class="fl-ci-in" min="0" max="4" step="0.05" value="2" /></div>
+              <svg class="cl-flow-svg" viewBox="0 0 340 120" role="img" aria-label="Flow-limited liver"></svg>
+              <div class="le-three">
+                <div class="le-three-c"><span>Extraction ratio</span><b class="fl-e">—</b></div>
+                <div class="le-three-c"><span>CL<sub>H</sub> / Q<sub>H</sub></span><b class="fl-r">—</b></div>
+              </div>
+              <div class="le-fb fl-fb"></div>
+            </div>
+            <div class="viz__msg">Sometimes delivery to the liver, not enzyme capacity, is the bottleneck.</div>
+          </div>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> fu × CLint — PPB와 만나는 지점</h2>
+
+          <p>A(fu 0.01, CLint 100 → product 1)와 B(fu 0.1, CLint 20 → product 2)를 보자. CLint는 5배 좋아졌지만 lipophilicity 감소로 fu가 10배 증가했다. Low-extraction 상황이라면 hepatic clearance가 오히려 <b>증가</b>할 수도 있다. 그래서 “microsome stability 5배 개선”만 보고 기뻐하면 부족하다 — fu, logD, permeability도 변했는지 본다. 또 fu ↑가 곧 efficacy ↑는 아니다. Free fraction이 증가하면 tissue distribution, hepatic metabolism, renal filtration도 함께 증가할 수 있다.</p>
+
+          <!-- V6 -->
+          <div class="viz" data-cl-fucl>
+            <div class="viz__title">fu × CLint Balance</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">A와 B의 fu, CLint를 조절해 보세요. (Q<sub>H</sub> = 20)</p>
+            <div class="cl-fucl">
+              <div class="cl-two">
+                <div class="cl-two-c">
+                  <b>Compound A</b>
+                  <div class="le-slider"><label>fu: <span class="fa-fu">0.01</span></label><input type="range" class="fa-fu-in" min="-3" max="0" step="0.05" value="-2" /></div>
+                  <div class="le-slider"><label>CLint: <span class="fa-ci">100</span></label><input type="range" class="fa-ci-in" min="0" max="3" step="0.05" value="2" /></div>
+                  <div class="fa-out"></div>
+                </div>
+                <div class="cl-two-c">
+                  <b>Compound B</b>
+                  <div class="le-slider"><label>fu: <span class="fb-fu">0.1</span></label><input type="range" class="fb-fu-in" min="-3" max="0" step="0.05" value="-1" /></div>
+                  <div class="le-slider"><label>CLint: <span class="fb-ci">20</span></label><input type="range" class="fb-ci-in" min="0" max="3" step="0.05" value="1.3" /></div>
+                  <div class="fb-out"></div>
+                </div>
+              </div>
+              <div class="le-fb fc-fb"></div>
+            </div>
+            <div class="viz__msg">A stability gain can be offset by a change in free fraction.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> Extraction Ratio와 생리</h2>
+
+          <p>Organ extraction ratio는 <b>E = CL / Q</b>로, organ을 통과하는 blood flow 중 얼마가 제거되는가를 나타낸다. E가 낮으면(low extraction) 한 번 지나도 대부분 살아남아 enzyme activity나 protein binding 변화가 clearance에 큰 영향을 준다. E가 높으면 blood flow 변화가 clearance에 중요하다. 예를 들어 hepatic blood flow가 감소하는 상태에서는 high-extraction drug clearance가 크게 변할 수 있다. PK는 molecule property만이 아니라 <b>physiology의 결과</b>이기도 하다.</p>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> Renal Clearance</h2>
+
+          <div class="bi-grid3">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Glomerular filtration</div><p>Plasma → filtrate. 주로 unbound drug. CL<sub>filtration</sub> ≈ fu × GFR (직관용).</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Tubular secretion</div><p>Transporter가 drug를 active하게 urine 쪽으로. CL<sub>R</sub> &gt; fu × GFR이면 active secretion 가능성.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Tubular reabsorption</div><p>Permeable하고 neutral fraction이 있으면 passive하게 다시 혈액으로. pKa와 urine pH가 중요.</p></div>
+          </div>
+
+          <p>예: fu 0.5인 A는 fu 0.01인 B보다 filtration에 이용 가능한 fraction이 훨씬 크다. 하지만 이것만으로 total renal clearance가 결정되지는 않는다(secretion, reabsorption). Microsome은 좋아졌는데 clearance가 그대로라면 renal clearance가 큰지, active secretion이 있는지, biliary clearance가 있는지, fu가 변했는지를 <b>route별로 분해</b>한다.</p>
+
+          <!-- V7 -->
+          <div class="viz" data-cl-kidney>
+            <div class="viz__title">Kidney Clearance Map</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">과정을 선택하고 CL<sub>R</sub>이 fu × GFR을 넘는지 확인해 보세요. (GFR = 120 mL/min 가정, 개념용)</p>
+            <div class="cl-kid">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-k="fil">Filtration</button>
+                <button class="bi-tab" data-k="sec">Secretion</button>
+                <button class="bi-tab" data-k="rea">Reabsorption</button>
+              </div>
+              <div class="le-fb cl-kid-fb"></div>
+              <div class="le-slider"><label>fu: <b class="kd-fu">0.1</b></label><input type="range" class="kd-fu-in" min="-3" max="0" step="0.05" value="-1" /></div>
+              <div class="le-slider"><label>Measured CL<sub>R</sub>: <b class="kd-cr">12</b> mL/min</label><input type="range" class="kd-cr-in" min="0" max="3" step="0.05" value="1.08" /></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>fu × GFR</span><b class="kd-f">—</b></div>
+                <div class="le-three-c"><span>CL<sub>R</sub> / (fu × GFR)</span><b class="kd-r">—</b></div>
+              </div>
+              <div class="le-fb kd-fb"></div>
+            </div>
+            <div class="viz__msg">Renal clearance is the net result of three competing processes.</div>
+          </div>
+        </section>
+
+        <!-- S10 -->
+        <section id="s10" class="section">
+          <h2><span class="sec-no">10</span> Urine pH와 Ionization</h2>
+
+          <p>Filtrate에 들어간 drug가 다시 blood로 돌아올 수 있다. 3강의 ionization이 여기서 다시 등장한다. Weak acid와 weak base는 urine pH에 따라 ionization state가 달라지고, ionized species는 membrane reabsorption이 제한될 수 있다. 이것이 약리학의 urinary pH manipulation의 physicochemical 기반이다.</p>
+
+          <!-- V8 -->
+          <div class="viz" data-cl-urine>
+            <div class="viz__title">Urine pH / Ionization Simulator</div>
+            <div class="cl-urine">
+              <div class="le-btnrow">
+                <button class="bi-tab" data-t="acid">Weak acid</button>
+                <button class="bi-tab" data-t="base">Weak base</button>
+              </div>
+              <div class="le-slider"><label>pKa: <b class="ur-k">5.0</b></label><input type="range" class="ur-k-in" min="3" max="11" step="0.1" value="5" /></div>
+              <div class="le-slider"><label>Urine pH: <b class="ur-p">6.0</b></label><input type="range" class="ur-p-in" min="4.5" max="8" step="0.1" value="6" /></div>
+              <div class="sl-bal-meters">
+                <div class="sl-meter"><span>Neutral fraction</span><div class="sl-track"><i class="ur-n"></i></div><b class="ur-nv"></b></div>
+                <div class="sl-meter"><span>Reabsorption (passive)</span><div class="sl-track"><i class="ur-r"></i></div></div>
+              </div>
+              <div class="le-fb ur-fb"></div>
+            </div>
+            <div class="viz__msg">pKa can affect elimination as well as absorption.</div>
+          </div>
+        </section>
+
+        <!-- S11 -->
+        <section id="s11" class="section">
+          <h2><span class="sec-no">11</span> Bioavailability와 First-pass</h2>
+
+          <p>Oral drug는 systemic circulation에 도달하기 전에 intestinal wall과 liver를 통과하면서 일부가 제거될 수 있다. 경구 bioavailability F는 단순히 permeability의 결과가 아니라 <b>absorbed fraction × intestinal survival × hepatic survival</b>이다. 단순화하면 <b>AUC = F × Dose / CL</b>이다. 낮은 oral exposure에서는 absorption이 낮은가, first-pass가 큰가, systemic clearance가 높은가를 분리해야 한다.</p>
+
+          <!-- V9 -->
+          <div class="viz" data-cl-oral>
+            <div class="viz__title">Oral Exposure Funnel</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">각 단계 survival을 조절해 최종 F를 확인하세요.</p>
+            <div class="cl-oral">
+              <div class="le-slider"><label>Dissolved fraction: <b class="or-a">90</b>%</label><input type="range" class="or-a-in" min="5" max="100" step="5" value="90" /></div>
+              <div class="le-slider"><label>Absorbed fraction (permeation): <b class="or-b">80</b>%</label><input type="range" class="or-b-in" min="5" max="100" step="5" value="80" /></div>
+              <div class="le-slider"><label>Intestinal survival: <b class="or-c">70</b>%</label><input type="range" class="or-c-in" min="5" max="100" step="5" value="70" /></div>
+              <div class="le-slider"><label>Hepatic survival (1 − E): <b class="or-d">60</b>%</label><input type="range" class="or-d-in" min="5" max="100" step="5" value="60" /></div>
+              <div class="cl-oral-fun"></div>
+              <div class="le-fb or-fb"></div>
+            </div>
+            <div class="viz__msg">Low oral exposure can originate before or after absorption.</div>
+          </div>
+        </section>
+
+        <!-- S12 -->
+        <section id="s12" class="section">
+          <h2><span class="sec-no">12</span> Concentration–Time Curve</h2>
+
+          <p>Drug를 투여하면 plasma concentration이 시간에 따라 변한다. 대표 parameter는 <b>C<sub>max</sub></b>(최대), <b>T<sub>max</sub></b>(C<sub>max</sub> 도달 시간), <b>AUC</b>(전체 exposure), <b>C<sub>min</sub></b>(dosing interval 내 최소), <b>half-life</b>(decline rate)다. IV 단순화에서 AUC = Dose / CL이므로 clearance ↓ → exposure ↑이다.</p>
+
+          <!-- V10 -->
+          <div class="viz" data-cl-pk>
+            <div class="viz__title">PK Curve Explorer</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">경구 1-compartment 모델 (Dose 100, F = 1, k<sub>a</sub> = 1.2 /h). CL과 Vd를 바꿔 보세요.</p>
+            <div class="cl-pk">
+              <svg class="cl-pk-svg" viewBox="0 0 340 220" role="img" aria-label="PK curve"></svg>
+              <div class="le-slider"><label>CL: <b class="pk-cl">5</b> L/h</label><input type="range" class="pk-cl-in" min="0" max="1.7" step="0.02" value="0.7" /></div>
+              <div class="le-slider"><label>Vd: <b class="pk-vd">30</b> L</label><input type="range" class="pk-vd-in" min="0.7" max="2.7" step="0.02" value="1.48" /></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>Cmax · Tmax</span><b class="pk-cm">—</b></div>
+                <div class="le-three-c"><span>AUC (= F·Dose/CL)</span><b class="pk-auc">—</b></div>
+                <div class="le-three-c"><span>t½</span><b class="pk-t">—</b></div>
+              </div>
+            </div>
+            <div class="viz__msg">PK is a time profile, not one number.</div>
+          </div>
+        </section>
+
+        <!-- S13 -->
+        <section id="s13" class="section">
+          <h2><span class="sec-no">13</span> Potency × Exposure — Target Coverage</h2>
+
+          <p>어떤 PK parameter가 중요한가는 pharmacology에 따라 다르다. Target에 따라 C<sub>max</sub>, AUC, 또는 C<sub>min</sub>이 IC50 이상으로 유지되는 시간이 중요하다. 예를 들어 unbound concentration 50 nM 이상이 필요하다면 Compound A(C<sub>max</sub> 500 nM이지만 1시간 뒤 20 nM)보다 Compound B(C<sub>max</sub> 150 nM이지만 12시간 뒤에도 60 nM)가 지속적 inhibition이 필요한 target에서 더 효과적일 수 있다. IC50가 같아도 PK profile이 다르면 efficacy가 달라지며, 더 정확히는 <b>unbound potency × unbound exposure</b>를 본다.</p>
+
+          <!-- V11 -->
+          <div class="viz" data-cl-cov>
+            <div class="viz__title">Target Coverage Overlay</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Target 임계 농도를 움직여 time above threshold를 비교하세요. (가상 IV profile)</p>
+            <div class="cl-cov">
+              <svg class="cl-cov-svg" viewBox="0 0 340 220" role="img" aria-label="Target coverage"></svg>
+              <div class="le-slider"><label>Target threshold (unbound): <b class="cv2-t">50</b> nM</label><input type="range" class="cv2-in" min="5" max="300" step="5" value="50" /></div>
+              <div class="le-three">
+                <div class="le-three-c"><span>A: time above</span><b class="cv2-a">—</b></div>
+                <div class="le-three-c"><span>B: time above</span><b class="cv2-b">—</b></div>
+              </div>
+              <div class="le-fb cv2-fb"></div>
+            </div>
+            <div class="viz__msg">The best PK profile depends on what the target requires.</div>
+          </div>
+        </section>
+
+        <!-- S14 -->
+        <section id="s14" class="section">
+          <h2><span class="sec-no">14</span> Half-life의 함정</h2>
+
+          <p>Half-life가 길다고 좋은 drug는 아니다. 장점은 dosing frequency 감소와 sustained coverage지만, accumulation, 느린 washout, adverse effect 지속, dose adjustment 지연이 단점이다. Repeated dosing에서 half-life가 길면 이전 dose가 제거되기 전에 다음 dose가 들어와 steady state로 누적되므로 half-life는 dosing interval 설계와 연결된다.</p>
+          <p>Half-life를 늘리는 방법은 CL 감소 또는 Vd 증가인데 pharmacological 의미가 완전히 다르다. Vd가 커진 이유가 extreme tissue binding이라면 plasma concentration이 낮아지고 특정 tissue에서 accumulation/toxicity가 생길 수 있다. <b>Long half-life 자체를 목표로 molecular design을 하면 안 된다.</b> PK에서 설계하는 것은 단일 parameter가 아니라 exposure profile이다: 얼마나 빨리 올라가고, 얼마나 높고, 얼마나 오래 유지되고, 어느 tissue에 있어야 하는가.</p>
+        </section>
+
+        <!-- S15 -->
+        <section id="s15" class="section">
+          <h2><span class="sec-no">15</span> Realistic Comparison · Medicinal Chemistry Strategy</h2>
+
+          <div class="sr-tbl" style="--cols:1.2fr 1fr 1fr;">
+            <div class="sr-tr sr-tr--h"><span>Property</span><span>Compound A</span><span>Compound B</span></div>
+            <div class="sr-tr"><b>Cell IC50</b><span>20 nM</span><span>40 nM</span></div>
+            <div class="sr-tr"><b>HLM CLint</b><span>high</span><span>low</span></div>
+            <div class="sr-tr"><b>fu,p</b><span>0.01</span><span>0.08</span></div>
+            <div class="sr-tr"><b>Systemic CL</b><span>high</span><span>medium-high</span></div>
+            <div class="sr-tr"><b>Vd</b><span>high</span><span>low</span></div>
+            <div class="sr-tr"><b>t½</b><span>2 h</span><span>2.5 h</span></div>
+          </div>
+          <p>B의 metabolic stability는 좋아졌지만 fu 상승과 Vd 감소 때문에 half-life improvement가 제한될 수 있다. 이런 식으로 전체를 연결해서 본다. 또 다른 예: A(IC50 5 nM, fu 0.01, CL 60 mL/min/kg)와 B(IC50 20 nM, fu 0.05, CL 10 mL/min/kg)에서 raw potency는 A가 좋지만 B의 unbound exposure가 더 높고 지속되면 in vivo efficacy는 B가 좋을 수 있다. AI prediction(A binding 최고), medicinal chemistry(A potency 최고), DMPK(B exposure 최고), in vivo(B efficacy 최고) — 모두 자기 endpoint에 대해서는 맞을 수 있다. 문제는 endpoint를 candidate quality 전체로 확대 해석할 때 생긴다.</p>
+
+          <h3>원인에 따른 전략</h3>
+          <div class="bi-grid2">
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Metabolic clearance</div><p>Soft spot blocking, logD 감소, metabolically stable bioisostere, steric shielding (12강). Low-extraction 영역에서 특히 효과적.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Renal clearance</div><p>Unchanged drug가 urine으로 많이 나간다면 metabolism을 더 막는 것은 큰 도움이 안 될 수 있다. fu, filtration, secretion, reabsorption, renal transporter를 본다.</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>Transporter-mediated</div><p>Hepatic uptake transporter의 좋은 substrate면 liver 안으로 빠르게 들어가 clearance가 커진다. Microsomal CLint만으로 설명 불가 — substrate property 변경 (14강).</p></div>
+            <div class="card card--chem" style="margin:0;"><div class="card__label"><span class="dot"></span>High extraction</div><p>Blood-flow-limited behavior를 이해. CLint를 더 낮추는 것이 일정 구간까지 큰 변화를 주지 않을 수 있다.</p></div>
+          </div>
+        </section>
+
+        <!-- S16 -->
+        <section id="s16" class="section">
+          <h2><span class="sec-no">16</span> AI Drug Discovery Connection</h2>
+
+          <p>CLint model이 잘 맞으면 half-life도 잘 맞을까? 아니다. Molecular structure → CLint → Hepatic clearance → Total clearance → Half-life로 갈 때마다 새로운 변수가 추가된다: CLint → CL<sub>H</sub>에는 fu, hepatic blood flow, transporter; CL<sub>H</sub> → total에는 renal, biliary, other routes; Clearance → half-life에는 Vd. Local ADME prediction을 system PK로 확대할수록 uncertainty가 누적된다.</p>
+
+          <!-- V13 -->
+          <div class="viz" data-cl-chain>
+            <div class="viz__title">AI Prediction Chain</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">필요한 변수를 탭하면 “모른다”로 전환됩니다. uncertainty meter가 어떻게 변하는지 보세요.</p>
+            <div class="cl-chain">
+              <div class="cl-chain-flow"><span>Structure</span><i>→</i><span>CLint</span><i>→</i><span>CL<sub>H</sub></span><i>→</i><span>Total CL</span><i>→</i><span>t½</span></div>
+              <div class="le-btnrow cl-chain-vars">
+                <button class="bi-tab active" data-v="fu">fu (CLint → CL<sub>H</sub>)</button>
+                <button class="bi-tab active" data-v="q">Q<sub>H</sub> (CLint → CL<sub>H</sub>)</button>
+                <button class="bi-tab active" data-v="renal">renal CL (CL<sub>H</sub> → total)</button>
+                <button class="bi-tab active" data-v="vd">Vd (CL → t½)</button>
+              </div>
+              <div class="sl-meter" style="grid-template-columns:150px 1fr auto;"><span>Uncertainty in predicted t½</span><div class="sl-track"><i class="ch-u bad"></i></div><b class="ch-uv"></b></div>
+              <div class="le-fb ch-fb"></div>
+            </div>
+            <div class="viz__msg">Every step from molecular property to clinical PK introduces new biology.</div>
+          </div>
+
+          <h3>AI가 잘못했다고 보기 전에 endpoint를 확인한다</h3>
+          <p>모델이 “metabolic stability improved”를 예측했고 microsome에서 실제로 개선됐는데 plasma half-life는 그대로라면, AI metabolic model은 맞았을 수 있다. 우리가 <b>metabolic stability improvement = half-life improvement</b>라고 과도하게 해석한 것이다.</p>
+
+          <h3>PBPK 맛보기</h3>
+          <p>Physiologically Based PK model은 body를 liver, kidney, plasma, muscle, adipose 등으로 나누고 blood flow와 tissue partition을 이용해 concentration–time profile을 simulation한다. AI가 logD, pKa, permeability, fu, CLint를 예측하고 그 값을 PBPK에 넣어 human exposure를 simulation하는 pipeline은 매력적이지만 각 input prediction error가 최종 output에 전파된다.</p>
+        </section>
+
+        <!-- S17 -->
+        <section id="s17" class="section">
+          <h2><span class="sec-no">17</span> Failure Case — “CLint 10배 개선 → half-life 10배 증가”</h2>
+
+          <p>A(CLint 100)와 B(CLint 10). 팀은 half-life도 10배 늘 것이라 기대했지만 실제로는 1.5 h → 2 h였다. 왜?</p>
+
+          <div class="bi-grid2">
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>H1 · High extraction</div><p>두 compound 모두 flow-limited region. CLint 변화가 systemic hepatic CL에 제한적으로 반영.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>H2 · Renal clearance</div><p>B의 metabolism은 개선됐지만 unchanged renal excretion이 dominant.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>H3 · fu 증가</div><p>B의 lipophilicity 감소로 fu가 크게 증가 → 더 많은 free drug가 liver/kidney clearance에 이용.</p></div>
+            <div class="card card--mistake" style="margin:0;"><div class="card__label"><span class="dot"></span>H4 · Vd 감소</div><p>B가 tissue binding을 덜 해 Vd도 크게 감소. CL은 조금 개선됐지만 Vd 감소 때문에 half-life gain이 상쇄.</p></div>
+          </div>
+
+          <!-- V14 -->
+          <div class="viz" data-cl-lg>
+            <div class="viz__title">Local vs System-Level Prediction</div>
+            <div class="cl-lg">
+              <div class="cl-lg-cols">
+                <div class="cl-lg-c ok"><h6>AI prediction</h6><p>CLint ↓ 10×</p><b>✅ correct</b></div>
+                <div class="cl-lg-c bad"><h6>Assumed result</h6><p>t½ ↑ 10×</p><b>❌ wrong</b></div>
+              </div>
+              <div class="cl-lg-mid">
+                <button class="bi-tab" data-o="flow">Flow limitation</button>
+                <button class="bi-tab" data-o="renal">Renal clearance</button>
+                <button class="bi-tab" data-o="fu">fu</button>
+                <button class="bi-tab" data-o="vd">Vd</button>
+              </div>
+              <div class="le-fb cl-lg-fb">네 개의 장애물을 탭하세요.</div>
+            </div>
+            <div class="viz__msg">A correct local prediction can support an incorrect global conclusion.</div>
+          </div>
+        </section>
+
+        <!-- S18 -->
+        <section id="s18" class="section">
+          <h2><span class="sec-no">18</span> Scientist's Thinking — Microsome good, in vivo PK bad</h2>
+
+          <p>Observation: HLM stability improved, systemic CL unchanged.</p>
+          <div style="display:grid;gap:8px;margin:16px 0;">
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 1 — Route of elimination</div><p>Elimination route를 확인한다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 2 — Mass balance</div><p>Urine/feces에서 parent/metabolite 확인. Unchanged drug가 urine에 많으면 renal elimination 의심.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 3 — fu</div><p>A와 B의 PPB 비교. CLint 개선과 동시에 fu가 크게 증가했는지.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 4 — Extraction</div><p>Observed hepatic clearance가 organ blood flow에 비해 높은지 낮은지. Flow-limited 가능성.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 5 — Vd</div><p>Half-life discrepancy가 있다면 Vd도 반드시 확인. Clearance만 보면 안 된다.</p></div>
+            <div class="card card--concept" style="margin:0;"><div class="card__label"><span class="dot"></span>Step 6 — Next design</div><p>CLint 문제면 metabolic optimization, renal secretion이면 transporter/structure optimization, Vd 문제면 tissue-binding property를 다시 본다.</p></div>
+          </div>
+
+          <!-- V12 -->
+          <div class="viz" data-cl-diag>
+            <div class="viz__title">Metabolic vs Renal Clearance Diagnostic</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">High systemic clearance에서 시작합니다.</p>
+            <div class="pm-flow">
+              <div class="pm-flow-path"></div>
+              <div class="pm-flow-q"></div>
+              <div class="le-btnrow pm-flow-btns">
+                <button class="bi-btn" data-a="y">Yes</button>
+                <button class="bi-btn bi-btn--ghost" data-a="n">No</button>
+                <button class="bi-btn bi-btn--ghost" data-restart>Restart</button>
+              </div>
+              <div class="le-fb pm-flow-fb"></div>
+            </div>
+            <div class="viz__msg">Decompose clearance by route before redesigning the molecule.</div>
+          </div>
+
+          <div class="card card--ai">
+            <div class="card__label"><span class="dot"></span>Part 2의 causal chain</div>
+            <p>Structure → pKa/logD → Solubility → Permeability → PPB/fu → CLint → Systemic clearance → Vd → Half-life/Exposure → Target coverage → Efficacy. 이 전체가 하나의 causal chain이다.</p>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>13강 핵심 요약 — Take-home Messages</h3>
+          <ol>
+            <li>
+              <b>Clearance는 body가 drug를 제거하는 능력이며 hepatic, renal 등 여러 elimination route의 합이다.</b>
+              <span>CLint ≠ systemic clearance.</span>
+            </li>
+            <li>
+              <b>Hepatic clearance는 intrinsic clearance뿐 아니라 fraction unbound와 hepatic blood flow에 의해 결정된다.</b>
+              <span>Low-extraction and high-extraction drugs behave differently.</span>
+            </li>
+            <li>
+              <b>Microsomal stability가 좋아졌다고 systemic clearance가 반드시 좋아지는 것은 아니다.</b>
+              <span>Decompose clearance by route.</span>
+            </li>
+            <li>
+              <b>Half-life는 clearance와 volume of distribution이 함께 결정하므로 clearance 하나만으로 설명할 수 없다.</b>
+              <span>Clearance ≠ half-life.</span>
+            </li>
+            <li>
+              <b>AI의 local ADME prediction을 in vivo PK outcome으로 확대할 때는 중간 생리학적 변수를 반드시 고려해야 한다.</b>
+              <span>Good PK means the right exposure profile, not simply a long half-life.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card card--concept" style="margin-top:20px;">
+          <div class="card__label"><span class="dot"></span>PK가 예상과 다르면 이 순서로 본다</div>
+          <p>CLint는? → fu는? → Hepatic extraction은 low인가 high인가? → Renal/other clearance는? → Total CL은? → Vd는? → Half-life와 unbound exposure는? → Target coverage는 충분한가?</p>
+        </div>
+
+        <!-- SELF CHECK -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 자기점검</h2>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>Compound A와 B의 systemic clearance는 동일하다. A의 Vd = 10 L, B의 Vd = 100 L. 어느 compound가 더 긴 half-life를 가질 가능성이 높은가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              B.
+              <div class="exp">t½ ∝ Vd / CL이므로 clearance가 동일하면 Vd가 큰 B의 half-life가 더 길어질 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Compound의 CLint를 10배 낮췄지만 hepatic clearance가 거의 변하지 않았다. 가능한 설명은?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              High-extraction, flow-limited 상태일 수 있다.
+              <div class="exp">이 경우 hepatic clearance가 intrinsic metabolic capacity보다 hepatic blood flow에 의해 제한되므로 CLint 감소가 clearance에 크게 반영되지 않을 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Microsomal stability는 크게 좋아졌는데 systemic clearance가 그대로다. Urine에서 unchanged parent가 많이 검출됐다. 무엇을 의심할까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Renal clearance가 주요 elimination route일 가능성이 있다.
+              <div class="exp">이 경우 hepatic metabolism을 추가로 개선해도 total clearance 개선은 제한적일 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>Compound B에서 CLint는 A보다 5배 낮아졌지만 fu는 20배 증가했다. Low-extraction drug라면 어떤 현상이 가능할까?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              Hepatic clearance가 기대만큼 감소하지 않거나 오히려 증가할 수도 있다.
+              <div class="exp">Low-extraction 영역에서는 대략 CL<sub>H</sub> ≈ fu·CLint이므로 CLint와 fu를 함께 봐야 한다.</div>
+            </div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>AI가 compound의 human microsomal stability를 정확히 예측했다. 그럼 human half-life도 정확할 것이라고 기대할 수 있는가?</p>
+            <button class="reveal-btn">정답 보기</button>
+            <div class="answer">
+              아니다.
+              <div class="exp">Half-life 예측에는 추가로 PPB, hepatic blood flow, renal clearance, transporter, Vd, tissue distribution 등이 필요하다. Microsomal stability는 전체 PK chain의 한 단계다.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing">
+          <h3>다음 강의 예고</h3>
+          <div class="big">14강 · Transporter &amp; Tissue Distribution</div>
+          <p style="color:rgba(255,255,255,.85);font-size:15px;margin:8px 0 16px;">Plasma unbound concentration도 충분한데 왜 target organ에서는 drug가 거의 검출되지 않을까? Tissue distribution, Vd, tissue binding, Kp/Kp,uu, influx/efflux transporter(P-gp, BCRP, OATP, OCT, OAT), BBB, lysosomal trapping, intracellular distribution을 연결한다. 가장 중요한 distinction: <b>“조직에 많이 들어갔다”와 “그 조직에서 free drug가 target에 충분히 노출됐다”는 같은 말인가?</b></p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottomnav">
+          <a href="12.html">◀ 12강</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="14.html" aria-disabled="true">▶ 14강</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+</body>
+</html>

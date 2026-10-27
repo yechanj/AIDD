@@ -4784,6 +4784,659 @@
     });
   }
 
+  /* ============================================================
+     L12 – Metabolism & CYP450
+     ============================================================ */
+
+  /* V1 */
+  function initMtTime() {
+    document.querySelectorAll('[data-mt-time]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var inp = q('.tm2-in');
+      function update() {
+        var t = +inp.value, p = 100 * Math.exp(-Math.LN2 / 15 * t), lost = 100 - p;
+        q('.tm2-t').textContent = t + ' min';
+        q('.tm2-p').style.width = p + '%'; q('.tm2-pv').textContent = p.toFixed(0) + '%';
+        q('.tm2-m1').style.width = lost * .55 + '%'; q('.tm2-m2').style.width = lost * .30 + '%'; q('.tm2-m3').style.width = lost * .15 + '%';
+        q('.tm2-fb').textContent = t === 0 ? '시작: parent 100%.' : 'Parent는 ' + p.toFixed(0) + '%만 남았다. 사라진 양은 사라진 것이 아니라 metabolite(M1, M2 …)로 바뀐 것이다.';
+      }
+      inp.addEventListener('input', update); update();
+    });
+  }
+
+  /* V2 */
+  function initMtPhase() {
+    document.querySelectorAll('[data-mt-phase]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-r]');
+      var nodes = wrap.querySelectorAll('.mt-ph-node');
+      var fb = wrap.querySelector('.mt-ph-fb');
+      var R = {
+        seq:    { on:['par', 'p1', 'p2'], msg:'Phase I(예: hydroxylation)로 OH가 생긴 뒤 그 OH가 Phase II(glucuronidation)의 substrate가 되는 흔한 경로.' },
+        direct: { on:['par', 'p2'],       msg:'Parent가 이미 OH, COOH 같은 group을 가지면 Phase I 없이 곧바로 Phase II를 받을 수 있다.' }
+      };
+      function show(k) {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.r === k); });
+        nodes.forEach(function(n){ n.classList.toggle('on', R[k].on.indexOf(n.dataset.n) >= 0); });
+        fb.textContent = R[k].msg;
+      }
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.r); }); });
+      show('seq');
+    });
+  }
+
+  /* V3 */
+  function initMtPose() {
+    document.querySelectorAll('[data-mt-pose]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.mt-pose-svg');
+      var fb = wrap.querySelector('.mt-pose-fb');
+      var pose = 'A';
+      function draw() {
+        svg.innerHTML = '';
+        svgEl('rect', { x:50, y:20, width:220, height:180, rx:24, fill:'#f1f5f9', stroke:'#94a3b8', 'stroke-width':2 }, svg);
+        svgEl('text', { x:160, y:40, 'text-anchor':'middle' }, svg).textContent = 'CYP active site';
+        svgEl('rect', { x:120, y:176, width:80, height:16, rx:4, fill:'#dc2626' }, svg);
+        svgEl('text', { x:160, y:188, 'text-anchor':'middle', style:'fill:#fff;font-size:10px' }, svg).textContent = 'heme (Fe=O)';
+        var b = pose === 'A' ? [140, 140] : [100, 70];
+        var n = pose === 'A' ? [220, 70] : [180, 140];
+        svgEl('line', { x1:b[0], y1:b[1], x2:n[0], y2:n[1], stroke:'#3d4f6b', 'stroke-width':4 }, svg);
+        svgEl('circle', { cx:b[0], cy:b[1], r:13, fill:'#fde68a', stroke:'#b45309', 'stroke-width':2 }, svg);
+        svgEl('text', { x:b[0], y:b[1] + 4, 'text-anchor':'middle', style:'font-size:9px' }, svg).textContent = 'CH₃';
+        svgEl('circle', { cx:n[0], cy:n[1], r:13, fill:'#dbeafe', stroke:'#2563eb', 'stroke-width':2 }, svg);
+        svgEl('text', { x:n[0], y:n[1] + 4, 'text-anchor':'middle', style:'font-size:9px' }, svg).textContent = 'NMe₂';
+        var near = pose === 'A' ? b : n;
+        svgEl('line', { x1:160, y1:176, x2:near[0], y2:near[1] + 13, stroke:'#dc2626', 'stroke-width':2, 'stroke-dasharray':'4 3' }, svg);
+        svgEl('text', { x:(160 + near[0]) / 2 + 8, y:(176 + near[1]) / 2 }, svg).textContent = '≈ 4 Å';
+        svgEl('text', { x:160, y:214, 'text-anchor':'middle' }, svg).textContent = 'Pose ' + pose;
+        fb.className = 'le-fb mt-pose-fb';
+        fb.textContent = pose === 'A' ? 'Pose A: benzylic CH₃가 heme 가까이 → benzylic oxidation이 유리.' : 'Pose B: amine 쪽 N-methyl이 heme 가까이 → N-dealkylation이 유리. 같은 molecule도 pose에 따라 major site가 달라질 수 있다.';
+      }
+      wrap.querySelector('[data-rot]').addEventListener('click', function(){ pose = pose === 'A' ? 'B' : 'A'; draw(); });
+      draw();
+    });
+  }
+
+  /* V4 */
+  function initMtScan() {
+    document.querySelectorAll('[data-mt-scan]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.mt-scan-svg');
+      var fb = wrap.querySelector('.mt-scan-fb');
+      svgEl('polygon', { points:srHex(140, 100, 32, 0), fill:'#f8fafc', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('line', { x1:112, y1:84, x2:90, y2:50, stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('line', { x1:168, y1:84, x2:190, y2:50, stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      svgEl('polyline', { points:'172,100 232,100 262,128', fill:'none', stroke:'#3d4f6b', 'stroke-width':2 }, svg);
+      var spots = [
+        { x:86, y:42, t:'OMe', path:'O-dealkylation', msg:'Methoxy: CYP-mediated O-dealkylation → phenol (HBD 생성, Phase II 대상).' },
+        { x:194, y:42, t:'CH₃', path:'Benzylic oxidation', msg:'Benzylic CH₃: Ar–CH₂OH → CHO → COOH로 이어질 수 있는 흔한 soft spot.' },
+        { x:140, y:150, t:'Ar–H', path:'Aromatic hydroxylation', msg:'Exposed aromatic C–H: aromatic hydroxylation. F, heteroaryl 치환으로 완화 가능하지만 metabolic switching 주의.' },
+        { x:290, y:140, t:'NMe₂', path:'N-dealkylation', msg:'Tertiary amine: N-dealkylation → secondary amine (pKa, HBD, 활성 변화 가능).' }
+      ];
+      spots.forEach(function(s) {
+        var g = svgEl('g', { style:'cursor:pointer' }, svg);
+        svgEl('circle', { cx:s.x, cy:s.y, r:20, fill:'#fee2e2', stroke:'#dc2626', 'stroke-width':2 }, g);
+        svgEl('text', { x:s.x, y:s.y + 4, 'text-anchor':'middle', style:'fill:#991b1b' }, g).textContent = s.t;
+        g.addEventListener('click', function() { fb.innerHTML = '<b>' + s.path + '</b> — ' + s.msg; });
+      });
+      fb.textContent = '위치를 탭하세요.';
+    });
+  }
+
+  /* V5 */
+  function initMtOdealk() {
+    document.querySelectorAll('[data-mt-odealk]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-s]');
+      var q = function(s){ return wrap.querySelector(s); };
+      var D = {
+        par: { hbd:'0', pol:'낮음', p2:'낮음', msg:'Parent(OMe): HBD가 없고 상대적으로 lipophilic.' },
+        met: { hbd:'1 (생성)', pol:'증가', p2:'높음 (glucuronidation/sulfation)', msg:'Metabolite(phenol): 새 HBD, polarity ↑, Phase II substrate가 되어 다음 대사 경로를 연다. Target 활성도 달라질 수 있다.' }
+      };
+      function show(k) {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.s === k); });
+        var d = D[k]; q('.od-hbd').textContent = d.hbd; q('.od-pol').textContent = d.pol; q('.od-p2').textContent = d.p2; q('.od-fb').textContent = d.msg;
+      }
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.s); }); });
+      show('par');
+    });
+  }
+
+  /* V6 */
+  function initMtAssay() {
+    document.querySelectorAll('[data-mt-assay]').forEach(function(wrap) {
+      var fb = wrap.querySelector('.mt-assay-fb');
+      var T = {
+        cyp:    ['bad', '✗ Microsome에는 CYP가 풍부하다. CYP 때문이라면 microsome에서도 불안정해야 한다.'],
+        noncyp: ['ok',  '✓ Hepatocyte에만 있는 cytosolic enzyme, transporter-mediated uptake 등이 원인일 수 있다 → 추가 metabolite ID로 확인.'],
+        sol:    ['bad', '✗ 두 assay 모두 solubility 조건이 비슷하므로 이 차이를 직접 설명하기 어렵다.']
+      };
+      wrap.querySelectorAll('[data-a]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          wrap.querySelectorAll('[data-a]').forEach(function(x){ x.classList.toggle('active', x === b); });
+          var t = T[b.dataset.a]; fb.className = 'le-fb mt-assay-fb ' + t[0]; fb.textContent = t[1];
+        });
+      });
+    });
+  }
+
+  /* V7 */
+  function initMtTree() {
+    document.querySelectorAll('[data-mt-tree]').forEach(function(wrap) {
+      var l1 = wrap.querySelector('.mt-tree-l1'), l2 = wrap.querySelector('.mt-tree-l2');
+      var fb = wrap.querySelector('.mt-tree-fb');
+      var M = [
+        { id:'M1', tag:'M+16', tr:'Benzylic/aromatic hydroxylation', warn:'활성 여부 미확인', kids:['M1a', 'M1b'] },
+        { id:'M2', tag:'M−14', tr:'N- 또는 O-demethylation', warn:'새 HBD 생성, 활성 변화 가능', kids:[] },
+        { id:'M3', tag:'M+176', tr:'Direct glucuronidation (Phase II)', warn:'일반적으로 excretion 방향', kids:[] },
+        { id:'M1a', tag:'M+16+176', tr:'M1의 glucuronide', warn:'Phase II conjugate', kids:[] },
+        { id:'M1b', tag:'M+30', tr:'M1이 추가 oxidation → carboxylic acid', warn:'Reactive intermediate(aldehyde) 경유 가능성 확인', kids:[] }
+      ];
+      function mk(m, parent) {
+        var b = document.createElement('button');
+        b.className = 'mt-tree-node'; b.textContent = m.id;
+        b.addEventListener('click', function() {
+          wrap.querySelectorAll('.mt-tree-node').forEach(function(x){ x.classList.toggle('active', x === b); });
+          fb.innerHTML = '<b>' + m.id + '</b> (' + m.tag + ') — ' + m.tr + '. <i>' + m.warn + '</i>';
+          if (!parent) { l2.innerHTML = ''; m.kids.forEach(function(k) { l2.appendChild(mk(M.filter(function(x){ return x.id === k; })[0], true)); }); }
+        });
+        return b;
+      }
+      M.slice(0, 3).forEach(function(m){ l1.appendChild(mk(m, false)); });
+      fb.textContent = 'M1을 누르면 2차 metabolite가 펼쳐집니다.';
+    });
+  }
+
+  /* V8 */
+  function initMtBlock() {
+    document.querySelectorAll('[data-mt-block]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-o]');
+      var q = function(s){ return wrap.querySelector(s); };
+      var D = {
+        F:   { pot:35, ld:25, pk:50, ms:70, msg:'F: 크기 변화는 작지만 electronic effect가 크다 (이웃 pKa, binding). Metabolic switching 가능.' },
+        Me:  { pot:60, ld:55, pk:15, ms:60, msg:'CH₃ shielding: 접근을 막지만 logD ↑, pocket clash 위험. LipE 확인.' },
+        het: { pot:55, ld:35, pk:60, ms:65, msg:'Heteroaryl: logD ↓(방향), polarity ↑, oxidation pattern 변화. Binding interaction(buried N)을 확인.' },
+        D:   { pot:5,  ld:5,  pk:5,  ms:40, msg:'D: 거의 같은 chemistry. C–H cleavage가 rate-limiting일 때만 효과 — 대체 pathway가 있으면 clearance 개선이 작다.' }
+      };
+      function show(k) {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.o === k); });
+        var d = D[k];
+        q('.bk-pot').style.width = d.pot + '%'; q('.bk-ld').style.width = d.ld + '%'; q('.bk-pk').style.width = d.pk + '%'; q('.bk-ms').style.width = d.ms + '%';
+        q('.bk-fb').textContent = d.msg + ' (개념 지표, logD/pKa는 변화 크기)';
+      }
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.o); }); });
+      show('F');
+    });
+  }
+
+  /* V9 */
+  function initMtSwitch() {
+    document.querySelectorAll('[data-mt-switch]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      function render(s1, s2, blocked) {
+        q('.sw-1').style.width = s1 + '%'; q('.sw-2').style.width = s2 + '%';
+        q('.sw-1v').textContent = blocked ? 'blocked' : s1 + '%'; q('.sw-2v').textContent = s2 + '%';
+        var t = s1 + s2; q('.sw-t').style.width = t + '%'; q('.sw-tv').textContent = t + '%';
+        var fb = q('.sw-fb');
+        fb.className = 'le-fb sw-fb' + (blocked ? ' bad' : '');
+        fb.textContent = blocked ? 'Site 1은 0%가 됐지만 Site 2가 90%로 증가 — total disappearance는 거의 그대로다. 기존 metabolite가 줄었다고 성공이 아니다.' : 'Compound A: Site 1이 major(80%), Site 2는 20%.';
+      }
+      q('[data-block]').addEventListener('click', function(){ render(0, 90, true); });
+      q('[data-reset]').addEventListener('click', function(){ render(80, 20, false); });
+      render(80, 20, false);
+    });
+  }
+
+  /* V10 */
+  function initMtDdi() {
+    document.querySelectorAll('[data-mt-ddi]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-k]');
+      var q = function(s){ return wrap.querySelector(s); };
+      var D = {
+        sub: { e:100, x:100, msg:'Substrate: CYP가 이 drug를 대사한다. 다른 drug의 exposure에는 영향이 없다.' },
+        inh: { e:30,  x:250, msg:'Inhibitor: 이 drug가 CYP를 느리게 한다 → 같은 CYP로 대사되는 다른 drug의 exposure ↑ (DDI risk).' },
+        ind: { e:200, x:40,  msg:'Inducer: CYP expression이 늘어난다 → 다른 drug가 더 빨리 대사되어 exposure ↓.' }
+      };
+      function show(k) {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.k === k); });
+        var d = D[k];
+        q('.dd-e').style.width = d.e / 2 + '%'; q('.dd-ev').textContent = d.e + '%';
+        q('.dd-x').style.width = d.x / 3 + '%'; q('.dd-xv').textContent = d.x + '%';
+        var fb = q('.dd-fb'); fb.className = 'le-fb dd-fb' + (k === 'sub' ? '' : ' bad'); fb.textContent = d.msg;
+      }
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.k); }); });
+      show('sub');
+    });
+  }
+
+  /* V11 */
+  function initMtVp() {
+    document.querySelectorAll('[data-mt-vp]').forEach(function(wrap) {
+      var tabs = wrap.querySelectorAll('[data-m]');
+      var q = function(s){ return wrap.querySelector(s); };
+      var D = {
+        inh: { v:250, a:'Perpetrator (enzyme inhibitor)', b:'Victim — concentration ↑', msg:'A가 B를 대사하는 enzyme을 억제 → B의 plasma concentration ↑.' },
+        ind: { v:40,  a:'Perpetrator (enzyme inducer)',  b:'Victim — concentration ↓', msg:'A가 enzyme expression을 증가 → B가 더 빨리 대사되어 exposure ↓ (efficacy 저하 가능).' }
+      };
+      function show(k) {
+        tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.m === k); });
+        var d = D[k];
+        q('.vp-a').textContent = d.a; q('.vp-b').textContent = d.b;
+        q('.vp-bar').style.width = d.v / 3 + '%'; q('.vp-v').textContent = d.v + '%';
+        q('.vp-fb').textContent = d.msg;
+      }
+      tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.m); }); });
+      show('inh');
+    });
+  }
+
+  /* V12 */
+  function initMtSom() {
+    document.querySelectorAll('[data-mt-som]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.mt-som-svg');
+      var fb = wrap.querySelector('.mt-som-fb');
+      var atoms = [
+        { n:'atom 3 (Ar–H)', p:.10, x:60, y:100, d:'≈ 10 Å' },
+        { n:'atom 8 (N–CH₃)', p:.55, x:170, y:45, d:'≈ 9 Å' },
+        { n:'atom 12 (benzylic CH₃)', p:.82, x:270, y:105, d:'≈ 4 Å' }
+      ];
+      var pose = false;
+      function draw() {
+        svg.innerHTML = '';
+        svgEl('polyline', { points:atoms.map(function(a){ return a.x + ',' + a.y; }).join(' '), fill:'none', stroke:'#3d4f6b', 'stroke-width':3 }, svg);
+        atoms.forEach(function(a) {
+          svgEl('circle', { cx:a.x, cy:a.y, r:20, fill:'rgba(220,38,38,' + a.p + ')', stroke:'#991b1b', 'stroke-width':2 }, svg);
+          svgEl('text', { x:a.x, y:a.y + 4, 'text-anchor':'middle', style: a.p > .5 ? 'fill:#fff' : '' }, svg).textContent = a.p.toFixed(2);
+          svgEl('text', { x:a.x, y:a.y + 38, 'text-anchor':'middle', style:'font-size:9px' }, svg).textContent = a.n;
+        });
+        if (pose) {
+          svgEl('rect', { x:225, y:150, width:90, height:14, rx:4, fill:'#dc2626' }, svg);
+          svgEl('text', { x:270, y:160, 'text-anchor':'middle', style:'fill:#fff;font-size:9px' }, svg).textContent = 'heme';
+          atoms.forEach(function(a) { svgEl('text', { x:a.x, y:a.y - 26, 'text-anchor':'middle', style:'fill:#15803d;font-size:10px' }, svg).textContent = a.d; });
+        }
+      }
+      var btn = wrap.querySelector('[data-pose]');
+      btn.addEventListener('click', function() {
+        pose = !pose; btn.textContent = pose ? 'Hide CYP pose' : 'Show CYP pose'; draw();
+        fb.textContent = pose ? 'Atom 12는 heme에 가까워(≈4 Å) 높은 probability가 구조적으로도 지지된다. Atom 8(0.55)은 heme에서 멀어 실제로는 덜 대사될 수 있다 — 구조 context를 더하면 prediction이 강해진다.' : '확률만으로는 pose 정보가 없다.';
+      });
+      fb.textContent = '확률만으로는 pose 정보가 없다.';
+      draw();
+    });
+  }
+
+  /* V13 */
+  function initMtLg() {
+    document.querySelectorAll('[data-mt-lg]').forEach(function(wrap) {
+      var mid = wrap.querySelector('.mt-lg-mid');
+      var btn = wrap.querySelector('[data-show]');
+      btn.addEventListener('click', function() {
+        var on = mid.classList.toggle('show');
+        btn.textContent = on ? 'Hide' : "Show what's in between";
+      });
+    });
+  }
+
+  /* V14 */
+  function initMtFlow() {
+    document.querySelectorAll('[data-mt-flow]').forEach(function(wrap) {
+      var steps = wrap.querySelectorAll('.sl-fl-step');
+      var fb = wrap.querySelector('.mt-flow-fb');
+      var T = [
+        '관찰: 세포 활성은 좋은데 microsome에서 빠르게 사라진다.',
+        '“실제로 대사로 사라지는가?” — 비특이적 흡착, 불안정성, solubility artifact와 구분한다.',
+        '“무엇으로 바뀌었는가?” — LC-MS로 M+16, M−14 등 metabolite를 확인한다.',
+        '“어느 pathway가 dominant한가?” — O-dealkylation, benzylic oxidation 중 major soft spot을 정한다.',
+        '“이 가설이 맞는가?” — 한 변수만 다른 matched analogue(OMe / F / CN / OEt)를 만든다.',
+        '“Soft spot 차단이 total stability를 개선했는가?” — metabolic switching 확인.',
+        '“다른 pathway나 uptake가 있는가?” — non-CYP, transporter, cytosolic metabolism 확인.',
+        '“실제 exposure가 개선됐는가?” — hepatic blood flow, PPB, renal clearance가 개입한다 (13강).'
+      ];
+      steps.forEach(function(s) {
+        s.addEventListener('click', function() {
+          steps.forEach(function(x){ x.classList.toggle('active', x === s); });
+          fb.textContent = 'What question does this answer? ' + T[+s.dataset.s];
+        });
+      });
+      fb.textContent = '단계를 탭하세요.';
+    });
+  }
+
+  /* ============================================================
+     L13 – Clearance & Half-life
+     ============================================================ */
+
+  function clWS(Q, fu, ci) { var p = fu * ci; return Q * p / (Q + p); }
+  function clNum(v, d) { return v >= 100 ? v.toFixed(0) : (v >= 10 ? v.toFixed(1) : v.toPrecision(d || 2)); }
+
+  /* V1 */
+  function initClOpen() {
+    document.querySelectorAll('[data-cl-open]').forEach(function(wrap) {
+      var fb = wrap.querySelector('.cl-open-fb');
+      var M = {
+        flow:  'A와 B가 모두 여전히 high-extraction이면 CL_H ≈ Q_H. CLint 5배 개선이 hepatic clearance에 거의 반영되지 않는다.',
+        renal: 'Unchanged drug가 urine으로 많이 배설된다면 hepatic metabolism을 개선해도 total clearance 변화는 제한적이다.',
+        fu:    'B의 lipophilicity 감소로 fu가 증가했다면 fu·CLint가 상쇄되어 hepatic clearance가 기대만큼 줄지 않는다.',
+        vd:    'B의 Vd가 감소했다면 CL이 조금 개선돼도 t½ = 0.693·Vd/CL의 이득이 상쇄된다.'
+      };
+      wrap.querySelectorAll('[data-h]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          wrap.querySelectorAll('[data-h]').forEach(function(x){ x.classList.toggle('active', x === b); });
+          fb.textContent = M[b.dataset.h];
+        });
+      });
+      fb.textContent = '가능한 설명을 탭하세요.';
+    });
+  }
+
+  /* V2 */
+  function initClVol() {
+    document.querySelectorAll('[data-cl-vol]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var a = q('.vl-cl-in'), c = q('.vl-c-in');
+      function update() {
+        var CL = +a.value, C = +c.value, rate = CL * C;
+        q('.vl-cl').textContent = CL; q('.vl-c').textContent = C;
+        q('.vl-b1').style.width = (CL / 20 * 100) + '%'; q('.vl-v1').textContent = CL + ' L/h';
+        q('.vl-b2').style.width = (rate / 2000 * 100) + '%'; q('.vl-v2').textContent = rate;
+        q('.vl-fb').textContent = 'CL은 그대로(' + CL + ' L/h)인데 농도가 ' + C + '이면 시간당 제거량은 ' + rate + '. 농도가 2배가 되면 제거량도 2배지만 clearance 자체는 변하지 않는다.';
+      }
+      a.addEventListener('input', update); c.addEventListener('input', update); update();
+    });
+  }
+
+  /* V3 */
+  function initClT12() {
+    document.querySelectorAll('[data-cl-t12]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var a = q('.t1-cl-in'), b = q('.t1-vd-in');
+      function update() {
+        var CL = Math.pow(10, +a.value), Vd = Math.pow(10, +b.value), t = 0.693 * Vd / CL;
+        q('.t1-cl').textContent = clNum(CL); q('.t1-vd').textContent = clNum(Vd);
+        q('.t1-t').textContent = clNum(t) + ' h'; q('.t1-k').textContent = (CL / Vd).toPrecision(2) + ' /h';
+        q('.t1-fb').textContent = 'CL ↓ 또는 Vd ↑ 어느 쪽이든 half-life가 늘어난다. 두 변화의 pharmacological 의미(제거 vs 분포)는 완전히 다르다.';
+      }
+      var P = { A:[5, 10], B:[5, 100], D:[3, 100] };
+      wrap.querySelectorAll('[data-p]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var p = P[btn.dataset.p]; a.value = Math.log(p[0]) / Math.LN10; b.value = Math.log(p[1]) / Math.LN10; update();
+          wrap.querySelectorAll('[data-p]').forEach(function(x){ x.classList.toggle('active', x === btn); });
+        });
+      });
+      a.addEventListener('input', update); b.addEventListener('input', update); update();
+    });
+  }
+
+  /* V4 */
+  function initClWs() {
+    document.querySelectorAll('[data-cl-ws]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var f = q('.ws-fu-in'), c = q('.ws-ci-in'), Q = 20;
+      function update() {
+        var fu = Math.pow(10, +f.value), ci = Math.pow(10, +c.value);
+        var h = clWS(Q, fu, ci), h2 = clWS(Q, fu, ci / 10);
+        q('.ws-fu').textContent = pbFmtFu(fu); q('.ws-ci').textContent = clNum(ci);
+        q('.ws-p').textContent = clNum(fu * ci); q('.ws-h').textContent = clNum(h) + ' (E ' + (h / Q * 100).toFixed(0) + '%)';
+        q('.ws-r').textContent = '× ' + (h2 / h).toFixed(2);
+        var fb = q('.ws-fb'), r = h2 / h;
+        fb.className = 'le-fb ws-fb' + (r > .7 ? ' bad' : ' ok');
+        fb.textContent = r > .7 ? 'High-extraction(flow-limited): CLint를 10배 낮춰도 CL_H는 거의 그대로 — 12강의 soft-spot 개선이 in vivo에 반영되지 않는다.' : 'Low-extraction: CL_H ≈ fu·CLint라서 CLint 10배 개선이 CL_H를 크게 낮춘다.';
+      }
+      wrap.querySelectorAll('[data-pre]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          wrap.querySelectorAll('[data-pre]').forEach(function(x){ x.classList.toggle('active', x === btn); });
+          if (btn.dataset.pre === 'low') { f.value = -1; c.value = 1.3; } else { f.value = -0.3; c.value = 3.3; }
+          update();
+        });
+      });
+      f.addEventListener('input', update); c.addEventListener('input', update); update();
+    });
+  }
+
+  /* V5 */
+  function initClFlow() {
+    document.querySelectorAll('[data-cl-flow]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.cl-flow-svg');
+      var inp = wrap.querySelector('.fl-ci-in'), Q = 20;
+      function update() {
+        var ci = Math.pow(10, +inp.value), E = ci / (Q + ci), out = Math.round(10 * (1 - E));
+        wrap.querySelector('.fl-ci').textContent = clNum(ci);
+        wrap.querySelector('.fl-e').textContent = (E * 100).toFixed(0) + '%';
+        wrap.querySelector('.fl-r').textContent = (E * 100).toFixed(0) + '%';
+        svg.innerHTML = '';
+        svgEl('rect', { x:120, y:10, width:100, height:100, rx:12, fill:'#fef3c7', stroke:'#b45309', 'stroke-width':2 }, svg);
+        svgEl('text', { x:170, y:64, 'text-anchor':'middle', style:'font-size:12px;fill:#b45309;font-weight:700' }, svg).textContent = 'Liver';
+        for (var i = 0; i < 10; i++) svgEl('circle', { cx:20 + (i % 5) * 18, cy:35 + Math.floor(i / 5) * 40, r:6, fill:'#c2410c' }, svg);
+        for (var j = 0; j < out; j++) svgEl('circle', { cx:250 + (j % 5) * 18, cy:35 + Math.floor(j / 5) * 40, r:6, fill:'#15803d' }, svg);
+        svgEl('text', { x:20, y:116, style:'font-size:10px' }, svg).textContent = 'in: 10';
+        svgEl('text', { x:250, y:116, style:'font-size:10px' }, svg).textContent = 'out: ' + out;
+        var fb = wrap.querySelector('.fl-fb');
+        fb.className = 'le-fb fl-fb' + (E > .7 ? ' bad' : '');
+        fb.textContent = E > .7 ? 'Enzyme capacity가 이미 충분 — 들어오는 대로 거의 제거된다. 이 영역에서는 blood flow가 bottleneck이라 capacity를 조금 낮춰도 거의 변화가 없다.' : 'Capacity가 제한적 — 일부가 살아남는다. 이 영역에서는 CLint 변화가 clearance에 직접 반영된다.';
+      }
+      inp.addEventListener('input', update); update();
+    });
+  }
+
+  /* V6 */
+  function initClFucl() {
+    document.querySelectorAll('[data-cl-fucl]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var Q = 20;
+      function grab(p) { return { fu:Math.pow(10, +q('.' + p + '-fu-in').value), ci:Math.pow(10, +q('.' + p + '-ci-in').value) }; }
+      function update() {
+        var A = grab('fa'), B = grab('fb');
+        q('.fa-fu').textContent = pbFmtFu(A.fu); q('.fa-ci').textContent = clNum(A.ci);
+        q('.fb-fu').textContent = pbFmtFu(B.fu); q('.fb-ci').textContent = clNum(B.ci);
+        var ha = clWS(Q, A.fu, A.ci), hb = clWS(Q, B.fu, B.ci);
+        q('.fa-out').innerHTML = 'fu·CLint = <b>' + clNum(A.fu * A.ci) + '</b><br>CL<sub>H</sub> = <b>' + clNum(ha) + '</b>';
+        q('.fb-out').innerHTML = 'fu·CLint = <b>' + clNum(B.fu * B.ci) + '</b><br>CL<sub>H</sub> = <b>' + clNum(hb) + '</b>';
+        var r = hb / ha, fb = q('.fc-fb');
+        fb.className = 'le-fb fc-fb' + (r > 1.15 ? ' bad' : (r < .87 ? ' ok' : ''));
+        fb.textContent = 'CL_H(B) / CL_H(A) = ' + r.toFixed(2) + '. ' + (r > 1.15 ? 'B가 CLint는 낮아도 fu 증가 때문에 더 빨리 제거된다.' : (r < .87 ? 'B의 clearance가 개선됐다.' : '두 compound의 hepatic clearance가 비슷하다.'));
+      }
+      wrap.querySelectorAll('input[type=range]').forEach(function(i){ i.addEventListener('input', update); });
+      update();
+    });
+  }
+
+  /* V7 */
+  function initClKidney() {
+    document.querySelectorAll('[data-cl-kidney]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var f = q('.kd-fu-in'), c = q('.kd-cr-in'), GFR = 120;
+      var M = {
+        fil: '혈액 → filtrate. 관련 property: fu (unbound drug만 filtration).',
+        sec: '혈액 → tubule, active transport. 관련: renal transporter (OAT/OCT 등) — PPB만으로 설명되지 않는 clearance.',
+        rea: 'Tubule → 혈액. 관련: pKa/logD, urine pH — permeable하고 neutral fraction이 있으면 passive reabsorption.'
+      };
+      wrap.querySelectorAll('[data-k]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          wrap.querySelectorAll('[data-k]').forEach(function(x){ x.classList.toggle('active', x === b); });
+          q('.cl-kid-fb').textContent = M[b.dataset.k];
+        });
+      });
+      function update() {
+        var fu = Math.pow(10, +f.value), cr = Math.pow(10, +c.value), flt = fu * GFR, r = cr / flt;
+        q('.kd-fu').textContent = pbFmtFu(fu); q('.kd-cr').textContent = clNum(cr);
+        q('.kd-f').textContent = clNum(flt) + ' mL/min'; q('.kd-r').textContent = r.toFixed(2);
+        var fb = q('.kd-fb');
+        fb.className = 'le-fb kd-fb' + (r > 1.5 ? ' bad' : '');
+        fb.textContent = r > 1.5 ? 'CL_R이 fu × GFR을 크게 넘는다 → active secretion 가능성 (추가 데이터 필요).' : (r < .7 ? 'CL_R이 filtration 예상보다 낮다 → net reabsorption 가능성.' : 'CL_R ≈ filtration 수준 — filtration 중심.');
+      }
+      f.addEventListener('input', update); c.addEventListener('input', update); update();
+      q('.cl-kid-fb').textContent = '과정을 탭하세요.';
+    });
+  }
+
+  /* V8 */
+  function initClUrine() {
+    document.querySelectorAll('[data-cl-urine]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var type = 'acid', k = q('.ur-k-in'), p = q('.ur-p-in');
+      function update() {
+        var pk = +k.value, ph = +p.value;
+        var n = type === 'acid' ? 1 / (1 + Math.pow(10, ph - pk)) : 1 / (1 + Math.pow(10, pk - ph));
+        wrap.querySelectorAll('[data-t]').forEach(function(b){ b.classList.toggle('active', b.dataset.t === type); });
+        q('.ur-k').textContent = pk.toFixed(1); q('.ur-p').textContent = ph.toFixed(1);
+        q('.ur-n').style.width = n * 100 + '%'; q('.ur-nv').textContent = (n * 100).toFixed(n < .01 ? 2 : 0) + '%';
+        q('.ur-r').style.width = n * 100 + '%';
+        q('.ur-fb').textContent = (type === 'acid' ? 'Weak acid: urine pH ↑ → ionized ↑ → reabsorption ↓ → renal excretion ↑.' : 'Weak base: urine pH ↓ → ionized ↑ → reabsorption ↓ → renal excretion ↑.') + ' 현재 neutral fraction ' + (n * 100).toFixed(1) + '%.';
+      }
+      wrap.querySelectorAll('[data-t]').forEach(function(b){ b.addEventListener('click', function(){ type = b.dataset.t; k.value = type === 'acid' ? 5 : 9; update(); }); });
+      k.addEventListener('input', update); p.addEventListener('input', update); update();
+    });
+  }
+
+  /* V9 */
+  function initClOral() {
+    document.querySelectorAll('[data-cl-oral]').forEach(function(wrap) {
+      var q = function(s){ return wrap.querySelector(s); };
+      var ids = ['a', 'b', 'c', 'd'];
+      var names = ['Dissolved', 'Absorbed', 'Intestinal survival', 'Hepatic survival'];
+      function update() {
+        var v = ids.map(function(i){ return +q('.or-' + i + '-in').value; });
+        ids.forEach(function(i, j){ q('.or-' + i).textContent = v[j]; });
+        var cum = 100, html = '<div class="cl-oral-row"><span>Oral dose</span><div class="sl-track"><i style="width:100%"></i></div><b>100%</b></div>';
+        var minI = 0;
+        v.forEach(function(x, j) {
+          cum = cum * x / 100; if (x < v[minI]) minI = j;
+          html += '<div class="cl-oral-row"><span>' + names[j] + '</span><div class="sl-track"><i style="width:' + cum + '%"></i></div><b>' + cum.toFixed(0) + '%</b></div>';
+        });
+        q('.cl-oral-fun').innerHTML = html;
+        var fb = q('.or-fb');
+        fb.className = 'le-fb or-fb' + (cum < 20 ? ' bad' : (cum > 50 ? ' ok' : ''));
+        fb.textContent = 'F ≈ ' + cum.toFixed(0) + '%. 가장 큰 손실: ' + names[minI] + ' (' + (minI < 2 ? '흡수 이전/중' : '흡수 이후 first-pass') + ').';
+      }
+      wrap.querySelectorAll('input[type=range]').forEach(function(i){ i.addEventListener('input', update); });
+      update();
+    });
+  }
+
+  /* V10 */
+  function initClPk() {
+    document.querySelectorAll('[data-cl-pk]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.cl-pk-svg');
+      var a = wrap.querySelector('.pk-cl-in'), b = wrap.querySelector('.pk-vd-in');
+      var D = 100, ka = 1.2;
+      function update() {
+        var CL = Math.pow(10, +a.value), V = Math.pow(10, +b.value), k = CL / V, kk = Math.abs(ka - k) < .01 ? ka + .02 : ka;
+        function C(t) { return D * kk / (V * (kk - k)) * (Math.exp(-k * t) - Math.exp(-kk * t)); }
+        var tmax = Math.log(kk / k) / (kk - k), cmax = C(tmax);
+        wrap.querySelector('.pk-cl').textContent = clNum(CL); wrap.querySelector('.pk-vd').textContent = clNum(V);
+        wrap.querySelector('.pk-cm').textContent = clNum(cmax) + ' mg/L · ' + tmax.toFixed(1) + ' h';
+        wrap.querySelector('.pk-auc').textContent = clNum(D / CL) + ' mg·h/L';
+        wrap.querySelector('.pk-t').textContent = clNum(0.693 / k) + ' h';
+        var ymax = cmax * 1.15;
+        function X(t){ return 40 + t / 24 * 280; }
+        function Y(c){ return 190 - c / ymax * 165; }
+        svg.innerHTML = '';
+        slAxes(svg, 40, 190, 320, 20);
+        svgEl('text', { x:180, y:212, 'text-anchor':'middle' }, svg).textContent = 'Time (h)';
+        svgEl('text', { x:12, y:105, transform:'rotate(-90 12 105)', 'text-anchor':'middle' }, svg).textContent = 'Concentration';
+        var pts = [], area = ['40,190'];
+        for (var t = 0; t <= 24.01; t += 0.25) { var y = Y(Math.max(0, C(t))); pts.push(X(t) + ',' + y); area.push(X(t) + ',' + y); }
+        area.push('320,190');
+        svgEl('polygon', { points:area.join(' '), fill:'#5b3fd4', 'fill-opacity':.12 }, svg);
+        svgEl('polyline', { points:pts.join(' '), fill:'none', stroke:'#5b3fd4', 'stroke-width':2.5 }, svg);
+        svgEl('circle', { cx:X(tmax), cy:Y(cmax), r:6, fill:'#dc2626' }, svg);
+        svgEl('text', { x:X(tmax) + 8, y:Y(cmax) - 4, style:'fill:#dc2626' }, svg).textContent = 'Cmax';
+        svgEl('text', { x:200, y:40 }, svg).textContent = 'shaded area = AUC';
+      }
+      a.addEventListener('input', update); b.addEventListener('input', update); update();
+    });
+  }
+
+  /* V11 */
+  function initClCov() {
+    document.querySelectorAll('[data-cl-cov]').forEach(function(wrap) {
+      var svg = wrap.querySelector('.cl-cov-svg');
+      var inp = wrap.querySelector('.cv2-in');
+      var A = { c0:500, k:Math.log(25) / 1 }, B = { c0:150, k:Math.log(150 / 60) / 12 };
+      function ta(p, thr) { return p.c0 > thr ? Math.log(p.c0 / thr) / p.k : 0; }
+      function update() {
+        var thr = +inp.value;
+        wrap.querySelector('.cv2-t').textContent = thr;
+        function X(t){ return 40 + t / 24 * 280; }
+        function Y(c){ return 190 - c / 520 * 165; }
+        svg.innerHTML = '';
+        slAxes(svg, 40, 190, 320, 20);
+        svgEl('text', { x:180, y:212, 'text-anchor':'middle' }, svg).textContent = 'Time (h)';
+        svgEl('text', { x:12, y:105, transform:'rotate(-90 12 105)', 'text-anchor':'middle' }, svg).textContent = 'Unbound conc. (nM)';
+        [[A, '#c2410c', 'A'], [B, '#5b3fd4', 'B']].forEach(function(s) {
+          var pts = []; for (var t = 0; t <= 24.01; t += 0.1) pts.push(X(t) + ',' + Y(s[0].c0 * Math.exp(-s[0].k * t)));
+          svgEl('polyline', { points:pts.join(' '), fill:'none', stroke:s[1], 'stroke-width':2.5 }, svg);
+        });
+        svgEl('line', { x1:40, y1:Y(thr), x2:320, y2:Y(thr), stroke:'#dc2626', 'stroke-width':2, 'stroke-dasharray':'6 4' }, svg);
+        svgEl('text', { x:322, y:Y(thr) - 4, 'text-anchor':'end', style:'fill:#dc2626' }, svg).textContent = 'threshold';
+        svgEl('text', { x:50, y:34, style:'fill:#c2410c' }, svg).textContent = 'A: high peak, fast decline';
+        svgEl('text', { x:50, y:48, style:'fill:#5b3fd4' }, svg).textContent = 'B: low peak, sustained';
+        var tA = ta(A, thr), tB = ta(B, thr);
+        wrap.querySelector('.cv2-a').textContent = tA.toFixed(1) + ' h'; wrap.querySelector('.cv2-b').textContent = tB.toFixed(1) + ' h';
+        wrap.querySelector('.cv2-fb').textContent = tB > tA ? 'Threshold가 ' + thr + ' nM일 때 B가 더 오래 target을 덮는다 (지속적 inhibition이 필요하면 B 유리). Threshold를 높이면 A가 유리해진다.' : 'Threshold가 높아 peak가 큰 A가 더 길게 덮는다 — Cmax가 중요한 target이라면 A 유리.';
+      }
+      inp.addEventListener('input', update); update();
+    });
+  }
+
+  /* V12 */
+  function initClDiag() {
+    document.querySelectorAll('[data-cl-diag]').forEach(function(wrap) {
+      var pathBox = wrap.querySelector('.pm-flow-path'), qBox = wrap.querySelector('.pm-flow-q');
+      var fb = wrap.querySelector('.pm-flow-fb'), btns = wrap.querySelector('.pm-flow-btns');
+      var N = {
+        n0: { q:'Microsome에서 불안정한가?', y:'Metabolic route: CLint optimization(soft spot, 12강). 단 extraction ratio와 fu 변화도 함께 확인.', n:'n1' },
+        n1: { q:'Urine에서 unchanged parent 회수율이 높은가?', y:'Renal route: fu, filtration, secretion, reabsorption, renal transporter를 확인.', n:'Transporter / biliary / other route investigation (mass balance, hepatic uptake transporter 등).' }
+      };
+      var cur, path;
+      function paint() { pathBox.innerHTML = path.map(function(p){ return '<span>' + p + '</span>'; }).join('<i>›</i>'); }
+      function render() { paint(); qBox.textContent = N[cur].q; btns.querySelectorAll('[data-a]').forEach(function(b){ b.style.display = ''; }); fb.textContent = ''; fb.className = 'le-fb pm-flow-fb'; }
+      function answer(a) {
+        var nxt = N[cur][a];
+        path.push(N[cur].q.replace('?', '') + ' → ' + (a === 'y' ? 'Yes' : 'No'));
+        if (!N[nxt]) { paint(); qBox.textContent = '결론'; btns.querySelectorAll('[data-a]').forEach(function(b){ b.style.display = 'none'; }); fb.className = 'le-fb pm-flow-fb ok'; fb.textContent = nxt; }
+        else { cur = nxt; render(); }
+      }
+      function restart() { cur = 'n0'; path = ['High systemic clearance']; render(); }
+      btns.querySelectorAll('[data-a]').forEach(function(b){ b.addEventListener('click', function(){ answer(b.dataset.a); }); });
+      btns.querySelector('[data-restart]').addEventListener('click', restart);
+      restart();
+    });
+  }
+
+  /* V13 */
+  function initClChain() {
+    document.querySelectorAll('[data-cl-chain]').forEach(function(wrap) {
+      var btns = wrap.querySelectorAll('[data-v]');
+      var q = function(s){ return wrap.querySelector(s); };
+      var names = { fu:'fu', q:'hepatic blood flow', renal:'renal clearance', vd:'Vd' };
+      function update() {
+        var hidden = []; btns.forEach(function(b){ if (!b.classList.contains('active')) hidden.push(names[b.dataset.v]); });
+        var u = 15 + hidden.length * 20;
+        q('.ch-u').style.width = u + '%'; q('.ch-uv').textContent = u + '%';
+        var fb = q('.ch-fb'); fb.className = 'le-fb ch-fb' + (hidden.length ? ' bad' : ' ok');
+        fb.textContent = hidden.length ? '모르는 변수: ' + hidden.join(', ') + ' → 예측 t½의 uncertainty 증가.' : '모든 필요 변수를 알고 있다 — 그래도 각 값의 예측 오차는 누적된다.';
+      }
+      btns.forEach(function(b){ b.addEventListener('click', function(){ b.classList.toggle('active'); update(); }); });
+      update();
+    });
+  }
+
+  /* V14 */
+  function initClLg() {
+    document.querySelectorAll('[data-cl-lg]').forEach(function(wrap) {
+      var fb = wrap.querySelector('.cl-lg-fb');
+      var M = {
+        flow:  'Flow limitation: 이미 high-extraction이면 CLint ↓가 CL_H에 거의 반영되지 않는다.',
+        renal: 'Renal clearance: unchanged drug가 urine으로 배설되면 metabolism 개선만으로 total CL이 줄지 않는다.',
+        fu:    'fu: CLint ↓와 함께 fu ↑이면 fu·CLint가 상쇄된다.',
+        vd:    'Vd: Vd가 줄면 CL이 조금 좋아져도 t½ 이득이 상쇄된다.'
+      };
+      wrap.querySelectorAll('[data-o]').forEach(function(b) {
+        b.addEventListener('click', function() {
+          wrap.querySelectorAll('[data-o]').forEach(function(x){ x.classList.toggle('active', x === b); });
+          fb.textContent = M[b.dataset.o];
+        });
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initSidebar();
     initScrollSpy();
@@ -4939,6 +5592,36 @@
     initPbCalc();
     initPbAi();
     initPbFlow();
+
+    initMtTime();
+    initMtPhase();
+    initMtPose();
+    initMtScan();
+    initMtOdealk();
+    initMtAssay();
+    initMtTree();
+    initMtBlock();
+    initMtSwitch();
+    initMtDdi();
+    initMtVp();
+    initMtSom();
+    initMtLg();
+    initMtFlow();
+
+    initClOpen();
+    initClVol();
+    initClT12();
+    initClWs();
+    initClFlow();
+    initClFucl();
+    initClKidney();
+    initClUrine();
+    initClOral();
+    initClPk();
+    initClCov();
+    initClDiag();
+    initClChain();
+    initClLg();
 
     initHub();
   });
