@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AB L01 · 항체란 무엇인가 — AIDD</title>
+  <link rel="stylesheet" href="../../assets/css/styles.css" />
+  <link rel="stylesheet" href="../../assets/css/antibody.css" />
+</head>
+<body class="ab">
+
+  <div class="topbar">
+    <button class="hamburger" aria-label="목차 열기" aria-expanded="false"><span></span></button>
+    <div class="topbar__title">AB L01 · 항체란 무엇인가</div>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="강의 목차">
+      <div class="sidebar__brand">
+        <div class="sidebar__logo sidebar__logo--c">L01</div>
+        <div class="sidebar__title">AIDD · Track C
+          <small>항체란 무엇인가</small>
+        </div>
+      </div>
+      <nav>
+        <ul class="toc">
+          <li><a href="#s01"><span class="num">01</span> 항체의 표적 인식</a></li>
+          <li><a href="#s02"><span class="num">02</span> B세포와 항체 생성</a></li>
+          <li><a href="#s03"><span class="num">03</span> IgG 전체 구조</a></li>
+          <li><a href="#s04"><span class="num">04</span> 치료 기전 3가지</a></li>
+          <li><a href="#s05"><span class="num">05</span> 승인 항체 사례</a></li>
+          <li><a href="#s06"><span class="num">06</span> Monoclonal vs Polyclonal</a></li>
+          <li><a href="#s07"><span class="num">07</span> Small Molecule vs Antibody</a></li>
+          <li><a href="#s08"><span class="num">08</span> AI Antibody Discovery</a></li>
+          <li><a href="#s09"><span class="num">09</span> Candidate Thinking</a></li>
+          <li><a href="#summary"><span class="num">S</span> 핵심 정리</a></li>
+          <li><a href="#quiz"><span class="num">Q</span> 퀴즈</a></li>
+          <li><a href="#next"><span class="num">→</span> 다음 강의</a></li>
+        </ul>
+      </nav>
+      <a class="sidebar__back" href="../../index.html">← 강의 목록으로</a>
+    </aside>
+
+    <div class="content">
+      <div class="wrap">
+
+        <!-- HERO -->
+        <header class="lesson-hero lesson-hero--c">
+          <div class="kicker">AIDD · Track C — Antibody Drug Discovery &nbsp;·&nbsp; Phase 1 · Lesson 01</div>
+          <h1>항체란 무엇인가</h1>
+          <p>우리 몸이 외부 물질을 인식하기 위해 만드는 항체가 어떻게 암과 자가면역질환을 치료하는 정밀한 의약품이 될 수 있을까?</p>
+        </header>
+
+        <div class="principle">
+          <b>이 교재의 목표.</b> 항체 실험기술을 익히는 것이 아니라, 항체의 <b>구조·기능·약리학·개발 가능성</b>을 이해하고 AI 모델이 추천한 항체 후보를 실제 신약개발 관점에서 평가하는 것입니다. 시각화와 인터랙션은 이해를 돕는 수단이며, 각 화면의 본문 설명이 핵심입니다.
+        </div>
+
+        <!-- S01 -->
+        <section id="s01" class="section">
+          <h2><span class="sec-no">01</span> 항체는 무엇을 하는 분자인가?</h2>
+
+          <p>우리 몸에는 수많은 단백질이 존재한다. 세균이나 바이러스에도 고유한 단백질이 있으며, 암세포 표면에는 정상세포와 발현 양상이나 구조가 다른 분자가 나타날 수 있다.</p>
+          <p>면역계는 이러한 분자적 차이를 인식해야 한다.</p>
+          <p>그중 항체(<b>Antibody</b>)는 특정 분자 구조를 선택적으로 인식하고 결합하는 단백질이다.</p>
+          <p>항체는 <b>Immunoglobulin(Ig)</b>이라고도 부른다. 엄밀히 말하면 면역글로불린은 항체를 포함하는 단백질 계열을 지칭하며, 모든 면역글로불린이 반드시 분비형 항체로 존재하는 것은 아니다.</p>
+          <p>항체의 중요한 특징은 <b>특정 표적을 분자 수준에서 인식할 수 있다는 것</b>이다.</p>
+          <p>예를 들어 바이러스 표면 단백질에 항체가 결합하면 바이러스가 세포에 침입하는 과정을 방해할 수 있다.</p>
+          <p>그러나 항체가 항상 표적을 직접 비활성화하는 것은 아니다. 어떤 항체는 표적에 결합한 뒤 면역세포의 작용을 유도하고, 어떤 항체는 단순히 수용체와 리간드의 상호작용을 차단한다.</p>
+          <p>즉,</p>
+          <div class="ab-key">항체의 결합(binding)과 생물학적 기능(function)은 구분해서 이해해야 한다.</div>
+          <p>이 구분은 향후 항체 후보를 평가할 때 매우 중요하다.</p>
+
+          <div class="viz" data-ab-recog>
+            <div class="viz__title">항체의 표적 인식 — 항원을 눌러 선택하세요</div>
+            <div class="rec-svg"></div>
+            <div class="ab-btnrow" style="justify-content:center;">
+              <button class="ab-btn" data-act="bind">Binding</button>
+              <button class="ab-btn ab-btn--ghost" data-act="effect">Biological Effect</button>
+            </div>
+            <div class="ab-fb rec-fb"></div>
+            <div class="rec-effects-host"></div>
+            <div class="ab-note">이 시각화는 실제 결합 예측이 아니라 개념 설명용 모델이다. 실제 결합에는 구조적 유연성, 물리화학적 상호작용, 용매 효과 등이 관여하며 자물쇠–열쇠처럼 단순하지 않다(L04–L05에서 다룬다).</div>
+          </div>
+          <div class="viz__msg">시각화 목적: 항체는 단백질 전체를 무작위로 인식하는 것이 아니라 <b>특정 표면 영역</b>을 인식한다. 그리고 결합이 곧 치료 효과를 보장하지는 않는다.</div>
+        </section>
+
+        <!-- S02 -->
+        <section id="s02" class="section">
+          <h2><span class="sec-no">02</span> 항체는 어디에서 만들어지는가?</h2>
+
+          <p>항체는 B lymphocyte(B세포) 계열에서 만들어진다.</p>
+          <p>B세포는 골수에서 발생하고 성숙하는 과정에서 각기 다른 항원 인식 능력을 갖는 <b>B-cell receptor(BCR)</b>를 발현한다.</p>
+          <p>BCR은 기본적으로 세포막에 존재하는 면역글로불린과 신호전달 단백질 복합체이다.</p>
+          <p>각 B세포는 서로 다른 항원 인식 특성을 가진 BCR을 발현할 수 있다.</p>
+          <p>이러한 다양성은 항체 유전자의 <b>V(D)J recombination</b>이라는 유전자 재조합 과정에서 만들어진다.</p>
+          <p>이 과정에서 면역계는 매우 다양한 항원 인식 능력을 확보한다.</p>
+          <p>특정 항원을 인식한 B세포가 적절한 활성화 신호를 받으면 증식하고, 일부는 항체를 대량 분비하는 <b>Plasma cell</b>로 분화한다.</p>
+          <p>또한 항원 경험 이후 일부 B세포는 <b>Memory B cell</b>로 남아 향후 같은 항원에 더 빠르게 반응할 수 있다.</p>
+          <p>여기서 중요한 점은 다음과 같다.</p>
+          <div class="ab-key">항체는 처음부터 특정 병원체에 맞춰 설계되는 것이 아니라, 다양한 인식 능력을 가진 B세포 중 적절한 클론이 선택되고 확장되는 방식으로 면역반응에 참여한다.</div>
+          <p>이 원리는 항체 신약개발의 discovery 과정과 연결된다 — 다양한 후보 라이브러리에서 원하는 표적에 맞는 클론을 <em>선택</em>하는 것이 발굴(L07–L08)의 기본 논리이다.</p>
+
+          <div class="bflow">
+            <div class="ab-flow__step">골수의 B세포 발달</div><div class="ab-flow__arrow">↓</div>
+            <div class="ab-flow__step">다양한 BCR 생성 <small>V(D)J recombination</small></div><div class="ab-flow__arrow">↓</div>
+            <div class="ab-flow__step">항원 인식 및 활성화</div><div class="ab-flow__arrow">↓</div>
+            <div class="ab-flow__step hl">Clonal expansion</div><div class="ab-flow__arrow">↓</div>
+            <div class="ab-flow__step">Plasma cell / Memory B cell</div><div class="ab-flow__arrow">↓</div>
+            <div class="ab-flow__step">분비형 항체 생성</div>
+          </div>
+          <div class="ab-note">이 과정은 대표적인 T세포 의존성 항원반응을 단순화한 것이며, 모든 항체반응이 동일한 경로를 따르는 것은 아니다.</div>
+
+          <div class="viz" data-ab-clonal>
+            <div class="viz__title">Clonal Selection — 항원을 선택하세요</div>
+            <p style="font-size:14px;color:var(--ink-soft);margin:0 0 6px;">8개의 B세포 클론은 각각 다른 모양의 BCR(항원 인식 특성)을 가진다. 항원이 등장하면 어떤 일이 일어날까?</p>
+            <div class="ab-btnrow">
+              <button class="ab-btn" data-ag="A"></button>
+              <button class="ab-btn" data-ag="B"></button>
+              <button class="ab-btn" data-ag="C"></button>
+            </div>
+            <div class="clone-row"></div>
+            <div class="clone-out"></div>
+            <div class="ab-fb clonal-fb"></div>
+            <div class="ab-btnrow">
+              <button class="ab-btn" data-act="next">다음 단계 ▶</button>
+              <button class="ab-btn ab-btn--ghost" data-act="reset">처음으로</button>
+            </div>
+          </div>
+          <div class="viz__msg">핵심 용어: <b>Clonal Selection</b> — 항원이 클론을 “만드는” 것이 아니라 이미 존재하는 클론을 “선택”한다.</div>
+        </section>
+
+        <!-- S03 -->
+        <section id="s03" class="section">
+          <h2><span class="sec-no">03</span> 항체는 어떤 구조를 가지는가?</h2>
+
+          <p>대표적인 치료용 항체 형식인 <b>IgG</b>는 흔히 Y자 형태로 표현된다.</p>
+          <p>일반적인 IgG 항체는 다음으로 구성된다.</p>
+          <ul>
+            <li>Heavy chain 2개</li>
+            <li>Light chain 2개</li>
+          </ul>
+          <p>각 사슬은 이황화결합(disulfide bond)과 비공유결합을 통해 안정적인 구조를 형성한다.</p>
+          <p>Y자의 양쪽 팔에는 항원 인식에 중요한 부위가 존재한다. 이 부분을 포함하는 영역을 <b>Fab(Fragment antigen-binding)</b>라고 부른다.</p>
+          <p>반면 Y자의 아래쪽 줄기 부분은 <b>Fc(Fragment crystallizable)</b> 영역이다. Fc는 Fc receptor와의 상호작용, 면역세포 기능 조절, FcRn에 의한 재활용 및 반감기 조절 등에 관여한다.</p>
+          <p>따라서 항체는 크게 두 가지 기능을 갖는 모듈로 이해할 수 있다.</p>
+
+          <div class="twopanel">
+            <div class="panel panel--a"><h5>Fab</h5><p style="margin:0;font-weight:700;">무엇을 인식할 것인가?</p></div>
+            <div class="panel" style="background:#f0eaff;"><h5>Fc</h5><p style="margin:0;font-weight:700;">결합 이후 어떤 생물학적 작용과 체내 거동을 나타낼 것인가?</p></div>
+          </div>
+
+          <div class="card card--mistake">
+            <div class="card__label"><span class="dot"></span>단순화의 한계</div>
+            <p>다만 Fab가 모든 결합 특성을, Fc가 모든 약동학적 특성을 독립적으로 결정하는 것은 아니다. 항체 전체의 전하, 구조 및 표적과의 상호작용도 체내 거동에 영향을 준다.</p>
+          </div>
+
+          <div class="viz" data-ab-igg>
+            <div class="viz__title">IgG 구조 — 영역을 눌러 보세요</div>
+            <div class="igg-wrap">
+              <div>
+                <div class="igg-svg-host"></div>
+                <div class="igg-legend">
+                  <span><i style="background:#2f5fd0"></i>Heavy chain (Fab 쪽)</span>
+                  <span><i style="background:#8b5cf6"></i>Fc (heavy chain의 CH2–CH3)</span>
+                  <span><i style="background:#14a39a"></i>Light chain</span>
+                  <span><i style="background:#f97316"></i>Antigen-binding site</span>
+                  <span><i style="background:#eab308"></i>Disulfide bond</span>
+                </div>
+              </div>
+              <div>
+                <div class="ab-btnrow">
+                  <button class="ab-btn" data-part="heavy">Heavy Chain</button>
+                  <button class="ab-btn" data-part="light">Light Chain</button>
+                  <button class="ab-btn" data-part="fab">Fab</button>
+                  <button class="ab-btn" data-part="fc">Fc</button>
+                  <button class="ab-btn" data-part="site">Binding Site</button>
+                  <button class="ab-btn ab-btn--ghost" data-act="all">전체 보기</button>
+                </div>
+                <div class="igg-info"></div>
+              </div>
+            </div>
+            <div class="ab-note">Heavy chain은 Y자의 팔 내부(VH–CH1)와 줄기(CH2–CH3)를 구성하고, Light chain(VL–CL)은 각 팔의 바깥쪽에서 heavy chain과 짝을 이룬다. CH2 사이의 주황색 구슬은 N-glycan을 나타낸다. 개념도이며 실제 3D 구조는 L02 Mini Lab에서 PDB 구조로 확인한다.</div>
+          </div>
+
+          <div class="card card--concept">
+            <div class="card__label"><span class="dot"></span>이번 강의의 범위</div>
+            <p>이번 강의에서는 구조의 큰 그림만 다룬다. Variable region, CDR, hinge의 상세 구조는 L02–L03에서 설명한다.</p>
+          </div>
+        </section>
+
+        <!-- S04 -->
+        <section id="s04" class="section">
+          <h2><span class="sec-no">04</span> 항체는 어떻게 치료제가 되는가?</h2>
+
+          <p>우리 몸의 항체는 주로 면역 방어에 참여한다.</p>
+          <p>그러나 항체의 높은 표적 선택성을 이용하면 특정 질병 관련 단백질의 기능을 조절하는 의약품을 개발할 수 있다. 이러한 의약품을 <b>치료용 항체(Therapeutic Antibody)</b>라고 한다.</p>
+          <p>대표적인 기전은 세 가지이다.</p>
+
+          <div class="mech">
+            <div class="mech__head"><div class="mech__no">①</div><div><h4>Neutralization / Blocking</h4><small>Card A</small></div></div>
+            <div class="mech__body">
+              <p>항체가 특정 리간드 또는 수용체에 결합하여 원래 일어나야 할 분자 간 상호작용을 차단한다.</p>
+              <p>예를 들어 TNF-α에 결합하는 항체는 TNF-α의 염증성 신호 전달을 억제할 수 있다.</p>
+            </div>
+            <button class="ab-btn ab-btn--ghost mech__toggle">작동 원리 보기</button>
+            <div class="mech__detail">
+              <div class="mech__eq"><span>Ligand</span><em>→</em><span>Receptor</span><em>→</em><span>Signaling</span></div>
+              <div class="mech__eq"><span class="hit">Ligand–Antibody complex</span><em>→</em><span class="hit">Receptor activation 감소</span></div>
+              <div class="ab-note">항체가 리간드를 붙잡아 수용체에 도달하지 못하게 하는 경우(중화)와, 수용체 쪽 결합면을 가리는 경우가 있다.</div>
+            </div>
+          </div>
+
+          <div class="mech">
+            <div class="mech__head"><div class="mech__no">②</div><div><h4>Receptor Modulation</h4><small>Card B</small></div></div>
+            <div class="mech__body">
+              <p>항체가 수용체에 결합하여 수용체의 기능을 억제하거나 활성화할 수 있다.</p>
+              <p>항체의 epitope, 결합 방향, 수용체의 배열과 교차결합 여부에 따라 작용이 달라질 수 있다.</p>
+            </div>
+            <button class="ab-btn ab-btn--ghost mech__toggle">작동 원리 보기</button>
+            <div class="mech__detail">
+              <div class="mech__eq"><span class="hit">Antibody</span><em>→</em><span>Receptor binding</span><em>→</em><span class="hit">Receptor activity 변화</span></div>
+              <div class="mech__eq"><span>억제</span><em>⇄</em><span>활성화</span></div>
+              <div class="ab-note">같은 수용체를 표적으로 하더라도 어느 epitope에 결합하는지에 따라 antagonist처럼도, agonist처럼도 작용할 수 있다.</div>
+            </div>
+          </div>
+
+          <div class="mech">
+            <div class="mech__head"><div class="mech__no">③</div><div><h4>Immune-mediated Cell Killing</h4><small>Card C</small></div></div>
+            <div class="mech__body">
+              <p>일부 항체는 표적세포에 결합한 뒤 Fc 영역을 통해 면역세포 또는 보체계를 활성화한다.</p>
+              <p>이 과정에는 <b>ADCC</b>(antibody-dependent cellular cytotoxicity)와 <b>CDC</b>(complement-dependent cytotoxicity) 등이 포함된다.</p>
+            </div>
+            <button class="ab-btn ab-btn--ghost mech__toggle">작동 원리 보기</button>
+            <div class="mech__detail">
+              <div class="mech__eq"><span>Antibody</span><em>→</em><span>Target cell binding</span><em>→</em><span class="hit">Fc receptor engagement</span><em>→</em><span class="hit">Immune effector response</span></div>
+              <div class="ab-note">여기서는 Fab가 표적을 찾고 Fc가 면역세포를 불러오는, 두 모듈의 역할 분담이 나타난다. Fc 기능은 L06, L22에서 자세히 다룬다.</div>
+            </div>
+          </div>
+
+          <div class="ab-key">항체 신약을 설계할 때는 단순히 표적에 강하게 결합하는지뿐 아니라, “어떤 기전으로 치료 효과를 얻을 것인가”를 먼저 정의해야 한다.</div>
+        </section>
+
+        <!-- S05 -->
+        <section id="s05" class="section">
+          <h2><span class="sec-no">05</span> 실제 승인 항체 사례</h2>
+
+          <p>항체의 치료 기전을 이해하기 위해 서로 다른 작용 원리를 가진 세 가지 승인 의약품을 비교해 보자.</p>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>1. Adalimumab (Humira)</div>
+            <p><b>Target:</b> TNF-α &nbsp;·&nbsp; <b>Modality:</b> Human monoclonal IgG1 antibody &nbsp;·&nbsp; <b>주요 기전:</b> TNF-α의 작용 억제</p>
+            <p>TNF-α는 여러 염증성 질환에서 중요한 역할을 하는 사이토카인이다. Adalimumab은 TNF-α에 결합하여 수용체와의 상호작용을 방해하고 염증성 신호를 억제한다.</p>
+            <p>핵심 개념은 항체가 표적세포를 직접 죽이지 않아도 치료 효과를 낼 수 있다는 것이다.</p>
+          </div>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>2. Trastuzumab (Herceptin)</div>
+            <p><b>Target:</b> HER2 &nbsp;·&nbsp; <b>Modality:</b> Humanized IgG1 antibody &nbsp;·&nbsp; <b>주요 기전:</b> HER2 신호 조절 및 면역 매개 작용</p>
+            <p>Trastuzumab은 HER2 양성 암에서 사용되는 항체이다. HER2의 세포외 영역에 결합하여 종양세포 성장 관련 신호에 영향을 주며, Fc를 통한 ADCC도 작용 기전에 기여한다.</p>
+            <p>이 사례는 하나의 항체가 복수의 작용 기전을 가질 수 있음을 보여준다.</p>
+          </div>
+
+          <div class="card card--case">
+            <div class="card__label"><span class="dot"></span>3. Pembrolizumab (Keytruda)</div>
+            <p><b>Target:</b> PD-1 &nbsp;·&nbsp; <b>Modality:</b> Humanized IgG4 antibody &nbsp;·&nbsp; <b>주요 기전:</b> Immune checkpoint blockade</p>
+            <p>PD-1은 T세포의 면역반응을 억제하는 신호 전달에 관여한다. Pembrolizumab은 PD-1에 결합하여 PD-L1 및 PD-L2와의 상호작용을 차단한다. 그 결과 일부 상황에서 T세포의 항종양 면역반응이 회복될 수 있다.</p>
+            <p>이 항체는 암세포를 직접 공격하기보다 면역계의 억제 신호를 차단한다.</p>
+          </div>
+
+          <table class="ab-table">
+            <thead><tr><th>Drug</th><th>Target</th><th>핵심 작용</th></tr></thead>
+            <tbody>
+              <tr><td>Adalimumab</td><td data-label="Target">TNF-α</td><td data-label="핵심 작용">염증 신호 차단</td></tr>
+              <tr><td>Trastuzumab</td><td data-label="Target">HER2</td><td data-label="핵심 작용">종양 신호 조절 및 ADCC</td></tr>
+              <tr><td>Pembrolizumab</td><td data-label="Target">PD-1</td><td data-label="핵심 작용">T세포 억제 신호 차단</td></tr>
+            </tbody>
+          </table>
+
+          <div class="viz" data-ab-drugs>
+            <div class="viz__title">약물을 선택해 4단계 기전을 보세요</div>
+            <div class="ab-btnrow">
+              <button class="ab-btn" data-drug="ada">Adalimumab</button>
+              <button class="ab-btn" data-drug="tras">Trastuzumab</button>
+              <button class="ab-btn" data-drug="pembro">Pembrolizumab</button>
+            </div>
+            <div class="drug-out"></div>
+          </div>
+        </section>
+
+        <!-- S06 -->
+        <section id="s06" class="section">
+          <h2><span class="sec-no">06</span> Monoclonal Antibody란 무엇인가?</h2>
+
+          <p>치료용 항체를 공부하다 보면 <b>Monoclonal Antibody(mAb)</b>라는 용어를 자주 만나게 된다.</p>
+          <p>Monoclonal antibody는 하나의 항체 클론에서 유래한 동일한 항원 인식 특성을 가진 항체 집단을 의미한다. 일반적으로 동일한 항체 서열을 가진 분자들로 구성되며, 특정 epitope를 일관되게 인식하도록 개발된다.</p>
+          <p>반면 <b>Polyclonal antibody</b>는 서로 다른 B세포 클론에서 유래한 여러 항체의 혼합물이다. Polyclonal antibody는 동일 항원의 서로 다른 epitope를 인식할 수 있다.</p>
+          <p>Monoclonal antibody는 특정 표적과 결합 특성을 정의하고 제조 품질을 관리하기에 유리하다.</p>
+          <p>다만 monoclonal이라는 표현이 완벽한 표적 선택성이나 모든 분자의 완전한 화학적 동일성을 보장하는 것은 아니다.</p>
+
+          <div class="viz">
+            <div class="viz__title">Monoclonal vs Polyclonal</div>
+            <div class="mp-grid">
+              <div class="mp-panel"><h4>Monoclonal</h4><div data-mp-mono></div><p>동일한 항체가 동일한 epitope에 결합한다 (여러 항원 분자에 같은 색 항체).</p></div>
+              <div class="mp-panel"><h4>Polyclonal</h4><div data-mp-poly></div><p>한 항원의 서로 다른 epitope에 서로 다른 클론의 항체가 결합한다.</p></div>
+            </div>
+            <div class="ab-key" style="margin-top:14px;">Monoclonal = 동일한 클론 유래의 정의된 항원 인식 특성</div>
+            <div class="ab-key">Polyclonal = 여러 클론에서 유래한 다양한 항원 인식 특성</div>
+          </div>
+        </section>
+
+        <!-- S07 -->
+        <section id="s07" class="section">
+          <h2><span class="sec-no">07</span> Small Molecule과 Antibody 비교</h2>
+
+          <p>Small molecule 신약개발을 경험한 연구자에게 항체는 새로운 modality이지만, 두 분야에는 공통점이 많다. 두 분야 모두 표적에 대한 결합과 선택성이 중요하다.</p>
+          <p>하지만 분자의 크기, 표적 접근성, 체내 분포, 대사 및 제거 기전은 크게 다르다.</p>
+
+          <table class="ab-table">
+            <thead><tr><th>항목</th><th>Small Molecule</th><th>Antibody</th></tr></thead>
+            <tbody>
+              <tr><td>분자 크기</td><td data-label="Small Molecule">일반적으로 작음</td><td data-label="Antibody">일반적으로 큼</td></tr>
+              <tr><td>구성</td><td data-label="Small Molecule">화학구조</td><td data-label="Antibody">아미노산 서열 및 단백질 구조</td></tr>
+              <tr><td>주요 결합 부위</td><td data-label="Small Molecule">Pocket, groove 등</td><td data-label="Antibody">접근 가능한 단백질 표면</td></tr>
+              <tr><td>세포막 투과</td><td data-label="Small Molecule">물성에 따라 가능</td><td data-label="Antibody">일반적으로 제한적</td></tr>
+              <tr><td>투여</td><td data-label="Small Molecule">경구 등 다양한 경로</td><td data-label="Antibody">주사 투여가 일반적</td></tr>
+              <tr><td>제거</td><td data-label="Small Molecule">대사·배설 등</td><td data-label="Antibody">단백질 분해, FcRn, TMDD 등</td></tr>
+              <tr><td>주요 최적화</td><td data-label="Small Molecule">SAR, ADMET</td><td data-label="Antibody">Sequence, affinity, developability</td></tr>
+            </tbody>
+          </table>
+          <div class="ab-note">표는 전형적인 저분자 약물과 IgG 항체를 비교한 것이며 예외가 존재한다.</div>
+
+          <p>Small molecule에서는 특정 작용기를 바꾸면 결합력, 용해도, 대사 안정성이 달라질 수 있다. 항체에서는 특정 아미노산을 바꾸면 결합력뿐 아니라 구조 안정성, 응집 위험, 전하 및 면역원성도 달라질 수 있다.</p>
+          <p>즉,</p>
+          <div class="ab-key">Small molecule의 Structure–Activity Relationship(SAR)에 대응하는 항체의 핵심 사고방식은 <br>Sequence–Structure–Function Relationship이다.</div>
+          <p>이 관점은 AI 기반 항체 설계에서 매우 중요하다.</p>
+
+          <div class="viz" data-selector>
+            <div class="viz__title">두 분야를 같은 4단계로 비교하기</div>
+            <div class="ab-btnrow">
+              <button class="sel-btn" data-target="sm">Small Molecule</button>
+              <button class="sel-btn" data-target="ab">Antibody</button>
+            </div>
+            <div class="sel-panel" data-panel="sm">
+              <div class="cmp-steps">
+                <div class="cmp-step"><div class="cmp-step__no">1</div><div><b>Molecular representation</b><p>SMILES, 분자 그래프, fingerprint, 3D conformer</p></div></div>
+                <div class="cmp-step"><div class="cmp-step__no">2</div><div><b>Target interaction</b><p>Pocket 안에서 H-bond, hydrophobic, π 상호작용 등으로 결합</p></div></div>
+                <div class="cmp-step"><div class="cmp-step__no">3</div><div><b>Optimization</b><p>작용기 변경(SAR)으로 potency, 용해도, 대사 안정성(ADMET) 개선</p></div></div>
+                <div class="cmp-step"><div class="cmp-step__no">4</div><div><b>Development risk</b><p>낮은 용해도·투과성, CYP 대사, hERG·독성, off-target</p></div></div>
+              </div>
+            </div>
+            <div class="sel-panel" data-panel="ab">
+              <div class="cmp-steps">
+                <div class="cmp-step"><div class="cmp-step__no">1</div><div><b>Molecular representation</b><p>아미노산 서열(VH/VL), 예측 3D 구조, 서열 embedding</p></div></div>
+                <div class="cmp-step"><div class="cmp-step__no">2</div><div><b>Target interaction</b><p>항원의 접근 가능한 표면(epitope)과 넓은 접촉면으로 결합</p></div></div>
+                <div class="cmp-step"><div class="cmp-step__no">3</div><div><b>Optimization</b><p>아미노산 변경으로 affinity, specificity, developability를 함께 조정 (Sequence–Structure–Function)</p></div></div>
+                <div class="cmp-step"><div class="cmp-step__no">4</div><div><b>Development risk</b><p>응집, 고점도, 낮은 발현, 면역원성(ADA), 짧거나 비정상적인 반감기</p></div></div>
+              </div>
+            </div>
+            <div class="viz__msg">같은 “최적화”라도 바꾸는 단위(작용기 ↔ 아미노산)와 함께 움직이는 속성이 다르다.</div>
+          </div>
+        </section>
+
+        <!-- S08 -->
+        <section id="s08" class="section">
+          <h2><span class="sec-no">08</span> AI는 항체 신약개발에서 무엇을 하는가?</h2>
+
+          <p>항체 신약개발에서 AI는 단순히 새로운 단백질 서열을 만드는 기술만을 의미하지 않는다. 항체의 서열과 구조, 결합 특성, 물리화학적 특성을 분석하고 후보를 우선순위화하는 데에도 사용된다.</p>
+          <p>예를 들어 연구자가 특정 암 관련 단백질에 결합하는 항체를 개발하려고 한다고 가정하자. AI는 다음과 같은 문제를 지원할 수 있다.</p>
+
+          <div class="card card--ai"><div class="card__label"><span class="dot"></span>Sequence Representation</div><p>항체의 아미노산 서열을 수치적으로 표현하여 패턴을 학습한다.</p></div>
+          <div class="card card--ai"><div class="card__label"><span class="dot"></span>Structure Prediction</div><p>항체의 3차원 구조를 예측하고, 경우에 따라 항원과의 복합체 구조를 모델링한다.</p></div>
+          <div class="card card--ai"><div class="card__label"><span class="dot"></span>Affinity Prediction</div><p>서열이나 구조 정보를 바탕으로 결합 특성을 예측한다.</p></div>
+          <div class="card card--ai"><div class="card__label"><span class="dot"></span>Developability Prediction</div><p>응집, 용해도, 안정성 등 개발 위험과 관련된 특성을 예측한다.</p></div>
+          <div class="card card--ai"><div class="card__label"><span class="dot"></span>Generative Design</div><p>새로운 항체 서열이나 변이 후보를 제안한다.</p></div>
+
+          <p>그러나 AI의 예측 결과가 실제 실험 결과와 항상 일치하지는 않는다. 특히 결합 친화도가 높은 후보가 반드시 좋은 의약품이 되는 것은 아니다.</p>
+          <p>예를 들어 강하게 결합하는 항체라도 응집이 심하거나, 발현량이 낮거나, 원하지 않는 조직에도 결합한다면 개발이 어려울 수 있다.</p>
+          <p>따라서 AI 신약개발 연구자는 단순히 모델 점수가 높은 후보를 선택하는 것이 아니라, 여러 특성을 종합하여 평가해야 한다.</p>
+
+          <div class="viz" data-ab-pipe>
+            <div class="viz__title">AI Antibody Discovery — 단계를 눌러 보세요</div>
+            <div class="pipe"></div>
+            <div class="pipe-detail-host"></div>
+          </div>
+          <div class="ab-note">이 과정은 단방향 파이프라인이 아니라 반복적인 설계–실험–학습 과정이다.</div>
+        </section>
+
+        <!-- S09 -->
+        <section id="s09" class="section">
+          <h2><span class="sec-no">09</span> Candidate Thinking — 어떤 항체가 더 좋은가?</h2>
+
+          <p>연구팀에서 동일한 표적을 인식하는 항체 후보 A와 B를 발견했다. 두 항체는 동일한 epitope에 결합하고, 동일한 in vitro 기능 분석에서 충분한 표적 억제 활성을 보였다고 가정한다. 다음 결과를 얻었다.</p>
+
+          <table class="ab-table">
+            <thead><tr><th>특성</th><th>Candidate A</th><th>Candidate B</th></tr></thead>
+            <tbody>
+              <tr><td>KD</td><td data-label="Candidate A">0.2 nM</td><td data-label="Candidate B">2 nM</td></tr>
+              <tr><td>Aggregation risk</td><td data-label="Candidate A">High</td><td data-label="Candidate B">Low</td></tr>
+              <tr><td>Expression</td><td data-label="Candidate A">Low</td><td data-label="Candidate B">High</td></tr>
+              <tr><td>Viscosity</td><td data-label="Candidate A">High</td><td data-label="Candidate B">Low</td></tr>
+              <tr><td>Functional inhibition</td><td data-label="Candidate A">충분</td><td data-label="Candidate B">충분</td></tr>
+            </tbody>
+          </table>
+          <div class="ab-note">위 값은 학습용 가상 데이터이며 실제 항체의 측정값이 아니다.</div>
+
+          <div class="viz" data-ab-cand>
+            <div class="viz__title">다음 개발 단계로 우선 진행할 후보는?</div>
+            <div class="cand-choice">
+              <button class="cand-btn" data-pick="A">Candidate A<small>KD 0.2 nM</small></button>
+              <button class="cand-btn" data-pick="B">Candidate B<small>KD 2 nM</small></button>
+            </div>
+            <div class="cand-out"></div>
+          </div>
+        </section>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summary">
+          <h3>핵심 정리</h3>
+          <ol>
+            <li><b>항체 = 표적 인식 단백질.</b> <span>특정 분자 구조를 선택적으로 인식하는 면역글로불린 계열 단백질이다.</span></li>
+            <li><b>B세포에서 만들어진다.</b> <span>다양한 항원 인식 능력은 유전자 재조합과 클론 선택 등을 통해 형성된다.</span></li>
+            <li><b>IgG = Heavy 2 + Light 2.</b> <span>대표적인 IgG 항체는 두 개의 Heavy chain과 두 개의 Light chain으로 구성된다.</span></li>
+            <li><b>Fab와 Fc.</b> <span>Fab는 주로 항원 인식을, Fc는 면역 효과기능과 FcRn 상호작용 등을 담당한다.</span></li>
+            <li><b>결합 ≠ 기능.</b> <span>항체의 결합과 실제 생물학적 기능은 구분해야 한다.</span></li>
+            <li><b>치료 기전은 다양하다.</b> <span>치료용 항체는 신호 차단, 수용체 조절, 면역반응 유도 등 다양한 기전으로 작용한다.</span></li>
+            <li><b>Monoclonal.</b> <span>하나의 항체 클론에서 유래한 정의된 항원 인식 특성을 가진다.</span></li>
+            <li><b>Sequence–Structure–Function.</b> <span>항체 신약개발에서는 서열–구조–기능의 관계가 중요하다.</span></li>
+            <li><b>AI의 역할.</b> <span>항체의 구조, 결합, 개발 가능성 예측과 후보 설계를 지원할 수 있다.</span></li>
+            <li><b>Best Binder ≠ Best Drug.</b> <span>결합력이 가장 높은 항체가 반드시 가장 좋은 신약 후보는 아니다.</span></li>
+          </ol>
+        </div>
+
+        <h3 style="margin-top:30px;">이것만 기억하기</h3>
+        <div class="remember">
+          <div class="remember__item"><h4>① Antibody = Target Recognition</h4><p>항체의 기본 기능은 특정 분자 표면을 인식하고 결합하는 것이다.</p></div>
+          <div class="remember__item"><h4>② Binding ≠ Biological Effect</h4><p>항체가 결합했다는 사실만으로 원하는 치료 효과를 얻는다고 보장할 수 없다.</p></div>
+          <div class="remember__item"><h4>③ Best Binder ≠ Best Drug Candidate</h4><p>실제 항체 개발에서는 affinity 외에도 specificity, stability, aggregation, manufacturability 등 여러 요소를 고려해야 한다.</p></div>
+        </div>
+
+        <!-- QUIZ -->
+        <section id="quiz" class="section">
+          <h2><span class="sec-no">Q</span> 퀴즈</h2>
+          <p style="font-size:14px;color:var(--ink-soft);">보기를 선택하면 정답과 해설이 표시됩니다.</p>
+
+          <div class="qcard">
+            <div class="qno">Q1</div>
+            <p>항체의 항원 인식에 주로 관여하는 영역은?</p>
+            <ul class="mcq" data-answer="B">
+              <li data-opt="A"><span class="opt">A</span>Fc</li>
+              <li data-opt="B"><span class="opt">B</span>Fab</li>
+              <li data-opt="C"><span class="opt">C</span>FcRn</li>
+              <li data-opt="D"><span class="opt">D</span>Constant heavy chain 3 domain</li>
+            </ul>
+            <div class="mcq-exp"><b>정답: B.</b> Fab는 항원 결합에 필요한 variable region을 포함한다. Fc는 주로 면역 효과기능과 FcRn 상호작용 등에 관여한다.</div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q2</div>
+            <p>Monoclonal antibody에 대한 올바른 설명은?</p>
+            <ul class="mcq" data-answer="C">
+              <li data-opt="A"><span class="opt">A</span>반드시 하나의 항원 전체에만 결합한다.</li>
+              <li data-opt="B"><span class="opt">B</span>모든 항체가 서로 다른 서열을 가진다.</li>
+              <li data-opt="C"><span class="opt">C</span>하나의 항체 클론에서 유래한 정의된 항원 인식 특성을 가진다.</li>
+              <li data-opt="D"><span class="opt">D</span>반드시 인간 B세포에서만 생산된다.</li>
+            </ul>
+            <div class="mcq-exp"><b>정답: C.</b> Monoclonal antibody는 동일한 클론 유래의 항체를 의미한다. 이것이 완전한 표적 선택성이나 인간 유래 여부를 보장하지는 않는다.</div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q3</div>
+            <p>Pembrolizumab의 대표적인 작용 기전은?</p>
+            <ul class="mcq" data-answer="C">
+              <li data-opt="A"><span class="opt">A</span>HER2를 직접 분해한다.</li>
+              <li data-opt="B"><span class="opt">B</span>TNF-α를 중화한다.</li>
+              <li data-opt="C"><span class="opt">C</span>PD-1과 리간드의 상호작용을 차단한다.</li>
+              <li data-opt="D"><span class="opt">D</span>암세포 DNA에 직접 결합한다.</li>
+            </ul>
+            <div class="mcq-exp"><b>정답: C.</b> Pembrolizumab은 PD-1에 결합하여 PD-L1/PD-L2와의 상호작용을 차단하는 면역관문억제제이다.</div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q4</div>
+            <p>두 항체의 KD가 각각 0.1 nM와 1 nM라면 어떤 해석이 적절한가?</p>
+            <ul class="mcq" data-answer="C">
+              <li data-opt="A"><span class="opt">A</span>KD가 큰 항체가 더 강하게 결합한다.</li>
+              <li data-opt="B"><span class="opt">B</span>KD가 작은 항체는 항상 임상 효능이 우수하다.</li>
+              <li data-opt="C"><span class="opt">C</span>동일한 조건에서 KD가 작은 항체는 일반적으로 더 높은 결합 친화도를 나타낸다.</li>
+              <li data-opt="D"><span class="opt">D</span>KD만으로 모든 개발 가능성을 평가할 수 있다.</li>
+            </ul>
+            <div class="mcq-exp"><b>정답: C.</b> KD가 작을수록 일반적으로 결합 친화도가 높다. 하지만 실제 효능은 epitope, 기능적 기전, 표적 생물학, PK 등에도 영향을 받는다.</div>
+          </div>
+
+          <div class="qcard">
+            <div class="qno">Q5</div>
+            <p>AI가 항체 후보의 결합 친화도를 높게 예측했지만 실험에서는 결합이 약했다. 가장 적절한 대응은?</p>
+            <ul class="mcq" data-answer="C">
+              <li data-opt="A"><span class="opt">A</span>AI가 잘못되었으므로 사용을 중단한다.</li>
+              <li data-opt="B"><span class="opt">B</span>실험 결과가 잘못되었을 가능성만 고려한다.</li>
+              <li data-opt="C"><span class="opt">C</span>예측 구조, 학습 데이터, assay 조건, 항체 품질 등을 함께 검토한다.</li>
+              <li data-opt="D"><span class="opt">D</span>결합력이 높게 나올 때까지 동일한 모델을 반복 실행한다.</li>
+            </ul>
+            <div class="mcq-exp"><b>정답: C.</b> 예측과 실험의 차이는 모델의 한계뿐 아니라 데이터 품질, 단백질 구조, 측정 조건, 시료 특성 등 다양한 원인에서 발생할 수 있다.</div>
+          </div>
+
+          <div class="qscore"></div>
+        </section>
+
+        <!-- CLOSING -->
+        <div class="closing closing--c" id="next">
+          <h3>다음 강의 연결</h3>
+          <div class="big">L02 · 항체의 전체 구조</div>
+          <p style="color:rgba(255,255,255,.88);font-size:15px;margin:8px 0 10px;">이번 강의에서는 항체가 특정 표적을 인식하고 생물학적 기능을 수행하는 단백질이라는 사실을 배웠다. 다음 강의에서는 Y자 형태의 항체를 실제 단백질 구조 수준에서 분석한다.</p>
+          <ul style="color:rgba(255,255,255,.9);font-size:14.5px;margin:0 0 14px;padding-left:20px;">
+            <li>Heavy chain과 Light chain은 어떻게 연결되어 있을까?</li>
+            <li>Fab와 Fc는 왜 서로 다른 기능을 수행할까?</li>
+            <li>Hinge와 disulfide bond는 항체의 유연성과 안정성에 어떤 영향을 줄까?</li>
+          </ul>
+          <p style="color:rgba(255,255,255,.88);font-size:14.5px;margin:0 0 16px;">다음 강의의 Mini Lab에서는 실제 PDB 구조를 이용하여 항체의 3차원 구조를 관찰한다.</p>
+          <a class="next-link" href="../../index.html">← 강의 목록으로 돌아가기</a>
+        </div>
+
+        <nav class="bottomnav">
+          <a href="../../index.html">◀ 목록</a>
+          <button data-open-toc>☰ 목차</button>
+          <a href="02.html" aria-disabled="true">▶ L02</a>
+        </nav>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/main.js"></script>
+  <script src="../../assets/js/antibody.js"></script>
+</body>
+</html>

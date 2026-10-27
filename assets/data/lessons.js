@@ -359,5 +359,241 @@ window.AIDD_TRACKS = [
         status: "soon"
       }
     ]
+  },
+  {
+    id:    "c",
+    label: "Track C · Antibody",
+    name:  "항체 신약개발",
+    ko:    "24강 · 이론 70% + Mini Lab 30%",
+    icon:  "🛡️",
+    desc:  "항체의 구조·기능·약리학·개발 가능성을 이해하고, AI가 추천한 항체 후보를 신약개발 관점에서 평가하는 24강 과정입니다 (in silico 항체 신약 연구 대비).",
+    lessons: [
+      {
+        no: 1,
+        href: "lessons/antibody/01.html",
+        phase: "Phase 1 · 항체의 기본 언어",
+        title: "항체란 무엇인가",
+        desc: "항체의 기원, 역할, 치료제 개념 이해. Best Binder ≠ Best Drug Candidate.",
+        tags: ["Antibody", "B cell", "IgG", "mAb", "AI 개요"],
+        status: "ready"
+      },
+      {
+        no: 2,
+        href: "lessons/antibody/02.html",
+        phase: "Phase 1 · 항체의 기본 언어",
+        title: "항체의 전체 구조",
+        desc: "Heavy/Light chain, Fab/Fc와 기능 연결.",
+        tags: ["Heavy/Light chain", "Fab", "Fc", "Hinge"],
+        lab: 1,
+        status: "soon"
+      },
+      {
+        no: 3,
+        href: "lessons/antibody/03.html",
+        phase: "Phase 1 · 항체의 기본 언어",
+        title: "Variable Region과 CDR",
+        desc: "VH/VL, CDR과 서열의 관계 이해.",
+        tags: ["VH/VL", "CDR", "Framework"],
+        lab: 2,
+        status: "soon"
+      },
+      {
+        no: 4,
+        href: "lessons/antibody/04.html",
+        phase: "Phase 1 · 항체의 기본 언어",
+        title: "Epitope와 Paratope",
+        desc: "항원–항체 결합면 해석.",
+        tags: ["Epitope", "Paratope", "Interface"],
+        lab: 3,
+        status: "soon"
+      },
+      {
+        no: 5,
+        href: "lessons/antibody/05.html",
+        phase: "Phase 1 · 항체의 기본 언어",
+        title: "항체 결합의 물리화학",
+        desc: "비공유결합과 구조적 상보성 이해.",
+        tags: ["비공유결합", "상보성", "Desolvation"],
+        status: "soon"
+      },
+      {
+        no: 6,
+        href: "lessons/antibody/06.html",
+        phase: "Phase 1 · 항체의 기본 언어",
+        title: "IgG와 Fc",
+        desc: "IgG subtype, Fc receptor, effector function 이해.",
+        tags: ["IgG1/2/4", "FcγR", "ADCC/CDC"],
+        status: "soon"
+      },
+      {
+        no: 7,
+        href: "lessons/antibody/07.html",
+        phase: "Phase 2 · Discovery & Optimization",
+        title: "Antibody Discovery Workflow",
+        desc: "Target에서 candidate selection까지 이해.",
+        tags: ["Workflow", "Target", "Candidate selection"],
+        status: "soon"
+      },
+      {
+        no: 8,
+        href: "lessons/antibody/08.html",
+        phase: "Phase 2 · Discovery & Optimization",
+        title: "항체를 찾는 방법",
+        desc: "Hybridoma, phage/yeast display, single B-cell 비교.",
+        tags: ["Hybridoma", "Phage display", "Yeast display", "Single B-cell"],
+        status: "soon"
+      },
+      {
+        no: 9,
+        href: "lessons/antibody/09.html",
+        phase: "Phase 2 · Discovery & Optimization",
+        title: "Affinity의 이해",
+        desc: "KD, kon, koff, SPR/BLI 해석.",
+        tags: ["KD", "kon/koff", "SPR/BLI"],
+        lab: 4,
+        status: "soon"
+      },
+      {
+        no: 10,
+        href: "lessons/antibody/10.html",
+        phase: "Phase 2 · Discovery & Optimization",
+        title: "Affinity Maturation",
+        desc: "돌연변이와 선택을 통한 결합 최적화.",
+        tags: ["Mutation", "Selection", "Affinity"],
+        status: "soon"
+      },
+      {
+        no: 11,
+        href: "lessons/antibody/11.html",
+        phase: "Phase 2 · Discovery & Optimization",
+        title: "Humanization",
+        desc: "인간화 전략과 면역원성 위험 이해.",
+        tags: ["Humanization", "CDR grafting", "Immunogenicity"],
+        lab: 5,
+        status: "soon"
+      },
+      {
+        no: 12,
+        href: "lessons/antibody/12.html",
+        phase: "Phase 2 · Discovery & Optimization",
+        title: "Antibody Engineering",
+        desc: "Sequence/structure/Fc engineering 이해.",
+        tags: ["Sequence", "Structure", "Fc engineering"],
+        status: "soon"
+      },
+      {
+        no: 13,
+        href: "lessons/antibody/13.html",
+        phase: "Phase 3 · Developability",
+        title: "Antibody Developability",
+        desc: "좋은 binder와 좋은 drug candidate 구분.",
+        tags: ["Developability", "Binder vs Drug"],
+        lab: 6,
+        status: "soon"
+      },
+      {
+        no: 14,
+        href: "lessons/antibody/14.html",
+        phase: "Phase 3 · Developability",
+        title: "Aggregation과 Solubility",
+        desc: "소수성 패치와 응집 위험 이해.",
+        tags: ["Aggregation", "Solubility", "Hydrophobic patch"],
+        status: "soon"
+      },
+      {
+        no: 15,
+        href: "lessons/antibody/15.html",
+        phase: "Phase 3 · Developability",
+        title: "Viscosity와 Charge",
+        desc: "고농도 제형, pI, 표면전하 이해.",
+        tags: ["Viscosity", "pI", "Surface charge"],
+        status: "soon"
+      },
+      {
+        no: 16,
+        href: "lessons/antibody/16.html",
+        phase: "Phase 3 · Developability",
+        title: "Stability와 Chemical Liability",
+        desc: "산화, 탈아미드화 등 위험 평가.",
+        tags: ["Oxidation", "Deamidation", "Liability"],
+        lab: 7,
+        status: "soon"
+      },
+      {
+        no: 17,
+        href: "lessons/antibody/17.html",
+        phase: "Phase 3 · Developability",
+        title: "Immunogenicity와 ADA",
+        desc: "면역원성과 임상적 영향 이해.",
+        tags: ["Immunogenicity", "ADA"],
+        status: "soon"
+      },
+      {
+        no: 18,
+        href: "lessons/antibody/18.html",
+        phase: "Phase 3 · Developability",
+        title: "항체 PK",
+        desc: "FcRn, 반감기, TMDD 이해.",
+        tags: ["FcRn", "Half-life", "TMDD"],
+        status: "soon"
+      },
+      {
+        no: 19,
+        href: "lessons/antibody/19.html",
+        phase: "Phase 4 · 차세대 항체 Modality",
+        title: "Bispecific Antibody",
+        desc: "이중표적 결합과 T-cell engager 이해.",
+        tags: ["Bispecific", "T-cell engager"],
+        lab: 8,
+        status: "soon"
+      },
+      {
+        no: 20,
+        href: "lessons/antibody/20.html",
+        phase: "Phase 4 · 차세대 항체 Modality",
+        title: "Multispecific과 새로운 Format",
+        desc: "Trispecific, fragment, nanobody 비교.",
+        tags: ["Trispecific", "Fragment", "Nanobody"],
+        status: "soon"
+      },
+      {
+        no: 21,
+        href: "lessons/antibody/21.html",
+        phase: "Phase 4 · 차세대 항체 Modality",
+        title: "ADC",
+        desc: "Antibody–linker–payload 및 작동 원리 이해.",
+        tags: ["ADC", "Linker", "Payload"],
+        lab: 9,
+        status: "soon"
+      },
+      {
+        no: 22,
+        href: "lessons/antibody/22.html",
+        phase: "Phase 4 · 차세대 항체 Modality",
+        title: "Fc Engineering",
+        desc: "Effector function 및 반감기 조절.",
+        tags: ["Fc engineering", "Effector function", "Half-life"],
+        status: "soon"
+      },
+      {
+        no: 23,
+        href: "lessons/antibody/23.html",
+        phase: "Phase 5 · 실제 개발과 AI",
+        title: "Antibody CMC와 제조",
+        desc: "제조 가능성과 품질 특성 이해.",
+        tags: ["CMC", "Manufacturability", "Quality attributes"],
+        status: "soon"
+      },
+      {
+        no: 24,
+        href: "lessons/antibody/24.html",
+        phase: "Phase 5 · 실제 개발과 AI",
+        title: "AI Antibody Drug Discovery",
+        desc: "AI 예측과 실험을 통합한 후보 선정.",
+        tags: ["AI", "Candidate selection", "Integration"],
+        lab: 10,
+        status: "soon"
+      }
+    ]
   }
 ];

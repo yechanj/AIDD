@@ -527,3 +527,28 @@ AIDD 전용:
 상태:   var(--ok), var(--warn), var(--danger)
 폰트:   var(--font-body), var(--font-cute), var(--font-mono)
 ```
+
+---
+
+## 12. Track C — Antibody Drug Discovery (24강)
+
+항체 신약개발(in silico) 직무 대비 트랙. 이론 70% + Computational Mini Lab 30% (Mini Lab 10개).
+
+**파일**
+```
+lessons/antibody/01.html … 24.html   ← 강의 (현재 01만 ready)
+assets/css/antibody.css              ← Track C 테마(로즈 #b8265f) + 항체 시각화 스타일
+assets/js/antibody.js                ← L01 인터랙션 (강의별 추가 시 이 파일에 init 함수 추가)
+```
+
+**테마**: `<body class="ab">` 로 `--brand` 계열 토큰을 로즈로 재정의 → 기존 `.viz__title`, `.qcard`, `.toc`, `.summary-card` 등이 자동으로 Track C 색을 따른다. hero는 `lesson-hero lesson-hero--c`, 로고는 `sidebar__logo--c`, closing은 `closing--c`.
+
+**강의 로드 순서**: `styles.css` → `antibody.css` / `main.js` → `antibody.js`.
+
+**등록**: `lessons.js`의 `id: "c"` 트랙. 항목에 `phase`(허브에서 구분 헤더), `lab`(Mini Lab 번호 칩) 필드 사용.
+
+**컴포넌트(antibody.css)**: `.ab-btn`(44px 터치 영역), `.ab-fb`(피드백 박스), `.ab-key`(핵심 문장 박스), `.ab-note`(주석), `.ab-table`(≤600px에서 카드로 변환, 셀에 `data-label` 필수), `.mech`(작동 원리 카드), `.pipe`(단계 선택 + 상세), `.mcq` + `.mcq-exp`(정답 선택 후 해설 표시).
+
+**항체 색상 규약**: Heavy chain `#2f5fd0`(Fc 쪽은 보라 `#8b5cf6`), Light chain `#14a39a`, Antigen-binding site `#f97316`, Disulfide `#eab308`.
+
+**저작 원칙**: 개념 도식과 실제 구조를 구분해 표기한다(개념도 문구 필수). Best Binder ≠ Best Drug Candidate 원칙을 반복한다. 가상 데이터에는 "학습용 가상 데이터" 표기.

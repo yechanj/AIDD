@@ -883,7 +883,7 @@
     var tracks = window.AIDD_TRACKS;
     tracks.forEach(function (track) {
       var card = document.createElement("button");
-      card.className = "track-card" + (track.id === "b" ? " track-card--b" : "");
+      card.className = "track-card" + (track.id === "b" ? " track-card--b" : "") + (track.id === "c" ? " track-card--c" : "");
       card.innerHTML =
         "<div class='track-card__head'>" +
           "<div class='track-card__ico'>" + track.icon + "</div>" +
@@ -907,11 +907,20 @@
         gridHeadEl.innerHTML = "<span class='grid-head__ico'>" + track.icon + "</span> " + track.name + " — " + track.ko;
       }
       lessonGridEl.innerHTML = "";
+      var lastPhase = null;
       track.lessons.forEach(function (lesson) {
         var isReady = lesson.status === "ready";
         var isBTrack = track.id === "b";
+        var isCTrack = track.id === "c";
+        if (lesson.phase && lesson.phase !== lastPhase) {
+          lastPhase = lesson.phase;
+          var ph = document.createElement("div");
+          ph.className = "lc-phase";
+          ph.textContent = lesson.phase;
+          lessonGridEl.appendChild(ph);
+        }
         var el = document.createElement(isReady ? "a" : "div");
-        el.className = "lesson-card" + (isBTrack ? " lesson-card--b" : "") + (!isReady ? " disabled" : "");
+        el.className = "lesson-card" + (isBTrack ? " lesson-card--b" : "") + (isCTrack ? " lesson-card--c" : "") + (!isReady ? " disabled" : "");
         if (isReady) el.href = lesson.href;
         var tags = (lesson.tags || []).map(function (t) {
           return "<span class='lc-tag'>" + t + "</span>";
@@ -922,6 +931,7 @@
           "<h3>" + lesson.title + "</h3>" +
           "<p>" + lesson.desc + "</p>" +
           "<div class='lc-tags'>" + tags + "</div>" +
+          (lesson.lab ? "<span class='lc-lab'>🧪 Mini Lab " + lesson.lab + "</span>" : "") +
           "<div class='lc-status'>" + (isReady ? "학습 가능" : "준비 중") + "</div>";
         lessonGridEl.appendChild(el);
       });
